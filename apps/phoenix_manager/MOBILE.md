@@ -157,6 +157,14 @@ Comandos úteis durante `flutter run`: `r` hot reload, `R` restart, `d` detach, 
 
 Artefactos em `build/release/store/android/`. Ver [`docs/STORE.md`](../../docs/STORE.md).
 
+## macOS (local)
+
+```bash
+./scripts/install_local.sh    # build release → /Applications
+./scripts/test_mac.sh         # saves + checklist
+./scripts/run_dev.sh macos    # dev com hot reload
+```
+
 ## Testar saves (release)
 
 ```bash

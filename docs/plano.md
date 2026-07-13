@@ -131,6 +131,10 @@ Ecrãs sugeridos: menu carreira, dashboard, plantel, Express, classificação.
 
 ### 4. App Store (quando tiveres Apple Developer)
 
+```bash
+./scripts/app_store_brief.sh   # textos + App Privacy + passos build
+```
+
 1. Xcode → Signing & Capabilities  
 2. `flutter build ipa`  
 3. TestFlight → testers → App Store
@@ -185,7 +189,8 @@ Depois: `./scripts/build_mobile.sh android` → novo AAB.
 - ✅ Site estático privacidade em `docs/site/`  
 - ✅ Scripts screenshots automáticos (`flutter drive` → `build/release/store/android/screenshots/`)  
 - ✅ GitHub Pages — [privacidade online](https://pakopt.github.io/PhoenixManager/privacy.html)  
-- 🔄 Play Console → teste interno  
+- ✅ Validação Mac — saves release + UserDefaults (`test_mac.sh`)  
+- 🔄 Play Console → teste interno (aguardar verificação)  
 
 ---
 

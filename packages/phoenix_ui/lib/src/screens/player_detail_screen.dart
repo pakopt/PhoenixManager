@@ -4,6 +4,7 @@ import 'package:phoenix_ui/src/game/game_controller.dart';
 import 'package:phoenix_ui/src/game/game_session.dart';
 import 'package:phoenix_ui/src/util/money_format.dart';
 import 'package:phoenix_ui/src/util/ui_feedback.dart';
+import 'package:phoenix_ui/src/widgets/empty_state.dart';
 import 'package:phoenix_ui/src/widgets/player_stat_bar.dart';
 
 class PlayerDetailScreen extends StatelessWidget {
@@ -26,7 +27,12 @@ class PlayerDetailScreen extends StatelessWidget {
         if (player == null) {
           return Scaffold(
             appBar: AppBar(title: const Text('Jogador')),
-            body: const Center(child: Text('Jogador não encontrado')),
+            body: const Center(
+              child: EmptyState(
+                icon: Icons.person_off_outlined,
+                message: 'Jogador não encontrado no plantel.',
+              ),
+            ),
           );
         }
         return _buildBody(context, session, player);

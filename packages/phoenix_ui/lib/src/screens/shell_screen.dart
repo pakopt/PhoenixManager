@@ -12,6 +12,9 @@ import 'package:phoenix_ui/src/screens/squad_screen.dart';
 import 'package:phoenix_ui/src/screens/standings_screen.dart';
 import 'package:phoenix_ui/src/screens/club_screen.dart';
 import 'package:phoenix_ui/src/screens/training_screen.dart';
+import 'package:phoenix_ui/src/util/app_version.dart';
+import 'package:phoenix_ui/src/util/date_format.dart';
+import 'package:phoenix_ui/src/util/ui_feedback.dart';
 import 'package:phoenix_ui/src/widgets/content_width.dart';
 
 class ShellScreen extends StatefulWidget {
@@ -52,16 +55,25 @@ class _ShellScreenState extends State<ShellScreen> {
     if (session == null) {
       return;
     }
-    for (final id in widget.controller.consumePendingAchievementUnlocks()) {
-      ScaffoldMessenger.of(context).showSnackBar(
+    final ids = widget.controller.consumePendingAchievementUnlocks();
+    if (ids.isEmpty) {
+      return;
+    }
+
+    final messenger = ScaffoldMessenger.of(context);
+    messenger.clearSnackBars();
+
+    if (ids.length == 1) {
+      messenger.showSnackBar(
         SnackBar(
+          behavior: SnackBarBehavior.floating,
           content: Row(
             children: [
               const Icon(Icons.military_tech),
               const SizedBox(width: 8),
               Expanded(
                 child: Text(
-                  'Conquista: ${session.achievementTitle(id)}',
+                  'Conquista: ${session.achievementTitle(ids.first)}',
                 ),
               ),
             ],
@@ -72,7 +84,19 @@ class _ShellScreenState extends State<ShellScreen> {
           ),
         ),
       );
+      return;
     }
+
+    messenger.showSnackBar(
+      SnackBar(
+        behavior: SnackBarBehavior.floating,
+        content: Text('${ids.length} conquistas desbloqueadas'),
+        action: SnackBarAction(
+          label: 'Ver',
+          onPressed: _openAchievementsTab,
+        ),
+      ),
+    );
   }
 
   void _openAchievementsTab() {
@@ -83,6 +107,7 @@ class _ShellScreenState extends State<ShellScreen> {
   }
 
   void _selectDestination(int value) {
+    UiFeedback.tap();
     setState(() {
       if (value == 7 && _index != 7) {
         _clubInitialTab = 0;
@@ -262,20 +287,28 @@ class _GameDrawer extends StatelessWidget {
             leading: const Icon(Icons.save),
             title: const Text('Guardar carreira'),
             subtitle: controller.lastSavedAt != null
-                ? Text('Último: ${controller.lastSavedAt}')
+                ? Text(
+                    'Último: ${DateFormatUtil.relative(controller.lastSavedAt!)}',
+                  )
                 : null,
-            onTap: () => _pickSaveSlot(context),
+            onTap: () {
+              UiFeedback.action();
+              _pickSaveSlot(context);
+            },
           ),
           ListTile(
             leading: const Icon(Icons.upload),
             title: const Text('Carregar save'),
-            onTap: () => _pickLoadSlot(context),
+            onTap: () {
+              UiFeedback.action();
+              _pickLoadSlot(context);
+            },
           ),
           const Divider(),
           ListTile(
             leading: const Icon(Icons.info_outline),
             title: const Text('Project Phoenix Manager'),
-            subtitle: const Text('PSE v0.8.0-alpha'),
+            subtitle: Text(AppVersion.engineLabel),
           ),
           ListTile(
             leading: const Icon(Icons.privacy_tip_outlined),

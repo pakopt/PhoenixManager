@@ -22,7 +22,7 @@ fi
 cat > "$STAGE/README.txt" <<EOF
 Project Phoenix Manager — upload Play Console
 Package: com.phoenix.manager
-Version: 0.8.0-alpha (code 1)
+Version: 0.8.1 (code 2)
 Privacidade: https://pakopt.github.io/PhoenixManager/privacy.html
 
 phoenix_manager.aab  → Teste interno → Carregar

@@ -26,6 +26,15 @@ for item in \
   fi
 done
 
+section "Loja App Store (prep)"
+ios_shots=0
+[[ -d "$ROOT/build/release/store/ios/screenshots" ]] && \
+  ios_shots=$(ls "$ROOT/build/release/store/ios/screenshots"/*.png 2>/dev/null | wc -l | tr -d ' ')
+echo "  OK   Screenshots iOS: $ios_shots"
+[[ -f "$ROOT/build/release/store/ios/phoenix-manager-app-store-prep.zip" ]] && \
+  echo "  OK   ZIP prep: build/release/store/ios/phoenix-manager-app-store-prep.zip" || \
+  echo "  --   ZIP — ./scripts/package_app_store.sh"
+
 section "Loja Play Store"
 shots=0
 [[ -d "$ROOT/build/release/store/android/screenshots" ]] && \
@@ -54,8 +63,8 @@ section "Trabalho activo (sem Play Store)"
 cat <<EOF
   ./scripts/local_beta.sh             # ZIP APK para testadores
   ./scripts/qa_manual.sh              # roteiro QA manual
-  ./scripts/capture_app_store_screenshots.sh   # prep iOS
-  docs/BETA.md
+  ./scripts/package_app_store.sh      # ZIP screenshots iOS
+  ./scripts/test_ios.sh               # build + screenshots iOS
 EOF
 
 section "Comandos úteis"

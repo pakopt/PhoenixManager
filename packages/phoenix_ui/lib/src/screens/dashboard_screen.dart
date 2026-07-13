@@ -13,6 +13,7 @@ import 'package:phoenix_ui/src/widgets/cup_status_card.dart';
 import 'package:phoenix_ui/src/widgets/express_match_transition.dart';
 import 'package:phoenix_ui/src/widgets/form_strip.dart';
 import 'package:phoenix_ui/src/widgets/season_summary_card.dart';
+import 'package:phoenix_ui/src/util/date_format.dart';
 import 'package:phoenix_ui/src/util/money_format.dart';
 import 'package:phoenix_ui/src/util/ui_feedback.dart';
 import 'package:phoenix_ui/src/widgets/empty_state.dart';
@@ -492,7 +493,7 @@ class _EventTile extends StatelessWidget {
       NewSeasonStartedEvent() => Icons.restart_alt,
       SalariesPaidEvent() => Icons.payments,
       TicketRevenueEvent() => Icons.confirmation_number,
-      _ => Icons.circle,
+      _ => Icons.notifications_none,
     };
   }
 
@@ -521,8 +522,8 @@ class _EventTile extends StatelessWidget {
         'Salários ${session.clubName(e.clubId)}: €${e.amount}',
       TicketRevenueEvent e =>
         'Bilheteira ${session.clubName(e.clubId)}: €${e.amount}',
-      DayAdvancedEvent e => 'Dia ${e.currentDate}',
-      _ => event.runtimeType.toString(),
+      DayAdvancedEvent e => 'Dia ${DateFormatUtil.gameDate(e.currentDate)}',
+      _ => 'Actualização do clube',
     };
   }
 }

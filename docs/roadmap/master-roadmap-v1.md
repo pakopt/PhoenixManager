@@ -2,7 +2,7 @@
 
 **Plano mestre (Cursor):** `phoenix_manager_game_2a890b62.plan.md`  
 **Roadmap vivo (lançamento):** [`docs/plano.md`](../plano.md)  
-**Versão actual:** `0.8.0-alpha` · **Fase:** **E — Lançamento**
+**Versão actual:** `0.8.1` · **Fase:** **E — Lançamento**
 
 Este ficheiro liga o **Master Roadmap** do plano de arquitectura ao estado **real** do repositório.
 
@@ -40,7 +40,7 @@ Este ficheiro liga o **Master Roadmap** do plano de arquitectura ao estado **rea
 | Android AAB + assets Play Store | ✅ |
 | Play Console teste interno | ⏸️ | pausado — conta em verificação; assets prontos |
 | Beta local (APK/Mac) | ✅ | `./scripts/local_beta.sh` · [`docs/BETA.md`](../BETA.md) |
-| App Store / TestFlight | ⏳ | prep screenshots + `app_store_brief.sh` |
+| App Store / TestFlight | ⏳ | screenshots ✅ + `package_app_store.sh` |
 | Steam | ⏸️ adiado |
 
 **Fora do MVP (pós-v1.0):** seleções, VAR, multiplayer, editor, workshop, 3D, redes sociais.

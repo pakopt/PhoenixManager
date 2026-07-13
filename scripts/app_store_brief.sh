@@ -15,7 +15,7 @@ echo "==> Identidade"
 cat <<EOF
   Bundle ID:     $BUNDLE
   Nome:          Project Phoenix Manager
-  Versão:        0.8.0-alpha (build 1)
+  Versão:        0.8.1 (build 2)
   Categoria:     Jogos → Desporto (ou Simulação)
   Preço:         Gratuito
   Contacto:      $CONTACT

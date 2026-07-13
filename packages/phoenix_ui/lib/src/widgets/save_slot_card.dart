@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:phoenix_ui/src/util/date_format.dart';
 import 'package:phoenix_ui/src/game/save_slot.dart';
 
 class SaveSlotCard extends StatelessWidget {
@@ -72,7 +73,7 @@ class SaveSlotCard extends StatelessWidget {
                       ),
                       if (meta.savedAt != null)
                         Text(
-                          'Guardado ${_formatWhen(meta.savedAt!)}',
+                          'Guardado ${DateFormatUtil.relative(meta.savedAt!)}',
                           style: theme.textTheme.labelSmall?.copyWith(
                             color: theme.colorScheme.outline,
                           ),
@@ -106,19 +107,5 @@ class SaveSlotCard extends StatelessWidget {
         ),
       ),
     );
-  }
-
-  static String _formatWhen(DateTime dt) {
-    final diff = DateTime.now().difference(dt);
-    if (diff.inMinutes < 1) {
-      return 'agora';
-    }
-    if (diff.inHours < 1) {
-      return 'há ${diff.inMinutes} min';
-    }
-    if (diff.inDays < 1) {
-      return 'há ${diff.inHours} h';
-    }
-    return 'há ${diff.inDays} dias';
   }
 }

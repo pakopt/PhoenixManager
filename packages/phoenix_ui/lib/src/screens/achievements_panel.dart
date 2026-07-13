@@ -10,7 +10,13 @@ class AchievementsPanel extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final entries = session.achievementEntries;
+    final entries = List<AchievementEntry>.from(session.achievementEntries)
+      ..sort((a, b) {
+        if (a.isUnlocked != b.isUnlocked) {
+          return a.isUnlocked ? -1 : 1;
+        }
+        return a.definition.title.compareTo(b.definition.title);
+      });
     final unlocked = session.unlockedAchievementCount;
     final total = entries.length;
     final theme = Theme.of(context);
@@ -95,6 +101,16 @@ class _AchievementTile extends StatelessWidget {
                   'Época ${entry.unlocked!.seasonYear}',
                   style: theme.textTheme.labelSmall?.copyWith(
                     color: theme.colorScheme.primary,
+                  ),
+                ),
+              )
+            else
+              Padding(
+                padding: const EdgeInsets.only(top: 4),
+                child: Text(
+                  'Por desbloquear',
+                  style: theme.textTheme.labelSmall?.copyWith(
+                    color: theme.colorScheme.outline,
                   ),
                 ),
               ),

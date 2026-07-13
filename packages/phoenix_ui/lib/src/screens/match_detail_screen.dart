@@ -4,6 +4,7 @@ import 'package:phoenix_ui/src/game/game_session.dart';
 import 'package:phoenix_ui/src/game/play_mode.dart';
 import 'package:phoenix_ui/src/widgets/express_match_reveal.dart';
 import 'package:phoenix_ui/src/widgets/match_pitch_view.dart';
+import 'package:phoenix_ui/src/util/date_format.dart';
 import 'package:phoenix_ui/src/widgets/match_stat_bar.dart';
 
 class MatchDetailScreen extends StatefulWidget {
@@ -111,7 +112,7 @@ class _MatchDetailScreenState extends State<MatchDetailScreen>
             away: away,
             homeScore: result.homeScore,
             awayScore: result.awayScore,
-            dateLabel: widget.output.fixture.date.toString(),
+            dateLabel: DateFormatUtil.gameDate(widget.output.fixture.date),
             resultChip: resultChip,
           ),
           const SizedBox(height: 16),

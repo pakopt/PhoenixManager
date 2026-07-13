@@ -27,7 +27,7 @@ Project Phoenix Manager — beta local (Android)
 3. Se necessário: Definições → permitir fontes desconhecidas
 4. Abre a app e testa uma carreira
 
-Versão: 0.8.0-alpha
+Versão: 0.8.1
 Package: com.phoenix.manager
 Contacto: pakopt7@gmail.com
 Privacidade: https://pakopt.github.io/PhoenixManager/privacy.html

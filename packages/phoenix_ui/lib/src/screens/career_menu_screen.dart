@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:phoenix_ui/src/util/app_version.dart';
 import 'package:phoenix_ui/src/game/game_controller.dart';
 import 'package:phoenix_ui/src/game/play_mode.dart';
 import 'package:phoenix_ui/src/screens/privacy_policy_screen.dart';
@@ -51,6 +52,13 @@ class CareerMenuScreen extends StatelessWidget {
                     ),
                     const SizedBox(height: 4),
                     Text(
+                      AppVersion.engineLabel,
+                      style: theme.textTheme.labelSmall?.copyWith(
+                        color: theme.colorScheme.outline,
+                      ),
+                    ),
+                    const SizedBox(height: 4),
+                    Text(
                       'Escolhe um slot de carreira',
                       style: theme.textTheme.bodyMedium?.copyWith(
                         color: theme.colorScheme.outline,
@@ -95,7 +103,17 @@ class CareerMenuScreen extends StatelessWidget {
                       ),
                     ),
                     const SizedBox(height: 16),
-                    Text('Modo de jogo', style: theme.textTheme.titleSmall),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text('Modo de jogo', style: theme.textTheme.titleSmall),
+                        IconButton(
+                          icon: const Icon(Icons.help_outline, size: 20),
+                          tooltip: 'Diferença Express vs Diretor',
+                          onPressed: () => _showPlayModeHelp(context),
+                        ),
+                      ],
+                    ),
                     const SizedBox(height: 8),
                     SegmentedButton<PlayMode>(
                       segments: const [
@@ -174,6 +192,39 @@ class CareerMenuScreen extends StatelessWidget {
             ),
           ),
         ),
+      ),
+    );
+  }
+
+  static void _showPlayModeHelp(BuildContext context) {
+    showDialog<void>(
+      context: context,
+      builder: (ctx) => AlertDialog(
+        title: const Text('Modos de jogo'),
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            ListTile(
+              contentPadding: EdgeInsets.zero,
+              leading: const Icon(Icons.flash_on),
+              title: const Text('Express'),
+              subtitle: Text(PlayMode.express.description),
+            ),
+            ListTile(
+              contentPadding: EdgeInsets.zero,
+              leading: const Icon(Icons.manage_accounts),
+              title: const Text('Diretor'),
+              subtitle: Text(PlayMode.director.description),
+            ),
+          ],
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(ctx),
+            child: const Text('Fechar'),
+          ),
+        ],
       ),
     );
   }

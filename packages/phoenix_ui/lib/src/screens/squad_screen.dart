@@ -4,6 +4,8 @@ import 'package:phoenix_ui/src/game/game_controller.dart';
 import 'package:phoenix_ui/src/game/game_session.dart';
 import 'package:phoenix_ui/src/screens/player_detail_screen.dart';
 import 'package:phoenix_ui/src/util/money_format.dart';
+import 'package:phoenix_ui/src/util/ui_feedback.dart';
+import 'package:phoenix_ui/src/widgets/empty_state.dart';
 import 'package:phoenix_ui/src/widgets/player_stat_bar.dart';
 
 enum SquadSort { ability, age, name, form }
@@ -76,7 +78,10 @@ class _SquadScreenState extends State<SquadScreen> {
                       child: FilterChip(
                         label: Text(_sortLabel(option)),
                         selected: _sort == option,
-                        onSelected: (_) => setState(() => _sort = option),
+                        onSelected: (_) {
+                          UiFeedback.tap();
+                          setState(() => _sort = option);
+                        },
                       ),
                     ),
                 ],
@@ -84,10 +89,23 @@ class _SquadScreenState extends State<SquadScreen> {
             ),
           ),
           if (squad.isEmpty)
-            const SliverFillRemaining(
+            SliverFillRemaining(
               hasScrollBody: false,
-              child: Center(
-                child: Text('Nenhum jogador corresponde à pesquisa.'),
+              child: EmptyState(
+                icon: Icons.search_off,
+                message: _query.isEmpty
+                    ? 'Ainda não há jogadores no plantel.'
+                    : 'Nenhum jogador corresponde à pesquisa.',
+                action: _query.isEmpty
+                    ? null
+                    : TextButton.icon(
+                        onPressed: () {
+                          _searchController.clear();
+                          setState(() => _query = '');
+                        },
+                        icon: const Icon(Icons.clear),
+                        label: const Text('Limpar pesquisa'),
+                      ),
               ),
             )
           else
@@ -101,6 +119,7 @@ class _SquadScreenState extends State<SquadScreen> {
                       player: player,
                       session: session,
                       onTap: () {
+                        UiFeedback.tap();
                         Navigator.of(context).push(
                           MaterialPageRoute<void>(
                             builder: (_) => PlayerDetailScreen(

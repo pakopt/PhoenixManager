@@ -8,8 +8,8 @@ STORE="$ROOT/build/release/store/android"
 PRIVACY_URL="https://pakopt.github.io/PhoenixManager/privacy.html"
 CONTACT="pakopt7@gmail.com"
 PACKAGE="com.phoenix.manager"
-VERSION_NAME="0.8.0-alpha"
-VERSION_CODE="1"
+VERSION_NAME="0.8.1"
+VERSION_CODE="2"
 
 ok=0
 warn=0
@@ -88,7 +88,7 @@ echo ""
 echo "==> Notas da versão (teste interno)"
 cat <<EOF
 
-v0.8.0-alpha — primeira build pública de teste.
+v0.8.1 — polish UX e beta local.
 - Modo Express e carreira completa
 - Saves locais offline
 - Motor Phoenix Simulation Engine v0.8

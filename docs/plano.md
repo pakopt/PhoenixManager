@@ -1,6 +1,6 @@
 # Plano — Project Phoenix Manager
 
-**Versão:** v0.8.0-alpha  
+**Versão:** v0.8.1  
 **Actualizado:** 13 de Julho de 2026  
 **Fase actual:** **E — Lançamento**
 
@@ -67,7 +67,8 @@ Documento vivo do roadmap. O plano detalhado de arquitectura (PSE, GDD, motores)
 | Item | Estado | Acção |
 |------|--------|-------|
 | iOS SwiftPM (sem CocoaPods) | ✅ | Ver [`MOBILE.md`](../apps/phoenix_manager/MOBILE.md) |
-| Screenshots App Store (prep) | 🔄 | `./scripts/capture_app_store_screenshots.sh` |
+| Screenshots App Store (prep) | ✅ | `./scripts/capture_app_store_screenshots.sh` |
+| Pacote App Store (ZIP) | ✅ | `./scripts/package_app_store.sh` |
 | Conta Apple Developer | ⏳ | ~99 USD/ano |
 | Signing + Archive Xcode | ⏳ | `Runner.xcodeproj` |
 | TestFlight | ⏳ | `flutter build ipa` |
@@ -129,6 +130,7 @@ SAVE_TEST=1 ./scripts/launch_doctor.sh
 
 ```bash
 ./scripts/capture_app_store_screenshots.sh   # simulador iOS
+./scripts/package_app_store.sh               # ZIP screenshots
 ./scripts/app_store_brief.sh                 # textos quando tiveres Apple Developer
 ```
 
@@ -174,21 +176,23 @@ Saída: `build/release/store/android/` — reutilizar quando a conta activar.
 
 | Campo | Valor actual |
 |-------|--------------|
-| `versionName` | `0.8.0-alpha` |
-| `versionCode` | `1` |
+| `versionName` | `0.8.1` |
+| `versionCode` | `2` |
 | Package / Bundle ID | `com.phoenix.manager` |
 
 **Próxima release:** editar `apps/phoenix_manager/pubspec.yaml`:
 
 ```yaml
-version: 0.8.1+2   # nome visível + versionCode (obrigatório incrementar +N)
+version: 0.8.2+3   # nome visível + versionCode (obrigatório incrementar +N)
 ```
 
 Depois: `./scripts/build_mobile.sh android` → novo AAB.
 
 ---
 
-## Histórico recente (Fase E)
+## Histórico recente (Fase E + v0.8.1)
+
+- ✅ **v0.8.1** — polish UX: empty states, conquistas, datas, modos de jogo, toasts  
 
 - ✅ Keystore Android + AAB/APK release assinados  
 - ✅ iOS migrado para Swift Package Manager (sem CocoaPods)  
@@ -201,6 +205,7 @@ Depois: `./scripts/build_mobile.sh android` → novo AAB.
 - ✅ Validação Android — saves release no emulador (`test_android.sh`)  
 - ✅ `play_console_day1.sh` — guia upload quando conta activar  
 - ✅ Beta local — `local_beta.sh`, `docs/BETA.md`, `qa_manual.sh`  
+- ✅ Screenshots App Store — 5 capturas iOS (`capture_app_store_screenshots.sh`)  
 - ⏸️ Play Console → retomar após verificação Google  
 
 ---

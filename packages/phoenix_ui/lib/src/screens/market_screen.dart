@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:phoenix_core/phoenix_core.dart';
 import 'package:phoenix_ui/src/game/game_session.dart';
 import 'package:phoenix_ui/src/util/money_format.dart';
+import 'package:phoenix_ui/src/widgets/empty_state.dart';
 
 class MarketScreen extends StatefulWidget {
   const MarketScreen({required this.session, super.key});
@@ -147,17 +148,9 @@ class _TransferList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     if (transfers.isEmpty) {
-      return Center(
-        child: Padding(
-          padding: const EdgeInsets.all(24),
-          child: Text(
-            emptyMessage,
-            textAlign: TextAlign.center,
-            style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                  color: Theme.of(context).colorScheme.outline,
-                ),
-          ),
-        ),
+      return EmptyState(
+        icon: Icons.swap_horiz,
+        message: emptyMessage,
       );
     }
 

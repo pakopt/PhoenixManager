@@ -25,6 +25,13 @@ chmod +x "$ROOT/scripts/capture_play_screenshots_auto.sh" \
 "$ROOT/scripts/capture_play_screenshots_auto.sh"
 
 echo ""
+echo "==> Brief + pacote ZIP"
+chmod +x "$ROOT/scripts/play_console_brief.sh" \
+  "$ROOT/scripts/package_play_store.sh" 2>/dev/null || true
+"$ROOT/scripts/play_console_brief.sh" 2>&1 | tail -8
+"$ROOT/scripts/package_play_store.sh" 2>&1 | tail -3
+
+echo ""
 echo "==> Diagnóstico mobile"
 "$ROOT/scripts/mobile_doctor.sh" || true
 
@@ -42,9 +49,9 @@ Upload + ficha: docs/STORE.md
 Plano:          docs/plano.md
 
 Pendente (manual):
-  [ ] Conta Play Developer
-  [ ] GitHub Pages → URL privacidade (docs/site/README.md)
+  [ ] Conta Play Developer activa (verificação Google)
   [ ] Play Console → teste interno
+  URL privacidade: https://pakopt.github.io/PhoenixManager/privacy.html
 EOF
 
 ls -lh "$MOBILE/phoenix_manager.aab" "$STORE"/*.png "$STORE/screenshots"/*.png 2>/dev/null || true

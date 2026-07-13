@@ -191,17 +191,22 @@ cp steam/steam.env.example steam/steam.env   # App ID + depot IDs
 
 **Plano vivo:** [`docs/plano.md`](docs/plano.md)
 
-**Agora:** Mac + Android local — saves validados ✅
-
-1. ~~Testar saves em release~~ → `./scripts/test_release_saves.sh`
-2. ~~Política de privacidade~~ → [`docs/PRIVACY.md`](docs/PRIVACY.md) + [`docs/site/privacy.html`](docs/site/privacy.html)
-3. ~~Guia Play Store~~ → [`docs/STORE.md`](docs/STORE.md#google-play--upload-passo-a-passo)
-4. **~~Publicar URL privacidade~~** ✅ → https://pakopt.github.io/PhoenixManager/privacy.html
-5. **Play Console** — teste interno + screenshots (`./scripts/capture_play_screenshots_auto.sh`)
-6. Apple Developer (TestFlight / App Store)
-7. Steam — quando tiveres conta Steamworks
+**Agora:** aguardar verificação Play Console — tudo preparado localmente ✅
 
 ```bash
-./scripts/install_local.sh          # reinstalar Mac (bundle ID actualizado)
-./scripts/install_android.sh        # Android
+./scripts/phase_e_status.sh         # panorama Fase E
+./scripts/play_console_brief.sh     # textos + assets Play Store
+```
+
+1. ~~Testar saves Mac~~ → `./scripts/test_mac.sh` ✅
+2. ~~Política de privacidade~~ → https://pakopt.github.io/PhoenixManager/privacy.html
+3. ~~Guia Play Store~~ → [`docs/STORE.md`](docs/STORE.md)
+4. **Play Console** — conta em verificação → teste interno quando activar
+5. Apple Developer — `./scripts/app_store_brief.sh`
+6. Steam — adiado
+
+```bash
+./scripts/install_local.sh          # Mac release
+./scripts/install_android.sh        # Android sideload
+./scripts/package_play_store.sh     # ZIP upload Play Store
 ```

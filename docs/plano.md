@@ -4,7 +4,7 @@
 **Actualizado:** 13 de Julho de 2026  
 **Fase actual:** **E — Lançamento**
 
-Documento vivo do roadmap. O plano detalhado de arquitectura (PSE, GDD, motores) vive no Cursor plan; este ficheiro reflecte **o que está feito** e **o que falta para publicar**.
+Documento vivo do roadmap. O plano detalhado de arquitectura (PSE, GDD, motores) vive no **Cursor plan** (`phoenix_manager_game_2a890b62.plan.md`) e em [`docs/roadmap/master-roadmap-v1.md`](roadmap/master-roadmap-v1.md); este ficheiro reflecte **o que está feito** e **o que falta para publicar**.
 
 ---
 
@@ -82,10 +82,13 @@ Documento vivo do roadmap. O plano detalhado de arquitectura (PSE, GDD, motores)
 ### Qualidade pré-lançamento
 
 ```bash
+./scripts/phase_e_status.sh          # panorama Fase E
 ./scripts/launch_doctor.sh
 SAVE_TEST=1 ./scripts/launch_doctor.sh   # opcional
 ./scripts/mobile_doctor.sh
 ./scripts/test_all.sh
+./scripts/test_mac.sh                # saves Mac
+./scripts/test_android.sh            # saves Android (emulador ligado)
 ```
 
 ---
@@ -152,7 +155,8 @@ Ecrãs sugeridos: menu carreira, dashboard, plantel, Express, classificação.
 | Documento | Conteúdo |
 |-----------|----------|
 | [`README.md`](../README.md) | Visão geral, comandos, arquitectura |
-| [`docs/plano.md`](plano.md) | Este ficheiro — roadmap vivo |
+| [`docs/plano.md`](plano.md) | Este ficheiro — roadmap vivo (Fase E) |
+| [`docs/roadmap/master-roadmap-v1.md`](roadmap/master-roadmap-v1.md) | Sincronização plano mestre ↔ código |
 | [`docs/STORE.md`](STORE.md) | Play Store + App Store passo a passo |
 | [`docs/PRIVACY.md`](PRIVACY.md) | Política privacidade (fonte Markdown) |
 | [`docs/site/privacy.html`](site/privacy.html) | Política para URL pública |

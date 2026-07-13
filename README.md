@@ -196,7 +196,7 @@ cp steam/steam.env.example steam/steam.env   # App ID + depot IDs
 1. ~~Testar saves em release~~ → `./scripts/test_release_saves.sh`
 2. ~~Política de privacidade~~ → [`docs/PRIVACY.md`](docs/PRIVACY.md) + [`docs/site/privacy.html`](docs/site/privacy.html)
 3. ~~Guia Play Store~~ → [`docs/STORE.md`](docs/STORE.md#google-play--upload-passo-a-passo)
-4. **Publicar URL privacidade** → push [pakopt/PhoenixManager](https://github.com/pakopt/PhoenixManager) + GitHub Pages → `https://pakopt.github.io/PhoenixManager/privacy.html`
+4. **~~Publicar URL privacidade~~** ✅ → https://pakopt.github.io/PhoenixManager/privacy.html
 5. **Play Console** — teste interno + screenshots (`./scripts/capture_play_screenshots_auto.sh`)
 6. Apple Developer (TestFlight / App Store)
 7. Steam — quando tiveres conta Steamworks

@@ -54,11 +54,11 @@ Documento vivo do roadmap. O plano detalhado de arquitectura (PSE, GDD, motores)
 | Guia upload Play Store | ✅ | [`docs/STORE.md`](STORE.md#google-play--upload-passo-a-passo) |
 | Política privacidade (texto) | ✅ | [`docs/PRIVACY.md`](PRIVACY.md) + ecrã in-app |
 | **Site privacidade (HTML)** | ✅ | [`docs/site/privacy.html`](site/privacy.html) |
-| **Scripts gráficos loja** | ✅ | `capture_play_screenshots_auto.sh`, `export_feature_graphic.sh`, `prepare_play_store.sh` |
-| **Publicar URL https** | ⏳ | Push → [pakopt/PhoenixManager](https://github.com/pakopt/PhoenixManager) + activar Pages |
+| **Scripts gráficos loja** | ✅ | `play_console_brief.sh`, `package_play_store.sh`, screenshots, gráficos |
+| **Publicar URL https** | ✅ | [pakopt.github.io/PhoenixManager/privacy.html](https://pakopt.github.io/PhoenixManager/privacy.html) |
 | Screenshots telemóvel | ✅ | `./scripts/capture_play_screenshots_auto.sh` (flutter drive → Mac) |
 | Feature graphic 1024×500 | ✅ | `./scripts/export_feature_graphic.sh` |
-| Conta Play Developer | ⏳ | ~25 USD, verificação identidade |
+| Conta Play Developer | ⏳ | Conta criada — **em verificação Google** (1–7 dias, por vezes mais) |
 | Teste interno Play Console | ⏳ | Upload AAB + lista testadores |
 | Produção Play Store | ⏳ | Após validar teste interno |
 
@@ -92,26 +92,21 @@ SAVE_TEST=1 ./scripts/launch_doctor.sh   # opcional
 
 ## Próximas acções (ordem recomendada)
 
-### 1. Publicar política de privacidade (bloqueante Play Store)
+### 1. ~~Publicar política de privacidade~~ ✅
 
-```bash
-./scripts/setup_github_pages.sh   # git init + checklist segredos
-```
+URL activa: **https://pakopt.github.io/PhoenixManager/privacy.html**
 
-1. Push do repo para GitHub (se ainda não estiver)
-2. Activar **GitHub Pages** — ver [`docs/site/README.md`](site/README.md)
-3. URL final: `https://pakopt.github.io/PhoenixManager/privacy.html`
-4. Colar URL na Play Console → Política de privacidade
-5. Confirmar em [`docs/STORE.md`](STORE.md) (URL já documentada)
+### 2. Play Store — teste interno (quando conta activar)
 
-### 2. Play Store — teste interno
+> Conta **em verificação** — usa `./scripts/play_console_brief.sh` para preparar textos e confirmar assets.
 
-1. Conta [Play Console](https://play.google.com/console/signup)
-2. `./scripts/build_mobile.sh android`
-3. Upload `build/release/mobile/android/phoenix_manager.aab`
-4. Preencher ficha, IARC, Data safety (respostas no guia STORE)
-5. ≥2 screenshots + ícone 512 + feature graphic 1024×500
-6. Instalar no telemóvel via link de teste interno
+1. ~~Conta [Play Console](https://play.google.com/console/signup)~~ ✅ (aguardar verificação)
+2. `./scripts/play_console_brief.sh` — confirmar assets + copiar textos
+3. `./scripts/package_play_store.sh` — ZIP opcional para upload
+4. Upload `build/release/mobile/android/phoenix_manager.aab`
+5. Preencher ficha, IARC, Data safety (respostas no guia STORE)
+6. ≥2 screenshots + ícone 512 + feature graphic 1024×500
+7. Instalar no telemóvel via link de teste interno
 
 ### 3. Gráficos da loja
 
@@ -189,8 +184,8 @@ Depois: `./scripts/build_mobile.sh android` → novo AAB.
 - ✅ Guia Play Store completo em `docs/STORE.md`  
 - ✅ Site estático privacidade em `docs/site/`  
 - ✅ Scripts screenshots automáticos (`flutter drive` → `build/release/store/android/screenshots/`)  
-- ✅ `setup_github_pages.sh` — git init + validação keystore  
-- 🔄 Push GitHub + Pages + upload Play Console  
+- ✅ GitHub Pages — [privacidade online](https://pakopt.github.io/PhoenixManager/privacy.html)  
+- 🔄 Play Console → teste interno  
 
 ---
 

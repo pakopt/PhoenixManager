@@ -21,9 +21,15 @@ chmod +x scripts/setup_github_pages.sh
 
 1. Push do repo para GitHub  
 2. **Settings → Pages → Build and deployment**  
-   - Source: **GitHub Actions**  
-3. O workflow `.github/workflows/pages.yml` publica `docs/site/` em cada push para `main`  
+   - **Source:** **GitHub Actions** (não uses “Deploy from branch”)  
+3. Se a página der **404**, confirma o passo 2 e re-dispara o workflow:  
+   **Actions → Deploy docs site → Run workflow**  
 4. Aguarda 1–2 min; a URL aparece em **Settings → Pages**
+
+**URL deste projecto:** `https://pakopt.github.io/PhoenixManager/privacy.html`
+
+> O workflow `.github/workflows/pages.yml` corre em **cada push** para `main`.  
+> Sem activar “GitHub Actions” em Pages, o deploy falha ou o site fica offline (404).
 
 ### Opção B — Branch /docs manual
 

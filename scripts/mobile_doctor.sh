@@ -125,7 +125,10 @@ if [[ -d "$ROOT/.git" ]] || git -C "$ROOT" rev-parse --git-dir >/dev/null 2>&1; 
 else
   warn "sem git — ./scripts/setup_github_pages.sh"
 fi
-warn "Publicar GitHub Pages — ver docs/site/README.md"
+pass "privacidade https://pakopt.github.io/PhoenixManager/privacy.html"
+if [[ -f "$ROOT/build/release/mobile/android/phoenix_manager.aab" ]]; then
+  pass "Play Console brief — ./scripts/play_console_brief.sh"
+fi
 
 echo ""
 if [[ $FAIL -gt 0 ]]; then

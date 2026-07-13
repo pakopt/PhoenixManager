@@ -14,8 +14,8 @@ Guia para **Google Play** e App Store. Steam: ver [steam/README.md](../steam/REA
 | Saves testados | ✅ | `./scripts/test_release_saves.sh` |
 | Keystore Android | ✅ | `./scripts/android_keystore.sh` (já configurado) |
 | AAB release assinado | ✅ | `./scripts/build_mobile.sh android` |
-| Site privacidade (HTML) | ✅ | [`docs/site/privacy.html`](site/privacy.html) — publicar via GitHub Pages |
-| URL https privacidade | ⏳ | Após push: [privacidade](https://pakopt.github.io/PhoenixManager/privacy.html) |
+| Site privacidade (HTML) | ✅ | [privacidade online](https://pakopt.github.io/PhoenixManager/privacy.html) |
+| URL https privacidade | ✅ | [privacidade](https://pakopt.github.io/PhoenixManager/privacy.html) |
 | Apple Developer | ⏳ | Xcode signing (App Store) |
 
 ---
@@ -57,9 +57,21 @@ Guia para **Google Play** e App Store. Steam: ver [steam/README.md](../steam/REA
    - HTML: [`docs/site/privacy.html`](site/privacy.html)
    - Repositório: [github.com/pakopt/PhoenixManager](https://github.com/pakopt/PhoenixManager)
    - Publicar: [`docs/site/README.md`](site/README.md) (GitHub Pages + workflow `.github/workflows/pages.yml`)
-   - **URL privacidade:** `https://pakopt.github.io/PhoenixManager/privacy.html` *(activa após push + Pages)*
+   - **URL privacidade:** [pakopt.github.io/PhoenixManager/privacy.html](https://pakopt.github.io/PhoenixManager/privacy.html)
 
    Fonte Markdown: [`docs/PRIVACY.md`](PRIVACY.md) — manter `privacy.html` em sync ao alterar.
+
+### 0. Conta em verificação
+
+Se a Play Console mostrar **conta em verificação** após o registo (~25 USD), é normal. O Google valida identidade e pagamento (1–7 dias úteis). Enquanto esperas:
+
+```bash
+./scripts/play_console_brief.sh    # textos copy-paste + checklist assets
+./scripts/package_play_store.sh    # ZIP com AAB + gráficos
+./scripts/mobile_doctor.sh
+```
+
+Responde a emails do Google e verifica notificações na consola. Quando a conta activar, segue a secção **1. Criar a app** abaixo.
 
 ### 1. Criar a app na Play Console
 

@@ -48,34 +48,28 @@ if [[ $fail -gt 0 ]]; then
   exit 1
 fi
 
-REMOTE="${GITHUB_REMOTE:-}"
-USER="${GITHUB_USER:-}"
-REPO="${GITHUB_REPO:-Project-Phoenix-Manager}"
-
-if [[ -z "$REMOTE" && -n "$USER" ]]; then
-  REMOTE="https://github.com/${USER}/${REPO}.git"
-fi
+REPO="${GITHUB_REPO:-PhoenixManager}"
+REMOTE="${GITHUB_REMOTE:-https://github.com/pakopt/PhoenixManager.git}"
+USER="${GITHUB_USER:-pakopt}"
 
 echo ""
 echo "==> Próximos passos (manual)"
 cat <<EOF
 
-1. Criar repo vazio no GitHub (sem README/licença se já tens código local):
-   https://github.com/new
-   Nome sugerido: ${REPO}
+1. Repo GitHub: https://github.com/pakopt/PhoenixManager *(já criado)*
 
-2. Primeiro commit e push:
+2. Commit (se houver alterações) e push:
    git add -A
-   git status   # confirmar que key.properties / keystore NÃO aparecem
-   git commit -m "chore: v0.8.0-alpha — Fase E lançamento"
-   git remote add origin ${REMOTE:-https://github.com/<utilizador>/${REPO}.git}
+   git status
+   git commit -m "docs: URL privacidade GitHub Pages"   # se necessário
+   git remote add origin ${REMOTE} 2>/dev/null || git remote set-url origin ${REMOTE}
    git push -u origin main
 
 3. GitHub Pages (Settings → Pages → Build: GitHub Actions)
    O workflow .github/workflows/pages.yml publica docs/site/ em cada push.
 
-4. URL privacidade (project site):
-   https://<utilizador>.github.io/${REPO}/privacy.html
+4. URL privacidade:
+   https://pakopt.github.io/PhoenixManager/privacy.html
 
 5. Colar URL na Play Console e actualizar docs/STORE.md
 

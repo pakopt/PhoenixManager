@@ -4,7 +4,7 @@ Páginas públicas para a **Play Store** e **App Store** (política de privacida
 
 | Ficheiro | URL após publicar |
 |----------|-------------------|
-| `privacy.html` | `https://<utilizador>.github.io/<repo>/privacy.html` |
+| `privacy.html` | `https://pakopt.github.io/PhoenixManager/privacy.html` |
 | `index.html` | Redirecciona para `privacy.html` |
 
 ## Publicar no GitHub Pages

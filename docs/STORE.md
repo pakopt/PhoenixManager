@@ -15,7 +15,7 @@ Guia para **Google Play** e App Store. Steam: ver [steam/README.md](../steam/REA
 | Keystore Android | ✅ | `./scripts/android_keystore.sh` (já configurado) |
 | AAB release assinado | ✅ | `./scripts/build_mobile.sh android` |
 | Site privacidade (HTML) | ✅ | [`docs/site/privacy.html`](site/privacy.html) — publicar via GitHub Pages |
-| URL https privacidade | ⏳ | Ver [`docs/site/README.md`](site/README.md) |
+| URL https privacidade | ⏳ | Após push: [privacidade](https://pakopt.github.io/PhoenixManager/privacy.html) |
 | Apple Developer | ⏳ | Xcode signing (App Store) |
 
 ---
@@ -55,8 +55,9 @@ Guia para **Google Play** e App Store. Steam: ver [steam/README.md](../steam/REA
 
    **Já preparado no repo:**
    - HTML: [`docs/site/privacy.html`](site/privacy.html)
+   - Repositório: [github.com/pakopt/PhoenixManager](https://github.com/pakopt/PhoenixManager)
    - Publicar: [`docs/site/README.md`](site/README.md) (GitHub Pages + workflow `.github/workflows/pages.yml`)
-   - URL exemplo: `https://<utilizador>.github.io/<repo>/privacy.html`
+   - **URL privacidade:** `https://pakopt.github.io/PhoenixManager/privacy.html` *(activa após push + Pages)*
 
    Fonte Markdown: [`docs/PRIVACY.md`](PRIVACY.md) — manter `privacy.html` em sync ao alterar.
 

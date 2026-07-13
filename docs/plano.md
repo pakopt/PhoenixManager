@@ -55,7 +55,7 @@ Documento vivo do roadmap. O plano detalhado de arquitectura (PSE, GDD, motores)
 | Política privacidade (texto) | ✅ | [`docs/PRIVACY.md`](PRIVACY.md) + ecrã in-app |
 | **Site privacidade (HTML)** | ✅ | [`docs/site/privacy.html`](site/privacy.html) |
 | **Scripts gráficos loja** | ✅ | `capture_play_screenshots_auto.sh`, `export_feature_graphic.sh`, `prepare_play_store.sh` |
-| **Publicar URL https** | ⏳ | `git init` ✅ — falta push + activar Pages |
+| **Publicar URL https** | ⏳ | Push → [pakopt/PhoenixManager](https://github.com/pakopt/PhoenixManager) + activar Pages |
 | Screenshots telemóvel | ✅ | `./scripts/capture_play_screenshots_auto.sh` (flutter drive → Mac) |
 | Feature graphic 1024×500 | ✅ | `./scripts/export_feature_graphic.sh` |
 | Conta Play Developer | ⏳ | ~25 USD, verificação identidade |
@@ -100,9 +100,9 @@ SAVE_TEST=1 ./scripts/launch_doctor.sh   # opcional
 
 1. Push do repo para GitHub (se ainda não estiver)
 2. Activar **GitHub Pages** — ver [`docs/site/README.md`](site/README.md)
-3. URL final (exemplo): `https://<utilizador>.github.io/<repo>/privacy.html`
+3. URL final: `https://pakopt.github.io/PhoenixManager/privacy.html`
 4. Colar URL na Play Console → Política de privacidade
-5. Actualizar [`docs/STORE.md`](STORE.md) com a URL real (substituir placeholder)
+5. Confirmar em [`docs/STORE.md`](STORE.md) (URL já documentada)
 
 ### 2. Play Store — teste interno
 

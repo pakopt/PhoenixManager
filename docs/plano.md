@@ -58,8 +58,8 @@ Documento vivo do roadmap. O plano detalhado de arquitectura (PSE, GDD, motores)
 | **Publicar URL https** | ✅ | [pakopt.github.io/PhoenixManager/privacy.html](https://pakopt.github.io/PhoenixManager/privacy.html) |
 | Screenshots telemóvel | ✅ | `./scripts/capture_play_screenshots_auto.sh` (flutter drive → Mac) |
 | Feature graphic 1024×500 | ✅ | `./scripts/export_feature_graphic.sh` |
-| Conta Play Developer | ⏳ | Conta criada — **em verificação Google** (1–7 dias, por vezes mais) |
-| Teste interno Play Console | ⏳ | Upload AAB + lista testadores |
+| Conta Play Developer | ⏸️ | **Pausado** — em verificação Google; assets prontos |
+| Teste interno Play Console | ⏸️ | Retomar com `./scripts/play_console_day1.sh` |
 | Produção Play Store | ⏳ | Após validar teste interno |
 
 ### Lojas — App Store
@@ -67,6 +67,7 @@ Documento vivo do roadmap. O plano detalhado de arquitectura (PSE, GDD, motores)
 | Item | Estado | Acção |
 |------|--------|-------|
 | iOS SwiftPM (sem CocoaPods) | ✅ | Ver [`MOBILE.md`](../apps/phoenix_manager/MOBILE.md) |
+| Screenshots App Store (prep) | 🔄 | `./scripts/capture_app_store_screenshots.sh` |
 | Conta Apple Developer | ⏳ | ~99 USD/ano |
 | Signing + Archive Xcode | ⏳ | `Runner.xcodeproj` |
 | TestFlight | ⏳ | `flutter build ipa` |
@@ -78,6 +79,14 @@ Documento vivo do roadmap. O plano detalhado de arquitectura (PSE, GDD, motores)
 |------|--------|-------|
 | Scripts SteamPipe | ✅ | [`steam/README.md`](../steam/README.md) |
 | Upload Steam | ⏸️ | Adiado — falta conta Steamworks |
+
+### Beta local (sem lojas)
+
+| Item | Estado | Acção |
+|------|--------|-------|
+| Guia beta local | ✅ | [`docs/BETA.md`](BETA.md) |
+| Pacote APK testadores | ✅ | `./scripts/local_beta.sh` |
+| Roteiro QA manual | ✅ | `./scripts/qa_manual.sh` |
 
 ### Qualidade pré-lançamento
 
@@ -93,56 +102,50 @@ SAVE_TEST=1 ./scripts/launch_doctor.sh   # opcional
 
 ---
 
-## Próximas acções (ordem recomendada)
+## Próximas acções (Play Store pausada até aprovação)
 
-### 1. ~~Publicar política de privacidade~~ ✅
+> **Conta Play Console em verificação** — não bloqueia o resto da Fase E. Foco em beta local, QA e prep iOS.
 
-URL activa: **https://pakopt.github.io/PhoenixManager/privacy.html**
-
-### 2. Play Store — teste interno (quando conta activar)
-
-> Conta **em verificação** — usa `./scripts/play_console_brief.sh` para preparar textos e confirmar assets.
-
-1. ~~Conta [Play Console](https://play.google.com/console/signup)~~ ✅ (aguardar verificação)
-2. `./scripts/play_console_brief.sh` — confirmar assets + copiar textos
-3. `./scripts/package_play_store.sh` — ZIP opcional para upload
-4. Upload `build/release/mobile/android/phoenix_manager.aab`
-5. Preencher ficha, IARC, Data safety (respostas no guia STORE)
-6. ≥2 screenshots + ícone 512 + feature graphic 1024×500
-7. Instalar no telemóvel via link de teste interno
-
-### 3. Gráficos da loja
+### 1. Beta local (agora)
 
 ```bash
-# Automático (recomendado) — integration test + gravação directa no Mac
-./scripts/capture_play_screenshots_auto.sh
-
-# Manual guiado — 5 ecrãs com adb screencap
-./scripts/capture_play_screenshots.sh --install --batch
-
-# Pacote completo loja (AAB + screenshots + gráficos)
-./scripts/prepare_play_store.sh
-# ou sem rebuild: SKIP_BUILD=1 ./scripts/prepare_play_store.sh
-
-# Feature graphic 1024×500 (Chrome headless)
-./scripts/export_feature_graphic.sh
+./scripts/local_beta.sh          # ZIP APK + instruções para testadores Android
+./scripts/install_local.sh       # Mac release → /Applications
+./scripts/qa_manual.sh           # roteiro QA manual
 ```
 
-Saída: `build/release/store/android/` (`screenshots/`, `icon-512.png`, `feature-graphic.png`)
+Guia: [`docs/BETA.md`](BETA.md)
 
-Ecrãs sugeridos: menu carreira, dashboard, plantel, Express, classificação.
-
-### 4. App Store (quando tiveres Apple Developer)
+### 2. Qualidade automática
 
 ```bash
-./scripts/app_store_brief.sh   # textos + App Privacy + passos build
+./scripts/test_all.sh
+./scripts/test_mac.sh
+./scripts/test_android.sh        # emulador ou USB
+SAVE_TEST=1 ./scripts/launch_doctor.sh
 ```
 
-1. Xcode → Signing & Capabilities  
-2. `flutter build ipa`  
-3. TestFlight → testers → App Store
+### 3. App Store — preparação (sem conta ainda)
 
-### 5. Steam (mais tarde)
+```bash
+./scripts/capture_app_store_screenshots.sh   # simulador iOS
+./scripts/app_store_brief.sh                 # textos quando tiveres Apple Developer
+```
+
+### 4. Play Store — retomar quando conta activar ⏸️
+
+```bash
+./scripts/play_console_day1.sh
+```
+
+1. ~~Conta Play Developer~~ ✅ (aguardar verificação Google)
+2. Upload AAB + ficha + IARC + Data safety — [`docs/STORE.md`](STORE.md)
+
+### 5. Gráficos Play Store (já feitos ✅)
+
+Saída: `build/release/store/android/` — reutilizar quando a conta activar.
+
+### 6. Steam (mais tarde)
 
 1. Conta Steamworks  
 2. `steam/steam.env`  
@@ -157,6 +160,7 @@ Ecrãs sugeridos: menu carreira, dashboard, plantel, Express, classificação.
 | [`README.md`](../README.md) | Visão geral, comandos, arquitectura |
 | [`docs/plano.md`](plano.md) | Este ficheiro — roadmap vivo (Fase E) |
 | [`docs/roadmap/master-roadmap-v1.md`](roadmap/master-roadmap-v1.md) | Sincronização plano mestre ↔ código |
+| [`docs/BETA.md`](BETA.md) | Beta local sem lojas (APK/Mac + QA) |
 | [`docs/STORE.md`](STORE.md) | Play Store + App Store passo a passo |
 | [`docs/PRIVACY.md`](PRIVACY.md) | Política privacidade (fonte Markdown) |
 | [`docs/site/privacy.html`](site/privacy.html) | Política para URL pública |
@@ -194,7 +198,10 @@ Depois: `./scripts/build_mobile.sh android` → novo AAB.
 - ✅ Scripts screenshots automáticos (`flutter drive` → `build/release/store/android/screenshots/`)  
 - ✅ GitHub Pages — [privacidade online](https://pakopt.github.io/PhoenixManager/privacy.html)  
 - ✅ Validação Mac — saves release + UserDefaults (`test_mac.sh`)  
-- 🔄 Play Console → teste interno (aguardar verificação)  
+- ✅ Validação Android — saves release no emulador (`test_android.sh`)  
+- ✅ `play_console_day1.sh` — guia upload quando conta activar  
+- ✅ Beta local — `local_beta.sh`, `docs/BETA.md`, `qa_manual.sh`  
+- ⏸️ Play Console → retomar após verificação Google  
 
 ---
 

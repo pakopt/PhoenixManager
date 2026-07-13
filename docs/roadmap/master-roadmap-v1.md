@@ -38,8 +38,9 @@ Este ficheiro liga o **Master Roadmap** do plano de arquitectura ao estado **rea
 | Simulation Lab (dev) | ✅ |
 | Política privacidade + URL | ✅ |
 | Android AAB + assets Play Store | ✅ |
-| Play Console teste interno | ⏳ conta em verificação |
-| App Store / TestFlight | ⏳ Apple Developer |
+| Play Console teste interno | ⏸️ | pausado — conta em verificação; assets prontos |
+| Beta local (APK/Mac) | ✅ | `./scripts/local_beta.sh` · [`docs/BETA.md`](../BETA.md) |
+| App Store / TestFlight | ⏳ | prep screenshots + `app_store_brief.sh` |
 | Steam | ⏸️ adiado |
 
 **Fora do MVP (pós-v1.0):** seleções, VAR, multiplayer, editor, workshop, 3D, redes sociais.
@@ -53,17 +54,17 @@ Este ficheiro liga o **Master Roadmap** do plano de arquitectura ao estado **rea
 | `dart analyze` | ✅ | `./scripts/test_all.sh` |
 | Testes unitários + UI | ✅ | idem |
 | 100 épocas headless | ✅ | CI `Phoenix Headless CI` |
-| Saves release Mac/Android | ✅ Mac / ⏳ Android emulador | `./scripts/test_mac.sh` |
+| Saves release Mac/Android | ✅ | `./scripts/test_mac.sh` · `./scripts/test_android.sh` |
 | Launch doctor | ✅ | `./scripts/launch_doctor.sh` |
 
 ---
 
-## Próximo passo (plano → acção)
+## Próximo passo (Play Store pausada)
 
-1. **Aguardar** verificação Play Console  
-2. `./scripts/phase_e_status.sh` — panorama  
-3. `./scripts/play_console_brief.sh` — upload teste interno  
-4. [`docs/STORE.md`](../STORE.md) — guia passo a passo  
+1. **Beta local** — `./scripts/local_beta.sh` + partilhar com testadores ([`docs/BETA.md`](../BETA.md))
+2. **QA** — `./scripts/qa_manual.sh` + `test_mac.sh` / `test_android.sh`
+3. **App Store prep** — `./scripts/capture_app_store_screenshots.sh` (simulador iOS)
+4. **Retomar Play Store** quando conta activar → `./scripts/play_console_day1.sh`
 5. Após validação testers → produção `0.8.0` (sem sufixo alpha)
 
 ---

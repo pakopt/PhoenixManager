@@ -44,10 +44,9 @@ ensure_android_device() {
 
   log "Sem dispositivo Android — a arrancar emulador..."
   EMU="$HOME/Library/Android/sdk/emulator/emulator"
+  flutter emulators --launch medium_phone >/dev/null 2>&1 || true
   if [[ -x "$EMU" ]]; then
-    "$EMU" -avd medium_phone -no-snapshot-load >/dev/null 2>&1 &
-  else
-    flutter emulators --launch medium_phone &
+    "$EMU" -avd medium_phone -read-only -no-snapshot-load -no-boot-anim >/dev/null 2>&1 &
   fi
 
   for _ in $(seq 1 90); do
@@ -71,7 +70,11 @@ test_android() {
   fi
 
   log "Instalar APK release no dispositivo..."
-  "$ADB" install -r "$APK" >/dev/null
+  if ! "$ADB" install -r "$APK" >/dev/null 2>&1; then
+    log "Assinatura incompatível — a desinstalar versão anterior..."
+    "$ADB" uninstall "$PKG_ANDROID" >/dev/null 2>&1 || true
+    "$ADB" install -r "$APK" >/dev/null
+  fi
 
   run_integration_test "$device" "Android ($device)"
 }

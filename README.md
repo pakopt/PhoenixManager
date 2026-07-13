@@ -191,22 +191,24 @@ cp steam/steam.env.example steam/steam.env   # App ID + depot IDs
 
 **Plano vivo:** [`docs/plano.md`](docs/plano.md)
 
-**Agora:** aguardar verificação Play Console — tudo preparado localmente ✅
+**Agora:** Play Store pausada — beta local + QA + prep iOS
 
 ```bash
 ./scripts/phase_e_status.sh         # panorama Fase E
-./scripts/play_console_brief.sh     # textos + assets Play Store
+./scripts/local_beta.sh             # ZIP APK para testadores
+./scripts/qa_manual.sh              # roteiro QA manual
 ```
 
-1. ~~Testar saves Mac~~ → `./scripts/test_mac.sh` ✅
+1. ~~Testar saves Mac/Android~~ → `test_mac.sh` / `test_android.sh` ✅
 2. ~~Política de privacidade~~ → https://pakopt.github.io/PhoenixManager/privacy.html
-3. ~~Guia Play Store~~ → [`docs/STORE.md`](docs/STORE.md)
-4. **Play Console** — conta em verificação → teste interno quando activar
-5. Apple Developer — `./scripts/app_store_brief.sh`
-6. Steam — adiado
+3. **Beta local** — partilhar APK/Mac com testadores ([`docs/BETA.md`](docs/BETA.md))
+4. **App Store prep** — screenshots iOS (`capture_app_store_screenshots.sh`)
+5. **Play Console** ⏸️ — retomar quando conta activar (`play_console_day1.sh`)
+6. Apple Developer — `./scripts/app_store_brief.sh`
+7. Steam — adiado
 
 ```bash
 ./scripts/install_local.sh          # Mac release
-./scripts/install_android.sh        # Android sideload
-./scripts/package_play_store.sh     # ZIP upload Play Store
+./scripts/local_beta.sh             # Android beta ZIP
+./scripts/package_play_store.sh     # (quando Play activar)
 ```

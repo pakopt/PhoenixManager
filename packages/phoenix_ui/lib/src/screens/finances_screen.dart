@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:phoenix_ui/src/util/money_format.dart';
 import 'package:phoenix_ui/src/game/game_session.dart';
 import 'package:phoenix_ui/src/widgets/common_widgets.dart';
+import 'package:phoenix_ui/src/widgets/empty_state.dart';
 
 class FinancesScreen extends StatelessWidget {
   const FinancesScreen({required this.session, super.key});
@@ -48,6 +49,20 @@ class FinancesScreen extends StatelessWidget {
                 StatChip(
                   label: 'Despesas época',
                   value: MoneyFormat.compact(finance.seasonExpenses),
+                ),
+              ],
+            ),
+            const SizedBox(height: 8),
+            Row(
+              children: [
+                StatChip(
+                  label: 'Resultado época',
+                  value: MoneyFormat.compact(
+                    finance.seasonRevenue - finance.seasonExpenses,
+                  ),
+                  color: finance.seasonRevenue >= finance.seasonExpenses
+                      ? Colors.green
+                      : Colors.red,
                 ),
               ],
             ),
@@ -131,10 +146,29 @@ class FinancesScreen extends StatelessWidget {
             ),
           ],
           const SizedBox(height: 24),
-          Text('Transferências', style: Theme.of(context).textTheme.titleMedium),
+          Row(
+            children: [
+              Text(
+                'Transferências',
+                style: Theme.of(context).textTheme.titleMedium,
+              ),
+              if (transfers.isNotEmpty) ...[
+                const SizedBox(width: 8),
+                Text(
+                  '(${transfers.length > 12 ? '12 de ${transfers.length}' : transfers.length})',
+                  style: theme.textTheme.bodySmall?.copyWith(
+                    color: theme.colorScheme.outline,
+                  ),
+                ),
+              ],
+            ],
+          ),
           const SizedBox(height: 8),
           if (transfers.isEmpty)
-            const Text('Nenhuma transferência registada.')
+            const EmptyState(
+              icon: Icons.swap_horiz,
+              message: 'Nenhuma transferência registada nesta carreira.',
+            )
           else
             ...transfers.take(12).map(
                   (transfer) => ListTile(

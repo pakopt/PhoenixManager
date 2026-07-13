@@ -17,6 +17,7 @@ import 'package:phoenix_ui/src/util/date_format.dart';
 import 'package:phoenix_ui/src/util/money_format.dart';
 import 'package:phoenix_ui/src/util/ui_feedback.dart';
 import 'package:phoenix_ui/src/widgets/empty_state.dart';
+import 'package:phoenix_ui/src/widgets/dashboard_tip_card.dart';
 
 class DashboardScreen extends StatelessWidget {
   const DashboardScreen({
@@ -43,6 +44,10 @@ class DashboardScreen extends StatelessWidget {
         children: [
           ClubHeader(session: session),
           const SizedBox(height: 16),
+          DashboardTipCard(
+            playMode: controller.playMode,
+            matchesPlayed: session.matchesPlayed,
+          ),
           Row(
             children: [
               StatChip(

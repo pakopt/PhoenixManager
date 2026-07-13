@@ -207,6 +207,33 @@ class _MatchDetailScreenState extends State<MatchDetailScreen>
                   ),
                 ),
               ),
+          if (!widget.expressMode && result.commentary.isNotEmpty) ...[
+            const SizedBox(height: 16),
+            Card(
+              clipBehavior: Clip.antiAlias,
+              child: ExpansionTile(
+                leading: const Icon(Icons.article_outlined),
+                title: const Text('Ver relato completo'),
+                subtitle: Text('${result.commentary.length} momentos'),
+                children: result.commentary
+                    .map(
+                      (line) => ListTile(
+                        dense: true,
+                        leading: Icon(
+                          Icons.circle,
+                          size: 6,
+                          color: Theme.of(context).colorScheme.outline,
+                        ),
+                        title: Text(
+                          line,
+                          style: Theme.of(context).textTheme.bodySmall,
+                        ),
+                      ),
+                    )
+                    .toList(),
+              ),
+            ),
+          ],
         ],
       ),
     );

@@ -8,6 +8,9 @@ ZIP="$OUT/phoenix-manager-play-upload.zip"
 AAB="$ROOT/build/release/mobile/android/phoenix_manager.aab"
 STAGE="$OUT/_upload_staging"
 
+# shellcheck source=read_app_version.sh
+source "$ROOT/scripts/read_app_version.sh"
+
 rm -rf "$STAGE" "$ZIP"
 mkdir -p "$STAGE/screenshots"
 
@@ -22,7 +25,7 @@ fi
 cat > "$STAGE/README.txt" <<EOF
 Project Phoenix Manager — upload Play Console
 Package: com.phoenix.manager
-Version: 0.8.1 (code 2)
+Version: $VERSION_NAME (code $VERSION_CODE)
 Privacidade: https://pakopt.github.io/PhoenixManager/privacy.html
 
 phoenix_manager.aab  → Teste interno → Carregar

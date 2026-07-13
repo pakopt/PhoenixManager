@@ -54,6 +54,11 @@ Corre em cada plataforma antes de enviar para lojas:
 | 6 | **Guardar** → fechar app → reabrir → dados restaurados | |
 | 7 | Definições → **Política de privacidade** abre | |
 | 8 | Conquistas / palmarés (se aplicável) | |
+| 9 | **Finanças** — resultado época, transferências | |
+| 10 | **Calendário** — scroll ao próximo jogo, filtro «Só os meus» | |
+| 11 | **Treino** — filtro margem, toque abre ficha do jogador | |
+| 12 | **Detalhe do jogo** — «Ver relato completo» expande | |
+| 13 | **Dashboard** — dica «Primeiros passos» (carreira nova) | |
 
 Automático (saves):
 

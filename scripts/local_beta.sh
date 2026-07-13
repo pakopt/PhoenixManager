@@ -8,6 +8,9 @@ OUT="$ROOT/build/release/beta"
 ZIP="$OUT/phoenix-manager-beta.zip"
 STAGE="$OUT/_staging"
 
+# shellcheck source=read_app_version.sh
+source "$ROOT/scripts/read_app_version.sh"
+
 mkdir -p "$OUT"
 rm -rf "$STAGE" "$ZIP"
 mkdir -p "$STAGE"
@@ -19,7 +22,7 @@ fi
 
 cp "$APK" "$STAGE/phoenix_manager.apk"
 
-cat > "$STAGE/LEIA-ME.txt" <<'EOF'
+cat > "$STAGE/LEIA-ME.txt" <<EOF
 Project Phoenix Manager — beta local (Android)
 
 1. Transfere este ZIP para o telemóvel Android
@@ -27,7 +30,7 @@ Project Phoenix Manager — beta local (Android)
 3. Se necessário: Definições → permitir fontes desconhecidas
 4. Abre a app e testa uma carreira
 
-Versão: 0.8.1
+Versão: $VERSION_NAME (build $VERSION_CODE)
 Package: com.phoenix.manager
 Contacto: pakopt7@gmail.com
 Privacidade: https://pakopt.github.io/PhoenixManager/privacy.html

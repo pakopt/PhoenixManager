@@ -19,6 +19,11 @@ Corre em Mac, Android ou iOS (dev) antes de lojas.
   [ ] 6. Guardar → fechar → reabrir → dados restaurados
   [ ] 7. Definições → Política de privacidade abre
   [ ] 8. Conquistas / palmarés (se visível)
+  [ ] 9. Finanças — resultado época, transferências
+  [ ] 10. Calendário — scroll próximo jogo, filtro «Só os meus»
+  [ ] 11. Treino — filtro margem, toque abre ficha
+  [ ] 12. Detalhe jogo — «Ver relato completo»
+  [ ] 13. Dashboard — dica «Primeiros passos» (carreira nova)
 
 Automático (saves):
   ./scripts/test_mac.sh

@@ -8,6 +8,9 @@ ZIP="$OUT/phoenix-manager-app-store-prep.zip"
 STAGE="$OUT/_staging"
 SCREENSHOTS="$OUT/screenshots"
 
+# shellcheck source=read_app_version.sh
+source "$ROOT/scripts/read_app_version.sh"
+
 rm -rf "$STAGE" "$ZIP"
 mkdir -p "$STAGE/screenshots"
 
@@ -27,7 +30,7 @@ Project Phoenix Manager — App Store Connect (prep)
 
 screenshots/  → App Store Connect → capturas iPhone
 Bundle ID:     com.phoenix.manager
-Versão:        0.8.1 (build 2)
+Versão:        $VERSION_NAME (build $VERSION_CODE)
 Privacidade:   https://pakopt.github.io/PhoenixManager/privacy.html
 
 Textos e App Privacy: ./scripts/app_store_brief.sh

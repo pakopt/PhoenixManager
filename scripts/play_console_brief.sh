@@ -8,8 +8,9 @@ STORE="$ROOT/build/release/store/android"
 PRIVACY_URL="https://pakopt.github.io/PhoenixManager/privacy.html"
 CONTACT="pakopt7@gmail.com"
 PACKAGE="com.phoenix.manager"
-VERSION_NAME="0.8.1"
-VERSION_CODE="2"
+
+# shellcheck source=read_app_version.sh
+source "$ROOT/scripts/read_app_version.sh"
 
 ok=0
 warn=0
@@ -69,7 +70,7 @@ Assume o comando do teu clube: plantel, tácticas, mercado, finanças e calendá
 DESTAQUES
 • Modo Express — simula jornadas rapidamente e vê resultados animados
 • Carreira completa — temporadas, promoções, taças e estatísticas
-• Motor Phoenix Simulation Engine (PSE v0.8) — partidas credíveis e finanças simuladas
+• Motor Phoenix Simulation Engine (PSE v0.8.2) — partidas credíveis e finanças simuladas
 • Saves locais — continua a carreira quando quiseres
 • Política de privacidade transparente — não recolhemos dados pessoais
 
@@ -88,10 +89,12 @@ echo ""
 echo "==> Notas da versão (teste interno)"
 cat <<EOF
 
-v0.8.1 — polish UX e beta local.
+v$VERSION_NAME — finanças, calendário, treino e relato completo.
+- Resultado época e filtros no calendário
+- Dica de primeiros passos no dashboard
 - Modo Express e carreira completa
 - Saves locais offline
-- Motor Phoenix Simulation Engine v0.8
+- Motor Phoenix Simulation Engine v0.8.2
 
 EOF
 

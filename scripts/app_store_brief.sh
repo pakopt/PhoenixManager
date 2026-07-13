@@ -7,6 +7,9 @@ PRIVACY_URL="https://pakopt.github.io/PhoenixManager/privacy.html"
 CONTACT="pakopt7@gmail.com"
 BUNDLE="com.phoenix.manager"
 
+# shellcheck source=read_app_version.sh
+source "$ROOT/scripts/read_app_version.sh"
+
 echo "════════════════════════════════════════"
 echo "  App Store Connect — brief"
 echo "════════════════════════════════════════"
@@ -15,7 +18,7 @@ echo "==> Identidade"
 cat <<EOF
   Bundle ID:     $BUNDLE
   Nome:          Project Phoenix Manager
-  Versão:        0.8.1 (build 2)
+  Versão:        $VERSION_NAME (build $VERSION_CODE)
   Categoria:     Jogos → Desporto (ou Simulação)
   Preço:         Gratuito
   Contacto:      $CONTACT
@@ -32,7 +35,7 @@ Assume o comando do teu clube: plantel, tácticas, mercado, finanças e calendá
 
 • Modo Express — simula jornadas rapidamente
 • Carreira completa — temporadas, taças e estatísticas
-• Motor Phoenix Simulation Engine (PSE v0.8)
+• Motor Phoenix Simulation Engine (PSE v0.8.2)
 • Saves locais — continua quando quiseres
 • Sem recolha de dados pessoais
 

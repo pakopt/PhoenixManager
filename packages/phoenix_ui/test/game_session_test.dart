@@ -1,0 +1,152 @@
+import 'package:flutter_test/flutter_test.dart';
+import 'package:phoenix_core/phoenix_core.dart';
+import 'package:phoenix_engine/phoenix_engine.dart';
+import 'package:phoenix_ui/src/game/game_session.dart';
+import 'package:phoenix_ui/src/game/season_summary.dart';
+
+void main() {
+  test('GameSession user club is Phoenix FC', () {
+    expect(GameSession.userClubId.value, 'club-phoenix');
+  });
+
+  test('salaryBreakdown matches club finance monthly wages', () async {
+    final context = await AppBootstrap().boot(worldId: 'finance-ui-test');
+    final session = GameSession(context);
+    final finance = session.userFinance;
+    final breakdown = session.salaryBreakdown;
+
+    expect(finance, isNotNull);
+    expect(breakdown.total, finance!.monthlyWages);
+    expect(breakdown.players, greaterThan(0));
+    expect(breakdown.staff, greaterThan(0));
+    expect(breakdown.coach, greaterThan(0));
+  });
+
+  test('contractsExpiringSoon lists players ending next season', () async {
+    final context = await AppBootstrap().boot(worldId: 'contracts-test');
+    final session = GameSession(context);
+
+    expect(session.seasonYear, 2026);
+    expect(session.contractsExpiringSoon, isNotEmpty);
+    expect(
+      session.contractsExpiringSoon.every(
+        (p) => p.contractEndYear == session.seasonYear + 1,
+      ),
+      isTrue,
+    );
+  });
+
+  test('renewContract updates player and wages', () async {
+    final context = await AppBootstrap().boot(worldId: 'renew-ui-test');
+    final session = GameSession(context);
+    const playerId = PlayerId('p-phx-3');
+    final before = session.getPlayer(playerId)!;
+    final wagesBefore = session.userFinance!.monthlyWages;
+
+    final error = session.renewContract(playerId, extensionYears: 2);
+
+    expect(error, isNull);
+    final after = session.getPlayer(playerId)!;
+    expect(after.contractEndYear, greaterThan(before.contractEndYear));
+    expect(after.salary, greaterThan(before.salary));
+    expect(session.userFinance!.monthlyWages, greaterThan(wagesBefore));
+  });
+
+  test('league and cup fixtures are separated', () async {
+    final context = await AppBootstrap().boot(worldId: 'cup-ui-test');
+    final session = GameSession(context);
+
+    expect(session.leagueFixtures.length, 12);
+    expect(session.cupFixtures.length, 2);
+    expect(
+      session.leagueFixtures.every(
+        (f) => f.competitionId == GameSession.primaryCompetitionId,
+      ),
+      isTrue,
+    );
+    expect(
+      session.cupFixtures.every(
+        (f) => f.competitionId == GameSession.cupCompetitionId,
+      ),
+      isTrue,
+    );
+    expect(session.competitionName(GameSession.cupCompetitionId), 'Taça Phoenix');
+  });
+
+  test('cupBracket exposes semi-finals and pending final', () async {
+    final context = await AppBootstrap().boot(worldId: 'cup-bracket-test');
+    final session = GameSession(context);
+    final bracket = session.cupBracket;
+
+    expect(bracket.semiFinals.length, 2);
+    expect(bracket.finalMatch, isNull);
+    expect(bracket.championId, isNull);
+    expect(bracket.semiFinals.every((s) => !s.isPlayed), isTrue);
+  });
+
+  test('nextFixture prefers earliest user match across competitions', () async {
+    final context = await AppBootstrap().boot(worldId: 'next-fixture-test');
+    final session = GameSession(context);
+    final next = session.nextFixture;
+
+    expect(next, isNotNull);
+    expect(
+      next!.homeClubId == GameSession.userClubId ||
+          next.awayClubId == GameSession.userClubId,
+      isTrue,
+    );
+
+    final userUpcoming = session.upcomingFixtures
+        .where(
+          (f) =>
+              f.homeClubId == GameSession.userClubId ||
+              f.awayClubId == GameSession.userClubId,
+        )
+        .toList()
+      ..sort((a, b) => a.date.compareTo(b.date));
+    expect(next.date, userUpcoming.first.date);
+  });
+
+  test('isUserEliminatedFromCup is false before cup starts', () async {
+    final context = await AppBootstrap().boot(worldId: 'cup-elim-test');
+    final session = GameSession(context);
+
+    expect(session.isUserEliminatedFromCup, isFalse);
+    expect(session.nextCupFixture, isNotNull);
+  });
+
+  test('achievementEntries lists catalog with unlock state', () async {
+    final context = await AppBootstrap().boot(worldId: 'ach-ui-test');
+    final session = GameSession(context);
+
+    expect(session.achievementEntries.length, AchievementCatalog.all.length);
+    expect(session.unlockedAchievementCount, 0);
+
+    session.renewContract(const PlayerId('p-phx-3'), extensionYears: 1);
+
+    expect(session.unlockedAchievementCount, 1);
+    expect(
+      session.achievementEntries
+          .firstWhere((e) => e.definition.id == AchievementCatalog.contractRenewed)
+          .isUnlocked,
+      isTrue,
+    );
+  });
+
+  test('seasonSummary is null before league ends', () async {
+    final context = await AppBootstrap().boot(worldId: 'season-summary-test');
+    final session = GameSession(context);
+
+    expect(SeasonSummary.fromSession(session), isNull);
+  });
+
+  test('seasonHonoursEntries is empty at career start', () async {
+    final context = await AppBootstrap().boot(worldId: 'honours-test');
+    final session = GameSession(context);
+
+    expect(session.seasonHonoursEntries, isEmpty);
+    expect(session.leagueTitlesWon, 0);
+    expect(session.cupTitlesWon, 0);
+    expect(session.achievementEntries.length, 10);
+  });
+}

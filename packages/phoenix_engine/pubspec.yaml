@@ -1,0 +1,21 @@
+name: phoenix_engine
+description: Phoenix Simulation Engine (PSE) — universal sports management simulation.
+version: 0.1.0-alpha
+publish_to: none
+resolution: workspace
+
+environment:
+  sdk: ^3.5.0
+
+dependencies:
+  meta: ^1.16.0
+  phoenix_core:
+    path: ../phoenix_core
+  phoenix_data:
+    path: ../phoenix_data
+
+dev_dependencies:
+  lints: ^6.0.0
+  test: ^1.25.0
+  phoenix_tools:
+    path: ../phoenix_tools

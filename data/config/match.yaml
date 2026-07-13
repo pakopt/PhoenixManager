@@ -1,0 +1,17 @@
+segmentCount: 45
+minutesPerSegment: 2
+highlightMinGrade: dangerous
+momentum:
+  goalBoost: 15
+  concedePenalty: -12
+  bigChanceMiss: -8
+  decayPerSegment: 1.5
+  min: -50
+  max: 50
+xg:
+  penalty: 0.76
+  headerBox: 0.62
+  oneOnOne: 0.45
+  dangerous: 0.22
+  moderate: 0.12
+  weak: 0.04

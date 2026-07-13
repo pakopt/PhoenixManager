@@ -1,0 +1,7 @@
+# Copy to android/key.properties (gitignored) after generating a release keystore.
+# See apps/phoenix_manager/MOBILE.md → "Assinatura Android"
+
+storePassword=your_keystore_password
+keyPassword=your_key_password
+keyAlias=phoenix-manager
+storeFile=keystore/phoenix-manager-release.jks

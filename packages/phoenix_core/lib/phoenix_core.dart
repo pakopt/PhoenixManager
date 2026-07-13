@@ -1,0 +1,30 @@
+/// Phoenix Core — shared domain, config, logging and DI.
+library;
+
+export 'src/config/phoenix_config.dart';
+export 'src/di/service_container.dart';
+export 'src/domain/achievement.dart';
+export 'src/domain/club.dart';
+export 'src/domain/coach.dart';
+export 'src/domain/competition.dart';
+export 'src/domain/economy/club_finance.dart';
+export 'src/domain/economy/economy_config.dart';
+export 'src/domain/economy/transfer.dart';
+export 'src/domain/geography.dart';
+export 'src/domain/ids.dart';
+export 'src/domain/match.dart';
+export 'src/domain/match_engine/match_config.dart';
+export 'src/domain/match_engine/match_models.dart';
+export 'src/domain/match_engine/match_result.dart';
+export 'src/domain/player.dart';
+export 'src/logging/phoenix_logger.dart';
+export 'src/rng/seeded_rng.dart';
+export 'src/services/contract_renewal_service.dart';
+export 'src/services/cup_bracket.dart';
+export 'src/services/player_value_service.dart';
+export 'src/services/squad_query_service.dart';
+export 'src/domain/staff.dart';
+export 'src/services/staff_bonuses.dart';
+export 'src/services/staff_query_service.dart';
+export 'src/time/game_date.dart';
+export 'src/time/time_scale.dart';

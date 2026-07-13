@@ -1,0 +1,39 @@
+# Dart
+.dart_tool/
+.packages
+build/
+pubspec.lock
+
+# IDE
+.idea/
+*.iml
+.vscode/
+
+# OS
+.DS_Store
+
+# Phoenix saves (local dev)
+.saves/
+*.phoenixsave
+
+# Flutter (Fase C)
+.flutter-plugins
+.flutter-plugins-dependencies
+
+# Steam (local secrets + generated VDFs)
+steam/steam.env
+steam/generated/
+build/steam/
+steam/sdk/
+
+# Android signing (nunca publicar)
+**/key.properties
+**/*.keystore
+**/*.jks
+**/keystore/
+
+# Env
+.env
+.env.local
+.env.*
+!.env.example

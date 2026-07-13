@@ -1,0 +1,25 @@
+name: phoenix_workspace
+description: Project Phoenix Manager — monorepo workspace (Engine First / PSE).
+publish_to: none
+version: 0.1.0-alpha
+
+environment:
+  sdk: ^3.5.0
+
+workspace:
+  - packages/phoenix_core
+  - packages/phoenix_engine
+  - packages/phoenix_data
+  - packages/phoenix_tools
+
+dependencies:
+  phoenix_engine:
+    path: packages/phoenix_engine
+  phoenix_tools:
+    path: packages/phoenix_tools
+  phoenix_core:
+    path: packages/phoenix_core
+
+dev_dependencies:
+  lints: ^6.0.0
+  test: ^1.25.0

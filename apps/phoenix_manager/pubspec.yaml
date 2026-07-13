@@ -1,0 +1,57 @@
+name: phoenix_manager
+description: Project Phoenix Manager — Flutter app (Fase D / v0.8).
+publish_to: none
+version: 0.8.0-alpha
+
+environment:
+  sdk: ^3.5.0
+  flutter: ">=3.24.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+  phoenix_ui:
+    path: ../../packages/phoenix_ui
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  integration_test:
+    sdk: flutter
+  flutter_lints: ^5.0.0
+  flutter_launcher_icons: ^0.14.3
+  flutter_native_splash: ^2.4.4
+
+flutter:
+  uses-material-design: true
+  assets:
+    - assets/branding/
+
+# Regenerar: dart run flutter_launcher_icons && dart run flutter_native_splash:create
+flutter_launcher_icons:
+  image_path: assets/branding/icon.png
+  android: true
+  ios: true
+  macos:
+    generate: true
+  windows:
+    generate: true
+  linux:
+    generate: true
+  web:
+    generate: true
+    image_path: assets/branding/icon.png
+    background_color: "#0A0E14"
+    theme_color: "#2E7D32"
+  adaptive_icon_background: "#0A0E14"
+  adaptive_icon_foreground: assets/branding/icon.png
+
+flutter_native_splash:
+  color: "#0A0E14"
+  image: assets/branding/splash.png
+  android_12:
+    color: "#0A0E14"
+    image: assets/branding/splash.png
+  ios: true
+  android: true
+  web: false

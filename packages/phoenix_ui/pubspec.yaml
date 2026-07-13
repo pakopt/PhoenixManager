@@ -1,0 +1,25 @@
+name: phoenix_ui
+description: Phoenix Manager UI — Flutter presentation layer over PSE (zero game logic).
+version: 0.8.0-alpha
+publish_to: none
+
+environment:
+  sdk: ^3.5.0
+  flutter: ">=3.24.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+  flutter_riverpod: ^2.6.1
+  shared_preferences: ^2.5.3
+  phoenix_core:
+    path: ../phoenix_core
+  phoenix_engine:
+    path: ../phoenix_engine
+  phoenix_tools:
+    path: ../phoenix_tools
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^5.0.0

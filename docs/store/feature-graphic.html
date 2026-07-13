@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <meta charset="utf-8">
+  <title>Phoenix Manager — Feature Graphic</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { background: #111; }
+    .canvas {
+      width: 1024px;
+      height: 500px;
+      background: linear-gradient(135deg, #0a0e14 0%, #141a22 50%, #0a0e14 100%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      font-family: system-ui, -apple-system, sans-serif;
+      color: #e8eaed;
+      position: relative;
+      overflow: hidden;
+    }
+    .canvas::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(circle at 70% 30%, rgba(46, 125, 50, 0.15), transparent 60%);
+    }
+    .logo {
+      width: 120px;
+      height: 120px;
+      border-radius: 24px;
+      margin-bottom: 24px;
+      position: relative;
+      z-index: 1;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.5);
+    }
+    h1 {
+      font-size: 42px;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      position: relative;
+      z-index: 1;
+    }
+    .tagline {
+      margin-top: 12px;
+      font-size: 20px;
+      color: #81c784;
+      position: relative;
+      z-index: 1;
+    }
+    .hint {
+      position: fixed;
+      bottom: 16px;
+      left: 16px;
+      font: 14px system-ui, sans-serif;
+      color: #666;
+      max-width: 400px;
+    }
+  </style>
+</head>
+<body>
+  <div class="canvas" id="graphic">
+    <img class="logo" src="__ICON_PATH__" alt="">
+    <h1>Project Phoenix Manager</h1>
+    <p class="tagline">Gestão de futebol offline · PSE v0.8</p>
+  </div>
+  <p class="hint">
+    Abrir este ficheiro no browser a 1024×500 (zoom) e capturar, ou usar:
+    <code>./scripts/export_feature_graphic.sh</code>
+  </p>
+</body>
+</html>

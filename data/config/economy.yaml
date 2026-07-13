@@ -1,0 +1,55 @@
+finance:
+  salaryPaymentDay: 1
+  ticketPricePerSeat: 25
+  attendanceRate: 0.72
+  dailySponsorIncome: 1500
+  ffpWageRatioLimit: 0.65
+
+transfer:
+  windowMonths: [1, 7, 8]
+  minBudgetToBuy: 500000
+  feeAcceptRatio: 0.85
+  maxTransfersPerClubPerWindow: 2
+
+training:
+  dailyCaGainMax: 1
+  dailyCaGainChance: 0.15
+  maxAgeForGrowth: 28
+  matchWinMoraleBoost: 3
+  matchLossMoralePenalty: 2
+  matchFormWinBoost: 5
+  matchFormLossPenalty: 4
+
+youth:
+  baseIntakePerClub: 2
+  minAge: 16
+  maxAge: 18
+  baseCa: 35
+  caVariance: 12
+  basePa: 55
+  paVariance: 25
+  traditionPaBonus: 0.3
+
+injury:
+  matchInjuryChance: 0.035
+  minDaysOut: 3
+  maxDaysOut: 21
+  maxInjuredPerClubPerMatch: 1
+
+staff:
+  trainingBonusPerLevel: 0.0008
+  injuryDaysReductionPerLevel: 0.04
+  maxInjuryDaysReduction: 5
+  youthPaBonusPerLevel: 0.05
+  coachWagePerReputation: 500
+  moraleBoostPerLevel: 0.02
+  maxMoraleDailyBoost: 2
+  injuryChanceReductionPerLevel: 0.0003
+  maxInjuryChanceReduction: 0.015
+
+contract:
+  defaultExtensionYears: 2
+  minExtensionYears: 1
+  maxExtensionYears: 4
+  salaryIncreaseRatio: 0.10
+  moraleBoostOnRenewal: 5

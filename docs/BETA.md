@@ -75,6 +75,7 @@ Se `flutter` ou Gradle falharem com **No space left on device**:
 ```bash
 ./scripts/clean_dev_artifacts.sh   # flutter clean — mantém build/release/
 CLEAN_GRADLE=1 ./scripts/clean_dev_artifacts.sh   # inclui ~/.gradle/caches (~5 GiB)
+./scripts/repair_gradle.sh         # se Gradle falhar após limpeza (NoSuchFileException)
 ```
 
 ## Feedback de testadores

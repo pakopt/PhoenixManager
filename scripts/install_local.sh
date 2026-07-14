@@ -33,6 +33,19 @@ require_disk_for_android() {
   fi
 }
 
+prepare_android_gradle() {
+  if [[ -x "$APP/android/gradlew" ]]; then
+    echo "==> Gradle — parar daemons"
+    (cd "$APP/android" && ./gradlew --stop) 2>/dev/null || true
+  fi
+  local transforms
+  transforms=$(ls -d "$HOME/.gradle/caches/"*/transforms 2>/dev/null | head -1 || true)
+  if [[ -z "$transforms" && -d "$HOME/.gradle/caches" ]]; then
+    echo "==> Gradle — cache incompleto, a limpar estado local"
+    rm -rf "$APP/android/.gradle"
+  fi
+}
+
 echo "==> Phoenix Manager — instalação local (Mac + Android APK)"
 echo ""
 
@@ -49,6 +62,7 @@ if [[ "$BUILD" == "1" ]]; then
 
   if [[ "$BUILD_ANDROID" == "1" ]]; then
     require_disk_for_android
+    prepare_android_gradle
     echo ""
     echo "==> Build Android APK"
     flutter build apk --release

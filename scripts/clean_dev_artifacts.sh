@@ -5,6 +5,12 @@ set -euo pipefail
 ROOT="$(cd "$(dirname "$0")/.." && pwd)"
 APP="$ROOT/apps/phoenix_manager"
 
+stop_gradle_daemons() {
+  if [[ -x "$APP/android/gradlew" ]]; then
+    (cd "$APP/android" && ./gradlew --stop) 2>/dev/null || true
+  fi
+}
+
 echo "════════════════════════════════════════"
 echo "  Limpeza dev — Phoenix Manager"
 echo "════════════════════════════════════════"
@@ -24,7 +30,11 @@ fi
 if [[ "${CLEAN_GRADLE:-0}" == "1" ]]; then
   echo ""
   echo "==> Gradle global (~/.gradle/caches)"
+  stop_gradle_daemons
   rm -rf "$HOME/.gradle/caches"
+  rm -rf "$APP/android/.gradle"
+  echo "    Próximo build Android re-download caches (pode demorar)."
+  echo "    Se falhar: ./scripts/repair_gradle.sh"
 fi
 
 echo ""

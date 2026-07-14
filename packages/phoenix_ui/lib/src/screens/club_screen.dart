@@ -6,6 +6,7 @@ import 'package:phoenix_ui/src/screens/staff_panel.dart';
 import 'package:phoenix_ui/src/widgets/coach_labels.dart';
 import 'package:phoenix_ui/src/widgets/common_widgets.dart';
 import 'package:phoenix_ui/src/widgets/career_stats_card.dart';
+import 'package:phoenix_ui/src/widgets/empty_state.dart';
 
 class ClubScreen extends StatelessWidget {
   const ClubScreen({
@@ -140,9 +141,9 @@ class _ClubOverviewPanel extends StatelessWidget {
             )
           else
             const Card(
-              child: Padding(
-                padding: EdgeInsets.all(16),
-                child: Text('Sem treinador atribuído'),
+              child: EmptyState(
+                icon: Icons.sports,
+                message: 'Sem treinador atribuído.\nContrata staff na secção Staff.',
               ),
             ),
           const SizedBox(height: 16),

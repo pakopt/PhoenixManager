@@ -3,10 +3,13 @@
 set -euo pipefail
 
 ROOT="$(cd "$(dirname "$0")/.." && pwd)"
+# shellcheck source=read_app_version.sh
+source "$ROOT/scripts/read_app_version.sh"
 
-cat <<'EOF'
+cat <<EOF
 ════════════════════════════════════════
   QA manual — Project Phoenix Manager
+  Versão: $VERSION_FULL
 ════════════════════════════════════════
 
 Corre em Mac, Android ou iOS (dev) antes de lojas.

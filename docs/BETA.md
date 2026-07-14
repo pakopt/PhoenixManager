@@ -68,12 +68,21 @@ Automático (saves):
 ./scripts/test_android.sh    # emulador ou USB
 ```
 
+## Espaço em disco (builds)
+
+Se `flutter` ou Gradle falharem com **No space left on device**:
+
+```bash
+./scripts/clean_dev_artifacts.sh   # flutter clean — mantém build/release/
+rm -rf ~/.gradle/caches            # opcional — vários GiB
+```
+
 ## Feedback de testadores
 
 Envia bugs ou sugestões para **pakopt7@gmail.com** com:
 
 - Dispositivo (Mac / Android / modelo)
-- Versão da app (menu carreira → rodapé, ex. `PSE v0.8.4`)
+- Versão da app (menu carreira → rodapé, ex. `PSE v0.8.5`)
 - Passos para reproduzir
 - Screenshot opcional
 

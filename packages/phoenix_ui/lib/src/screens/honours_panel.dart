@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:phoenix_ui/src/game/game_session.dart';
 import 'package:phoenix_ui/src/game/season_honour.dart';
+import 'package:phoenix_ui/src/widgets/empty_state.dart';
 
 class HonoursPanel extends StatelessWidget {
   const HonoursPanel({required this.session, super.key});
@@ -32,32 +33,10 @@ class HonoursPanel extends StatelessWidget {
           ),
           const SizedBox(height: 16),
           if (entries.isEmpty)
-            Card(
-              child: Padding(
-                padding: const EdgeInsets.all(24),
-                child: Column(
-                  children: [
-                    Icon(
-                      Icons.emoji_events_outlined,
-                      size: 48,
-                      color: theme.colorScheme.outline,
-                    ),
-                    const SizedBox(height: 12),
-                    Text(
-                      'Ainda sem troféus',
-                      style: theme.textTheme.titleMedium,
-                    ),
-                    const SizedBox(height: 4),
-                    Text(
-                      'Vence a Liga ou a Taça Phoenix para entrar no palmarés.',
-                      style: theme.textTheme.bodySmall?.copyWith(
-                        color: theme.colorScheme.outline,
-                      ),
-                      textAlign: TextAlign.center,
-                    ),
-                  ],
-                ),
-              ),
+            const EmptyState(
+              icon: Icons.emoji_events_outlined,
+              message:
+                  'Ainda sem troféus.\nVence a Liga ou a Taça Phoenix para entrar no palmarés.',
             )
           else
             ...entries.map(

@@ -1,7 +1,7 @@
 # Plano — Project Phoenix Manager
 
 **Versão:** v0.8.5  
-**Actualizado:** 13 de Julho de 2026  
+**Actualizado:** 14 de Julho de 2026  
 **Fase actual:** **E — Lançamento**
 
 Documento vivo do roadmap. O plano detalhado de arquitectura (PSE, GDD, motores) vive no **Cursor plan** (`phoenix_manager_game_2a890b62.plan.md`) e em [`docs/roadmap/master-roadmap-v1.md`](roadmap/master-roadmap-v1.md); este ficheiro reflecte **o que está feito** e **o que falta para publicar**.
@@ -97,8 +97,9 @@ Documento vivo do roadmap. O plano detalhado de arquitectura (PSE, GDD, motores)
 SAVE_TEST=1 ./scripts/launch_doctor.sh   # opcional
 ./scripts/mobile_doctor.sh
 ./scripts/test_all.sh
-./scripts/test_mac.sh                # saves Mac
-./scripts/test_android.sh            # saves Android (emulador ligado)
+./scripts/test_mac.sh                # saves Mac ✅
+./scripts/test_android.sh            # saves Android ✅ (emulador ligado)
+./scripts/clean_dev_artifacts.sh     # libertar disco (flutter clean)
 ```
 
 ---

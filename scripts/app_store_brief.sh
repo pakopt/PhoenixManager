@@ -35,7 +35,7 @@ Assume o comando do teu clube: plantel, tácticas, mercado, finanças e calendá
 
 • Modo Express — simula jornadas rapidamente
 • Carreira completa — temporadas, taças e estatísticas
-• Motor Phoenix Simulation Engine (PSE v0.8.2)
+• Motor Phoenix Simulation Engine (PSE v$VERSION_NAME)
 • Saves locais — continua quando quiseres
 • Sem recolha de dados pessoais
 

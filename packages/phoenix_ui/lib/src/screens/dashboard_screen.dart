@@ -96,7 +96,8 @@ class DashboardScreen extends StatelessWidget {
                   if (next != null) ...[
                     Text(
                       '${session.clubName(next.homeClubId)} vs '
-                      '${session.clubName(next.awayClubId)} · ${next.date}',
+                      '${session.clubName(next.awayClubId)} · '
+                      '${DateFormatUtil.gameDate(next.date)}',
                     ),
                     const SizedBox(height: 4),
                     Text(

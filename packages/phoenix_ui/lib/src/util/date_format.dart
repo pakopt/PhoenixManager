@@ -1,3 +1,5 @@
+import 'package:phoenix_core/phoenix_core.dart';
+
 /// Formatação de datas para a UI.
 abstract final class DateFormatUtil {
   static String relative(DateTime dt) {
@@ -19,6 +21,9 @@ abstract final class DateFormatUtil {
 
   /// Data de jogo legível (ex.: 15 Ago 2026).
   static String gameDate(dynamic value) {
+    if (value is GameDate) {
+      return _formatParts(value.day, value.month, value.year);
+    }
     if (value is DateTime) {
       return _formatDateTime(value);
     }
@@ -30,11 +35,14 @@ abstract final class DateFormatUtil {
     return text;
   }
 
-  static String _formatDateTime(DateTime dt) {
+  static String _formatParts(int day, int month, int year) {
     const months = [
       'Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun',
       'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez',
     ];
-    return '${dt.day} ${months[dt.month - 1]} ${dt.year}';
+    return '$day ${months[month - 1]} $year';
   }
+
+  static String _formatDateTime(DateTime dt) =>
+      _formatParts(dt.day, dt.month, dt.year);
 }

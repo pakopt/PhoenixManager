@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:phoenix_core/phoenix_core.dart';
 import 'package:phoenix_ui/src/util/money_format.dart';
+import 'package:phoenix_ui/src/util/date_format.dart';
 import 'package:phoenix_ui/src/game/game_session.dart';
 import 'package:phoenix_ui/src/game/match_fixture_extensions.dart';
 
@@ -159,7 +160,7 @@ class FixtureTile extends StatelessWidget {
       child: ListTile(
         onTap: played ? onTap : null,
         leading: Text(
-          fixture.date.toString().substring(5),
+          DateFormatUtil.gameDate(fixture.date),
           style: Theme.of(context).textTheme.labelMedium,
         ),
         title: Text('$home vs $away'),

@@ -86,14 +86,44 @@ class _StandingsScreenState extends State<StandingsScreen> {
   }
 }
 
-class _LeagueTable extends StatelessWidget {
+class _LeagueTable extends StatefulWidget {
   const _LeagueTable({required this.session});
 
   final GameSession session;
 
   @override
+  State<_LeagueTable> createState() => _LeagueTableState();
+}
+
+class _LeagueTableState extends State<_LeagueTable> {
+  final _userRowKey = GlobalKey();
+
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) => _scrollToUser());
+  }
+
+  void _scrollToUser() {
+    final ctx = _userRowKey.currentContext;
+    if (ctx == null) {
+      return;
+    }
+    Scrollable.ensureVisible(
+      ctx,
+      alignment: 0.35,
+      duration: const Duration(milliseconds: 350),
+      curve: Curves.easeOut,
+    );
+  }
+
+  @override
   Widget build(BuildContext context) {
+    final session = widget.session;
     final table = session.standings;
+    final userIndex = table.indexWhere(
+      (e) => e.clubId == GameSession.userClubId,
+    );
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -132,7 +162,7 @@ class _LeagueTable extends StatelessWidget {
               final isUser = entry.clubId == GameSession.userClubId;
               final played = entry.won + entry.drawn + entry.lost;
 
-              return Container(
+              final row = Container(
                 color: isUser
                     ? Theme.of(context).colorScheme.primary.withValues(alpha: 0.1)
                     : null,
@@ -171,6 +201,11 @@ class _LeagueTable extends StatelessWidget {
                   ],
                 ),
               );
+
+              if (index == userIndex) {
+                return KeyedSubtree(key: _userRowKey, child: row);
+              }
+              return row;
             },
           ),
         ),

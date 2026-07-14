@@ -68,6 +68,17 @@ Automático (saves):
 ./scripts/test_android.sh    # emulador ou USB
 ```
 
+## Feedback de testadores
+
+Envia bugs ou sugestões para **pakopt7@gmail.com** com:
+
+- Dispositivo (Mac / Android / modelo)
+- Versão da app (menu carreira → rodapé, ex. `PSE v0.8.4`)
+- Passos para reproduzir
+- Screenshot opcional
+
+Privacidade: [`docs/PRIVACY.md`](PRIVACY.md)
+
 ## Quando a Play Store activar
 
 ```bash

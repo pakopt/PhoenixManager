@@ -89,11 +89,10 @@ echo ""
 echo "==> Notas da versão (teste interno)"
 cat <<EOF
 
-v$VERSION_NAME — finanças, calendário, treino e relato completo.
-- Resultado época e filtros no calendário
-- Dica de primeiros passos no dashboard
-- Modo Express e carreira completa
-- Saves locais offline
+v$VERSION_NAME — gestão completa offline com PSE.
+- Modo Express e Diretor · liga, taça, mercado, finanças
+- Alertas pré-jogo, datas legíveis, relato completo
+- Saves locais · sem conta · sem anúncios
 - Motor Phoenix Simulation Engine v$VERSION_NAME
 
 EOF

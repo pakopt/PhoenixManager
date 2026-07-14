@@ -35,7 +35,7 @@ class AcademyPanel extends StatelessWidget {
             ),
             const SizedBox(width: 8),
             _SummaryTile(
-              label: 'Wonderkids',
+              label: 'Estrelas',
               value: '${wonderkids.length}',
               subtitle: 'PA-CA ≥ 15',
             ),

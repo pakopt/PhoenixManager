@@ -165,7 +165,7 @@ class _MatchDetailScreenState extends State<MatchDetailScreen>
               child: Chip(
                 avatar: const Icon(Icons.flash_on, size: 16),
                 label: Text(
-                  'Modo Express · top $expressHighlightLimit highlights',
+                  'Modo Express · top $expressHighlightLimit destaques',
                 ),
               ),
             ),
@@ -175,7 +175,7 @@ class _MatchDetailScreenState extends State<MatchDetailScreen>
             intervalStart: 0.48,
             intervalEnd: 0.62,
             child: Text(
-              widget.expressMode ? 'Highlights Express' : 'Highlights',
+              widget.expressMode ? 'Destaques Express' : 'Destaques',
               style: Theme.of(context).textTheme.titleMedium,
             ),
           ),

@@ -65,7 +65,7 @@ class PlayerDetailScreen extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.only(right: 12),
               child: Tooltip(
-                message: 'Wonderkid — alto potencial',
+                message: 'Estrela jovem — alto potencial',
                 child: Icon(Icons.star, color: Colors.amber),
               ),
             ),
@@ -97,7 +97,7 @@ class PlayerDetailScreen extends StatelessWidget {
                     color: theme.colorScheme.primary,
                   ),
                 ),
-                const Text('Current Ability'),
+                const Text('Capacidade actual (CA)'),
                 const SizedBox(height: 4),
                 Text(
                   'Potencial ${player.potentialAbility} · +$gap margem',
@@ -109,7 +109,7 @@ class PlayerDetailScreen extends StatelessWidget {
                     child: Chip(
                       avatar: const Icon(Icons.school, size: 16),
                       label: Text(
-                        isWonderkid ? 'Wonderkid' : 'Academia',
+                        isWonderkid ? 'Estrela' : 'Academia',
                       ),
                     ),
                   ),
@@ -261,8 +261,12 @@ class PlayerDetailScreen extends StatelessWidget {
                           },
                         ),
                         const SizedBox(height: 16),
-                        Text('Novo salário: €${offer.newSalary}/mês'),
-                        Text('Aumento: +€${offer.salaryIncrease}/mês'),
+                        Text(
+                          'Novo salário: ${MoneyFormat.perMonth(offer.newSalary)}',
+                        ),
+                        Text(
+                          'Aumento: +${MoneyFormat.compact(offer.salaryIncrease)}/mês',
+                        ),
                         Text('Válido até: ${offer.newContractEndYear}'),
                         Text(
                           'Moral +${config.moraleBoostOnRenewal} após assinatura',

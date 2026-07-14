@@ -271,7 +271,7 @@ Cada upload precisa de **`versionCode` maior** que o anterior.
 
 1. Editar `apps/phoenix_manager/pubspec.yaml`:
    ```yaml
-   version: 0.8.4+5   # nome visível + versionCode (número após +)
+   version: 0.8.5+6   # nome visível + versionCode (número após +)
    ```
 2. Rebuild e upload:
    ```bash

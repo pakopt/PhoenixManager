@@ -3,6 +3,7 @@ import 'package:phoenix_core/phoenix_core.dart';
 import 'package:phoenix_ui/src/game/cup_bracket_snapshot.dart';
 import 'package:phoenix_ui/src/game/game_session.dart';
 import 'package:phoenix_ui/src/game/match_fixture_extensions.dart';
+import 'package:phoenix_ui/src/util/date_format.dart';
 
 class CupStatusCard extends StatelessWidget {
   const CupStatusCard({required this.session, super.key});
@@ -235,7 +236,7 @@ class _MatchLine extends StatelessWidget {
 
     final text = slot.isPlayed
         ? '$roundLabel · $home ${fixture.homeScore}-${fixture.awayScore} $away'
-        : '$roundLabel · $home vs $away · ${fixture.date}';
+        : '$roundLabel · $home vs $away · ${DateFormatUtil.gameDate(fixture.date)}';
 
     return Text(text, style: Theme.of(context).textTheme.bodySmall);
   }

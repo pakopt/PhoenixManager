@@ -5,6 +5,7 @@ import 'package:phoenix_ui/src/game/game_session.dart';
 import 'package:phoenix_ui/src/game/play_mode.dart';
 import 'package:phoenix_ui/src/game/save_slot.dart';
 import 'package:phoenix_ui/src/game/save_storage.dart';
+import 'package:phoenix_ui/src/util/date_format.dart';
 
 /// Mutable UI controller — notifies widgets when the engine state changes.
 class GameController extends ChangeNotifier {
@@ -129,7 +130,7 @@ class GameController extends ChangeNotifier {
     final meta = SaveSlotMeta(
       index: target,
       clubName: _session!.userClub.name,
-      dateLabel: _session!.currentDate.toString(),
+      dateLabel: DateFormatUtil.gameDate(_session!.currentDate),
       tick: _session!.tick,
       savedAt: now,
       playMode: _playMode.name,

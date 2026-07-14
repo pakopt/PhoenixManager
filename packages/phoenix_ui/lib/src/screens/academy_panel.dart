@@ -3,6 +3,7 @@ import 'package:phoenix_core/phoenix_core.dart';
 import 'package:phoenix_engine/phoenix_engine.dart';
 import 'package:phoenix_ui/src/game/game_controller.dart';
 import 'package:phoenix_ui/src/screens/player_detail_screen.dart';
+import 'package:phoenix_ui/src/util/date_format.dart';
 import 'package:phoenix_ui/src/widgets/player_stat_bar.dart';
 
 class AcademyPanel extends StatelessWidget {
@@ -80,7 +81,10 @@ class AcademyPanel extends StatelessWidget {
               margin: const EdgeInsets.only(bottom: 8),
               child: ListTile(
                 leading: const Icon(Icons.school),
-                title: Text('Época ${event.seasonYear} · ${event.date}'),
+                title: Text(
+                  'Época ${event.seasonYear} · '
+                  '${DateFormatUtil.gameDate(event.date)}',
+                ),
                 subtitle: Text(
                   '${event.players.length} jovens · '
                   'melhor PA ${event.players.map((p) => p.potentialAbility).reduce((a, b) => a > b ? a : b)}',

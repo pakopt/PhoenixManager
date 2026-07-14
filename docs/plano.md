@@ -192,7 +192,7 @@ Depois: `./scripts/build_mobile.sh android` → novo AAB.
 
 ## Histórico recente (Fase E + v0.8.x)
 
-- ✅ **v0.8.3** — datas legíveis (calendário, dashboard, finanças), scroll classificação ao clube  
+- ✅ **v0.8.3** — datas legíveis (calendário, dashboard, finanças, mercado, taça, forma, cabeçalho, saves) + scroll classificação  
 - ✅ **v0.8.2** — finanças (resultado época), calendário (scroll + filtro), treino, relato completo, dica dashboard  
 - ✅ Scripts loja/beta leem versão de `pubspec.yaml` (`read_app_version.sh`)  
 - ✅ **v0.8.1** — polish UX: empty states, conquistas, datas, modos de jogo, toasts  

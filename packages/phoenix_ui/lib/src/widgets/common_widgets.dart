@@ -59,7 +59,8 @@ class ClubHeader extends StatelessWidget {
                     ),
                   ),
                   Text(
-                    '${session.currentDate} · Jornada ${session.tick}',
+                    '${DateFormatUtil.gameDate(session.currentDate)} · '
+                    'Jornada ${session.tick}',
                     style: theme.textTheme.bodySmall?.copyWith(
                       color: theme.colorScheme.outline,
                     ),

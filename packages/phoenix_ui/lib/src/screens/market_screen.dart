@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:phoenix_core/phoenix_core.dart';
 import 'package:phoenix_ui/src/game/game_session.dart';
 import 'package:phoenix_ui/src/util/money_format.dart';
+import 'package:phoenix_ui/src/util/date_format.dart';
 import 'package:phoenix_ui/src/widgets/empty_state.dart';
 
 class MarketScreen extends StatefulWidget {
@@ -206,7 +207,8 @@ class _TransferTile extends StatelessWidget {
         title: Text(player?.name ?? transfer.playerId.value),
         subtitle: Text(
           '${session.clubName(transfer.fromClubId)} → '
-          '${session.clubName(transfer.toClubId)} · ${transfer.date}',
+          '${session.clubName(transfer.toClubId)} · '
+          '${DateFormatUtil.gameDate(transfer.date)}',
         ),
         trailing: transfer.isFree
             ? const Text('Livre')

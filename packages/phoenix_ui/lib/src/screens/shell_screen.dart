@@ -267,7 +267,8 @@ class _GameDrawer extends StatelessWidget {
                       ),
                 ),
                 Text(
-                  '${session.currentDate} · Jornada ${session.tick}',
+                  '${DateFormatUtil.gameDate(session.currentDate)} · '
+                  'Jornada ${session.tick}',
                   style: const TextStyle(color: Colors.white70),
                 ),
                 Text(

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:phoenix_ui/src/game/game_session.dart';
 import 'package:phoenix_ui/src/game/recent_form.dart';
+import 'package:phoenix_ui/src/util/date_format.dart';
 
 class FormStrip extends StatelessWidget {
   const FormStrip({
@@ -108,7 +109,7 @@ class _ResultRow extends StatelessWidget {
             ),
           ),
           Text(
-            fixture.date.toString().substring(5),
+            DateFormatUtil.gameDate(fixture.date),
             style: theme.textTheme.labelSmall?.copyWith(
               color: theme.colorScheme.outline,
             ),

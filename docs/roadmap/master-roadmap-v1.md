@@ -38,7 +38,7 @@ Este ficheiro liga o **Master Roadmap** do plano de arquitectura ao estado **rea
 | Simulation Lab (dev) | ✅ |
 | Política privacidade + URL | ✅ |
 | Android AAB + assets Play Store | ✅ |
-| Play Console teste interno | ⏸️ | pausado — conta em verificação; assets prontos |
+| Play Console teste interno | 🔄 | conta aprovada — `./scripts/play_console_day1.sh` |
 | Beta local (APK/Mac) | ✅ | `./scripts/local_beta.sh` · [`docs/BETA.md`](../BETA.md) |
 | App Store / TestFlight | ⏳ | screenshots ✅ + `package_app_store.sh` |
 | Steam | ⏸️ adiado |
@@ -59,13 +59,13 @@ Este ficheiro liga o **Master Roadmap** do plano de arquitectura ao estado **rea
 
 ---
 
-## Próximo passo (Play Store pausada)
+## Próximo passo (Play Console activa)
 
-1. **Beta local** — `./scripts/local_beta.sh` + partilhar com testadores ([`docs/BETA.md`](../BETA.md))
-2. **QA** — `./scripts/qa_manual.sh` + `test_mac.sh` / `test_android.sh`
-3. **App Store prep** — `./scripts/capture_app_store_screenshots.sh` (simulador iOS)
-4. **Retomar Play Store** quando conta activar → `./scripts/play_console_day1.sh`
-5. Após validação testers → produção `0.8.0` (sem sufixo alpha)
+1. **Play Store teste interno** — `./scripts/play_console_day1.sh` + [`docs/STORE.md`](../STORE.md)
+2. **Beta local** — `./scripts/local_beta.sh` + testadores ([`docs/BETA.md`](../BETA.md))
+3. **QA** — `./scripts/qa_manual.sh` + `test_mac.sh` / `test_android.sh`
+4. **App Store prep** — `./scripts/capture_app_store_screenshots.sh` (simulador iOS)
+5. Após validação testers → produção `0.8.5` (ou bump para `0.9.0` / `1.0.0`)
 
 ---
 

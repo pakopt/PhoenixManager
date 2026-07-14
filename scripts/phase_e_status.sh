@@ -58,12 +58,14 @@ else
 fi
 
 section "Bloqueantes"
-echo "  ⏸️  Play Console — pausado (conta em verificação; assets prontos)"
+echo "  🔄  Play Console — teste interno (conta aprovada; ver play_console_day1.sh)"
 echo "  🔄  Beta local + QA — em curso (docs/BETA.md)"
 echo "  ⏳  Apple Developer — App Store / TestFlight (opcional)"
 
-section "Trabalho activo (sem Play Store)"
+section "Trabalho activo"
 cat <<EOF
+  ./scripts/play_console_day1.sh      # upload teste interno (conta aprovada)
+  ./scripts/play_console_brief.sh     # textos copy-paste
   ./scripts/local_beta.sh             # ZIP APK para testadores
   ./scripts/qa_manual.sh              # roteiro QA manual
   ./scripts/package_app_store.sh      # ZIP screenshots iOS

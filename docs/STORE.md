@@ -28,7 +28,7 @@ Guia para **Google Play** e App Store. Steam: ver [steam/README.md](../steam/REA
 |-------|-------|
 | **Package name** | `com.phoenix.manager` |
 | **AAB para upload** | `build/release/mobile/android/phoenix_manager.aab` |
-| **Versão actual** | `0.8.0-alpha` (`versionCode` **1**) |
+| **Versão actual** | `0.8.5` (`versionCode` **6**) |
 | **Tipo** | Jogo, gratuito, offline |
 | **Contacto** | pakopt7@gmail.com |
 
@@ -61,17 +61,18 @@ Guia para **Google Play** e App Store. Steam: ver [steam/README.md](../steam/REA
 
    Fonte Markdown: [`docs/PRIVACY.md`](PRIVACY.md) — manter `privacy.html` em sync ao alterar.
 
-### 0. Conta em verificação
+### 0. Conta em verificação (concluído)
 
-Se a Play Console mostrar **conta em verificação** após o registo (~25 USD), é normal. O Google valida identidade e pagamento (1–7 dias úteis). Enquanto esperas:
+Se acabaste de registar a conta, o Google pode demorar 1–7 dias úteis. **Conta aprovada?** Segue directamente a secção **1. Criar a app** abaixo.
+
+Enquanto esperavas, estes comandos preparavam assets (já prontos):
 
 ```bash
 ./scripts/play_console_brief.sh    # textos copy-paste + checklist assets
 ./scripts/package_play_store.sh    # ZIP com AAB + gráficos
 ./scripts/mobile_doctor.sh
+./scripts/play_console_day1.sh     # guia dia 1 — teste interno
 ```
-
-Responde a emails do Google e verifica notificações na consola. Quando a conta activar, segue a secção **1. Criar a app** abaixo.
 
 ### 1. Criar a app na Play Console
 

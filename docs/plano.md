@@ -58,8 +58,8 @@ Documento vivo do roadmap. O plano detalhado de arquitectura (PSE, GDD, motores)
 | **Publicar URL https** | ✅ | [pakopt.github.io/PhoenixManager/privacy.html](https://pakopt.github.io/PhoenixManager/privacy.html) |
 | Screenshots telemóvel | ✅ | `./scripts/capture_play_screenshots_auto.sh` (flutter drive → Mac) |
 | Feature graphic 1024×500 | ✅ | `./scripts/export_feature_graphic.sh` |
-| Conta Play Developer | ⏸️ | **Pausado** — em verificação Google; assets prontos |
-| Teste interno Play Console | ⏸️ | Retomar com `./scripts/play_console_day1.sh` |
+| Conta Play Developer | ✅ | Conta aprovada (Jul 2026) |
+| Teste interno Play Console | 🔄 | **Agora** — `./scripts/play_console_day1.sh` |
 | Produção Play Store | ⏳ | Após validar teste interno |
 
 ### Lojas — App Store
@@ -106,11 +106,23 @@ CLEAN_GRADLE=1 ./scripts/clean_dev_artifacts.sh   # inclui ~/.gradle/caches
 
 ---
 
-## Próximas acções (Play Store pausada até aprovação)
+## Próximas acções (Play Console activa)
 
-> **Conta Play Console em verificação** — não bloqueia o resto da Fase E. Foco em beta local, QA e prep iOS.
+> **Conta Play Developer aprovada** — upload para **teste interno** é o passo imediato.
 
-### 1. Beta local (agora)
+### 1. Play Store — teste interno (agora)
+
+```bash
+./scripts/play_console_day1.sh      # guia + abre pastas no Finder
+./scripts/play_console_brief.sh     # textos copy-paste
+./scripts/package_play_store.sh     # ZIP AAB + gráficos (se necessário)
+```
+
+Guia completo: [`docs/STORE.md`](STORE.md)
+
+**Upload:** `build/release/mobile/android/phoenix_manager.aab` (v0.8.5, versionCode 6)
+
+### 2. Beta local (paralelo)
 
 ```bash
 ./scripts/local_beta.sh          # ZIP APK + instruções para testadores Android
@@ -120,7 +132,7 @@ CLEAN_GRADLE=1 ./scripts/clean_dev_artifacts.sh   # inclui ~/.gradle/caches
 
 Guia: [`docs/BETA.md`](BETA.md)
 
-### 2. Qualidade automática
+### 3. Qualidade automática
 
 ```bash
 ./scripts/test_all.sh
@@ -129,7 +141,7 @@ Guia: [`docs/BETA.md`](BETA.md)
 SAVE_TEST=1 ./scripts/launch_doctor.sh
 ```
 
-### 3. App Store — preparação (sem conta ainda)
+### 4. App Store — preparação (sem conta ainda)
 
 ```bash
 ./scripts/capture_app_store_screenshots.sh   # simulador iOS
@@ -137,20 +149,16 @@ SAVE_TEST=1 ./scripts/launch_doctor.sh
 ./scripts/app_store_brief.sh                 # textos quando tiveres Apple Developer
 ```
 
-### 4. Play Store — retomar quando conta activar ⏸️
+### 5. Play Store — checklist upload
 
-```bash
-./scripts/play_console_day1.sh
-```
-
-1. ~~Conta Play Developer~~ ✅ (aguardar verificação Google)
+1. ~~Conta Play Developer~~ ✅
 2. Upload AAB + ficha + IARC + Data safety — [`docs/STORE.md`](STORE.md)
 
-### 5. Gráficos Play Store (já feitos ✅)
+### 6. Gráficos Play Store (já feitos ✅)
 
 Saída: `build/release/store/android/` — reutilizar quando a conta activar.
 
-### 6. Steam (mais tarde)
+### 7. Steam (mais tarde)
 
 1. Conta Steamworks  
 2. `steam/steam.env`  
@@ -215,7 +223,7 @@ Depois: `./scripts/build_mobile.sh android` → novo AAB.
 - ✅ `play_console_day1.sh` — guia upload quando conta activar  
 - ✅ Beta local — `local_beta.sh`, `docs/BETA.md`, `qa_manual.sh`  
 - ✅ Screenshots App Store — 5 capturas iOS (`capture_app_store_screenshots.sh`)  
-- ⏸️ Play Console → retomar após verificação Google  
+- ✅ Play Console — conta aprovada; upload teste interno em curso  
 
 ---
 

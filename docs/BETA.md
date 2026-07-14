@@ -1,6 +1,6 @@
 # Beta local — sem lojas
 
-Distribuição e testes **antes** da Play Store ou App Store. Útil enquanto a conta Play Console está em verificação.
+Distribuição e testes **antes** ou **em paralelo** com a Play Store. Útil para testadores sideload (APK/Mac) enquanto preparas o teste interno na Play Console.
 
 ## Mac (release)
 
@@ -90,6 +90,8 @@ Envia bugs ou sugestões para **pakopt7@gmail.com** com:
 Privacidade: [`docs/PRIVACY.md`](PRIVACY.md)
 
 ## Quando a Play Store activar
+
+Conta aprovada — segue o guia de upload:
 
 ```bash
 ./scripts/play_console_day1.sh

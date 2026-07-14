@@ -191,19 +191,19 @@ cp steam/steam.env.example steam/steam.env   # App ID + depot IDs
 
 **Plano vivo:** [`docs/plano.md`](docs/plano.md)
 
-**Agora:** Play Store pausada — beta local + QA + prep iOS
+**Agora:** Play Console aprovada — upload teste interno + beta local
 
 ```bash
+./scripts/play_console_day1.sh      # guia upload Play Store
+./scripts/play_console_brief.sh     # textos copy-paste
 ./scripts/phase_e_status.sh         # panorama Fase E
-./scripts/local_beta.sh             # ZIP APK para testadores
-./scripts/qa_manual.sh              # roteiro QA manual
 ```
 
 1. ~~Testar saves Mac/Android~~ → `test_mac.sh` / `test_android.sh` ✅
 2. ~~Política de privacidade~~ → https://pakopt.github.io/PhoenixManager/privacy.html
 3. **Beta local** — partilhar APK/Mac com testadores ([`docs/BETA.md`](docs/BETA.md))
 4. **App Store prep** — screenshots iOS (`capture_app_store_screenshots.sh`)
-5. **Play Console** ⏸️ — retomar quando conta activar (`play_console_day1.sh`)
+5. **Play Console** 🔄 — `./scripts/play_console_day1.sh` (conta aprovada)
 6. Apple Developer — `./scripts/app_store_brief.sh`
 7. Steam — adiado
 

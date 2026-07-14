@@ -21,6 +21,12 @@ if [[ -d "$APP/android/.gradle" ]]; then
   rm -rf "$APP/android/.gradle"
 fi
 
+if [[ "${CLEAN_GRADLE:-0}" == "1" ]]; then
+  echo ""
+  echo "==> Gradle global (~/.gradle/caches)"
+  rm -rf "$HOME/.gradle/caches"
+fi
+
 echo ""
 echo "==> Mantido (não apagado)"
 echo "  build/release/     — APK, AAB, beta, lojas"
@@ -33,7 +39,6 @@ if [[ -n "$before" && -n "$after" ]]; then
   echo "Espaço livre agora: ~$(( after / 1024 / 1024 )) GiB (${freed} MiB recuperados nesta corrida)"
 fi
 
-echo ""
-echo "Caches globais (opcional, manual):"
-echo "  rm -rf ~/.gradle/caches   # Gradle — pode ser vários GiB"
+echo "Caches globais (opcional):"
+echo "  CLEAN_GRADLE=1 $0   # inclui ~/.gradle/caches (~vários GiB)"
 echo "  flutter pub cache clean   # pub cache — usar com cuidado"

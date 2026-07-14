@@ -82,6 +82,14 @@ class DashboardScreen extends StatelessWidget {
           ],
           _StatusOverview(session: session),
           const SizedBox(height: 16),
+          if (controller.playMode == PlayMode.director &&
+              next != null &&
+              !session.isFullSeasonComplete)
+            _PreMatchAlertCard(session: session),
+          if (controller.playMode == PlayMode.director &&
+              next != null &&
+              !session.isFullSeasonComplete)
+            const SizedBox(height: 16),
           Card(
             child: Padding(
               padding: const EdgeInsets.all(16),
@@ -252,6 +260,86 @@ class DashboardScreen extends StatelessWidget {
       SnackBar(
         content: Text(
           'Época ${controller.session!.seasonYear} iniciada',
+        ),
+      ),
+    );
+  }
+}
+
+class _PreMatchAlertCard extends StatelessWidget {
+  const _PreMatchAlertCard({required this.session});
+
+  final GameSession session;
+
+  @override
+  Widget build(BuildContext context) {
+    final injured = session.injuredPlayers;
+    final expiring = session.expiringContractsThisSeason;
+    if (injured.isEmpty && expiring.isEmpty) {
+      return const SizedBox.shrink();
+    }
+
+    final theme = Theme.of(context);
+
+    return Card(
+      color: theme.colorScheme.tertiaryContainer.withValues(alpha: 0.35),
+      child: Padding(
+        padding: const EdgeInsets.all(16),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              children: [
+                Icon(Icons.fact_check, color: theme.colorScheme.tertiary),
+                const SizedBox(width: 8),
+                Text(
+                  'Antes do próximo jogo',
+                  style: theme.textTheme.titleSmall,
+                ),
+              ],
+            ),
+            const SizedBox(height: 8),
+            if (injured.isNotEmpty) ...[
+              Text(
+                'Lesionados (${injured.length})',
+                style: theme.textTheme.labelMedium,
+              ),
+              ...injured.take(3).map(
+                    (p) => Text(
+                      '· ${p.name} (${p.injuredDaysRemaining} dias)',
+                      style: theme.textTheme.bodySmall,
+                    ),
+                  ),
+              if (injured.length > 3)
+                Text(
+                  '· +${injured.length - 3} mais',
+                  style: theme.textTheme.bodySmall?.copyWith(
+                    color: theme.colorScheme.outline,
+                  ),
+                ),
+            ],
+            if (injured.isNotEmpty && expiring.isNotEmpty)
+              const SizedBox(height: 8),
+            if (expiring.isNotEmpty) ...[
+              Text(
+                'Contratos a expirar esta época (${expiring.length})',
+                style: theme.textTheme.labelMedium,
+              ),
+              ...expiring.take(3).map(
+                    (p) => Text(
+                      '· ${p.name} (até ${p.contractEndYear})',
+                      style: theme.textTheme.bodySmall,
+                    ),
+                  ),
+            ],
+            const SizedBox(height: 4),
+            Text(
+              'Revê o plantel em Treino ou Plantel.',
+              style: theme.textTheme.labelSmall?.copyWith(
+                color: theme.colorScheme.outline,
+              ),
+            ),
+          ],
         ),
       ),
     );

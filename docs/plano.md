@@ -1,6 +1,6 @@
 # Plano — Project Phoenix Manager
 
-**Versão:** v0.8.3  
+**Versão:** v0.8.4  
 **Actualizado:** 13 de Julho de 2026  
 **Fase actual:** **E — Lançamento**
 
@@ -176,14 +176,14 @@ Saída: `build/release/store/android/` — reutilizar quando a conta activar.
 
 | Campo | Valor actual |
 |-------|--------------|
-| `versionName` | `0.8.3` |
-| `versionCode` | `4` |
+| `versionName` | `0.8.4` |
+| `versionCode` | `5` |
 | Package / Bundle ID | `com.phoenix.manager` |
 
 **Próxima release:** editar `apps/phoenix_manager/pubspec.yaml`:
 
 ```yaml
-version: 0.8.3+4   # nome visível + versionCode (obrigatório incrementar +N)
+version: 0.8.4+5   # nome visível + versionCode (obrigatório incrementar +N)
 ```
 
 Depois: `./scripts/build_mobile.sh android` → novo AAB.
@@ -192,6 +192,7 @@ Depois: `./scripts/build_mobile.sh android` → novo AAB.
 
 ## Histórico recente (Fase E + v0.8.x)
 
+- ✅ **v0.8.4** — alertas pré-jogo (modo Diretor) + empty state staff  
 - ✅ **v0.8.3** — datas legíveis (calendário, dashboard, finanças, mercado, taça, forma, cabeçalho, saves) + scroll classificação  
 - ✅ **v0.8.2** — finanças (resultado época), calendário (scroll + filtro), treino, relato completo, dica dashboard  
 - ✅ Scripts loja/beta leem versão de `pubspec.yaml` (`read_app_version.sh`)  

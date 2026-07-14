@@ -59,6 +59,7 @@ Corre em cada plataforma antes de enviar para lojas:
 | 11 | **Treino** — filtro margem, toque abre ficha do jogador | |
 | 12 | **Detalhe do jogo** — «Ver relato completo» expande | |
 | 13 | **Dashboard** — dica «Primeiros passos» (carreira nova) | |
+| 14 | **Dashboard** — alertas «Antes do próximo jogo» (modo Diretor) | |
 
 Automático (saves):
 

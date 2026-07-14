@@ -4,6 +4,7 @@ import 'package:phoenix_ui/src/util/money_format.dart';
 import 'package:phoenix_ui/src/game/game_session.dart';
 import 'package:phoenix_ui/src/widgets/player_stat_bar.dart';
 import 'package:phoenix_ui/src/widgets/staff_labels.dart';
+import 'package:phoenix_ui/src/widgets/empty_state.dart';
 
 class StaffPanel extends StatelessWidget {
   const StaffPanel({required this.session, super.key});
@@ -70,7 +71,13 @@ class StaffPanel extends StatelessWidget {
           ),
         ),
         const SizedBox(height: 16),
-        for (final dept in staffDepartmentOrder)
+        if (staff.isEmpty)
+          const EmptyState(
+            icon: Icons.groups_outlined,
+            message: 'Sem staff atribuído ao clube.',
+          )
+        else
+          for (final dept in staffDepartmentOrder)
           if (grouped.containsKey(dept)) ...[
             Text(dept, style: theme.textTheme.titleMedium),
             const SizedBox(height: 8),

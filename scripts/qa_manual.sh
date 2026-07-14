@@ -24,6 +24,7 @@ Corre em Mac, Android ou iOS (dev) antes de lojas.
   [ ] 11. Treino — filtro margem, toque abre ficha
   [ ] 12. Detalhe jogo — «Ver relato completo»
   [ ] 13. Dashboard — dica «Primeiros passos» (carreira nova)
+  [ ] 14. Dashboard — alertas «Antes do próximo jogo» (Diretor)
 
 Automático (saves):
   ./scripts/test_mac.sh

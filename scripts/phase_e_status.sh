@@ -4,10 +4,12 @@ set -euo pipefail
 
 ROOT="$(cd "$(dirname "$0")/.." && pwd)"
 PRIVACY="https://pakopt.github.io/PhoenixManager/privacy.html"
+# shellcheck source=read_app_version.sh
+source "$ROOT/scripts/read_app_version.sh"
 
 echo "════════════════════════════════════════"
 echo "  Fase E — Estado do lançamento"
-echo "  $(date '+%Y-%m-%d %H:%M')"
+echo "  Versão: $VERSION_FULL · $(date '+%Y-%m-%d %H:%M')"
 echo "════════════════════════════════════════"
 
 section() { echo ""; echo "==> $1"; }
@@ -16,7 +18,8 @@ section "Plataformas locais"
 for item in \
   "macOS:/Applications/Phoenix Manager.app" \
   "AAB:$ROOT/build/release/mobile/android/phoenix_manager.aab" \
-  "APK:$ROOT/build/release/mobile/android/phoenix_manager.apk"; do
+  "APK:$ROOT/build/release/mobile/android/phoenix_manager.apk" \
+  "Beta ZIP:$ROOT/build/release/beta/phoenix-manager-beta.zip"; do
   label="${item%%:*}"
   path="${item#*:}"
   if [[ -e "$path" ]]; then

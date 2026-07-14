@@ -77,9 +77,19 @@ cat <<EOF
   ./scripts/package_play_store.sh     # ZIP AAB + gráficos
   ./scripts/test_mac.sh               # validar Mac
   ./scripts/test_release_saves.sh android   # validar Android
+  ./scripts/repair_gradle.sh          # cache Gradle após limpeza
   ./scripts/launch_doctor.sh          # checklist completo
   docs/STORE.md                       # guia upload
 EOF
 
 section "Diagnóstico rápido"
+avail_mb="$(df -k /System/Volumes/Data 2>/dev/null | awk 'NR==2 {print int($4/1024)}')"
+if [[ -n "$avail_mb" ]]; then
+  if [[ "$avail_mb" -lt 3000 ]]; then
+    echo "  ⚠️  Disco: ~${avail_mb} MiB livres (Android precisa ≥ 3000 MiB)"
+    echo "      ./scripts/clean_dev_artifacts.sh  |  CLEAN_GRADLE=1 ..."
+  else
+    echo "  OK   Disco: ~${avail_mb} MiB livres"
+  fi
+fi
 "$ROOT/scripts/mobile_doctor.sh" 2>&1 | tail -3

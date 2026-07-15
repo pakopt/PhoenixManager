@@ -126,25 +126,36 @@ class _ResultRow extends StatelessWidget {
     final away = session.clubName(fixture.awayClubId);
     final theme = Theme.of(context);
 
+    final semanticsOutcome = switch (entry.outcome) {
+      MatchOutcome.win => 'Vitória',
+      MatchOutcome.draw => 'Empate',
+      MatchOutcome.loss => 'Derrota',
+    };
+
     return Padding(
       padding: const EdgeInsets.only(bottom: 6),
-      child: Row(
-        children: [
-          _FormBadge(outcome: entry.outcome),
-          const SizedBox(width: 8),
-          Expanded(
-            child: Text(
-              '$home ${fixture.homeScore}-${fixture.awayScore} $away',
-              style: theme.textTheme.bodySmall,
+      child: Semantics(
+        label:
+            '$semanticsOutcome: $home ${fixture.homeScore}-${fixture.awayScore} $away, '
+            '${DateFormatUtil.gameDate(fixture.date)}',
+        child: Row(
+          children: [
+            _FormBadge(outcome: entry.outcome),
+            const SizedBox(width: 8),
+            Expanded(
+              child: Text(
+                '$home ${fixture.homeScore}-${fixture.awayScore} $away',
+                style: theme.textTheme.bodySmall,
+              ),
             ),
-          ),
-          Text(
-            DateFormatUtil.gameDate(fixture.date),
-            style: theme.textTheme.labelSmall?.copyWith(
-              color: theme.colorScheme.outline,
+            Text(
+              DateFormatUtil.gameDate(fixture.date),
+              style: theme.textTheme.labelSmall?.copyWith(
+                color: theme.colorScheme.outline,
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

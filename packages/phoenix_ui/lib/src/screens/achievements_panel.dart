@@ -68,54 +68,60 @@ class _AchievementTile extends StatelessWidget {
     final theme = Theme.of(context);
     final unlocked = entry.isUnlocked;
 
-    return Card(
-      color: unlocked
-          ? theme.colorScheme.primary.withValues(alpha: 0.08)
-          : null,
-      child: ListTile(
-        leading: CircleAvatar(
-          backgroundColor: unlocked
-              ? theme.colorScheme.primary
-              : theme.colorScheme.surfaceContainerHighest,
-          child: Icon(
-            unlocked ? Icons.check : Icons.lock_outline,
-            color: unlocked ? Colors.white : theme.colorScheme.outline,
-            size: 20,
+    return Semantics(
+      label: unlocked
+          ? '${entry.definition.title}, desbloqueada'
+          : '${entry.definition.title}, por desbloquear',
+      child: Card(
+        color:
+            unlocked ? theme.colorScheme.primary.withValues(alpha: 0.08) : null,
+        child: ListTile(
+          leading: CircleAvatar(
+            backgroundColor: unlocked
+                ? theme.colorScheme.primary
+                : theme.colorScheme.surfaceContainerHighest,
+            child: Icon(
+              unlocked ? Icons.check : Icons.lock_outline,
+              color: unlocked ? Colors.white : theme.colorScheme.outline,
+              size: 20,
+            ),
           ),
-        ),
-        title: Text(
-          entry.definition.title,
-          style: TextStyle(
-            fontWeight: unlocked ? FontWeight.w600 : FontWeight.normal,
-            color: unlocked ? null : theme.colorScheme.onSurface.withValues(alpha: 0.6),
+          title: Text(
+            entry.definition.title,
+            style: TextStyle(
+              fontWeight: unlocked ? FontWeight.w600 : FontWeight.normal,
+              color: unlocked
+                  ? null
+                  : theme.colorScheme.onSurface.withValues(alpha: 0.6),
+            ),
           ),
-        ),
-        subtitle: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(entry.definition.description),
-            if (unlocked)
-              Padding(
-                padding: const EdgeInsets.only(top: 4),
-                child: Text(
-                  'Desbloqueada · ${DateFormatUtil.gameDate(entry.unlocked!.unlockedOn)} · '
-                  'Época ${entry.unlocked!.seasonYear}',
-                  style: theme.textTheme.labelSmall?.copyWith(
-                    color: theme.colorScheme.primary,
+          subtitle: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(entry.definition.description),
+              if (unlocked)
+                Padding(
+                  padding: const EdgeInsets.only(top: 4),
+                  child: Text(
+                    'Desbloqueada · ${DateFormatUtil.gameDate(entry.unlocked!.unlockedOn)} · '
+                    'Época ${entry.unlocked!.seasonYear}',
+                    style: theme.textTheme.labelSmall?.copyWith(
+                      color: theme.colorScheme.primary,
+                    ),
+                  ),
+                )
+              else
+                Padding(
+                  padding: const EdgeInsets.only(top: 4),
+                  child: Text(
+                    'Por desbloquear',
+                    style: theme.textTheme.labelSmall?.copyWith(
+                      color: theme.colorScheme.outline,
+                    ),
                   ),
                 ),
-              )
-            else
-              Padding(
-                padding: const EdgeInsets.only(top: 4),
-                child: Text(
-                  'Por desbloquear',
-                  style: theme.textTheme.labelSmall?.copyWith(
-                    color: theme.colorScheme.outline,
-                  ),
-                ),
-              ),
-          ],
+            ],
+          ),
         ),
       ),
     );

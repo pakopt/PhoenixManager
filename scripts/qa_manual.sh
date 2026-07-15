@@ -28,6 +28,9 @@ Corre em Mac, Android ou iOS (dev) antes de lojas.
   [ ] 12. Detalhe jogo — «Ver relato completo»
   [ ] 13. Dashboard — dica «Primeiros passos» (carreira nova)
   [ ] 14. Dashboard — alertas «Antes do próximo jogo» (Diretor)
+  [ ] 15. Dashboard — «Forma recente» (vazia no início ou após jogos)
+  [ ] 16. Android — barras sistema não tapam botões (edge-to-edge; ver MOBILE.md)
+  [ ] 17. Rodapé menu — versão PSE visível (ex. v$VERSION_NAME)
 
 Automático (saves):
   ./scripts/test_mac.sh

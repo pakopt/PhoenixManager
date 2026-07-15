@@ -28,7 +28,7 @@ Guia para **Google Play** e App Store. Steam: ver [steam/README.md](../steam/REA
 |-------|-------|
 | **Package name** | `com.phoenix.manager` |
 | **AAB para upload** | `build/release/mobile/android/phoenix_manager.aab` |
-| **Versão actual** | `0.8.8` (`versionCode` **9**) |
+| **Versão actual** | `0.8.9` (`versionCode` **10**) |
 | **Tipo** | Jogo, gratuito, offline |
 | **Contacto** | pakopt7@gmail.com |
 
@@ -295,8 +295,9 @@ Respostas alinhadas com [`docs/PRIVACY.md`](PRIVACY.md):
 2. Email da Google quando aprovado
 3. **Testadores** → copiar **link de adesão** → abrir no telemóvel (conta Gmail da lista)
 4. Instalar pela **Play Store** (não sideload)
-5. QA rápido: [`docs/BETA.md`](BETA.md) passos 1–6 (menu, dashboard, Express, save)
-6. Problemas → pakopt7@gmail.com com versão (ex. `0.8.8 (9)`) e modelo do telemóvel
+5. QA completo: [`docs/BETA.md`](BETA.md) (passos 1–17) ou `./scripts/qa_manual.sh`
+6. **Android 15+:** confirmar edge-to-edge — [`MOBILE.md`](../apps/phoenix_manager/MOBILE.md) § Android 15
+7. Problemas → pakopt7@gmail.com com versão (ex. `0.8.9 (10)`) e modelo do telemóvel
 
 Quando estiveres satisfeito (1–7 dias de teste real):
 
@@ -320,7 +321,7 @@ Cada upload precisa de **`versionCode` maior** que o anterior.
 
 1. Editar `apps/phoenix_manager/pubspec.yaml`:
    ```yaml
-   version: 0.8.8+9   # nome visível + versionCode (número após +)
+   version: 0.8.9+10   # nome visível + versionCode (número após +)
    ```
 2. Rebuild e upload:
    ```bash

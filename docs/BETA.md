@@ -60,6 +60,9 @@ Corre em cada plataforma antes de enviar para lojas:
 | 12 | **Detalhe do jogo** — «Ver relato completo» expande | |
 | 13 | **Dashboard** — dica «Primeiros passos» (carreira nova) | |
 | 14 | **Dashboard** — alertas «Antes do próximo jogo» (modo Diretor) | |
+| 15 | **Dashboard** — «Forma recente» (vazia ou com V/E/D após jogos) | |
+| 16 | **Android** — edge-to-edge: barras não tapam navegação/conteúdo ([`MOBILE.md`](../apps/phoenix_manager/MOBILE.md)) | |
+| 17 | **Menu drawer** — rodapé mostra versão PSE | |
 
 Automático (saves):
 
@@ -83,7 +86,7 @@ CLEAN_GRADLE=1 ./scripts/clean_dev_artifacts.sh   # inclui ~/.gradle/caches (~5 
 Envia bugs ou sugestões para **pakopt7@gmail.com** com:
 
 - Dispositivo (Mac / Android / modelo)
-- Versão da app (menu carreira → rodapé, ex. `PSE v0.8.8`)
+- Versão da app (menu carreira → rodapé, ex. `PSE v0.8.9`)
 - Passos para reproduzir
 - Screenshot opcional
 

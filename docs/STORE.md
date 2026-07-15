@@ -299,21 +299,58 @@ Respostas alinhadas com [`docs/PRIVACY.md`](PRIVACY.md):
 6. **Android 15+:** confirmar edge-to-edge — [`MOBILE.md`](../apps/phoenix_manager/MOBILE.md) § Android 15
 7. Problemas → pakopt7@gmail.com com versão (ex. `0.8.17 (18)`) e modelo do telemóvel
 
-Quando estiveres satisfeito (1–7 dias de teste real):
+Quando estiveres satisfeito (e, se a conta for pessoal nova, após cumprir §9c):
 
-- **Promover** a produção (§10), ou
-- **Teste fechado** com mais emails antes de produção
+- **Candidatar a acesso a produção** (Dashboard) e depois **promover** (§10), ou
+- Continuar no **teste fechado** com mais emails até teres buffer de testadores
+
+### 9c. Contas pessoais novas — 12 testadores × 14 dias
+
+Aplica-se a contas **pessoais** criadas após ~13 Nov 2023 (ver [ajuda Google](https://support.google.com/googleplay/android-developer/answer/14151465)):
+
+| Requisito | Detalhe |
+|-----------|---------|
+| Faixa | **Teste fechado** (não basta só teste interno) |
+| Mínimo | **12** testadores **opted-in** |
+| Duração | **14 dias contínuos** com ≥12 opted-in |
+| Conta | Contagem na Console — não a lista de emails sozinha |
+
+**O que conta como opted-in**
+
+1. Email (ou grupo) na lista de testadores da faixa fechada  
+2. Pessoa abre o **link de adesão** da Play Console no telemóvel  
+3. Toca em **Tornar-me testador**  
+4. Instala/actualiza a app pela **Play Store** (não sideload APK)
+
+**Prática recomendada**
+
+- Convida **14–16** pessoas (amigos, família, colegas) — buffer se alguém sair  
+- Dizem-te quando aparecerem na Console como joined  
+- Mantém a faixa fechada estável 14 dias (podes publicar updates; o importante é o opted-in contínuo)  
+- Depois: Dashboard → **Apply for production access** / candidatura → questionário (quem testou, o que mudou, porque está pronta)
+
+Mensagem de convite (gerar + copiar):
+
+```bash
+./scripts/play_testers_invite.sh 'https://play.google.com/apps/testing/...'
+```
+
+Guia de QA para eles: [`docs/BETA.md`](BETA.md) · roteiro: `./scripts/qa_manual.sh`
 
 ### 10. Enviar para revisão (produção)
 
-Depois de validar em **teste interno** (1–7 dias de uso real):
+Só depois de cumprir o §9c (se aplicável) e a Google **aprovar o acesso a produção** no Dashboard:
 
 1. **Testar e lançar** → **Produção** → **Criar nova versão**
-2. **Promover release** desde teste interno *ou* voltar a carregar o mesmo AAB
+2. **Promover release** desde a faixa de teste *ou* voltar a carregar o mesmo AAB  
+   (versionCode tem de ser o maior já aceite nessa conta — ex. `18` se foi o último upload)
 3. Seleccionar **países** (ex.: Portugal, Brasil, ou todos)
-4. **Enviar para revisão**
+4. Confirmar ficha da loja / classificações ainda completas
+5. **Enviar para revisão**
 
-Tempos típicos: teste interno (minutos–horas); produção (1–7 dias na primeira submissão).
+Tempos típicos: candidatura a produção (1–14 dias); revisão de release (1–7 dias na primeira).
+
+Se a Google pedir mais informação (questionário, screenshots, política): responde com os textos de `./scripts/play_console_brief.sh` e `docs/STORE.md` §6–8.
 
 ### 11. Actualizações futuras
 

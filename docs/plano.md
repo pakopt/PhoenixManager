@@ -106,27 +106,33 @@ CLEAN_GRADLE=1 ./scripts/clean_dev_artifacts.sh   # inclui ~/.gradle/caches
 
 ---
 
-## Próximas acções (Play Console activa)
+## Próximas acções (Play Console — teste fechado activo)
 
-> **Conta Play Developer aprovada** — upload para **teste interno** é o passo imediato.
+> **Conta Play Developer aprovada** · app já em **testes fechados**.
 >
-> **Freeze polish UI (v0.8.17):** o acabamento visual/a11y está saturado. Próximo ROI = Play Console + QA testers, não mais micro-releases de UX.
+> **Requisito Google (contas pessoais novas):** ≥ **12 testadores opted-in** no teste fechado durante **14 dias contínuos**, depois **candidatar-te a acesso a produção** no Dashboard. Só metê-los na lista de emails **não conta** — têm de aceitar o link, instalar pela Play Store e manter-se opted-in.
+>
+> **Freeze polish UI (v0.8.17):** acabamento visual/a11y saturado.
+>
+> **Bloqueio actual:** recrutar e manter 12–16 testadores 14 dias → candidatar produção.
 
-### 1. Play Store — teste interno (agora)
+### 1. Play Store — 12 testadores × 14 dias (agora)
 
-```bash
-./scripts/play_console_day1.sh      # guia + abre pastas no Finder
-./scripts/play_console_brief.sh     # textos copy-paste
-./scripts/package_play_store.sh     # ZIP AAB + gráficos (se necessário)
-```
+1. **Testar e lançar** → **Teste fechado** → **Testadores** → lista com **14–16 emails** (buffer contra desistências).
+2. Enviar o **link de adesão** oficial da Console (não APK sideload):
+   `./scripts/play_testers_invite.sh 'URL_DO_LINK'` — mensagem + checklist
+3. Cada pessoa: abrir o link no telemóvel → **Tornar-me testador** → instalar/actualizar na Play Store.
+4. Na Console, confirmar que ≥12 aparecem como **opted-in** — aí começa a contagem dos 14 dias (se descer abaixo de 12, o relógio arrisca-se).
+5. Após 14 dias contínuos com ≥12: Dashboard → **candidatar a acesso a produção** (questionário sobre o teste).
+6. Depois da aprovação → **Produção** → promover release / enviar para revisão.
 
-Guia completo: [`docs/STORE.md`](STORE.md) (§9b após enviar)
+Detalhe oficial: [requisitos de teste Play](https://support.google.com/googleplay/android-developer/answer/14151465) · guia local: [`docs/STORE.md`](STORE.md) §9c–10
 
-**Upload:** `build/release/mobile/android/phoenix_manager.aab` (v0.8.17, versionCode 18)
+**AAB actual:** `build/release/mobile/android/phoenix_manager.aab` (v0.8.17, versionCode 18)
 
-**Depois de enviar:** link de teste interno no telemóvel → QA → promover a produção (§10)
+Convite / QA para amigos: [`docs/BETA.md`](BETA.md) · textos: `./scripts/play_console_brief.sh`
 
-### 2. Beta local (paralelo)
+### 2. Beta local (paralelo / fallback)
 
 ```bash
 ./scripts/local_beta.sh          # ZIP APK + instruções para testadores Android
@@ -156,7 +162,9 @@ SAVE_TEST=1 ./scripts/launch_doctor.sh
 ### 5. Play Store — checklist upload
 
 1. ~~Conta Play Developer~~ ✅
-2. Upload AAB + ficha + IARC + Data safety — [`docs/STORE.md`](STORE.md)
+2. ~~Teste fechado + ficha + IARC + Data safety~~ ✅
+3. **12 testadores × 14 dias** opted-in → candidatar produção — [`docs/STORE.md`](STORE.md) §9c
+4. Produção após aprovação Google — [`docs/STORE.md`](STORE.md) §10
 
 ### 6. Gráficos Play Store (já feitos ✅)
 
@@ -239,7 +247,8 @@ Depois: `./scripts/build_mobile.sh android` → novo AAB.
 - ✅ `play_console_day1.sh` — guia upload quando conta activar  
 - ✅ Beta local — `local_beta.sh`, `docs/BETA.md`, `qa_manual.sh`  
 - ✅ Screenshots App Store — 5 capturas iOS (`capture_app_store_screenshots.sh`)  
-- ✅ Play Console — conta aprovada; teste interno (AAB **v0.8.17+18** recomendado)  
+- ✅ Play Console — conta aprovada · **teste fechado activo** · AAB **v0.8.17+18**  
+- 🔄 Produção — **≥12 opted-in × 14 dias** → candidatar acesso → promover (`docs/STORE.md` §9c–10)  
 - ✅ Desktop — fullscreen Mac / Windows / Linux + «Sair do jogo»  
 - ✅ Polish UI v0.8.x — **congelado** em v0.8.17 (a11y/empty states/desktop)  
 

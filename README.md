@@ -193,21 +193,22 @@ cp steam/steam.env.example steam/steam.env   # App ID + depot IDs
 
 **Plano vivo:** [`docs/plano.md`](docs/plano.md)
 
-**Agora:** Play Console aprovada — upload teste interno + beta local
+**Agora:** teste fechado activo — recrutar **12 testadores × 14 dias** → produção
 
 ```bash
-./scripts/play_console_day1.sh      # guia upload Play Store
-./scripts/play_console_brief.sh     # textos copy-paste
-./scripts/phase_e_status.sh         # panorama Fase E
+./scripts/play_testers_invite.sh 'URL_DO_LINK'   # mensagem WhatsApp/email
+./scripts/play_console_brief.sh                  # textos loja
+./scripts/phase_e_status.sh                      # panorama Fase E
 ```
 
 1. ~~Testar saves Mac/Android~~ → `test_mac.sh` / `test_android.sh` ✅
 2. ~~Política de privacidade~~ → https://pakopt.github.io/PhoenixManager/privacy.html
-3. **Beta local** — partilhar APK/Mac com testadores ([`docs/BETA.md`](docs/BETA.md))
-4. **App Store prep** — screenshots iOS (`capture_app_store_screenshots.sh`)
-5. **Play Console** 🔄 — `./scripts/play_console_day1.sh` (conta aprovada)
-6. Apple Developer — `./scripts/app_store_brief.sh`
-7. Steam — adiado
+3. ~~Play Console teste fechado~~ ✅ — ficha / IARC / Data safety
+4. **12 × 14** — convites opted-in ([`docs/STORE.md`](docs/STORE.md) §9c)
+5. **Produção** — após aprovação Google no Dashboard
+6. App Store prep — screenshots iOS (`capture_app_store_screenshots.sh`)
+7. Apple Developer — `./scripts/app_store_brief.sh`
+8. Steam — adiado
 
 ```bash
 ./scripts/install_local.sh          # Mac release

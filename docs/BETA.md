@@ -96,12 +96,20 @@ Envia bugs ou sugestões para **pakopt7@gmail.com** com:
 
 Privacidade: [`docs/PRIVACY.md`](PRIVACY.md)
 
-## Quando a Play Store activar
+## Play Store — teste fechado (12 × 14)
 
-Conta aprovada — segue o guia de upload:
+Contas pessoais novas precisam de **≥12 testadores opted-in** no teste fechado durante **14 dias** antes da produção.
+
+1. Copia o **link de adesão** na Play Console (teste fechado → Testadores)
+2. Gera a mensagem de convite:
+   ```bash
+   ./scripts/play_testers_invite.sh 'URL_DO_LINK'
+   ```
+3. Confirma na Console que aparecem como opted-in (lista de emails sozinha **não** chega)
+4. Após 14 dias → Dashboard → candidatar acesso a produção
 
 ```bash
-./scripts/play_console_day1.sh
+./scripts/qa_manual.sh   # roteiro para os testadores
 ```
 
 Guia completo: [`docs/STORE.md`](STORE.md)

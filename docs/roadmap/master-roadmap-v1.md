@@ -38,7 +38,9 @@ Este ficheiro liga o **Master Roadmap** do plano de arquitectura ao estado **rea
 | Simulation Lab (dev) | ✅ |
 | Política privacidade + URL | ✅ |
 | Android AAB + assets Play Store | ✅ |
-| Play Console teste interno | 🔄 | conta aprovada — `./scripts/play_console_day1.sh` |
+| Play Console teste fechado | ✅ | app activa na faixa fechada |
+| 12 testadores × 14 dias | 🔄 | requisito Google antes de produção ([`STORE.md`](../STORE.md) §9c) |
+| Play Console produção | ⏳ | após candidatura aprovada |
 | Beta local (APK/Mac) | ✅ | `./scripts/local_beta.sh` · [`docs/BETA.md`](../BETA.md) |
 | App Store / TestFlight | ⏳ | screenshots ✅ + `package_app_store.sh` |
 | Steam | ⏸️ adiado |
@@ -59,13 +61,13 @@ Este ficheiro liga o **Master Roadmap** do plano de arquitectura ao estado **rea
 
 ---
 
-## Próximo passo (Play Console activa)
+## Próximo passo (teste fechado · 12×14)
 
-1. **Play Store teste interno** — `./scripts/play_console_day1.sh` + [`docs/STORE.md`](../STORE.md)
-2. **Beta local** — `./scripts/local_beta.sh` + testadores ([`docs/BETA.md`](../BETA.md))
-3. **QA** — `./scripts/qa_manual.sh` + `test_mac.sh` / `test_android.sh`
-4. **App Store prep** — `./scripts/capture_app_store_screenshots.sh` (simulador iOS)
-5. Após validação testers → produção `0.8.17` (ou bump para `0.9.0` / `1.0.0`)
+1. **Recrutar 14–16 testadores** → link de adesão fechado → confirmar opted-in na Console
+2. **Aguardar 14 dias contínuos** com ≥12 opted-in
+3. **Candidatar a produção** no Dashboard → questionário Google
+4. Após aprovação → promover release a produção ([`docs/STORE.md`](../STORE.md) §9c–10)
+5. App Store prep (paralelo) quando fizer sentido
 
 ---
 

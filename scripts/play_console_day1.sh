@@ -38,6 +38,8 @@ echo ""
 echo "==> Passos na Play Console (ordem)"
 cat <<EOF
 
+  (Se a app / teste fechado já existir, salta 1–6 e vai ao 7–9.)
+
   1. https://play.google.com/console
      → Criar app → Jogo, gratuito, PT
      → Package: com.phoenix.manager (fixo na 1.ª release)
@@ -45,7 +47,7 @@ cat <<EOF
   2. Política → Política de privacidade
      → $PRIVACY
 
-  3. Testar e lançar → Teste interno → Criar versão
+  3. Testar e lançar → Teste fechado (ou interno) → Criar versão
      → Carregar: $AAB
 
   4. Presença na loja → Ficha principal
@@ -58,7 +60,13 @@ cat <<EOF
   6. Política → Segurança dos dados
      → Não recolhe dados — docs/STORE.md §8
 
-  7. Testadores → Lista de emails → Link de adesão no telemóvel
+  7. Teste fechado → Testadores → 14–16 emails + link de adesão
+     → Convite: ./scripts/play_testers_invite.sh 'URL_DO_LINK'
+     → Cada um: «Tornar-me testador» + instalar pela Play Store
+
+  8. Manter ≥12 opted-in durante 14 dias contínuos (docs/STORE.md §9c)
+
+  9. Dashboard → candidatar acesso a produção → depois promover (§10)
 
   Guia completo: docs/STORE.md
 

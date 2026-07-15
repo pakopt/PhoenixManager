@@ -34,6 +34,7 @@ Corre em Mac, Android ou iOS (dev) antes de lojas.
   [ ] 18. Desktop (Mac/Windows/Linux) — abre em fullscreen
   [ ] 19. Desktop — sair/voltar fullscreen (Mac: Esc · Win: Esc/F11 · Linux: Esc/F11)
   [ ] 20. Desktop — «Sair do jogo» no menu carreira e no drawer (confirma e fecha)
+  [ ] 21. Desktop — Ctrl/⌘+S guarda o slot activo; Ctrl/⌘+Q pede sair
 
 Automático (saves):
   ./scripts/test_mac.sh

@@ -186,6 +186,23 @@ class _ProgressRow extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    if (bracket.semiFinals.isEmpty && bracket.finalMatch == null) {
+      return Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            'Taça por sortear',
+            style: Theme.of(context).textTheme.labelMedium,
+          ),
+          const SizedBox(height: 4),
+          Text(
+            'O sorteio das eliminatórias ainda não foi feito.',
+            style: Theme.of(context).textTheme.bodySmall,
+          ),
+        ],
+      );
+    }
+
     final playedSemis = bracket.semiFinals.where((s) => s.isPlayed).length;
 
     return Column(

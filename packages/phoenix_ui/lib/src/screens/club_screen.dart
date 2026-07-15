@@ -122,16 +122,25 @@ class _ClubOverviewPanel extends StatelessWidget {
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.end,
                       children: [
-                        Text(
-                          '${coach.reputation}',
-                          style: theme.textTheme.titleLarge?.copyWith(
-                            color: theme.colorScheme.primary,
-                            fontWeight: FontWeight.bold,
+                        Semantics(
+                          label: 'Reputação: ${coach.reputation}',
+                          excludeSemantics: true,
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.end,
+                            children: [
+                              Text(
+                                '${coach.reputation}',
+                                style: theme.textTheme.titleLarge?.copyWith(
+                                  color: theme.colorScheme.primary,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                              Text(
+                                'Reputação',
+                                style: theme.textTheme.labelSmall,
+                              ),
+                            ],
                           ),
-                        ),
-                        Text(
-                          'Reputação',
-                          style: theme.textTheme.labelSmall,
                         ),
                       ],
                     ),
@@ -234,12 +243,17 @@ class _ClubOverviewPanel extends StatelessWidget {
                   if (session.injuredPlayers.isNotEmpty) ...[
                     const SizedBox(height: 12),
                     ...session.injuredPlayers.map(
-                      (p) => ListTile(
-                        dense: true,
-                        contentPadding: EdgeInsets.zero,
-                        leading: const Icon(Icons.healing, size: 18),
-                        title: Text(p.name),
-                        trailing: Text('${p.injuredDaysRemaining} dias'),
+                      (p) => Semantics(
+                        label:
+                            '${p.name}, ${p.injuredDaysRemaining} dias de lesão',
+                        excludeSemantics: true,
+                        child: ListTile(
+                          dense: true,
+                          contentPadding: EdgeInsets.zero,
+                          leading: const Icon(Icons.healing, size: 18),
+                          title: Text(p.name),
+                          trailing: Text('${p.injuredDaysRemaining} dias'),
+                        ),
                       ),
                     ),
                   ],
@@ -267,22 +281,26 @@ class _InfraTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Expanded(
-      child: Card(
-        child: Padding(
-          padding: const EdgeInsets.all(12),
-          child: Column(
-            children: [
-              Icon(icon, color: Theme.of(context).colorScheme.primary),
-              const SizedBox(height: 8),
-              Text(
-                value,
-                style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                      fontWeight: FontWeight.w600,
-                    ),
-                textAlign: TextAlign.center,
-              ),
-              Text(label, style: Theme.of(context).textTheme.labelSmall),
-            ],
+      child: Semantics(
+        label: '$label: $value',
+        excludeSemantics: true,
+        child: Card(
+          child: Padding(
+            padding: const EdgeInsets.all(12),
+            child: Column(
+              children: [
+                Icon(icon, color: Theme.of(context).colorScheme.primary),
+                const SizedBox(height: 8),
+                Text(
+                  value,
+                  style: Theme.of(context).textTheme.titleSmall?.copyWith(
+                        fontWeight: FontWeight.w600,
+                      ),
+                  textAlign: TextAlign.center,
+                ),
+                Text(label, style: Theme.of(context).textTheme.labelSmall),
+              ],
+            ),
           ),
         ),
       ),

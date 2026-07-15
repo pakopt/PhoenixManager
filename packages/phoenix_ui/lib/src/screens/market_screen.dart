@@ -115,20 +115,25 @@ class _TransferWindowBanner extends StatelessWidget {
     ];
     final windows = windowMonths.map((m) => monthNames[m - 1]).join(' · ');
 
-    return Card(
-      color: isOpen
-          ? theme.colorScheme.primaryContainer.withValues(alpha: 0.4)
-          : null,
-      child: ListTile(
-        leading: Icon(
-          isOpen ? Icons.lock_open : Icons.lock_outline,
-          color: isOpen ? theme.colorScheme.primary : theme.colorScheme.outline,
-        ),
-        title: Text(isOpen ? 'Janela de transferências aberta' : 'Mercado fechado'),
-        subtitle: Text(
-          isOpen
-              ? '${monthNames[currentMonth - 1]} · negócios activos'
-              : 'Janelas: $windows',
+    final title =
+        isOpen ? 'Janela de transferências aberta' : 'Mercado fechado';
+    final subtitle = isOpen
+        ? '${monthNames[currentMonth - 1]} · negócios activos'
+        : 'Janelas: $windows';
+    return Semantics(
+      label: '$title. $subtitle',
+      child: Card(
+        color: isOpen
+            ? theme.colorScheme.primaryContainer.withValues(alpha: 0.4)
+            : null,
+        child: ListTile(
+          leading: Icon(
+            isOpen ? Icons.lock_open : Icons.lock_outline,
+            color:
+                isOpen ? theme.colorScheme.primary : theme.colorScheme.outline,
+          ),
+          title: Text(title),
+          subtitle: Text(subtitle),
         ),
       ),
     );
@@ -181,41 +186,54 @@ class _TransferTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final player = session.registry.getPlayer(transfer.playerId);
+    final playerName = player?.name ?? transfer.playerId.value;
+    final from = session.clubName(transfer.fromClubId);
+    final to = session.clubName(transfer.toClubId);
     final isIncoming = transfer.toClubId == GameSession.userClubId;
     final isOutgoing = transfer.fromClubId == GameSession.userClubId;
     final isUser = isIncoming || isOutgoing;
+    final direction = isIncoming
+        ? 'Entrada'
+        : isOutgoing
+            ? 'Saída'
+            : 'Transferência';
+    final feeLabel =
+        transfer.isFree ? 'livre' : MoneyFormat.compact(transfer.fee);
 
-    return Card(
-      color: isUser
-          ? Theme.of(context).colorScheme.primary.withValues(alpha: 0.06)
-          : null,
-      child: ListTile(
-        leading: Icon(
-          transfer.isFree
-              ? Icons.person_off
-              : isIncoming
-                  ? Icons.arrow_downward
-                  : isOutgoing
-                      ? Icons.arrow_upward
-                      : Icons.swap_horiz,
-          color: isIncoming
-              ? Colors.green
-              : isOutgoing
-                  ? Colors.orange
-                  : null,
-        ),
-        title: Text(player?.name ?? transfer.playerId.value),
-        subtitle: Text(
-          '${session.clubName(transfer.fromClubId)} → '
-          '${session.clubName(transfer.toClubId)} · '
+    return Semantics(
+      label: '$direction: $playerName, de $from para $to, $feeLabel, '
           '${DateFormatUtil.gameDate(transfer.date)}',
+      excludeSemantics: true,
+      child: Card(
+        color: isUser
+            ? Theme.of(context).colorScheme.primary.withValues(alpha: 0.06)
+            : null,
+        child: ListTile(
+          leading: Icon(
+            transfer.isFree
+                ? Icons.person_off
+                : isIncoming
+                    ? Icons.arrow_downward
+                    : isOutgoing
+                        ? Icons.arrow_upward
+                        : Icons.swap_horiz,
+            color: isIncoming
+                ? Colors.green
+                : isOutgoing
+                    ? Colors.orange
+                    : null,
+          ),
+          title: Text(playerName),
+          subtitle: Text(
+            '$from → $to · ${DateFormatUtil.gameDate(transfer.date)}',
+          ),
+          trailing: transfer.isFree
+              ? const Text('Livre')
+              : Text(
+                  MoneyFormat.compact(transfer.fee),
+                  style: const TextStyle(fontWeight: FontWeight.bold),
+                ),
         ),
-        trailing: transfer.isFree
-            ? const Text('Livre')
-            : Text(
-                MoneyFormat.compact(transfer.fee),
-                style: const TextStyle(fontWeight: FontWeight.bold),
-              ),
       ),
     );
   }

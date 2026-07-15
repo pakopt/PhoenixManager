@@ -42,6 +42,7 @@ class _SimulationLabScreenState extends State<SimulationLabScreen> {
         title: const Text('Laboratório de simulação'),
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
+          tooltip: 'Voltar',
           onPressed: _controller.running ? null : () => Navigator.pop(context),
         ),
       ),

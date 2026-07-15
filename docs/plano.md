@@ -1,6 +1,6 @@
 # Plano — Project Phoenix Manager
 
-**Versão:** v0.8.14  
+**Versão:** v0.8.16  
 **Actualizado:** 15 de Julho de 2026  
 **Fase actual:** **E — Lançamento**
 
@@ -120,7 +120,7 @@ CLEAN_GRADLE=1 ./scripts/clean_dev_artifacts.sh   # inclui ~/.gradle/caches
 
 Guia completo: [`docs/STORE.md`](STORE.md) (§9b após enviar)
 
-**Upload:** `build/release/mobile/android/phoenix_manager.aab` (v0.8.14, versionCode 15)
+**Upload:** `build/release/mobile/android/phoenix_manager.aab` (v0.8.16, versionCode 17)
 
 **Depois de enviar:** link de teste interno no telemóvel → QA → promover a produção (§10)
 
@@ -189,14 +189,14 @@ Saída: `build/release/store/android/` — reutilizar quando a conta activar.
 
 | Campo | Valor actual |
 |-------|--------------|
-| `versionName` | `0.8.14` |
-| `versionCode` | `15` |
+| `versionName` | `0.8.16` |
+| `versionCode` | `17` |
 | Package / Bundle ID | `com.phoenix.manager` |
 
 **Próxima release:** editar `apps/phoenix_manager/pubspec.yaml`:
 
 ```yaml
-version: 0.8.14+15   # nome visível + versionCode (obrigatório incrementar +N)
+version: 0.8.16+17   # nome visível + versionCode (obrigatório incrementar +N)
 ```
 
 Depois: `./scripts/build_mobile.sh android` → novo AAB.
@@ -206,6 +206,8 @@ Depois: `./scripts/build_mobile.sh android` → novo AAB.
 ## Histórico recente (Fase E + v0.8.x)
 
 - ✅ **Scripts disco/Gradle** — `clean_dev_artifacts.sh`, `repair_gradle.sh`, `install_local.sh` verifica espaço  
+- ✅ **v0.8.16** — Semantics Finanças/Clube · tooltips pesquisa e Lab  
+- ✅ **v0.8.15** — Mercado/FFP a11y · atalhos Ctrl/⌘+S/Q · snacks save · taça por sortear  
 - ✅ **v0.8.14** — MoneyFormat staff/eventos · Semantics chips · SafeArea detalhe jogo/jogador  
 - ✅ **v0.8.13** — acessibilidade (plantel, treino, jogos, tabela) + tooltips rail + Lab PT  
 - ✅ **v0.8.12** — «Sair do jogo» no menu/drawer (desktop)  
@@ -234,7 +236,7 @@ Depois: `./scripts/build_mobile.sh android` → novo AAB.
 - ✅ `play_console_day1.sh` — guia upload quando conta activar  
 - ✅ Beta local — `local_beta.sh`, `docs/BETA.md`, `qa_manual.sh`  
 - ✅ Screenshots App Store — 5 capturas iOS (`capture_app_store_screenshots.sh`)  
-- ✅ Play Console — conta aprovada; teste interno (AAB **v0.8.14+15** recomendado)  
+- ✅ Play Console — conta aprovada; teste interno (AAB **v0.8.16+17** recomendado)  
 - ✅ Desktop — fullscreen Mac / Windows / Linux + «Sair do jogo»  
 
 ---

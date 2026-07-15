@@ -66,6 +66,7 @@ Corre em cada plataforma antes de enviar para lojas:
 | 18 | **Desktop** — abre em fullscreen (Mac / Windows / Linux) | |
 | 19 | **Desktop** — sair/voltar fullscreen (Mac: Esc · Win: Esc/F11 · Linux: Esc/F11) | |
 | 20 | **Desktop** — «Sair do jogo» no menu carreira e no drawer | |
+| 21 | **Desktop** — Ctrl/⌘+S guarda slot activo; Ctrl/⌘+Q pede sair | |
 
 Automático (saves):
 
@@ -89,7 +90,7 @@ CLEAN_GRADLE=1 ./scripts/clean_dev_artifacts.sh   # inclui ~/.gradle/caches (~5 
 Envia bugs ou sugestões para **pakopt7@gmail.com** com:
 
 - Dispositivo (Mac / Android / modelo)
-- Versão da app (menu carreira → rodapé, ex. `PSE v0.8.14`)
+- Versão da app (menu carreira → rodapé, ex. `PSE v0.8.16`)
 - Passos para reproduzir
 - Screenshot opcional
 

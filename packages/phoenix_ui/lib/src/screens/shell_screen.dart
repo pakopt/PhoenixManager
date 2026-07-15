@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:phoenix_ui/src/game/game_controller.dart';
 import 'package:phoenix_ui/src/game/play_mode.dart';
 import 'package:phoenix_ui/src/game/save_slot.dart';
@@ -117,6 +118,52 @@ class _ShellScreenState extends State<ShellScreen> {
     });
   }
 
+  Future<void> _quickSaveActiveSlot() async {
+    final slot = widget.controller.activeSlot;
+    await widget.controller.saveGame(slot);
+    if (!mounted) {
+      return;
+    }
+    UiFeedback.action();
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        behavior: SnackBarBehavior.floating,
+        content: Row(
+          children: [
+            const Icon(Icons.save_outlined),
+            const SizedBox(width: 8),
+            Expanded(child: Text('Carreira guardada no slot ${slot + 1}')),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Future<void> _confirmQuitDesktop() async {
+    final ok = await showDialog<bool>(
+      context: context,
+      builder: (ctx) => AlertDialog(
+        title: const Text('Sair do jogo?'),
+        content: const Text(
+          'Guarda a carreira antes, se precisares. A app será fechada.',
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(ctx, false),
+            child: const Text('Cancelar'),
+          ),
+          FilledButton(
+            onPressed: () => Navigator.pop(ctx, true),
+            child: const Text('Sair'),
+          ),
+        ],
+      ),
+    );
+    if (ok == true) {
+      PhoenixPlatformChrome.quitApp();
+    }
+  }
+
   static const _destinations = [
     (Icons.home_outlined, Icons.home, 'Início'),
     (Icons.groups_outlined, Icons.groups, 'Plantel'),
@@ -161,7 +208,7 @@ class _ShellScreenState extends State<ShellScreen> {
       ),
     );
 
-    return Scaffold(
+    final scaffold = Scaffold(
       key: _scaffoldKey,
       appBar: AppBar(
         leading: wide
@@ -235,6 +282,27 @@ class _ShellScreenState extends State<ShellScreen> {
               ],
             ),
     );
+
+    if (!PhoenixPlatformChrome.isDesktop) {
+      return scaffold;
+    }
+
+    return CallbackShortcuts(
+      bindings: {
+        const SingleActivator(LogicalKeyboardKey.keyS, meta: true):
+            _quickSaveActiveSlot,
+        const SingleActivator(LogicalKeyboardKey.keyS, control: true):
+            _quickSaveActiveSlot,
+        const SingleActivator(LogicalKeyboardKey.keyQ, meta: true):
+            _confirmQuitDesktop,
+        const SingleActivator(LogicalKeyboardKey.keyQ, control: true):
+            _confirmQuitDesktop,
+      },
+      child: Focus(
+        autofocus: true,
+        child: scaffold,
+      ),
+    );
   }
 }
 
@@ -294,11 +362,17 @@ class _GameDrawer extends StatelessWidget {
           ListTile(
             leading: const Icon(Icons.save),
             title: const Text('Guardar carreira'),
-            subtitle: controller.lastSavedAt != null
-                ? Text(
-                    'Último: ${DateFormatUtil.relative(controller.lastSavedAt!)}',
-                  )
-                : null,
+            subtitle: () {
+              final parts = <String>[
+                if (PhoenixPlatformChrome.isDesktop) 'Ctrl/⌘+S (slot activo)',
+                if (controller.lastSavedAt != null)
+                  'Último: ${DateFormatUtil.relative(controller.lastSavedAt!)}',
+              ];
+              if (parts.isEmpty) {
+                return null;
+              }
+              return Text(parts.join(' · '));
+            }(),
             onTap: () {
               UiFeedback.action();
               _pickSaveSlot(context);
@@ -343,6 +417,7 @@ class _GameDrawer extends StatelessWidget {
             ListTile(
               leading: const Icon(Icons.logout),
               title: const Text('Sair do jogo'),
+              subtitle: const Text('Ctrl/⌘+Q'),
               onTap: () async {
                 Navigator.pop(context);
                 final ok = await showDialog<bool>(
@@ -388,18 +463,38 @@ class _GameDrawer extends StatelessWidget {
       return;
     }
     await controller.saveGame(slot);
-    if (context.mounted) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Carreira guardada no slot ${slot + 1}')),
-      );
+    if (!context.mounted) {
+      return;
     }
+    UiFeedback.action();
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        behavior: SnackBarBehavior.floating,
+        content: Row(
+          children: [
+            const Icon(Icons.save_outlined),
+            const SizedBox(width: 8),
+            Expanded(child: Text('Carreira guardada no slot ${slot + 1}')),
+          ],
+        ),
+      ),
+    );
   }
 
   Future<void> _pickLoadSlot(BuildContext context) async {
     final filled = controller.slots.where((s) => !s.isEmpty).toList();
     if (filled.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Nenhum save encontrado')),
+        SnackBar(
+          behavior: SnackBarBehavior.floating,
+          content: const Row(
+            children: [
+              Icon(Icons.info_outline),
+              SizedBox(width: 8),
+              Expanded(child: Text('Nenhum save encontrado')),
+            ],
+          ),
+        ),
       );
       return;
     }
@@ -416,15 +511,29 @@ class _GameDrawer extends StatelessWidget {
       return;
     }
     final ok = await controller.loadGame(slot);
-    if (context.mounted) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(
-            ok ? 'Save carregado do slot ${slot + 1}' : 'Falha ao carregar',
-          ),
-        ),
-      );
+    if (!context.mounted) {
+      return;
     }
+    UiFeedback.action();
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        behavior: SnackBarBehavior.floating,
+        backgroundColor: ok ? null : Theme.of(context).colorScheme.error,
+        content: Row(
+          children: [
+            Icon(ok ? Icons.check_circle_outline : Icons.error_outline),
+            const SizedBox(width: 8),
+            Expanded(
+              child: Text(
+                ok
+                    ? 'Save carregado do slot ${slot + 1}'
+                    : 'Falha ao carregar',
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
   }
 }
 

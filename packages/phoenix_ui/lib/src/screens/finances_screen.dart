@@ -128,22 +128,33 @@ class FinancesScreen extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 16),
-            Card(
-              child: ListTile(
-                title: const Text('Rácio salarial / receita (FFP)'),
-                subtitle: Text(
-                  '${(finance.wageToRevenueRatio * 100).toStringAsFixed(1)}% '
-                  '(limite ${(ffpLimit * 100).toStringAsFixed(0)}%)',
-                ),
-                trailing: Icon(
-                  finance.wageToRevenueRatio > ffpLimit
-                      ? Icons.warning_amber
-                      : Icons.check_circle_outline,
-                  color: finance.wageToRevenueRatio > ffpLimit
-                      ? Colors.orange
-                      : Colors.green,
-                ),
-              ),
+            Builder(
+              builder: (context) {
+                final overLimit = finance.wageToRevenueRatio > ffpLimit;
+                final ratioPct =
+                    (finance.wageToRevenueRatio * 100).toStringAsFixed(1);
+                final limitPct = (ffpLimit * 100).toStringAsFixed(0);
+                final status =
+                    overLimit ? 'Acima do limite FFP' : 'Dentro do limite FFP';
+                return Semantics(
+                  label:
+                      'Rácio salarial sobre receita $ratioPct por cento. '
+                      'Limite $limitPct por cento. $status',
+                  excludeSemantics: true,
+                  child: Card(
+                    child: ListTile(
+                      title: const Text('Rácio salarial / receita (FFP)'),
+                      subtitle: Text('$ratioPct% (limite $limitPct%) · $status'),
+                      trailing: Icon(
+                        overLimit
+                            ? Icons.warning_amber
+                            : Icons.check_circle_outline,
+                        color: overLimit ? Colors.orange : Colors.green,
+                      ),
+                    ),
+                  ),
+                );
+              },
             ),
           ],
           const SizedBox(height: 24),
@@ -172,23 +183,37 @@ class FinancesScreen extends StatelessWidget {
             )
           else
             ...transfers.take(12).map(
-                  (transfer) => ListTile(
-                    leading: Icon(
-                      transfer.isFree ? Icons.person_off : Icons.swap_horiz,
-                    ),
-                    title: Text(
-                      session.registry.getPlayer(transfer.playerId)?.name ??
-                          transfer.playerId.value,
-                    ),
-                    subtitle: Text(
-                      '${session.clubName(transfer.fromClubId)} → '
-                      '${session.clubName(transfer.toClubId)} · '
-                      '${DateFormatUtil.gameDate(transfer.date)}',
-                    ),
-                    trailing: transfer.isFree
-                        ? const Text('Livre')
-                        : Text(MoneyFormat.compact(transfer.fee)),
-                  ),
+                  (transfer) {
+                    final playerName =
+                        session.registry.getPlayer(transfer.playerId)?.name ??
+                            transfer.playerId.value;
+                    final from = session.clubName(transfer.fromClubId);
+                    final to = session.clubName(transfer.toClubId);
+                    final feeLabel = transfer.isFree
+                        ? 'livre'
+                        : MoneyFormat.compact(transfer.fee);
+                    return Semantics(
+                      label:
+                          'Transferência: $playerName, de $from para $to, $feeLabel, '
+                          '${DateFormatUtil.gameDate(transfer.date)}',
+                      excludeSemantics: true,
+                      child: ListTile(
+                        leading: Icon(
+                          transfer.isFree
+                              ? Icons.person_off
+                              : Icons.swap_horiz,
+                        ),
+                        title: Text(playerName),
+                        subtitle: Text(
+                          '$from → $to · '
+                          '${DateFormatUtil.gameDate(transfer.date)}',
+                        ),
+                        trailing: transfer.isFree
+                            ? const Text('Livre')
+                            : Text(MoneyFormat.compact(transfer.fee)),
+                      ),
+                    );
+                  },
                 ),
         ],
       ),

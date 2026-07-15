@@ -8,6 +8,7 @@ import 'package:phoenix_ui/src/screens/dashboard_screen.dart';
 import 'package:phoenix_ui/src/screens/finances_screen.dart';
 import 'package:phoenix_ui/src/screens/fixtures_screen.dart';
 import 'package:phoenix_ui/src/screens/market_screen.dart';
+import 'package:phoenix_ui/src/legal/app_privacy_policy.dart';
 import 'package:phoenix_ui/src/screens/privacy_policy_screen.dart';
 import 'package:phoenix_ui/src/screens/squad_screen.dart';
 import 'package:phoenix_ui/src/screens/standings_screen.dart';
@@ -393,6 +394,12 @@ class _GameDrawer extends StatelessWidget {
             subtitle: Text(AppVersion.engineLabel),
           ),
           ListTile(
+            leading: const Icon(Icons.feedback_outlined),
+            title: const Text('Feedback / reportar bug'),
+            subtitle: const Text('Copia um modelo para email'),
+            onTap: () => _copyFeedbackTemplate(context),
+          ),
+          ListTile(
             leading: const Icon(Icons.privacy_tip_outlined),
             title: const Text('Privacidade'),
             onTap: () {
@@ -446,6 +453,36 @@ class _GameDrawer extends StatelessWidget {
             ),
           ],
         ],
+      ),
+    );
+  }
+
+  Future<void> _copyFeedbackTemplate(BuildContext context) async {
+    final text = AppVersion.feedbackTemplate(
+      playMode: controller.playMode.label,
+      saveSlot: controller.activeSlot,
+    );
+    await Clipboard.setData(ClipboardData(text: text));
+    if (!context.mounted) {
+      return;
+    }
+    Navigator.pop(context);
+    UiFeedback.action();
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        behavior: SnackBarBehavior.floating,
+        content: Row(
+          children: [
+            const Icon(Icons.content_copy),
+            const SizedBox(width: 8),
+            Expanded(
+              child: Text(
+                'Modelo copiado — cola no email para '
+                '${AppPrivacyPolicy.contactEmail}',
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

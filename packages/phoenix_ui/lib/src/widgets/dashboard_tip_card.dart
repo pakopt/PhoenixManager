@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:phoenix_ui/src/game/play_mode.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-/// Dica dispensável no dashboard para novos jogadores.
+/// Dica dispensável no dashboard para novos jogadores (rodízio nos primeiros jogos).
 class DashboardTipCard extends StatefulWidget {
   const DashboardTipCard({
     required this.playMode,
@@ -13,15 +13,20 @@ class DashboardTipCard extends StatefulWidget {
   final PlayMode playMode;
   final int matchesPlayed;
 
+  /// Mostra dicas até ao 3.º jogo (inclusive após o 1.º clique Express).
+  static const maxMatchesForTips = 3;
+
   @override
   State<DashboardTipCard> createState() => _DashboardTipCardState();
 }
 
 class _DashboardTipCardState extends State<DashboardTipCard> {
   static const _prefsKey = 'phoenix_dashboard_tip_dismissed';
+  static const _indexKey = 'phoenix_dashboard_tip_index';
 
   var _dismissed = true;
   var _loaded = false;
+  var _tipIndex = 0;
 
   @override
   void initState() {
@@ -36,6 +41,7 @@ class _DashboardTipCardState extends State<DashboardTipCard> {
     }
     setState(() {
       _dismissed = prefs.getBool(_prefsKey) ?? false;
+      _tipIndex = prefs.getInt(_indexKey) ?? 0;
       _loaded = true;
     });
   }
@@ -49,19 +55,56 @@ class _DashboardTipCardState extends State<DashboardTipCard> {
     setState(() => _dismissed = true);
   }
 
+  Future<void> _nextTip(int tipCount) async {
+    final next = (_tipIndex + 1) % tipCount;
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setInt(_indexKey, next);
+    if (!mounted) {
+      return;
+    }
+    setState(() => _tipIndex = next);
+  }
+
+  List<({String title, String body})> _tips() {
+    final isExpress = widget.playMode == PlayMode.express;
+    return [
+      (
+        title: 'Primeiros passos',
+        body: isExpress
+            ? 'Toca em «Simular jornada» para avançar vários jogos de uma vez. '
+                'O teu jogo aparece com animação Express.'
+            : 'Usa «Avançar 1 dia» para gerir o clube no dia a dia, ou '
+                '«Ir ao próximo jogo» para saltar directamente ao calendário.',
+      ),
+      (
+        title: 'Guarda a carreira',
+        body: 'No menu (⋯) → «Guardar carreira». Em PC podes usar Ctrl/⌘+S '
+            'para guardar no slot activo.',
+      ),
+      (
+        title: 'Plantel e treino',
+        body: 'No Plantel vês lesões e contratos a expirar. Em Treinos, '
+            'prioriza jogadores com margem CA → PA.',
+      ),
+      (
+        title: 'Mercado e finanças',
+        body: 'A janela de transferências só abre em certos meses. '
+            'Em Finanças verifica o rácio FFP (salários / receita).',
+      ),
+    ];
+  }
+
   @override
   Widget build(BuildContext context) {
-    if (!_loaded || _dismissed || widget.matchesPlayed > 0) {
+    if (!_loaded ||
+        _dismissed ||
+        widget.matchesPlayed >= DashboardTipCard.maxMatchesForTips) {
       return const SizedBox.shrink();
     }
 
     final theme = Theme.of(context);
-    final isExpress = widget.playMode == PlayMode.express;
-    final body = isExpress
-        ? 'Toca em «Simular jornada» para avançar vários jogos de uma vez. '
-            'O teu jogo aparece com animação Express.'
-        : 'Usa «Avançar 1 dia» para gerir o clube no dia a dia, ou '
-            '«Ir ao próximo jogo» para saltar directamente ao calendário.';
+    final tips = _tips();
+    final tip = tips[_tipIndex % tips.length];
 
     return Padding(
       padding: const EdgeInsets.only(bottom: 16),
@@ -78,8 +121,14 @@ class _DashboardTipCardState extends State<DashboardTipCard> {
                   const SizedBox(width: 8),
                   Expanded(
                     child: Text(
-                      'Primeiros passos',
+                      tip.title,
                       style: theme.textTheme.titleSmall,
+                    ),
+                  ),
+                  Text(
+                    '${(_tipIndex % tips.length) + 1}/${tips.length}',
+                    style: theme.textTheme.labelSmall?.copyWith(
+                      color: theme.colorScheme.outline,
                     ),
                   ),
                   IconButton(
@@ -89,13 +138,19 @@ class _DashboardTipCardState extends State<DashboardTipCard> {
                   ),
                 ],
               ),
-              Text(body, style: theme.textTheme.bodySmall),
-              Align(
-                alignment: Alignment.centerRight,
-                child: TextButton(
-                  onPressed: _dismiss,
-                  child: const Text('Entendi'),
-                ),
+              Text(tip.body, style: theme.textTheme.bodySmall),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  TextButton(
+                    onPressed: () => _nextTip(tips.length),
+                    child: const Text('Próxima dica'),
+                  ),
+                  TextButton(
+                    onPressed: _dismiss,
+                    child: const Text('Entendi'),
+                  ),
+                ],
               ),
             ],
           ),

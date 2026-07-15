@@ -28,7 +28,7 @@ Guia para **Google Play** e App Store. Steam: ver [steam/README.md](../steam/REA
 |-------|-------|
 | **Package name** | `com.phoenix.manager` |
 | **AAB para upload** | `build/release/mobile/android/phoenix_manager.aab` |
-| **Versão actual** | `0.8.17` (`versionCode` **18**) |
+| **Versão actual** | `0.8.18` (`versionCode` **19**) |
 | **Tipo** | Jogo, gratuito, offline |
 | **Contacto** | pakopt7@gmail.com |
 
@@ -96,7 +96,7 @@ Enquanto esperavas, estes comandos preparavam assets (já prontos):
 
 **Não podes** converter uma app **gratuita** em **paga à entrada** na mesma ficha Play Store.
 
-**Project Phoenix Manager (v0.8.17+):** escolhe **Gratuita** — sem anúncios, sem compras in-app, sem billing. A «receita» no jogo é simulação (finanças do clube), não monetização real.
+**Project Phoenix Manager (v0.8.18+):** escolhe **Gratuita** — sem anúncios, sem compras in-app, sem billing. A «receita» no jogo é simulação (finanças do clube), não monetização real.
 
 Monetização futura (opcional, requer código novo): IAP ou subscrição **mantendo a app gratuita**; ou nova app com outro package name se quiseres modelo «só paga para instalar».
 
@@ -127,14 +127,14 @@ Recomendado: **Teste interno** antes de produção — revisão mais rápida, at
    ```
 3. Aguardar processamento (1–5 min). Verificar:
    - Package: `com.phoenix.manager`
-   - Version name: `0.8.17` (ou a versão actual do `pubspec.yaml`)
-   - Version code: `18` (número após `+` no pubspec)
-4. **Nome da versão:** `0.8.17 (18)` (notas internas)
+   - Version name: `0.8.18` (ou a versão actual do `pubspec.yaml`)
+   - Version code: `19` (número após `+` no pubspec)
+4. **Nome da versão:** `0.8.18 (19)` (notas internas)
 5. **Notas da versão** (visíveis aos testadores) — ver também `./scripts/play_console_brief.sh`:
    ```
-   v0.8.17 — gestão offline com PSE; polish UI congelado para Play.
+   v0.8.18 — gestão offline com PSE; dicas e feedback para beta.
    - Modo Express e Diretor · liga, taça, mercado, finanças
-   - Acessibilidade ampla · desktop Ctrl/⌘+S/Q · edge-to-edge
+   - Dicas no dashboard · reportar bug pelo menu
    - Saves locais · sem conta · sem anúncios
    ```
 6. **Rever versão** → **Iniciar implementação para teste interno**
@@ -297,7 +297,7 @@ Respostas alinhadas com [`docs/PRIVACY.md`](PRIVACY.md):
 4. Instalar pela **Play Store** (não sideload)
 5. QA completo: [`docs/BETA.md`](BETA.md) (passos 1–17) ou `./scripts/qa_manual.sh`
 6. **Android 15+:** confirmar edge-to-edge — [`MOBILE.md`](../apps/phoenix_manager/MOBILE.md) § Android 15
-7. Problemas → pakopt7@gmail.com com versão (ex. `0.8.17 (18)`) e modelo do telemóvel
+7. Problemas → pakopt7@gmail.com com versão (ex. `0.8.18 (19)`) e modelo do telemóvel
 
 Quando estiveres satisfeito (e, se a conta for pessoal nova, após cumprir §9c):
 
@@ -358,7 +358,7 @@ Cada upload precisa de **`versionCode` maior** que o anterior.
 
 1. Editar `apps/phoenix_manager/pubspec.yaml`:
    ```yaml
-   version: 0.8.17+18   # nome visível + versionCode (número após +)
+   version: 0.8.18+19   # nome visível + versionCode (número após +)
    ```
 2. Rebuild e upload:
    ```bash

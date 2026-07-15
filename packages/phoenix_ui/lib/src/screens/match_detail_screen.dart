@@ -67,12 +67,14 @@ class _MatchDetailScreenState extends State<MatchDetailScreen>
     final result = widget.output.result;
     final home = widget.session.clubName(widget.output.fixture.homeClubId);
     final away = widget.session.clubName(widget.output.fixture.awayClubId);
-    final isUserHome = widget.output.fixture.homeClubId == GameSession.userClubId;
-    final isUserAway = widget.output.fixture.awayClubId == GameSession.userClubId;
+    final isUserHome =
+        widget.output.fixture.homeClubId == GameSession.userClubId;
+    final isUserAway =
+        widget.output.fixture.awayClubId == GameSession.userClubId;
     final userWon = (isUserHome && result.homeScore > result.awayScore) ||
         (isUserAway && result.awayScore > result.homeScore);
-    final userDraw = result.homeScore == result.awayScore &&
-        (isUserHome || isUserAway);
+    final userDraw =
+        result.homeScore == result.awayScore && (isUserHome || isUserAway);
 
     Widget? resultChip;
     if (isUserHome || isUserAway) {
@@ -85,7 +87,11 @@ class _MatchDetailScreenState extends State<MatchDetailScreen>
                   : Icons.sentiment_dissatisfied,
           size: 16,
         ),
-        label: Text(userDraw ? 'Empate' : userWon ? 'Vitória' : 'Derrota'),
+        label: Text(userDraw
+            ? 'Empate'
+            : userWon
+                ? 'Vitória'
+                : 'Derrota'),
       );
     }
 
@@ -119,7 +125,8 @@ class _MatchDetailScreenState extends State<MatchDetailScreen>
           _wrapSection(
             intervalStart: 0.28,
             intervalEnd: 0.58,
-            child: MatchPitchView(output: widget.output, session: widget.session),
+            child:
+                MatchPitchView(output: widget.output, session: widget.session),
           ),
           const SizedBox(height: 16),
           _wrapSection(
@@ -259,44 +266,48 @@ class _MatchDetailScreenState extends State<MatchDetailScreen>
       );
     }
 
-    return Container(
-      padding: const EdgeInsets.all(20),
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(12),
-        color: Theme.of(context).colorScheme.surfaceContainerHighest,
-      ),
-      child: Column(
-        children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Expanded(
-                child: Text(
-                  home,
-                  textAlign: TextAlign.end,
-                  style: Theme.of(context).textTheme.titleMedium,
+    return Semantics(
+      label: 'Placar: $home $homeScore-$awayScore $away',
+      child: Container(
+        padding: const EdgeInsets.all(20),
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(12),
+          color: Theme.of(context).colorScheme.surfaceContainerHighest,
+        ),
+        child: Column(
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Expanded(
+                  child: Text(
+                    home,
+                    textAlign: TextAlign.end,
+                    style: Theme.of(context).textTheme.titleMedium,
+                  ),
                 ),
-              ),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 16),
-                child: Text(
-                  '$homeScore - $awayScore',
-                  style: Theme.of(context).textTheme.headlineMedium?.copyWith(
-                        fontWeight: FontWeight.bold,
-                      ),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 16),
+                  child: Text(
+                    '$homeScore - $awayScore',
+                    style: Theme.of(context).textTheme.headlineMedium?.copyWith(
+                          fontWeight: FontWeight.bold,
+                        ),
+                  ),
                 ),
-              ),
-              Expanded(
-                child: Text(away, style: Theme.of(context).textTheme.titleMedium),
-              ),
+                Expanded(
+                  child: Text(away,
+                      style: Theme.of(context).textTheme.titleMedium),
+                ),
+              ],
+            ),
+            Text(dateLabel, style: Theme.of(context).textTheme.bodySmall),
+            if (resultChip != null) ...[
+              const SizedBox(height: 8),
+              resultChip,
             ],
-          ),
-          Text(dateLabel, style: Theme.of(context).textTheme.bodySmall),
-          if (resultChip != null) ...[
-            const SizedBox(height: 8),
-            resultChip,
           ],
-        ],
+        ),
       ),
     );
   }

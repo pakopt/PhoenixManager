@@ -1,7 +1,7 @@
 # Plano — Project Phoenix Manager
 
-**Versão:** v0.8.5  
-**Actualizado:** 14 de Julho de 2026  
+**Versão:** v0.8.6  
+**Actualizado:** 15 de Julho de 2026  
 **Fase actual:** **E — Lançamento**
 
 Documento vivo do roadmap. O plano detalhado de arquitectura (PSE, GDD, motores) vive no **Cursor plan** (`phoenix_manager_game_2a890b62.plan.md`) e em [`docs/roadmap/master-roadmap-v1.md`](roadmap/master-roadmap-v1.md); este ficheiro reflecte **o que está feito** e **o que falta para publicar**.
@@ -189,14 +189,14 @@ Saída: `build/release/store/android/` — reutilizar quando a conta activar.
 
 | Campo | Valor actual |
 |-------|--------------|
-| `versionName` | `0.8.5` |
-| `versionCode` | `6` |
+| `versionName` | `0.8.6` |
+| `versionCode` | `7` |
 | Package / Bundle ID | `com.phoenix.manager` |
 
 **Próxima release:** editar `apps/phoenix_manager/pubspec.yaml`:
 
 ```yaml
-version: 0.8.5+6   # nome visível + versionCode (obrigatório incrementar +N)
+version: 0.8.6+7   # nome visível + versionCode (obrigatório incrementar +N)
 ```
 
 Depois: `./scripts/build_mobile.sh android` → novo AAB.
@@ -206,6 +206,7 @@ Depois: `./scripts/build_mobile.sh android` → novo AAB.
 ## Histórico recente (Fase E + v0.8.x)
 
 - ✅ **Scripts disco/Gradle** — `clean_dev_artifacts.sh`, `repair_gradle.sh`, `install_local.sh` verifica espaço  
+- ✅ **v0.8.6** — datas legíveis (taça, conquistas) + acessibilidade (forma V/E/D, placar jogo)  
 - ✅ **v0.8.5** — textos PT-PT (destaques, ficha jogador, academia) + notas Play actualizadas  
 - ✅ **v0.8.4** — alertas pré-jogo (modo Diretor) + empty state staff  
 - ✅ **v0.8.3** — datas legíveis (calendário, dashboard, finanças, mercado, taça, forma, cabeçalho, saves) + scroll classificação  

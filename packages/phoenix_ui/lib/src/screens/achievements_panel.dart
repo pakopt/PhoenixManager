@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:phoenix_core/phoenix_core.dart';
 import 'package:phoenix_ui/src/game/achievement_entry.dart';
 import 'package:phoenix_ui/src/game/game_session.dart';
+import 'package:phoenix_ui/src/util/date_format.dart';
 
 class AchievementsPanel extends StatelessWidget {
   const AchievementsPanel({required this.session, super.key});
@@ -97,7 +98,7 @@ class _AchievementTile extends StatelessWidget {
               Padding(
                 padding: const EdgeInsets.only(top: 4),
                 child: Text(
-                  'Desbloqueada · ${entry.unlocked!.unlockedOn} · '
+                  'Desbloqueada · ${DateFormatUtil.gameDate(entry.unlocked!.unlockedOn)} · '
                   'Época ${entry.unlocked!.seasonYear}',
                   style: theme.textTheme.labelSmall?.copyWith(
                     color: theme.colorScheme.primary,

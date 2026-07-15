@@ -125,7 +125,7 @@ class _NextCupMatchRow extends StatelessWidget {
           style: Theme.of(context).textTheme.bodyLarge,
         ),
         Text(
-          fixture.date.toString(),
+          DateFormatUtil.gameDate(fixture.date),
           style: Theme.of(context).textTheme.bodySmall?.copyWith(
                 color: Theme.of(context).colorScheme.outline,
               ),

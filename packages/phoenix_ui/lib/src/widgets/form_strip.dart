@@ -67,16 +67,24 @@ class _FormBadge extends StatelessWidget {
       MatchOutcome.draw => (Colors.orange.shade800, 'E'),
       MatchOutcome.loss => (Colors.red.shade700, 'D'),
     };
+    final semanticsLabel = switch (outcome) {
+      MatchOutcome.win => 'Vitória',
+      MatchOutcome.draw => 'Empate',
+      MatchOutcome.loss => 'Derrota',
+    };
 
-    return CircleAvatar(
-      radius: 14,
-      backgroundColor: color,
-      child: Text(
-        label,
-        style: const TextStyle(
-          color: Colors.white,
-          fontWeight: FontWeight.bold,
-          fontSize: 12,
+    return Semantics(
+      label: semanticsLabel,
+      child: CircleAvatar(
+        radius: 14,
+        backgroundColor: color,
+        child: Text(
+          label,
+          style: const TextStyle(
+            color: Colors.white,
+            fontWeight: FontWeight.bold,
+            fontSize: 12,
+          ),
         ),
       ),
     );

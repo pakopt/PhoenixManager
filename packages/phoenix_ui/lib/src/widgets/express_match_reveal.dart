@@ -69,56 +69,59 @@ class ExpressAnimatedScoreboard extends StatelessWidget {
       curve: const Interval(0.2, 0.55, curve: Curves.easeOut),
     );
 
-    return Container(
-      padding: const EdgeInsets.all(20),
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(12),
-        color: theme.colorScheme.surfaceContainerHighest,
-      ),
-      child: Column(
-        children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Expanded(
-                child: Text(
-                  homeName,
-                  textAlign: TextAlign.end,
-                  style: theme.textTheme.titleMedium,
+    return Semantics(
+      label: 'Placar: $homeName $homeScore-$awayScore $awayName',
+      child: Container(
+        padding: const EdgeInsets.all(20),
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(12),
+          color: theme.colorScheme.surfaceContainerHighest,
+        ),
+        child: Column(
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Expanded(
+                  child: Text(
+                    homeName,
+                    textAlign: TextAlign.end,
+                    style: theme.textTheme.titleMedium,
+                  ),
                 ),
-              ),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 16),
-                child: ScaleTransition(
-                  scale: scoreAnim,
-                  child: _AnimatedScoreLine(
-                    animation: scoreAnim,
-                    homeScore: homeScore,
-                    awayScore: awayScore,
-                    style: theme.textTheme.headlineMedium?.copyWith(
-                      fontWeight: FontWeight.bold,
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 16),
+                  child: ScaleTransition(
+                    scale: scoreAnim,
+                    child: _AnimatedScoreLine(
+                      animation: scoreAnim,
+                      homeScore: homeScore,
+                      awayScore: awayScore,
+                      style: theme.textTheme.headlineMedium?.copyWith(
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
                   ),
                 ),
-              ),
-              Expanded(
-                child: Text(awayName, style: theme.textTheme.titleMedium),
-              ),
-            ],
-          ),
-          FadeTransition(
-            opacity: metaAnim,
-            child: Column(
-              children: [
-                Text(dateLabel, style: theme.textTheme.bodySmall),
-                if (resultChip != null) ...[
-                  const SizedBox(height: 8),
-                  resultChip!,
-                ],
+                Expanded(
+                  child: Text(awayName, style: theme.textTheme.titleMedium),
+                ),
               ],
             ),
-          ),
-        ],
+            FadeTransition(
+              opacity: metaAnim,
+              child: Column(
+                children: [
+                  Text(dateLabel, style: theme.textTheme.bodySmall),
+                  if (resultChip != null) ...[
+                    const SizedBox(height: 8),
+                    resultChip!,
+                  ],
+                ],
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

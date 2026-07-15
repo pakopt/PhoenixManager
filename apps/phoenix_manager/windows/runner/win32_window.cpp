@@ -150,13 +150,16 @@ bool Win32Window::Create(const std::wstring& title,
 }
 
 bool Win32Window::Show() {
-  // Borderless fullscreen no monitor actual (sair: Alt+F4).
+  // Borderless fullscreen no monitor actual (sair: Esc → janela; Alt+F4 → sair).
   MONITORINFO monitor_info = {};
   monitor_info.cbSize = sizeof(MONITORINFO);
   HMONITOR monitor =
       MonitorFromWindow(window_handle_, MONITOR_DEFAULTTONEAREST);
   if (GetMonitorInfo(monitor, &monitor_info)) {
-    DWORD style = static_cast<DWORD>(GetWindowLong(window_handle_, GWL_STYLE));
+    GetWindowRect(window_handle_, &saved_window_rect_);
+    saved_style_ =
+        static_cast<DWORD>(GetWindowLong(window_handle_, GWL_STYLE));
+    DWORD style = saved_style_;
     style &= ~(WS_CAPTION | WS_THICKFRAME | WS_MINIMIZEBOX | WS_MAXIMIZEBOX |
                WS_SYSMENU);
     style |= WS_POPUP;
@@ -166,9 +169,23 @@ bool Win32Window::Show() {
                  monitor_info.rcMonitor.right - monitor_info.rcMonitor.left,
                  monitor_info.rcMonitor.bottom - monitor_info.rcMonitor.top,
                  SWP_FRAMECHANGED | SWP_SHOWWINDOW);
+    is_borderless_fullscreen_ = true;
     return true;
   }
   return ShowWindow(window_handle_, SW_SHOWMAXIMIZED);
+}
+
+void Win32Window::ExitBorderlessFullscreen() {
+  if (!is_borderless_fullscreen_ || !window_handle_) {
+    return;
+  }
+  SetWindowLong(window_handle_, GWL_STYLE, static_cast<LONG>(saved_style_));
+  SetWindowPos(window_handle_, nullptr, saved_window_rect_.left,
+               saved_window_rect_.top,
+               saved_window_rect_.right - saved_window_rect_.left,
+               saved_window_rect_.bottom - saved_window_rect_.top,
+               SWP_FRAMECHANGED | SWP_NOZORDER | SWP_SHOWWINDOW);
+  is_borderless_fullscreen_ = false;
 }
 
 // static
@@ -230,6 +247,13 @@ Win32Window::MessageHandler(HWND hwnd,
         SetFocus(child_content_);
       }
       return 0;
+
+    case WM_KEYDOWN:
+      if (wparam == VK_ESCAPE && is_borderless_fullscreen_) {
+        ExitBorderlessFullscreen();
+        return 0;
+      }
+      break;
 
     case WM_DWMCOLORIZATIONCOLORCHANGED:
       UpdateTheme(hwnd);

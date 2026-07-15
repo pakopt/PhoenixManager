@@ -70,7 +70,9 @@ packages/phoenix_core    ← domain + config
 |------------|--------|
 | Web (Chrome) | ✅ dev |
 | **Android** (APK + AAB) | ✅ instalável local |
-| **macOS** | ✅ em /Applications (`com.phoenix.manager`) |
+| **macOS** | ✅ em /Applications (`com.phoenix.manager`) · fullscreen |
+| **Windows** | ✅ build desktop · fullscreen (Esc restaura janela) |
+| **Linux** | ✅ build desktop · fullscreen (SteamPipe) |
 | **Steam (SteamPipe + scripts)** | ⏸️ mais tarde |
 
 ## Fase C / v0.7 — Interface Flutter

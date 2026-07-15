@@ -51,6 +51,11 @@ LRESULT
 FlutterWindow::MessageHandler(HWND hwnd, UINT const message,
                               WPARAM const wparam,
                               LPARAM const lparam) noexcept {
+  // Esc sai do borderless fullscreen antes do Flutter consumir a tecla.
+  if (message == WM_KEYDOWN && wparam == VK_ESCAPE) {
+    ExitBorderlessFullscreen();
+  }
+
   // Give Flutter, including plugins, an opportunity to handle window messages.
   if (flutter_controller_) {
     std::optional<LRESULT> result =

@@ -39,6 +39,9 @@ class Win32Window {
   // Show the current window. Returns true if the window was successfully shown.
   bool Show();
 
+  // Sai do borderless fullscreen (Esc) e restaura a janela anterior.
+  void ExitBorderlessFullscreen();
+
   // Release OS resources associated with window.
   void Destroy();
 
@@ -97,6 +100,10 @@ class Win32Window {
 
   // window handle for hosted content.
   HWND child_content_ = nullptr;
+
+  bool is_borderless_fullscreen_ = false;
+  DWORD saved_style_ = 0;
+  RECT saved_window_rect_ = {};
 };
 
 #endif  // RUNNER_WIN32_WINDOW_H_

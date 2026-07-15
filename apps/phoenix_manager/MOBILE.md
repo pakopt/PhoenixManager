@@ -188,16 +188,17 @@ Artefactos em `build/release/store/android/`. Ver [`docs/STORE.md`](../../docs/S
 ./scripts/run_dev.sh macos    # dev com hot reload
 ```
 
-## Desktop — ecrã inteiro (Mac / Windows)
+## Desktop — ecrã inteiro (Mac / Windows / Linux)
 
 A app abre em **fullscreen** no PC:
 
 | Plataforma | Comportamento | Sair do fullscreen |
 |------------|---------------|--------------------|
 | **macOS** | Modo ecrã inteiro nativo | Esc ou Controlo+Cmd+F |
-| **Windows** | Janela sem moldura a cobrir o monitor | Alt+F4 (fechar app) |
+| **Windows** | Janela sem moldura a cobrir o monitor | Esc (volta a janela) · Alt+F4 (fechar) |
+| **Linux** | `gtk_window_fullscreen` | Esc / F11 (conforme o WM) |
 
-Implementação: `macos/Runner/MainFlutterWindow.swift` e `windows/runner/win32_window.cpp`.
+Implementação: `macos/Runner/MainFlutterWindow.swift`, `windows/runner/win32_window.cpp`, `linux/runner/my_application.cc`.
 
 ## Testar saves (release)
 

@@ -108,11 +108,10 @@ echo ""
 echo "==> Notas da versão (teste interno)"
 cat <<EOF
 
-v$VERSION_NAME — gestão offline com PSE; acessibilidade Finanças e Clube.
+v$VERSION_NAME — gestão offline com PSE; polish UI congelado para Play.
 - Modo Express e Diretor · liga, taça, mercado, finanças
-- Semantics transferências/infraestrutura · tooltips UI
-- Desktop: Ctrl/⌘+S guardar · Ctrl/⌘+Q sair
-- Edge-to-edge Android 15 · saves locais · sem anúncios
+- Acessibilidade ampla · desktop Ctrl/⌘+S/Q · edge-to-edge
+- Saves locais · sem conta · sem anúncios
 - Motor Phoenix Simulation Engine v$VERSION_NAME
 
 EOF

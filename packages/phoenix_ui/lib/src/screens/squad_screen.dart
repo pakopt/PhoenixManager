@@ -76,13 +76,18 @@ class _SquadScreenState extends State<SquadScreen> {
                   for (final option in SquadSort.values)
                     Padding(
                       padding: const EdgeInsets.only(right: 8),
-                      child: FilterChip(
-                        label: Text(_sortLabel(option)),
+                      child: Semantics(
+                        button: true,
                         selected: _sort == option,
-                        onSelected: (_) {
-                          UiFeedback.tap();
-                          setState(() => _sort = option);
-                        },
+                        label: 'Ordenar por ${_sortSemanticsLabel(option)}',
+                        child: FilterChip(
+                          label: Text(_sortLabel(option)),
+                          selected: _sort == option,
+                          onSelected: (_) {
+                            UiFeedback.tap();
+                            setState(() => _sort = option);
+                          },
+                        ),
                       ),
                     ),
                 ],
@@ -165,6 +170,15 @@ class _SquadScreenState extends State<SquadScreen> {
       SquadSort.age => 'Idade',
       SquadSort.name => 'Nome',
       SquadSort.form => 'Forma',
+    };
+  }
+
+  static String _sortSemanticsLabel(SquadSort sort) {
+    return switch (sort) {
+      SquadSort.ability => 'capacidade actual',
+      SquadSort.age => 'idade',
+      SquadSort.name => 'nome',
+      SquadSort.form => 'forma',
     };
   }
 }

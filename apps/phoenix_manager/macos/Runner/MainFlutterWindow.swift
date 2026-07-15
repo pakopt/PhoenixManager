@@ -11,5 +11,12 @@ class MainFlutterWindow: NSWindow {
     RegisterGeneratedPlugins(registry: flutterViewController)
 
     super.awakeFromNib()
+
+    // Abrir em ecrã inteiro (sair: Esc ou Controlo+Cmd+F).
+    collectionBehavior.insert(.fullScreenPrimary)
+    DispatchQueue.main.async { [weak self] in
+      guard let self, !self.styleMask.contains(.fullScreen) else { return }
+      self.toggleFullScreen(nil)
+    }
   }
 }

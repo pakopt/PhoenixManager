@@ -150,7 +150,25 @@ bool Win32Window::Create(const std::wstring& title,
 }
 
 bool Win32Window::Show() {
-  return ShowWindow(window_handle_, SW_SHOWNORMAL);
+  // Borderless fullscreen no monitor actual (sair: Alt+F4).
+  MONITORINFO monitor_info = {};
+  monitor_info.cbSize = sizeof(MONITORINFO);
+  HMONITOR monitor =
+      MonitorFromWindow(window_handle_, MONITOR_DEFAULTTONEAREST);
+  if (GetMonitorInfo(monitor, &monitor_info)) {
+    DWORD style = static_cast<DWORD>(GetWindowLong(window_handle_, GWL_STYLE));
+    style &= ~(WS_CAPTION | WS_THICKFRAME | WS_MINIMIZEBOX | WS_MAXIMIZEBOX |
+               WS_SYSMENU);
+    style |= WS_POPUP;
+    SetWindowLong(window_handle_, GWL_STYLE, static_cast<LONG>(style));
+    SetWindowPos(window_handle_, HWND_TOP, monitor_info.rcMonitor.left,
+                 monitor_info.rcMonitor.top,
+                 monitor_info.rcMonitor.right - monitor_info.rcMonitor.left,
+                 monitor_info.rcMonitor.bottom - monitor_info.rcMonitor.top,
+                 SWP_FRAMECHANGED | SWP_SHOWWINDOW);
+    return true;
+  }
+  return ShowWindow(window_handle_, SW_SHOWMAXIMIZED);
 }
 
 // static

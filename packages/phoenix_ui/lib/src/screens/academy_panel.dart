@@ -4,6 +4,7 @@ import 'package:phoenix_engine/phoenix_engine.dart';
 import 'package:phoenix_ui/src/game/game_controller.dart';
 import 'package:phoenix_ui/src/screens/player_detail_screen.dart';
 import 'package:phoenix_ui/src/util/date_format.dart';
+import 'package:phoenix_ui/src/widgets/empty_state.dart';
 import 'package:phoenix_ui/src/widgets/player_stat_bar.dart';
 
 class AcademyPanel extends StatelessWidget {
@@ -100,15 +101,11 @@ class AcademyPanel extends StatelessWidget {
         ),
         const SizedBox(height: 8),
         if (youth.isEmpty)
-          const Card(
-            child: Padding(
-              padding: EdgeInsets.all(24),
-              child: Text(
-                'Sem jogadores na faixa etária da academia. '
+          const EmptyState(
+            icon: Icons.school_outlined,
+            message:
+                'Sem jogadores na faixa etária da academia.\n'
                 'Aguarda o intake de fim de época.',
-                textAlign: TextAlign.center,
-              ),
-            ),
           )
         else
           ...youth.map(

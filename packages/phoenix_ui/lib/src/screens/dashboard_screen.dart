@@ -122,7 +122,25 @@ class DashboardScreen extends StatelessWidget {
                   else if (session.isSeasonComplete)
                     const Text('Liga concluída · taça em curso')
                   else
-                    const Text('Sem jogos agendados'),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 4),
+                      child: Row(
+                        children: [
+                          Icon(
+                            Icons.event_busy,
+                            size: 20,
+                            color: Theme.of(context).colorScheme.outline,
+                          ),
+                          const SizedBox(width: 8),
+                          Text(
+                            'Sem jogos agendados',
+                            style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                                  color: Theme.of(context).colorScheme.outline,
+                                ),
+                          ),
+                        ],
+                      ),
+                    ),
                   const SizedBox(height: 16),
                   if (session.isFullSeasonComplete)
                     FilledButton.icon(

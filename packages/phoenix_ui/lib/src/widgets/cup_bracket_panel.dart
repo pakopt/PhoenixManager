@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:phoenix_core/phoenix_core.dart';
 import 'package:phoenix_ui/src/game/cup_bracket_snapshot.dart';
 import 'package:phoenix_ui/src/game/game_session.dart';
+import 'package:phoenix_ui/src/util/date_format.dart';
 
 class CupBracketPanel extends StatelessWidget {
   const CupBracketPanel({
@@ -307,7 +308,7 @@ class _BracketMatchCard extends StatelessWidget {
                     ),
                   ),
                   Text(
-                    _formatDate(fixture.date),
+                    DateFormatUtil.gameDate(fixture.date),
                     style: Theme.of(context).textTheme.labelSmall,
                   ),
                 ],
@@ -344,9 +345,6 @@ class _BracketMatchCard extends StatelessWidget {
       ),
     );
   }
-
-  String _formatDate(GameDate date) =>
-      '${date.day.toString().padLeft(2, '0')}/${date.month.toString().padLeft(2, '0')}';
 }
 
 class _TeamRow extends StatelessWidget {

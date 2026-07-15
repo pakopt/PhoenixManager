@@ -31,6 +31,8 @@ Corre em Mac, Android ou iOS (dev) antes de lojas.
   [ ] 15. Dashboard — «Forma recente» (vazia no início ou após jogos)
   [ ] 16. Android — barras sistema não tapam botões (edge-to-edge; ver MOBILE.md)
   [ ] 17. Rodapé menu — versão PSE visível (ex. v$VERSION_NAME)
+  [ ] 18. Desktop (Mac/Windows/Linux) — abre em fullscreen
+  [ ] 19. Desktop — sair/voltar fullscreen (Mac: Esc · Win: Esc/F11 · Linux: Esc/F11)
 
 Automático (saves):
   ./scripts/test_mac.sh

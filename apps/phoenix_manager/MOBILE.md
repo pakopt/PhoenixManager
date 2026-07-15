@@ -195,10 +195,12 @@ A app abre em **fullscreen** no PC:
 | Plataforma | Comportamento | Sair do fullscreen |
 |------------|---------------|--------------------|
 | **macOS** | Modo ecrã inteiro nativo | Esc ou Controlo+Cmd+F |
-| **Windows** | Janela sem moldura a cobrir o monitor | Esc (volta a janela) · Alt+F4 (fechar) |
+| **Windows** | Janela sem moldura a cobrir o monitor | Esc (volta a janela) · F11 (alternar) · Alt+F4 (fechar) |
 | **Linux** | `gtk_window_fullscreen` | Esc / F11 (conforme o WM) |
 
 Implementação: `macos/Runner/MainFlutterWindow.swift`, `windows/runner/win32_window.cpp`, `linux/runner/my_application.cc`.
+
+Nome visível no SO: **Phoenix Manager** (Dock / barra de título / propriedades exe no Windows).
 
 ## Testar saves (release)
 

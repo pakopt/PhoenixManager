@@ -39,8 +39,14 @@ class Win32Window {
   // Show the current window. Returns true if the window was successfully shown.
   bool Show();
 
-  // Sai do borderless fullscreen (Esc) e restaura a janela anterior.
+  // Entra em borderless fullscreen (também via F11).
+  void EnterBorderlessFullscreen();
+
+  // Sai do borderless fullscreen (Esc / F11) e restaura a janela anterior.
   void ExitBorderlessFullscreen();
+
+  // Alterna borderless fullscreen (F11).
+  void ToggleBorderlessFullscreen();
 
   // Release OS resources associated with window.
   void Destroy();

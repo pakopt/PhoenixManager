@@ -6,9 +6,12 @@ ROOT="$(cd "$(dirname "$0")/.." && pwd)"
 STORE="$ROOT/build/release/store/android"
 AAB="$ROOT/build/release/mobile/android/phoenix_manager.aab"
 PRIVACY="https://pakopt.github.io/PhoenixManager/privacy.html"
+# shellcheck source=read_app_version.sh
+source "$ROOT/scripts/read_app_version.sh"
 
 echo "════════════════════════════════════════"
 echo "  Play Console — Dia 1 (teste interno)"
+echo "  Versão: $VERSION_FULL  ·  Package: com.phoenix.manager"
 echo "════════════════════════════════════════"
 echo ""
 echo "Pré-requisito: conta Play Developer APROVADA (não em verificação)."
@@ -70,7 +73,9 @@ fi
 if [[ -t 0 ]]; then
   echo "Copiar textos agora? [s/N]"
   read -r ans
-  if [[ "${ans,,}" == "s" || "${ans,,}" == "sim" ]]; then
+  # Bash 3.2 (macOS) não tem ${var,,} — normalizar com tr.
+  ans_lc="$(printf '%s' "$ans" | tr '[:upper:]' '[:lower:]')"
+  if [[ "$ans_lc" == "s" || "$ans_lc" == "sim" || "$ans_lc" == "y" || "$ans_lc" == "yes" ]]; then
     "$ROOT/scripts/play_console_brief.sh"
   fi
 else

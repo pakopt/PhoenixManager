@@ -150,29 +150,39 @@ bool Win32Window::Create(const std::wstring& title,
 }
 
 bool Win32Window::Show() {
-  // Borderless fullscreen no monitor actual (sair: Esc → janela; Alt+F4 → sair).
+  // Borderless fullscreen ao arranque (Esc/F11 → janela; Alt+F4 → sair).
+  EnterBorderlessFullscreen();
+  if (is_borderless_fullscreen_) {
+    return true;
+  }
+  return ShowWindow(window_handle_, SW_SHOWMAXIMIZED);
+}
+
+void Win32Window::EnterBorderlessFullscreen() {
+  if (!window_handle_ || is_borderless_fullscreen_) {
+    return;
+  }
   MONITORINFO monitor_info = {};
   monitor_info.cbSize = sizeof(MONITORINFO);
   HMONITOR monitor =
       MonitorFromWindow(window_handle_, MONITOR_DEFAULTTONEAREST);
-  if (GetMonitorInfo(monitor, &monitor_info)) {
-    GetWindowRect(window_handle_, &saved_window_rect_);
-    saved_style_ =
-        static_cast<DWORD>(GetWindowLong(window_handle_, GWL_STYLE));
-    DWORD style = saved_style_;
-    style &= ~(WS_CAPTION | WS_THICKFRAME | WS_MINIMIZEBOX | WS_MAXIMIZEBOX |
-               WS_SYSMENU);
-    style |= WS_POPUP;
-    SetWindowLong(window_handle_, GWL_STYLE, static_cast<LONG>(style));
-    SetWindowPos(window_handle_, HWND_TOP, monitor_info.rcMonitor.left,
-                 monitor_info.rcMonitor.top,
-                 monitor_info.rcMonitor.right - monitor_info.rcMonitor.left,
-                 monitor_info.rcMonitor.bottom - monitor_info.rcMonitor.top,
-                 SWP_FRAMECHANGED | SWP_SHOWWINDOW);
-    is_borderless_fullscreen_ = true;
-    return true;
+  if (!GetMonitorInfo(monitor, &monitor_info)) {
+    return;
   }
-  return ShowWindow(window_handle_, SW_SHOWMAXIMIZED);
+  GetWindowRect(window_handle_, &saved_window_rect_);
+  saved_style_ =
+      static_cast<DWORD>(GetWindowLong(window_handle_, GWL_STYLE));
+  DWORD style = saved_style_;
+  style &= ~(WS_CAPTION | WS_THICKFRAME | WS_MINIMIZEBOX | WS_MAXIMIZEBOX |
+             WS_SYSMENU);
+  style |= WS_POPUP;
+  SetWindowLong(window_handle_, GWL_STYLE, static_cast<LONG>(style));
+  SetWindowPos(window_handle_, HWND_TOP, monitor_info.rcMonitor.left,
+               monitor_info.rcMonitor.top,
+               monitor_info.rcMonitor.right - monitor_info.rcMonitor.left,
+               monitor_info.rcMonitor.bottom - monitor_info.rcMonitor.top,
+               SWP_FRAMECHANGED | SWP_SHOWWINDOW);
+  is_borderless_fullscreen_ = true;
 }
 
 void Win32Window::ExitBorderlessFullscreen() {
@@ -186,6 +196,14 @@ void Win32Window::ExitBorderlessFullscreen() {
                saved_window_rect_.bottom - saved_window_rect_.top,
                SWP_FRAMECHANGED | SWP_NOZORDER | SWP_SHOWWINDOW);
   is_borderless_fullscreen_ = false;
+}
+
+void Win32Window::ToggleBorderlessFullscreen() {
+  if (is_borderless_fullscreen_) {
+    ExitBorderlessFullscreen();
+  } else {
+    EnterBorderlessFullscreen();
+  }
 }
 
 // static
@@ -251,6 +269,10 @@ Win32Window::MessageHandler(HWND hwnd,
     case WM_KEYDOWN:
       if (wparam == VK_ESCAPE && is_borderless_fullscreen_) {
         ExitBorderlessFullscreen();
+        return 0;
+      }
+      if (wparam == VK_F11) {
+        ToggleBorderlessFullscreen();
         return 0;
       }
       break;

@@ -118,9 +118,11 @@ CLEAN_GRADLE=1 ./scripts/clean_dev_artifacts.sh   # inclui ~/.gradle/caches
 ./scripts/package_play_store.sh     # ZIP AAB + gráficos (se necessário)
 ```
 
-Guia completo: [`docs/STORE.md`](STORE.md)
+Guia completo: [`docs/STORE.md`](STORE.md) (§9b após enviar)
 
 **Upload:** `build/release/mobile/android/phoenix_manager.aab` (v0.8.5, versionCode 6)
+
+**Depois de enviar:** link de teste interno no telemóvel → QA → promover a produção (§10)
 
 ### 2. Beta local (paralelo)
 

@@ -289,6 +289,20 @@ Respostas alinhadas com [`docs/PRIVACY.md`](PRIVACY.md):
 | **COVID-19 / apps de notícias** | Não aplicável |
 | **Exportação EUA** | Geralmente "Não" para software de entretenimento offline — segue o assistente |
 
+### 9b. Teste interno — após enviar
+
+1. **Vista geral da publicação** — estado «Em revisão» (teste interno: minutos a ~24 h)
+2. Email da Google quando aprovado
+3. **Testadores** → copiar **link de adesão** → abrir no telemóvel (conta Gmail da lista)
+4. Instalar pela **Play Store** (não sideload)
+5. QA rápido: [`docs/BETA.md`](BETA.md) passos 1–6 (menu, dashboard, Express, save)
+6. Problemas → pakopt7@gmail.com com versão `0.8.5 (6)` e modelo do telemóvel
+
+Quando estiveres satisfeito (1–7 dias de teste real):
+
+- **Promover** a produção (§10), ou
+- **Teste fechado** com mais emails antes de produção
+
 ### 10. Enviar para revisão (produção)
 
 Depois de validar em **teste interno** (1–7 dias de uso real):

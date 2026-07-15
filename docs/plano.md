@@ -59,7 +59,7 @@ Documento vivo do roadmap. O plano detalhado de arquitectura (PSE, GDD, motores)
 | Screenshots telemóvel | ✅ | `./scripts/capture_play_screenshots_auto.sh` (flutter drive → Mac) |
 | Feature graphic 1024×500 | ✅ | `./scripts/export_feature_graphic.sh` |
 | Conta Play Developer | ✅ | Conta aprovada (Jul 2026) |
-| Teste interno Play Console | 🔄 | **Agora** — `./scripts/play_console_day1.sh` |
+| Teste interno Play Console | 🔄 | Ficha da loja + AAB — aguardar revisão Google |
 | Produção Play Store | ⏳ | Após validar teste interno |
 
 ### Lojas — App Store
@@ -223,7 +223,7 @@ Depois: `./scripts/build_mobile.sh android` → novo AAB.
 - ✅ `play_console_day1.sh` — guia upload quando conta activar  
 - ✅ Beta local — `local_beta.sh`, `docs/BETA.md`, `qa_manual.sh`  
 - ✅ Screenshots App Store — 5 capturas iOS (`capture_app_store_screenshots.sh`)  
-- ✅ Play Console — conta aprovada; upload teste interno em curso  
+- ✅ Play Console — conta aprovada; teste interno em submissão (ficha + AAB v0.8.5+6)  
 
 ---
 

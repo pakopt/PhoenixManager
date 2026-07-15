@@ -54,33 +54,52 @@ EOF
 
 echo ""
 echo "==> Ficha da loja (copiar para Presença na loja)"
-cat <<'EOF'
+cat <<EOF
 
 Título:
 Project Phoenix Manager
 
-Descrição curta:
-Gestão de futebol offline com motor Phoenix Simulation Engine.
+Descrição curta (máx. 80 caracteres):
+Gestor de futebol offline: liga, taça, mercado, plantel, treinos e finanças.
 
 Descrição completa:
-Project Phoenix Manager é um jogo de gestão de futebol offline-first para telemóvel e tablet.
+Project Phoenix Manager é um jogo de gestão de futebol para Android. Conduz um clube numa liga completa com taça eliminatória, temporadas, promoções e estatísticas. Tudo funciona no telemóvel ou tablet, sem conta de utilizador e sem ligação à Internet após a instalação.
 
-Assume o comando do teu clube: plantel, tácticas, mercado, finanças e calendário numa liga completa com taça. Tudo corre no dispositivo — sem conta, sem servidor, sem anúncios.
+O QUE PODES FAZER NO JOGO
 
-DESTAQUES
-• Modo Express — simula jornadas rapidamente e vê resultados animados
-• Carreira completa — temporadas, promoções, taças e estatísticas
-• Motor Phoenix Simulation Engine (PSE v$VERSION_NAME) — partidas credíveis e finanças simuladas
-• Saves locais — continua a carreira quando quiseres
-• Política de privacidade transparente — não recolhemos dados pessoais
+• Escolher ou continuar uma carreira — vários slots de save locais
+• Gerir o plantel — ver jogadores, atributos, forma, lesões e contratos
+• Planear treinos e academia de jovens
+• Negociar no mercado de transferências e renovar contratos
+• Acompanhar finanças do clube — salários, receitas, resultado de época
+• Ver calendário de jogos, classificação da liga e taça
+• Jogar em Modo Express — simular jornadas rapidamente com resultados animados
+• Jogar em Modo Diretor — gestão completa com alertas antes de cada jogo
+• Ler relatos completos das partidas e acompanhar a simulação
 
-IDEAL PARA
-• Fãs de manager games que querem jogar offline
-• Sessões curtas no telemóvel ou partidas mais longas no tablet
+COMO FUNCIONA
 
-Requisitos: Android 5.0+. Funciona sem ligação à Internet após instalação.
+O jogo usa o motor Phoenix Simulation Engine (PSE v$VERSION_NAME) para simular partidas, economia do clube e progressão da temporada. Os dados da carreira ficam guardados apenas no teu dispositivo — não enviamos informação para servidores externos.
 
-Contacto: pakopt7@gmail.com
+CARACTERÍSTICAS
+
+• Gratuito, sem anúncios
+• Sem compras dentro da app
+• Sem registo ou login
+• Offline-first — joga em viagem ou sem Wi‑Fi
+• Política de privacidade: não recolhemos dados pessoais
+
+PARA QUEM É
+
+Ideal para fãs de jogos de gestão desportiva (football manager) que preferem uma experiência simples, rápida e totalmente offline.
+
+REQUISITOS
+
+Android 5.0 ou superior.
+
+CONTACTO
+
+Questões ou feedback: $CONTACT
 
 Categoria sugerida: Jogos → Desporto (ou Simulação)
 EOF

@@ -4,6 +4,7 @@ set -euo pipefail
 
 ROOT="$(cd "$(dirname "$0")/.." && pwd)"
 APK="$ROOT/build/release/mobile/android/phoenix_manager.apk"
+PKG="com.phoenix.manager"
 EMULATOR="${ANDROID_EMULATOR:-medium_phone}"
 LAUNCH_EMULATOR="${LAUNCH_EMULATOR:-1}"
 
@@ -79,15 +80,28 @@ if ! device_ready || ! wait_for_boot; then
 fi
 
 echo "A instalar $APK"
-for attempt in 1 2 3 4 5; do
-  if "$ADB" install -r "$APK"; then
-    echo "Phoenix Manager instalado no Android."
-    "$ADB" shell am start -n com.phoenix.manager/com.phoenix.manager.MainActivity 2>/dev/null || true
-    exit 0
-  fi
-  echo "Tentativa $attempt falhou — a aguardar..."
-  sleep 5
-done
-echo "Instalação falhou. Corre manualmente:"
+install_apk() {
+  "$ADB" install -r "$APK" 2>&1
+}
+
+if install_apk; then
+  echo "Phoenix Manager instalado no Android."
+  "$ADB" shell am start -n "$PKG/$PKG.MainActivity" 2>/dev/null || true
+  exit 0
+fi
+
+echo ""
+echo "Assinatura incompatível — versão Play Store ou debug no dispositivo."
+echo "A desinstalar $PKG e a reinstalar APK local (saves do telemóvel serão apagados)..."
+"$ADB" uninstall "$PKG" >/dev/null 2>&1 || true
+
+if install_apk; then
+  echo "Phoenix Manager instalado no Android."
+  "$ADB" shell am start -n "$PKG/$PKG.MainActivity" 2>/dev/null || true
+  exit 0
+fi
+
+echo "Instalação falhou. Manualmente:"
+echo "  \"$ADB\" uninstall $PKG"
 echo "  \"$ADB\" install -r \"$APK\""
 exit 1

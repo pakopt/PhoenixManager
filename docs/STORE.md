@@ -87,6 +87,19 @@ Enquanto esperavas, estes comandos preparavam assets (já prontos):
 
 > O **package name** `com.phoenix.manager` fica fixo na primeira release. Não o alteres no código depois de publicar.
 
+#### Gratuita vs paga (decisão permanente)
+
+| Escolha na criação | Efeito |
+|--------------------|--------|
+| **Gratuita** ✅ (recomendado) | Download 0 €; podes acrescentar **IAP/subscrições** mais tarde |
+| **Paga** | Utilizador paga para instalar; **não podes mudar para gratuita** depois |
+
+**Não podes** converter uma app **gratuita** em **paga à entrada** na mesma ficha Play Store.
+
+**Project Phoenix Manager (v0.8.5):** escolhe **Gratuita** — sem anúncios, sem compras in-app, sem billing. A «receita» no jogo é simulação (finanças do clube), não monetização real.
+
+Monetização futura (opcional, requer código novo): IAP ou subscrição **mantendo a app gratuita**; ou nova app com outro package name se quiseres modelo «só paga para instalar».
+
 ### 2. Painel — completar tarefas obrigatórias
 
 A Play Console mostra um checklist. Ordem recomendada:
@@ -114,15 +127,15 @@ Recomendado: **Teste interno** antes de produção — revisão mais rápida, at
    ```
 3. Aguardar processamento (1–5 min). Verificar:
    - Package: `com.phoenix.manager`
-   - Version name: `0.8.0-alpha`
-   - Version code: `1`
-4. **Nome da versão:** `0.8.0-alpha (1)` (notas internas)
+   - Version name: `0.8.5`
+   - Version code: `6`
+4. **Nome da versão:** `0.8.5 (6)` (notas internas)
 5. **Notas da versão** (visíveis aos testadores), exemplo:
    ```
-   v0.8.0-alpha — primeira build pública de teste.
-   - Modo Express e carreira completa
-   - Saves locais offline
-   - Motor Phoenix Simulation Engine v0.8
+   v0.8.5 — gestão completa offline com PSE.
+   - Modo Express e Diretor · liga, taça, mercado, finanças
+   - Alertas pré-jogo, datas legíveis, relato completo
+   - Saves locais · sem conta · sem anúncios
    ```
 6. **Rever versão** → **Iniciar implementação para teste interno**
 
@@ -147,30 +160,49 @@ Project Phoenix Manager
 **Descrição curta** (máx. 80 caracteres):
 
 ```
-Gestão de futebol offline com motor Phoenix Simulation Engine.
+Gestor de futebol offline: liga, taça, mercado, plantel, treinos e finanças.
 ```
 
-**Descrição completa** (máx. 4000 caracteres):
+**Descrição completa** (máx. 4000 caracteres — a Google exige funcionalidades claras):
 
 ```
-Project Phoenix Manager é um jogo de gestão de futebol offline-first para telemóvel e tablet.
+Project Phoenix Manager é um jogo de gestão de futebol para Android. Conduz um clube numa liga completa com taça eliminatória, temporadas, promoções e estatísticas. Tudo funciona no telemóvel ou tablet, sem conta de utilizador e sem ligação à Internet após a instalação.
 
-Assume o comando do teu clube: plantel, tácticas, mercado, finanças e calendário numa liga completa com taça. Tudo corre no dispositivo — sem conta, sem servidor, sem anúncios.
+O QUE PODES FAZER NO JOGO
 
-DESTAQUES
-• Modo Express — simula jornadas rapidamente e vê resultados animados
-• Carreira completa — temporadas, promoções, taças e estatísticas
-• Motor Phoenix Simulation Engine (PSE v0.8) — partidas credíveis e finanças simuladas
-• Saves locais — continua a carreira quando quiseres
-• Política de privacidade transparente — não recolhemos dados pessoais
+• Escolher ou continuar uma carreira — vários slots de save locais
+• Gerir o plantel — ver jogadores, atributos, forma, lesões e contratos
+• Planear treinos e academia de jovens
+• Negociar no mercado de transferências e renovar contratos
+• Acompanhar finanças do clube — salários, receitas, resultado de época
+• Ver calendário de jogos, classificação da liga e taça
+• Jogar em Modo Express — simular jornadas rapidamente com resultados animados
+• Jogar em Modo Diretor — gestão completa com alertas antes de cada jogo
+• Ler relatos completos das partidas e acompanhar a simulação
 
-IDEAL PARA
-• Fãs de manager games que querem jogar offline
-• Sessões curtas no telemóvel ou partidas mais longas no tablet
+COMO FUNCIONA
 
-Requisitos: Android 5.0+. Funciona sem ligação à Internet após instalação.
+O jogo usa o motor Phoenix Simulation Engine (PSE) para simular partidas, economia do clube e progressão da temporada. Os dados da carreira ficam guardados apenas no teu dispositivo — não enviamos informação para servidores externos.
 
-Contacto: pakopt7@gmail.com
+CARACTERÍSTICAS
+
+• Gratuito, sem anúncios
+• Sem compras dentro da app
+• Sem registo ou login
+• Offline-first — joga em viagem ou sem Wi‑Fi
+• Política de privacidade: não recolhemos dados pessoais
+
+PARA QUEM É
+
+Ideal para fãs de jogos de gestão desportiva (football manager) que preferem uma experiência simples, rápida e totalmente offline.
+
+REQUISITOS
+
+Android 5.0 ou superior.
+
+CONTACTO
+
+Questões ou feedback: pakopt7@gmail.com
 ```
 
 **Categoria:** Jogos → Desporto (ou Simulação)
@@ -201,6 +233,8 @@ chmod +x scripts/capture_play_screenshots.sh scripts/export_feature_graphic.sh
 ```
 
 Saída: `build/release/store/android/` — upload na Play Console → **Presença na loja → Gráficos**.
+
+> Se instalaste pelo **teste interno Play Store**, o APK local pode falhar (`assinaturas diferentes`). Para capturas: `adb uninstall com.phoenix.manager` ou `./scripts/capture_play_screenshots.sh --install --batch` (desinstala automaticamente).
 
 Modo interactivo: `./scripts/capture_play_screenshots.sh` (Enter entre capturas).
 
@@ -291,9 +325,11 @@ Cada upload precisa de **`versionCode` maior** que o anterior.
 | `Version code X has already been used` | `versionCode` repetido | Aumenta o número após `+` no `pubspec.yaml` |
 | Aviso debug symbols no build | cmdline-tools em falta | `./scripts/setup_android_cmdline_tools.sh` ou Android Studio SDK Manager |
 | Rejeição Data safety | Formulário inconsistente com a app | Offline, sem analytics — marcar "não recolhe dados" |
-| Rejeição política privacidade | URL inacessível | Testa o link em janela anónima |
+| Rejeição ficha da loja | Descrição vaga («não descreve recursos») | Usa descrição completa com secção «O QUE PODES FAZER» — ver §4 ou `./scripts/play_console_brief.sh` |
 | App não aparece para testadores | Lista de testadores vazia | Adiciona emails + link de adesão |
-| "Alpha" no nome da versão | Aceite pela Play Store | OK para teste interno; considera `0.8.0` sem sufixo em produção |
+| `INSTALL_FAILED_UPDATE_INCOMPATIBLE` | App Play Store + APK local (assinaturas diferentes) | `adb uninstall com.phoenix.manager` → `./scripts/install_android.sh` ou capturas com `--install` |
+| Screenshots iguais | Batch sem mudar ecrã no emulador | Navega a cada Enter no modo `--batch`; mín. 2 ecrãs diferentes |
+| "Alpha" no nome da versão | Aceite pela Play Store | OK para teste interno; considera `0.8.5` em produção |
 
 ### 13. Checklist final Play Store
 

@@ -249,16 +249,22 @@ class _PlayerTrainingCard extends StatelessWidget {
                     ),
                   ),
                   if (canGrow)
-                    Icon(
-                      Icons.trending_up,
-                      color: Theme.of(context).colorScheme.primary,
-                      size: 20,
+                    Tooltip(
+                      message: 'Com margem de evolução',
+                      child: Icon(
+                        Icons.trending_up,
+                        color: Theme.of(context).colorScheme.primary,
+                        size: 20,
+                      ),
                     )
                   else if (player.isInjured)
-                    Icon(
-                      Icons.healing,
-                      color: Theme.of(context).colorScheme.error,
-                      size: 20,
+                    Tooltip(
+                      message: 'Lesionado',
+                      child: Icon(
+                        Icons.healing,
+                        color: Theme.of(context).colorScheme.error,
+                        size: 20,
+                      ),
                     ),
                   Icon(
                     Icons.chevron_right,

@@ -162,43 +162,56 @@ class _LeagueTableState extends State<_LeagueTable> {
               final isUser = entry.clubId == GameSession.userClubId;
               final played = entry.won + entry.drawn + entry.lost;
 
-              final row = Container(
-                color: isUser
-                    ? Theme.of(context).colorScheme.primary.withValues(alpha: 0.1)
-                    : null,
-                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
-                child: Row(
-                  children: [
-                    SizedBox(
-                      width: 28,
-                      child: Text('${index + 1}'),
-                    ),
-                    Expanded(
-                      flex: 4,
-                      child: Text(
-                        club?.name ?? entry.clubId.value,
-                        style: TextStyle(
-                          fontWeight: isUser ? FontWeight.bold : FontWeight.normal,
+              final clubName = club?.name ?? entry.clubId.value;
+              final gdSign = entry.goalDifference >= 0 ? '+' : '';
+              final row = Semantics(
+                label:
+                    '${index + 1}. $clubName — $played jogos, ${entry.points} pontos, '
+                    'diferença $gdSign${entry.goalDifference}',
+                excludeSemantics: true,
+                child: Container(
+                  color: isUser
+                      ? Theme.of(context)
+                          .colorScheme
+                          .primary
+                          .withValues(alpha: 0.1)
+                      : null,
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+                  child: Row(
+                    children: [
+                      SizedBox(
+                        width: 28,
+                        child: Text('${index + 1}'),
+                      ),
+                      Expanded(
+                        flex: 4,
+                        child: Text(
+                          clubName,
+                          style: TextStyle(
+                            fontWeight:
+                                isUser ? FontWeight.bold : FontWeight.normal,
+                          ),
                         ),
                       ),
-                    ),
-                    Expanded(
-                      child: Text('$played', textAlign: TextAlign.center),
-                    ),
-                    Expanded(
-                      child: Text(
-                        '${entry.points}',
-                        textAlign: TextAlign.center,
-                        style: const TextStyle(fontWeight: FontWeight.bold),
+                      Expanded(
+                        child: Text('$played', textAlign: TextAlign.center),
                       ),
-                    ),
-                    Expanded(
-                      child: Text(
-                        '${entry.goalDifference >= 0 ? '+' : ''}${entry.goalDifference}',
-                        textAlign: TextAlign.center,
+                      Expanded(
+                        child: Text(
+                          '${entry.points}',
+                          textAlign: TextAlign.center,
+                          style: const TextStyle(fontWeight: FontWeight.bold),
+                        ),
                       ),
-                    ),
-                  ],
+                      Expanded(
+                        child: Text(
+                          '$gdSign${entry.goalDifference}',
+                          textAlign: TextAlign.center,
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
               );
 

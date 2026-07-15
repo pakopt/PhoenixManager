@@ -152,7 +152,7 @@ class CareerMenuScreen extends StatelessWidget {
                               );
                             },
                       icon: const Icon(Icons.science_outlined),
-                      label: const Text('Simulation Lab'),
+                      label: const Text('Laboratório de simulação'),
                     ),
                     Text(
                       'Balanceamento headless — não afecta saves',

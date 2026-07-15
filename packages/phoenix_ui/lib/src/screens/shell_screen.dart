@@ -201,8 +201,14 @@ class _ShellScreenState extends State<ShellScreen> {
                   destinations: [
                     for (final d in _destinations)
                       NavigationRailDestination(
-                        icon: Icon(d.$1),
-                        selectedIcon: Icon(d.$2),
+                        icon: Tooltip(
+                          message: d.$3,
+                          child: Icon(d.$1),
+                        ),
+                        selectedIcon: Tooltip(
+                          message: d.$3,
+                          child: Icon(d.$2),
+                        ),
                         label: Text(d.$3),
                       ),
                   ],

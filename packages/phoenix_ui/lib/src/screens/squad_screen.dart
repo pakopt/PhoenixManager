@@ -221,10 +221,13 @@ class _SquadPlayerCard extends StatelessWidget {
                             if (isWonderkid)
                               const Padding(
                                 padding: EdgeInsets.only(left: 4),
-                                child: Icon(
-                                  Icons.star,
-                                  size: 16,
-                                  color: Colors.amber,
+                                child: Tooltip(
+                                  message: 'Estrela jovem — alto potencial',
+                                  child: Icon(
+                                    Icons.star,
+                                    size: 16,
+                                    color: Colors.amber,
+                                  ),
                                 ),
                               ),
                           ],
@@ -241,12 +244,15 @@ class _SquadPlayerCard extends StatelessWidget {
                     _StatusBadge(
                       icon: Icons.healing,
                       label: '${player.injuredDaysRemaining}d',
+                      semanticsLabel:
+                          'Lesionado, ${player.injuredDaysRemaining} dias restantes',
                       color: theme.colorScheme.error,
                     )
                   else if (isExpiring)
                     _StatusBadge(
                       icon: Icons.assignment_late,
                       label: 'Expira',
+                      semanticsLabel: 'Contrato a expirar',
                       color: theme.colorScheme.tertiary,
                     )
                   else
@@ -274,22 +280,28 @@ class _StatusBadge extends StatelessWidget {
   const _StatusBadge({
     required this.icon,
     required this.label,
+    required this.semanticsLabel,
     required this.color,
   });
 
   final IconData icon;
   final String label;
+  final String semanticsLabel;
   final Color color;
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        Icon(icon, size: 14, color: color),
-        const SizedBox(width: 4),
-        Text(label, style: TextStyle(color: color, fontSize: 12)),
-      ],
+    return Semantics(
+      label: semanticsLabel,
+      excludeSemantics: true,
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Icon(icon, size: 14, color: color),
+          const SizedBox(width: 4),
+          Text(label, style: TextStyle(color: color, fontSize: 12)),
+        ],
+      ),
     );
   }
 }

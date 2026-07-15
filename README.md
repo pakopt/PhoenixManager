@@ -127,7 +127,7 @@ dart run bin/phoenix_headless.dart --economy
 
 ### Simulation Lab (UI)
 
-No menu de carreira, abre **Simulation Lab** para correr simulações headless (época completa, N épocas ou N dias) num mundo isolado — útil para balanceamento sem afectar saves. Presets de **xG** (padrão / alto / baixo) e **economia** (padrão / generosa / apertada). Botões **Comparar xG** / **Comparar economia** correm duas simulações e mostram tabela side-by-side.
+No menu de carreira, abre **Laboratório de simulação** para correr simulações headless (época completa, N épocas ou N dias) num mundo isolado — útil para balanceamento sem afectar saves. Presets de **xG** (padrão / alto / baixo) e **economia** (padrão / generosa / apertada). Botões **Comparar xG** / **Comparar economia** correm duas simulações e mostram tabela side-by-side.
 
 ### Testes e builds
 

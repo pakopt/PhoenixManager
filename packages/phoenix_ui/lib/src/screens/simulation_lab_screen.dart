@@ -39,7 +39,7 @@ class _SimulationLabScreenState extends State<SimulationLabScreen> {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Simulation Lab'),
+        title: const Text('Laboratório de simulação'),
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
           onPressed: _controller.running ? null : () => Navigator.pop(context),

@@ -167,11 +167,19 @@ class FixtureTile extends StatelessWidget {
         title: Text('$home vs $away'),
         subtitle: roundLabel != null ? Text(roundLabel!) : null,
         trailing: played
-            ? Text(
-                '${fixture.homeScore} - ${fixture.awayScore}',
-                style: const TextStyle(fontWeight: FontWeight.bold),
+            ? Semantics(
+                label:
+                    'Resultado ${fixture.homeScore} a ${fixture.awayScore}',
+                excludeSemantics: true,
+                child: Text(
+                  '${fixture.homeScore} - ${fixture.awayScore}',
+                  style: const TextStyle(fontWeight: FontWeight.bold),
+                ),
               )
-            : const Icon(Icons.schedule, size: 18),
+            : Semantics(
+                label: 'Por jogar',
+                child: const Icon(Icons.schedule, size: 18),
+              ),
       ),
     );
   }

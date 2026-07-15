@@ -16,11 +16,33 @@ class FormStrip extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final entries = session.recentForm(limit: limit);
-    if (entries.isEmpty) {
-      return const SizedBox.shrink();
-    }
-
     final theme = Theme.of(context);
+
+    if (entries.isEmpty) {
+      return Card(
+        child: Padding(
+          padding: const EdgeInsets.all(16),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              Text(
+                'Forma recente',
+                style: theme.textTheme.titleSmall?.copyWith(
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              const SizedBox(height: 8),
+              Text(
+                'Ainda sem jogos disputados.',
+                style: theme.textTheme.bodySmall?.copyWith(
+                  color: theme.colorScheme.outline,
+                ),
+              ),
+            ],
+          ),
+        ),
+      );
+    }
 
     return Card(
       child: Padding(

@@ -44,7 +44,7 @@ A partir do **Android 15**, apps que segmentam **SDK 35** são apresentadas **at
 4. Modos de navegação: **gestos** e **3 botões** (Definições → Sistema → Navegação)
 5. Teclado (pesquisa no plantel): campo visível com `adjustResize` no manifest
 
-O aviso da Play Console desaparece após **novo upload** de AAB com estas alterações (não basta só o teste interno `0.8.5+6` actual).
+O aviso da Play Console desaparece após **novo upload** de AAB com edge-to-edge (v0.8.6+).
 
 ## Identidade da app
 

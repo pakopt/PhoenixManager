@@ -108,9 +108,10 @@ echo ""
 echo "==> Notas da versão (teste interno)"
 cat <<EOF
 
-v$VERSION_NAME — gestão completa offline com PSE.
+v$VERSION_NAME — gestão offline com PSE, polish UX e Android 15.
 - Modo Express e Diretor · liga, taça, mercado, finanças
-- Alertas pré-jogo, datas legíveis, relato completo
+- Edge-to-edge Android 15 (SDK 35) · datas legíveis · acessibilidade
+- Empty states e forma recente no dashboard
 - Saves locais · sem conta · sem anúncios
 - Motor Phoenix Simulation Engine v$VERSION_NAME
 

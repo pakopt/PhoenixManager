@@ -342,6 +342,7 @@ Cada upload precisa de **`versionCode` maior** que o anterior.
 | Rejeição ficha da loja | Descrição vaga («não descreve recursos») | Usa descrição completa com secção «O QUE PODES FAZER» — ver §4 ou `./scripts/play_console_brief.sh` |
 | App não aparece para testadores | Lista de testadores vazia | Adiciona emails + link de adesão |
 | `INSTALL_FAILED_UPDATE_INCOMPATIBLE` | App Play Store + APK local (assinaturas diferentes) | `adb uninstall com.phoenix.manager` → `./scripts/install_android.sh` ou capturas com `--install` |
+| Aviso «edge-to-edge» / SDK 35 | targetSdk 35 sem inserções | Ver `apps/phoenix_manager/MOBILE.md` § Android 15; rebuild AAB |
 | Screenshots iguais | Batch sem mudar ecrã no emulador | Navega a cada Enter no modo `--batch`; mín. 2 ecrãs diferentes |
 | "Alpha" no nome da versão | Aceite pela Play Store | OK para teste interno; considera `0.8.5` em produção |
 

@@ -206,7 +206,7 @@ Depois: `./scripts/build_mobile.sh android` → novo AAB.
 ## Histórico recente (Fase E + v0.8.x)
 
 - ✅ **Scripts disco/Gradle** — `clean_dev_artifacts.sh`, `repair_gradle.sh`, `install_local.sh` verifica espaço  
-- ✅ **v0.8.6** — datas legíveis (taça, conquistas) + acessibilidade (forma V/E/D, placar jogo)  
+- ✅ **v0.8.6** — datas legíveis (taça, conquistas) + acessibilidade (forma V/E/D, placar jogo) + **edge-to-edge Android 15**  
 - ✅ **v0.8.5** — textos PT-PT (destaques, ficha jogador, academia) + notas Play actualizadas  
 - ✅ **v0.8.4** — alertas pré-jogo (modo Diretor) + empty state staff  
 - ✅ **v0.8.3** — datas legíveis (calendário, dashboard, finanças, mercado, taça, forma, cabeçalho, saves) + scroll classificação  

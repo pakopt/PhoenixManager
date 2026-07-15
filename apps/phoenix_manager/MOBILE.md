@@ -23,6 +23,29 @@ Diagnóstico:
   - Guia: `./scripts/setup_android_cmdline_tools.sh`
 - **Licenças** — `flutter doctor --android-licenses`
 
+### Android 15 — edge-to-edge (targetSdk 35)
+
+A partir do **Android 15**, apps que segmentam **SDK 35** são apresentadas **até às extremidades** (conteúdo por trás da barra de estado e navegação). A Play Console avisa se isto não estiver tratado.
+
+**O que o projecto faz:**
+
+| Camada | Ficheiro | Acção |
+|--------|----------|--------|
+| Nativo | `android/.../MainActivity.kt` | `WindowCompat.setDecorFitsSystemWindows` + contraste nav desactivado |
+| Flutter | `packages/phoenix_ui/.../platform_chrome.dart` | `SystemUiMode.edgeToEdge` + barras transparentes |
+| Temas | `android/.../values*/styles.xml` | `NormalTheme` com barras transparentes |
+| UI | ecrãs com `AppBar` / `SafeArea` / `Scaffold` | Inserções geridas pelo Material 3 |
+
+**Como testar** (emulador API 35 ou telemóvel Android 15+):
+
+1. `./scripts/install_android.sh` (ou AAB de release)
+2. Verifica: barra superior/inferior não tapam botões nem texto
+3. Navega: menu carreira → jogo → plantel → detalhe de jogo → barra inferior
+4. Modos de navegação: **gestos** e **3 botões** (Definições → Sistema → Navegação)
+5. Teclado (pesquisa no plantel): campo visível com `adjustResize` no manifest
+
+O aviso da Play Console desaparece após **novo upload** de AAB com estas alterações (não basta só o teste interno `0.8.5+6` actual).
+
 ## Identidade da app
 
 | Plataforma | ID |

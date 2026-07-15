@@ -9,8 +9,11 @@ export 'src/theme/phoenix_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:phoenix_ui/src/app/phoenix_manager_app.dart';
 import 'package:phoenix_ui/src/game/game_controller.dart';
+import 'package:phoenix_ui/src/util/platform_chrome.dart';
 
 /// Convenience entry for host apps.
 Widget createPhoenixManagerApp({GameController? controller}) {
+  WidgetsFlutterBinding.ensureInitialized();
+  PhoenixPlatformChrome.applyEdgeToEdgeIfAndroid();
   return PhoenixManagerApp(controller: controller ?? GameController());
 }

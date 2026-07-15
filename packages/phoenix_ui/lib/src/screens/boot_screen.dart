@@ -44,7 +44,9 @@ class _BootScreenState extends State<BootScreen> {
   Widget build(BuildContext context) {
     if (!_menuReady) {
       return const Scaffold(
-        body: Center(child: CircularProgressIndicator()),
+        body: SafeArea(
+          child: Center(child: CircularProgressIndicator()),
+        ),
       );
     }
 

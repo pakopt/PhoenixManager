@@ -111,7 +111,7 @@ SimulationLabReport _buildReport(
 }
 
 String _configYaml({required int seed}) => '''
-engineVersion: 0.8.18
+engineVersion: 0.8.19
 sport: football
 defaultSeed: $seed
 simulation:

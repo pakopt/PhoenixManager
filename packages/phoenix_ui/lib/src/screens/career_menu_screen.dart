@@ -6,6 +6,7 @@ import 'package:phoenix_ui/src/game/play_mode.dart';
 import 'package:phoenix_ui/src/screens/privacy_policy_screen.dart';
 import 'package:phoenix_ui/src/screens/shell_screen.dart';
 import 'package:phoenix_ui/src/screens/simulation_lab_screen.dart';
+import 'package:phoenix_ui/src/widgets/first_run_help_sheet.dart';
 import 'package:phoenix_ui/src/widgets/save_slot_card.dart';
 
 class CareerMenuScreen extends StatelessWidget {
@@ -238,36 +239,7 @@ class CareerMenuScreen extends StatelessWidget {
   }
 
   static void _showPlayModeHelp(BuildContext context) {
-    showDialog<void>(
-      context: context,
-      builder: (ctx) => AlertDialog(
-        title: const Text('Modos de jogo'),
-        content: Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            ListTile(
-              contentPadding: EdgeInsets.zero,
-              leading: const Icon(Icons.flash_on),
-              title: const Text('Express'),
-              subtitle: Text(PlayMode.express.description),
-            ),
-            ListTile(
-              contentPadding: EdgeInsets.zero,
-              leading: const Icon(Icons.manage_accounts),
-              title: const Text('Diretor'),
-              subtitle: Text(PlayMode.director.description),
-            ),
-          ],
-        ),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(ctx),
-            child: const Text('Fechar'),
-          ),
-        ],
-      ),
-    );
+    PlayModeHelp.show(context);
   }
 
   Future<void> _continue(BuildContext context, int slot) async {

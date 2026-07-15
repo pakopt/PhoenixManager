@@ -19,6 +19,7 @@ import 'package:phoenix_ui/src/util/date_format.dart';
 import 'package:phoenix_ui/src/util/platform_chrome.dart';
 import 'package:phoenix_ui/src/util/ui_feedback.dart';
 import 'package:phoenix_ui/src/widgets/content_width.dart';
+import 'package:phoenix_ui/src/widgets/first_run_help_sheet.dart';
 
 class ShellScreen extends StatefulWidget {
   const ShellScreen({required this.controller, super.key});
@@ -38,6 +39,18 @@ class _ShellScreenState extends State<ShellScreen> {
   void initState() {
     super.initState();
     widget.controller.addListener(_onControllerUpdate);
+    WidgetsBinding.instance.addPostFrameCallback((_) => _maybeShowFirstRunHelp());
+  }
+
+  Future<void> _maybeShowFirstRunHelp() async {
+    final session = widget.controller.session;
+    if (!mounted || session == null) {
+      return;
+    }
+    await FirstRunHelp.showIfNeeded(
+      context,
+      matchesPlayed: session.matchesPlayed,
+    );
   }
 
   @override

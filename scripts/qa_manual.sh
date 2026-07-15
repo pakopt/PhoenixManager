@@ -26,15 +26,17 @@ Corre em Mac, Android ou iOS (dev) antes de lojas.
   [ ] 10. Calendário — scroll próximo jogo, filtro «Só os meus»
   [ ] 11. Treino — filtro margem, toque abre ficha
   [ ] 12. Detalhe jogo — «Ver relato completo»
-  [ ] 13. Dashboard — dica «Primeiros passos» (carreira nova)
-  [ ] 14. Dashboard — alertas «Antes do próximo jogo» (Diretor)
-  [ ] 15. Dashboard — «Forma recente» (vazia no início ou após jogos)
-  [ ] 16. Android — barras sistema não tapam botões (edge-to-edge; ver MOBILE.md)
-  [ ] 17. Rodapé menu — versão PSE visível (ex. v$VERSION_NAME)
-  [ ] 18. Desktop (Mac/Windows/Linux) — abre em fullscreen
-  [ ] 19. Desktop — sair/voltar fullscreen (Mac: Esc · Win: Esc/F11 · Linux: Esc/F11)
-  [ ] 20. Desktop — «Sair do jogo» no menu carreira e no drawer (confirma e fecha)
-  [ ] 21. Desktop — Ctrl/⌘+S guarda o slot activo; Ctrl/⌘+Q pede sair
+  [ ] 13. Nova carreira / Jogar agora — sheet «Primeiros passos»
+  [ ] 14. Dashboard — dicas rotativas (até 3 jogos)
+  [ ] 15. Drawer — «Feedback / reportar bug» copia modelo
+  [ ] 16. Dashboard — alertas «Antes do próximo jogo» (Diretor)
+  [ ] 17. Dashboard — «Forma recente» (vazia no início ou após jogos)
+  [ ] 18. Android — barras sistema não tapam botões (edge-to-edge; ver MOBILE.md)
+  [ ] 19. Rodapé menu — versão PSE visível (ex. v$VERSION_NAME)
+  [ ] 20. Desktop (Mac/Windows/Linux) — abre em fullscreen
+  [ ] 21. Desktop — sair/voltar fullscreen (Mac: Esc · Win: Esc/F11 · Linux: Esc/F11)
+  [ ] 22. Desktop — «Sair do jogo» no menu carreira e no drawer (confirma e fecha)
+  [ ] 23. Desktop — Ctrl/⌘+S guarda o slot activo; Ctrl/⌘+Q pede sair
 
 Automático (saves):
   ./scripts/test_mac.sh

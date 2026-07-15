@@ -1,6 +1,6 @@
 # Plano — Project Phoenix Manager
 
-**Versão:** v0.8.18  
+**Versão:** v0.8.19  
 **Actualizado:** 15 de Julho de 2026  
 **Fase actual:** **E — Lançamento**
 
@@ -128,7 +128,7 @@ CLEAN_GRADLE=1 ./scripts/clean_dev_artifacts.sh   # inclui ~/.gradle/caches
 
 Detalhe oficial: [requisitos de teste Play](https://support.google.com/googleplay/android-developer/answer/14151465) · guia local: [`docs/STORE.md`](STORE.md) §9c–10
 
-**AAB actual:** `build/release/mobile/android/phoenix_manager.aab` (v0.8.18, versionCode 19)
+**AAB actual:** `build/release/mobile/android/phoenix_manager.aab` (v0.8.19, versionCode 20)
 
 Convite / QA para amigos: [`docs/BETA.md`](BETA.md) · textos: `./scripts/play_console_brief.sh`
 
@@ -199,14 +199,14 @@ Saída: `build/release/store/android/` — reutilizar quando a conta activar.
 
 | Campo | Valor actual |
 |-------|--------------|
-| `versionName` | `0.8.18` |
-| `versionCode` | `19` |
+| `versionName` | `0.8.19` |
+| `versionCode` | `20` |
 | Package / Bundle ID | `com.phoenix.manager` |
 
 **Próxima release:** editar `apps/phoenix_manager/pubspec.yaml`:
 
 ```yaml
-version: 0.8.18+19   # nome visível + versionCode (obrigatório incrementar +N)
+version: 0.8.19+20   # nome visível + versionCode (obrigatório incrementar +N)
 ```
 
 Depois: `./scripts/build_mobile.sh android` → novo AAB.
@@ -216,6 +216,7 @@ Depois: `./scripts/build_mobile.sh android` → novo AAB.
 ## Histórico recente (Fase E + v0.8.x)
 
 - ✅ **Scripts disco/Gradle** — `clean_dev_artifacts.sh`, `repair_gradle.sh`, `install_local.sh` verifica espaço  
+- ✅ **v0.8.19** — sheet first-run (novos testadores) · modos de jogo partilhados  
 - ✅ **v0.8.18** — sync versão UI · dicas dashboard rotativas · feedback/bug no drawer  
 - ✅ **v0.8.17** — Semantics ordenação plantel · **freeze polish UI** (pivot Play)  
 - ✅ **v0.8.16** — Semantics Finanças/Clube · tooltips pesquisa e Lab  
@@ -248,10 +249,11 @@ Depois: `./scripts/build_mobile.sh android` → novo AAB.
 - ✅ `play_console_day1.sh` — guia upload quando conta activar  
 - ✅ Beta local — `local_beta.sh`, `docs/BETA.md`, `qa_manual.sh`  
 - ✅ Screenshots App Store — 5 capturas iOS (`capture_app_store_screenshots.sh`)  
-- ✅ Play Console — conta aprovada · **teste fechado activo** · AAB **v0.8.18+19**  
+- ✅ Play Console — conta aprovada · **teste fechado activo** · AAB **v0.8.19+20**  
 - 🔄 Produção — **≥12 opted-in × 14 dias** → candidatar acesso → promover (`docs/STORE.md` §9c–10)  
 - ✅ Desktop — fullscreen Mac / Windows / Linux + «Sair do jogo»  
-- ✅ Polish UI v0.8.x — **congelado** em v0.8.17 (a11y/empty states/desktop); v0.8.18 = onboarding/beta  
+- ✅ Polish UI v0.8.x — **congelado** em v0.8.17; v0.8.18–0.8.19 = onboarding/beta  
+
 
 
 ---

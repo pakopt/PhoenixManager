@@ -1,8 +1,8 @@
 /// Versão visível ao jogador — manter alinhada com `apps/phoenix_manager/pubspec.yaml`.
 abstract final class AppVersion {
-  static const label = '0.8.18';
-  static const buildNumber = 19;
-  static const engineLabel = 'PSE v0.8.18';
+  static const label = '0.8.19';
+  static const buildNumber = 20;
+  static const engineLabel = 'PSE v0.8.19';
 
   /// Bloco curto para emails de feedback / bugs.
   static String feedbackTemplate({

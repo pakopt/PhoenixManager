@@ -58,15 +58,17 @@ Corre em cada plataforma antes de enviar para lojas:
 | 10 | **Calendário** — scroll ao próximo jogo, filtro «Só os meus» | |
 | 11 | **Treino** — filtro margem, toque abre ficha do jogador | |
 | 12 | **Detalhe do jogo** — «Ver relato completo» expande | |
-| 13 | **Dashboard** — dica «Primeiros passos» (carreira nova) | |
-| 14 | **Dashboard** — alertas «Antes do próximo jogo» (modo Diretor) | |
-| 15 | **Dashboard** — «Forma recente» (vazia ou com V/E/D após jogos) | |
-| 16 | **Android** — edge-to-edge: barras não tapam navegação/conteúdo ([`MOBILE.md`](../apps/phoenix_manager/MOBILE.md)) | |
-| 17 | **Menu drawer** — rodapé mostra versão PSE | |
-| 18 | **Desktop** — abre em fullscreen (Mac / Windows / Linux) | |
-| 19 | **Desktop** — sair/voltar fullscreen (Mac: Esc · Win: Esc/F11 · Linux: Esc/F11) | |
-| 20 | **Desktop** — «Sair do jogo» no menu carreira e no drawer | |
-| 21 | **Desktop** — Ctrl/⌘+S guarda slot activo; Ctrl/⌘+Q pede sair | |
+| 13 | **Nova carreira / Jogar agora** — sheet «Primeiros passos» (modos, guardar, feedback) | |
+| 14 | **Dashboard** — dicas rotativas (até 3 jogos; «Próxima dica» / «Entendi») | |
+| 15 | **Drawer** — «Feedback / reportar bug» copia modelo com versão | |
+| 16 | **Dashboard** — alertas «Antes do próximo jogo» (modo Diretor) | |
+| 17 | **Dashboard** — «Forma recente» (vazia ou com V/E/D após jogos) | |
+| 18 | **Android** — edge-to-edge: barras não tapam navegação/conteúdo ([`MOBILE.md`](../apps/phoenix_manager/MOBILE.md)) | |
+| 19 | **Menu drawer** — rodapé mostra versão PSE | |
+| 20 | **Desktop** — abre em fullscreen (Mac / Windows / Linux) | |
+| 21 | **Desktop** — sair/voltar fullscreen (Mac: Esc · Win: Esc/F11 · Linux: Esc/F11) | |
+| 22 | **Desktop** — «Sair do jogo» no menu carreira e no drawer | |
+| 23 | **Desktop** — Ctrl/⌘+S guarda slot activo; Ctrl/⌘+Q pede sair | |
 
 Automático (saves):
 
@@ -90,7 +92,7 @@ CLEAN_GRADLE=1 ./scripts/clean_dev_artifacts.sh   # inclui ~/.gradle/caches (~5 
 Envia bugs ou sugestões para **pakopt7@gmail.com** com:
 
 - Dispositivo (Mac / Android / modelo)
-- Versão da app (menu carreira → rodapé, ex. `PSE v0.8.18`)
+- Versão da app (menu carreira → rodapé, ex. `PSE v0.8.19`)
 - Passos para reproduzir
 - Screenshot opcional
 

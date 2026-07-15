@@ -2,7 +2,7 @@
 
 **Plano mestre (Cursor):** `phoenix_manager_game_2a890b62.plan.md`  
 **Roadmap vivo (lançamento):** [`docs/plano.md`](../plano.md)  
-**Versão actual:** `0.8.11` · **Fase:** **E — Lançamento**
+**Versão actual:** `0.8.12` · **Fase:** **E — Lançamento**
 
 Este ficheiro liga o **Master Roadmap** do plano de arquitectura ao estado **real** do repositório.
 
@@ -65,7 +65,7 @@ Este ficheiro liga o **Master Roadmap** do plano de arquitectura ao estado **rea
 2. **Beta local** — `./scripts/local_beta.sh` + testadores ([`docs/BETA.md`](../BETA.md))
 3. **QA** — `./scripts/qa_manual.sh` + `test_mac.sh` / `test_android.sh`
 4. **App Store prep** — `./scripts/capture_app_store_screenshots.sh` (simulador iOS)
-5. Após validação testers → produção `0.8.11` (ou bump para `0.9.0` / `1.0.0`)
+5. Após validação testers → produção `0.8.12` (ou bump para `0.9.0` / `1.0.0`)
 
 ---
 

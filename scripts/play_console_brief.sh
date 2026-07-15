@@ -108,8 +108,9 @@ echo ""
 echo "==> Notas da versão (teste interno)"
 cat <<EOF
 
-v$VERSION_NAME — gestão offline com PSE, polish UX e Android 15.
+v$VERSION_NAME — gestão offline com PSE; Sair no desktop; Android 15.
 - Modo Express e Diretor · liga, taça, mercado, finanças
+- Desktop: «Sair do jogo» no menu / drawer
 - Edge-to-edge Android 15 (SDK 35) · datas legíveis · acessibilidade
 - Empty states e forma recente no dashboard
 - Saves locais · sem conta · sem anúncios

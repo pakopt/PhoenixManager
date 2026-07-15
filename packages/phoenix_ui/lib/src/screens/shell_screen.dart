@@ -14,6 +14,7 @@ import 'package:phoenix_ui/src/screens/club_screen.dart';
 import 'package:phoenix_ui/src/screens/training_screen.dart';
 import 'package:phoenix_ui/src/util/app_version.dart';
 import 'package:phoenix_ui/src/util/date_format.dart';
+import 'package:phoenix_ui/src/util/platform_chrome.dart';
 import 'package:phoenix_ui/src/util/ui_feedback.dart';
 import 'package:phoenix_ui/src/widgets/content_width.dart';
 
@@ -331,6 +332,38 @@ class _GameDrawer extends StatelessWidget {
               );
             },
           ),
+          if (PhoenixPlatformChrome.isDesktop) ...[
+            const Divider(),
+            ListTile(
+              leading: const Icon(Icons.logout),
+              title: const Text('Sair do jogo'),
+              onTap: () async {
+                Navigator.pop(context);
+                final ok = await showDialog<bool>(
+                  context: context,
+                  builder: (ctx) => AlertDialog(
+                    title: const Text('Sair do jogo?'),
+                    content: const Text(
+                      'Guarda a carreira antes, se precisares. A app será fechada.',
+                    ),
+                    actions: [
+                      TextButton(
+                        onPressed: () => Navigator.pop(ctx, false),
+                        child: const Text('Cancelar'),
+                      ),
+                      FilledButton(
+                        onPressed: () => Navigator.pop(ctx, true),
+                        child: const Text('Sair'),
+                      ),
+                    ],
+                  ),
+                );
+                if (ok == true) {
+                  PhoenixPlatformChrome.quitApp();
+                }
+              },
+            ),
+          ],
         ],
       ),
     );

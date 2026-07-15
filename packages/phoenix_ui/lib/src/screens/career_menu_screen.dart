@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:phoenix_ui/src/util/app_version.dart';
+import 'package:phoenix_ui/src/util/platform_chrome.dart';
 import 'package:phoenix_ui/src/game/game_controller.dart';
 import 'package:phoenix_ui/src/game/play_mode.dart';
 import 'package:phoenix_ui/src/screens/privacy_policy_screen.dart';
@@ -186,6 +187,23 @@ class CareerMenuScreen extends StatelessWidget {
                         ),
                       ),
                     ),
+                    if (PhoenixPlatformChrome.isDesktop) ...[
+                      const SizedBox(height: 4),
+                      TextButton.icon(
+                        onPressed: () => _confirmQuit(context),
+                        icon: Icon(
+                          Icons.logout,
+                          size: 18,
+                          color: theme.colorScheme.outline,
+                        ),
+                        label: Text(
+                          'Sair do jogo',
+                          style: theme.textTheme.labelMedium?.copyWith(
+                            color: theme.colorScheme.outline,
+                          ),
+                        ),
+                      ),
+                    ],
                   ],
                 ),
               ),
@@ -194,6 +212,29 @@ class CareerMenuScreen extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  static Future<void> _confirmQuit(BuildContext context) async {
+    final ok = await showDialog<bool>(
+      context: context,
+      builder: (ctx) => AlertDialog(
+        title: const Text('Sair do jogo?'),
+        content: const Text('A app será fechada. Guarda a carreira antes, se precisares.'),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(ctx, false),
+            child: const Text('Cancelar'),
+          ),
+          FilledButton(
+            onPressed: () => Navigator.pop(ctx, true),
+            child: const Text('Sair'),
+          ),
+        ],
+      ),
+    );
+    if (ok == true) {
+      PhoenixPlatformChrome.quitApp();
+    }
   }
 
   static void _showPlayModeHelp(BuildContext context) {

@@ -33,6 +33,7 @@ Corre em Mac, Android ou iOS (dev) antes de lojas.
   [ ] 17. Rodapé menu — versão PSE visível (ex. v$VERSION_NAME)
   [ ] 18. Desktop (Mac/Windows/Linux) — abre em fullscreen
   [ ] 19. Desktop — sair/voltar fullscreen (Mac: Esc · Win: Esc/F11 · Linux: Esc/F11)
+  [ ] 20. Desktop — «Sair do jogo» no menu carreira e no drawer (confirma e fecha)
 
 Automático (saves):
   ./scripts/test_mac.sh

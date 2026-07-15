@@ -202,6 +202,8 @@ Implementação: `macos/Runner/MainFlutterWindow.swift`, `windows/runner/win32_w
 
 Nome visível no SO: **Phoenix Manager** (Dock / barra de título / propriedades exe no Windows).
 
+Para **fechar a app** em fullscreen: no menu carreira ou no drawer → **Sair do jogo** (só desktop; pede confirmação).
+
 ## Testar saves (release)
 
 ```bash

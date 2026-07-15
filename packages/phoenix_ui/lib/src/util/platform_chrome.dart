@@ -1,4 +1,4 @@
-import 'dart:io' show Platform;
+import 'dart:io' show Platform, exit;
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -6,6 +6,14 @@ import 'package:flutter/services.dart';
 
 /// Configuração de system UI (edge-to-edge no Android 15+ / targetSdk 35).
 abstract final class PhoenixPlatformChrome {
+  /// macOS / Windows / Linux (não web, não mobile).
+  static bool get isDesktop {
+    if (kIsWeb) {
+      return false;
+    }
+    return Platform.isMacOS || Platform.isWindows || Platform.isLinux;
+  }
+
   /// Activa edge-to-edge e barras transparentes em Android.
   ///
   /// Complementa `WindowCompat.setDecorFitsSystemWindows` em `MainActivity.kt`
@@ -22,5 +30,16 @@ abstract final class PhoenixPlatformChrome {
         systemNavigationBarContrastEnforced: false,
       ),
     );
+  }
+
+  /// Encerra a app (útil em fullscreen no desktop, onde Alt+F4 / Cmd+Q não são óbvios).
+  static void quitApp() {
+    if (kIsWeb) {
+      return;
+    }
+    if (isDesktop) {
+      exit(0);
+    }
+    SystemNavigator.pop();
   }
 }

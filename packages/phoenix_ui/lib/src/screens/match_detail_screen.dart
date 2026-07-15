@@ -110,9 +110,10 @@ class _MatchDetailScreenState extends State<MatchDetailScreen>
             ),
         ],
       ),
-      body: ListView(
-        padding: const EdgeInsets.all(16),
-        children: [
+      body: SafeArea(
+        child: ListView(
+          padding: const EdgeInsets.all(16),
+          children: [
           _buildScoreSection(
             home: home,
             away: away,
@@ -242,6 +243,7 @@ class _MatchDetailScreenState extends State<MatchDetailScreen>
             ),
           ],
         ],
+        ),
       ),
     );
   }

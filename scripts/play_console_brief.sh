@@ -108,11 +108,11 @@ echo ""
 echo "==> Notas da versão (teste interno)"
 cat <<EOF
 
-v$VERSION_NAME — gestão offline com PSE; acessibilidade e polish UX.
+v$VERSION_NAME — gestão offline com PSE; polish dinheiro e acessibilidade.
 - Modo Express e Diretor · liga, taça, mercado, finanças
-- Acessibilidade: plantel, treino, placares, classificação
-- Desktop: tooltips no menu lateral · «Sair do jogo»
-- Edge-to-edge Android 15 (SDK 35) · datas legíveis
+- Valores € consistentes · Semantics chips · SafeArea detalhe
+- Acessibilidade plantel/treino/placares/classificação
+- Desktop: tooltips · «Sair do jogo» · edge-to-edge Android 15
 - Saves locais · sem conta · sem anúncios
 - Motor Phoenix Simulation Engine v$VERSION_NAME
 

@@ -545,13 +545,19 @@ class _TodayMatchCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final session = controller.session!;
+    final home = session.clubName(output.fixture.homeClubId);
+    final away = session.clubName(output.fixture.awayClubId);
+    final homeScore = output.result.homeScore;
+    final awayScore = output.result.awayScore;
     return Card(
       child: ListTile(
-        title: Text(
-          '${session.clubName(output.fixture.homeClubId)} '
-          '${output.result.homeScore}-${output.result.awayScore} '
-          '${session.clubName(output.fixture.awayClubId)}',
-          style: const TextStyle(fontWeight: FontWeight.bold),
+        title: Semantics(
+          label: '$home $homeScore a $awayScore $away',
+          excludeSemantics: true,
+          child: Text(
+            '$home $homeScore-$awayScore $away',
+            style: const TextStyle(fontWeight: FontWeight.bold),
+          ),
         ),
         subtitle: Text(
           'xG ${output.result.homeStats.xg.toStringAsFixed(2)} — '
@@ -612,7 +618,7 @@ class _EventTile extends StatelessWidget {
   String _labelFor(PhoenixEvent event) {
     return switch (event) {
       MatchPlayedEvent e =>
-        '${session.clubName(e.homeClubId)} ${e.homeScore}-${e.awayScore} '
+        '${session.clubName(e.homeClubId)} ${e.homeScore} a ${e.awayScore} '
         '${session.clubName(e.awayClubId)}',
       TransferCompletedEvent e =>
         '${e.playerName} → ${session.clubName(e.record.toClubId)}',
@@ -623,17 +629,17 @@ class _EventTile extends StatelessWidget {
       PlayerRecoveredEvent e => '${e.playerName} recuperado',
       ContractRenewedEvent e =>
         '${e.playerName} renovado até ${e.newContractEndYear} '
-        '(€${e.newSalary}/m)',
+        '(${MoneyFormat.perMonth(e.newSalary)})',
       AchievementUnlockedEvent e =>
         'Conquista: ${session.achievementTitle(e.achievementId)}',
       SeasonFinishedEvent e =>
         '${session.competitionName(e.competitionId)} · época ${e.seasonYear} terminada',
       NewSeasonStartedEvent e =>
-        'Nova época ${e.seasonYear} · início ${e.startDate}',
+        'Nova época ${e.seasonYear} · início ${DateFormatUtil.gameDate(e.startDate)}',
       SalariesPaidEvent e =>
-        'Salários ${session.clubName(e.clubId)}: €${e.amount}',
+        'Salários ${session.clubName(e.clubId)}: ${MoneyFormat.compact(e.amount)}',
       TicketRevenueEvent e =>
-        'Bilheteira ${session.clubName(e.clubId)}: €${e.amount}',
+        'Bilheteira ${session.clubName(e.clubId)}: ${MoneyFormat.compact(e.amount)}',
       DayAdvancedEvent e => 'Dia ${DateFormatUtil.gameDate(e.currentDate)}',
       _ => 'Actualização do clube',
     };

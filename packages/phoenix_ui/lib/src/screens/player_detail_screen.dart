@@ -71,9 +71,10 @@ class PlayerDetailScreen extends StatelessWidget {
             ),
         ],
       ),
-      body: ListView(
-        padding: const EdgeInsets.all(16),
-        children: [
+      body: SafeArea(
+        child: ListView(
+          padding: const EdgeInsets.all(16),
+          children: [
           Container(
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(12),
@@ -216,6 +217,7 @@ class PlayerDetailScreen extends StatelessWidget {
           ),
           _InfoTile(label: 'Valor mercado', value: MoneyFormat.compact(value)),
         ],
+        ),
       ),
     );
   }

@@ -129,23 +129,32 @@ class _SummaryTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final semanticsLabel =
+        subtitle == null ? '$label: $value' : '$label: $value, $subtitle';
     return Expanded(
-      child: Card(
-        child: Padding(
-          padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 8),
-          child: Column(
-            children: [
-              Text(
-                value,
-                style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                      fontWeight: FontWeight.bold,
-                      color: Theme.of(context).colorScheme.primary,
-                    ),
-              ),
-              Text(label, style: Theme.of(context).textTheme.labelSmall),
-              if (subtitle != null)
-                Text(subtitle!, style: Theme.of(context).textTheme.labelSmall),
-            ],
+      child: Semantics(
+        label: semanticsLabel,
+        excludeSemantics: true,
+        child: Card(
+          child: Padding(
+            padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 8),
+            child: Column(
+              children: [
+                Text(
+                  value,
+                  style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                        fontWeight: FontWeight.bold,
+                        color: Theme.of(context).colorScheme.primary,
+                      ),
+                ),
+                Text(label, style: Theme.of(context).textTheme.labelSmall),
+                if (subtitle != null)
+                  Text(
+                    subtitle!,
+                    style: Theme.of(context).textTheme.labelSmall,
+                  ),
+              ],
+            ),
           ),
         ),
       ),

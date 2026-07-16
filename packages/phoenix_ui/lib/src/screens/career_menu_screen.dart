@@ -8,6 +8,7 @@ import 'package:phoenix_ui/src/screens/shell_screen.dart';
 import 'package:phoenix_ui/src/screens/simulation_lab_screen.dart';
 import 'package:phoenix_ui/src/widgets/first_run_help_sheet.dart';
 import 'package:phoenix_ui/src/widgets/beta_checklist_help.dart';
+import 'package:phoenix_ui/src/widgets/phoenix_brand_logo.dart';
 import 'package:phoenix_ui/src/widgets/save_slot_card.dart';
 
 class CareerMenuScreen extends StatelessWidget {
@@ -40,11 +41,7 @@ class CareerMenuScreen extends StatelessWidget {
                 padding: const EdgeInsets.all(24),
                 child: Column(
                   children: [
-                    Icon(
-                      Icons.sports_soccer,
-                      size: 56,
-                      color: theme.colorScheme.primary,
-                    ),
+                    const PhoenixBrandLogo(size: 88),
                     const SizedBox(height: 12),
                     Text(
                       'Phoenix Manager',

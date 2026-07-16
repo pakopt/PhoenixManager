@@ -1,7 +1,7 @@
 name: phoenix_manager
 description: Project Phoenix Manager — Flutter app (Fase D / v0.8).
 publish_to: none
-version: 0.8.26+27
+version: 0.8.27+28
 
 environment:
   sdk: ^3.5.0

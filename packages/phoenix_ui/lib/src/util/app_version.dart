@@ -1,14 +1,14 @@
 /// Versão visível ao jogador — manter alinhada com `apps/phoenix_manager/pubspec.yaml`.
 /// Validar: `./scripts/check_app_version_sync.sh`
 abstract final class AppVersion {
-  static const label = '0.8.26';
-  static const buildNumber = 27;
-  static const engineLabel = 'PSE v0.8.26';
+  static const label = '0.8.27';
+  static const buildNumber = 28;
+  static const engineLabel = 'PSE v0.8.27';
 
   /// Pontos curtos para o diálogo «Novidades» após actualizar.
   static const whatsNew = <String>[
-    'Build de teste fechado com branding Phoenix Manager (título + logo).',
-    'Assets desktop e pacote Play actualizados para o lançamento.',
+    'Actualização do teste fechado Play (build 28).',
+    'Branding Phoenix Manager mantido (título + logo no menu).',
   ];
 
   /// Bloco curto para emails de feedback / bugs.

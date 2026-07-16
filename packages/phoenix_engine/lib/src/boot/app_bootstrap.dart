@@ -211,7 +211,7 @@ class AppBootstrap {
 }
 
 const _defaultConfigYaml = '''
-engineVersion: 0.8.26
+engineVersion: 0.8.27
 sport: football
 defaultSeed: 42
 simulation:

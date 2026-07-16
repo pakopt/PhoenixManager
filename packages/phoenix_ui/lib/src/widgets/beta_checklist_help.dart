@@ -38,6 +38,18 @@ abstract final class BetaChecklistHelp {
 
   static const contact = 'pakopt7@gmail.com';
 
+  /// Contagem para badges (ex. «2/5»).
+  static Future<({int done, int total})> progressCounts() async {
+    final prefs = await SharedPreferences.getInstance();
+    var done = 0;
+    for (final item in items) {
+      if (prefs.getBool('$prefsPrefix${item.id}') ?? false) {
+        done++;
+      }
+    }
+    return (done: done, total: items.length);
+  }
+
   /// Resumo para emails de feedback (ex. «Roteiro beta: 3/5»).
   static Future<String> progressSummary() async {
     final prefs = await SharedPreferences.getInstance();
@@ -59,6 +71,28 @@ abstract final class BetaChecklistHelp {
     await showDialog<void>(
       context: context,
       builder: (ctx) => const _BetaChecklistDialog(),
+    );
+  }
+}
+
+/// Botão / tile com progresso «N/total» do roteiro beta.
+class BetaChecklistProgressLabel extends StatelessWidget {
+  const BetaChecklistProgressLabel({
+    required this.builder,
+    super.key,
+  });
+
+  final Widget Function(BuildContext context, int done, int total) builder;
+
+  @override
+  Widget build(BuildContext context) {
+    return FutureBuilder<({int done, int total})>(
+      future: BetaChecklistHelp.progressCounts(),
+      builder: (context, snap) {
+        final done = snap.data?.done ?? 0;
+        final total = snap.data?.total ?? BetaChecklistHelp.items.length;
+        return builder(context, done, total);
+      },
     );
   }
 }

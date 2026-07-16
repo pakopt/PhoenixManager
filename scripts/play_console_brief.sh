@@ -109,7 +109,8 @@ echo "==> Notas da versão (teste interno)"
 cat <<EOF
 
 v$VERSION_NAME — gestão offline com PSE; onboarding e novidades para beta.
-- Sheet primeiros passos · dicas dashboard · feedback no menu
+- Aviso ao sair com alterações por guardar
+- Progresso do roteiro beta (N/5) no menu e drawer
 - «Novidades» ao actualizar · Express / Diretor
 - Saves locais · sem conta · sem anúncios
 - Motor Phoenix Simulation Engine v$VERSION_NAME

@@ -1,15 +1,15 @@
 /// Versão visível ao jogador — manter alinhada com `apps/phoenix_manager/pubspec.yaml`.
 /// Validar: `./scripts/check_app_version_sync.sh`
 abstract final class AppVersion {
-  static const label = '0.8.22';
-  static const buildNumber = 23;
-  static const engineLabel = 'PSE v0.8.22';
+  static const label = '0.8.23';
+  static const buildNumber = 24;
+  static const engineLabel = 'PSE v0.8.23';
 
   /// Pontos curtos para o diálogo «Novidades» após actualizar.
   static const whatsNew = <String>[
-    'Roteiro beta também no menu carreira (antes de jogar).',
-    'Feedback por email inclui progresso do roteiro de teste.',
-    'Chip «Por guardar» na barra superior (modo Diretor).',
+    'Aviso ao sair com alterações por guardar (guardar / sair / cancelar).',
+    'Progresso do roteiro beta visível no menu e no drawer (ex. 2/5).',
+    'Botão «Voltar» do sistema também pede confirmação se houver por guardar.',
   ];
 
   /// Bloco curto para emails de feedback / bugs.

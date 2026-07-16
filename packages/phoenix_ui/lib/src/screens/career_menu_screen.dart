@@ -170,10 +170,14 @@ class CareerMenuScreen extends StatelessWidget {
                         size: 18,
                         color: theme.colorScheme.primary,
                       ),
-                      label: Text(
-                        'Roteiro de teste (beta)',
-                        style: theme.textTheme.labelMedium?.copyWith(
-                          color: theme.colorScheme.primary,
+                      label: BetaChecklistProgressLabel(
+                        builder: (context, done, total) => Text(
+                          done == 0
+                              ? 'Roteiro de teste (beta)'
+                              : 'Roteiro de teste (beta) · $done/$total',
+                          style: theme.textTheme.labelMedium?.copyWith(
+                            color: theme.colorScheme.primary,
+                          ),
                         ),
                       ),
                     ),

@@ -21,6 +21,7 @@ import 'package:phoenix_ui/src/util/ui_feedback.dart';
 import 'package:phoenix_ui/src/widgets/beta_checklist_help.dart';
 import 'package:phoenix_ui/src/widgets/content_width.dart';
 import 'package:phoenix_ui/src/widgets/first_run_help_sheet.dart';
+import 'package:phoenix_ui/src/widgets/unsaved_leave_help.dart';
 import 'package:phoenix_ui/src/widgets/whats_new_help_sheet.dart';
 
 class ShellScreen extends StatefulWidget {
@@ -194,13 +195,24 @@ class _ShellScreenState extends State<ShellScreen> {
   }
 
   Future<void> _confirmQuitDesktop() async {
+    if (widget.controller.hasUnsavedChanges) {
+      final ok = await UnsavedLeaveHelp.confirmLeave(
+        context,
+        widget.controller,
+        title: 'Sair do jogo?',
+        body: 'Há alterações por guardar. A app será fechada.',
+      );
+      if (ok) {
+        PhoenixPlatformChrome.quitApp();
+      }
+      return;
+    }
+
     final ok = await showDialog<bool>(
       context: context,
       builder: (ctx) => AlertDialog(
         title: const Text('Sair do jogo?'),
-        content: const Text(
-          'Guarda a carreira antes, se precisares. A app será fechada.',
-        ),
+        content: const Text('A app será fechada.'),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(ctx, false),
@@ -361,24 +373,48 @@ class _ShellScreenState extends State<ShellScreen> {
             ),
     );
 
-    if (!PhoenixPlatformChrome.isDesktop) {
-      return scaffold;
+    Widget withUnsavedGuard(Widget child) {
+      return PopScope(
+        canPop: !widget.controller.hasUnsavedChanges,
+        onPopInvokedWithResult: (didPop, _) async {
+          if (didPop) {
+            return;
+          }
+          final ok = await UnsavedLeaveHelp.confirmLeave(
+            context,
+            widget.controller,
+            title: 'Sair da carreira?',
+            body:
+                'Há alterações por guardar. Queres guardar antes de voltar?',
+          );
+          if (ok && context.mounted) {
+            Navigator.of(context).pop();
+          }
+        },
+        child: child,
+      );
     }
 
-    return CallbackShortcuts(
-      bindings: {
-        const SingleActivator(LogicalKeyboardKey.keyS, meta: true):
-            _quickSaveActiveSlot,
-        const SingleActivator(LogicalKeyboardKey.keyS, control: true):
-            _quickSaveActiveSlot,
-        const SingleActivator(LogicalKeyboardKey.keyQ, meta: true):
-            _confirmQuitDesktop,
-        const SingleActivator(LogicalKeyboardKey.keyQ, control: true):
-            _confirmQuitDesktop,
-      },
-      child: Focus(
-        autofocus: true,
-        child: scaffold,
+    if (!PhoenixPlatformChrome.isDesktop) {
+      return withUnsavedGuard(scaffold);
+    }
+
+    return withUnsavedGuard(
+      CallbackShortcuts(
+        bindings: {
+          const SingleActivator(LogicalKeyboardKey.keyS, meta: true):
+              _quickSaveActiveSlot,
+          const SingleActivator(LogicalKeyboardKey.keyS, control: true):
+              _quickSaveActiveSlot,
+          const SingleActivator(LogicalKeyboardKey.keyQ, meta: true):
+              _confirmQuitDesktop,
+          const SingleActivator(LogicalKeyboardKey.keyQ, control: true):
+              _confirmQuitDesktop,
+        },
+        child: Focus(
+          autofocus: true,
+          child: scaffold,
+        ),
       ),
     );
   }
@@ -480,7 +516,13 @@ class _GameDrawer extends StatelessWidget {
           ListTile(
             leading: const Icon(Icons.checklist),
             title: const Text('Roteiro de teste (beta)'),
-            subtitle: const Text('Checklist rápido do teste fechado'),
+            subtitle: BetaChecklistProgressLabel(
+              builder: (context, done, total) => Text(
+                done == 0
+                    ? 'Checklist rápido do teste fechado'
+                    : 'Progresso $done/$total',
+              ),
+            ),
             onTap: () {
               Navigator.pop(context);
               BetaChecklistHelp.show(context);
@@ -497,7 +539,18 @@ class _GameDrawer extends StatelessWidget {
           ListTile(
             leading: const Icon(Icons.home),
             title: const Text('Menu principal'),
-            onTap: () {
+            onTap: () async {
+              Navigator.pop(context);
+              final ok = await UnsavedLeaveHelp.confirmLeave(
+                context,
+                controller,
+                title: 'Voltar ao menu?',
+                body:
+                    'Há alterações por guardar. Queres guardar antes de sair da carreira?',
+              );
+              if (!ok || !context.mounted) {
+                return;
+              }
               Navigator.of(context).pushAndRemoveUntil(
                 MaterialPageRoute<void>(
                   builder: (_) => BootScreen(controller: controller),
@@ -511,16 +564,30 @@ class _GameDrawer extends StatelessWidget {
             ListTile(
               leading: const Icon(Icons.logout),
               title: const Text('Sair do jogo'),
-              subtitle: const Text('Ctrl/⌘+Q'),
+              subtitle: Text(
+                controller.hasUnsavedChanges
+                    ? 'Alterações por guardar · Ctrl/⌘+Q'
+                    : 'Ctrl/⌘+Q',
+              ),
               onTap: () async {
                 Navigator.pop(context);
+                if (controller.hasUnsavedChanges) {
+                  final ok = await UnsavedLeaveHelp.confirmLeave(
+                    context,
+                    controller,
+                    title: 'Sair do jogo?',
+                    body: 'Há alterações por guardar. A app será fechada.',
+                  );
+                  if (ok) {
+                    PhoenixPlatformChrome.quitApp();
+                  }
+                  return;
+                }
                 final ok = await showDialog<bool>(
                   context: context,
                   builder: (ctx) => AlertDialog(
                     title: const Text('Sair do jogo?'),
-                    content: const Text(
-                      'Guarda a carreira antes, se precisares. A app será fechada.',
-                    ),
+                    content: const Text('A app será fechada.'),
                     actions: [
                       TextButton(
                         onPressed: () => Navigator.pop(ctx, false),

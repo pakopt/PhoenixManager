@@ -58,18 +58,18 @@ else
 fi
 
 section "Bloqueantes"
-echo "  🔄  Play Console — teste interno (conta aprovada; ver play_console_day1.sh)"
-echo "  🔄  Beta local + QA — em curso (docs/BETA.md)"
+echo "  🔄  Play — ≥12 opted-in × 14 dias → candidatar produção"
+echo "      ./scripts/play_14day_tracker.sh   ·  ./scripts/play_testers_invite.sh URL"
 echo "  ⏳  Apple Developer — App Store / TestFlight (opcional)"
 
 section "Trabalho activo"
 cat <<EOF
-  ./scripts/play_console_day1.sh      # upload teste interno (conta aprovada)
+  ./scripts/play_14day_tracker.sh     # checklist 12×14 + follow-up
+  ./scripts/play_testers_invite.sh    # mensagem de convite
   ./scripts/play_console_brief.sh     # textos copy-paste
-  ./scripts/local_beta.sh             # ZIP APK para testadores
+  ./scripts/check_app_version_sync.sh # AppVersion = pubspec
   ./scripts/qa_manual.sh              # roteiro QA manual
-  ./scripts/package_app_store.sh      # ZIP screenshots iOS
-  ./scripts/test_ios.sh               # build + screenshots iOS
+  ./scripts/local_beta.sh             # ZIP APK para testadores
 EOF
 
 section "Comandos úteis"

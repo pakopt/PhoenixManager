@@ -20,6 +20,7 @@ import 'package:phoenix_ui/src/util/platform_chrome.dart';
 import 'package:phoenix_ui/src/util/ui_feedback.dart';
 import 'package:phoenix_ui/src/widgets/content_width.dart';
 import 'package:phoenix_ui/src/widgets/first_run_help_sheet.dart';
+import 'package:phoenix_ui/src/widgets/whats_new_help_sheet.dart';
 
 class ShellScreen extends StatefulWidget {
   const ShellScreen({required this.controller, super.key});
@@ -39,18 +40,22 @@ class _ShellScreenState extends State<ShellScreen> {
   void initState() {
     super.initState();
     widget.controller.addListener(_onControllerUpdate);
-    WidgetsBinding.instance.addPostFrameCallback((_) => _maybeShowFirstRunHelp());
+    WidgetsBinding.instance.addPostFrameCallback((_) => _maybeShowOnboarding());
   }
 
-  Future<void> _maybeShowFirstRunHelp() async {
+  Future<void> _maybeShowOnboarding() async {
     final session = widget.controller.session;
     if (!mounted || session == null) {
       return;
     }
-    await FirstRunHelp.showIfNeeded(
+    final showedFirstRun = await FirstRunHelp.showIfNeeded(
       context,
       matchesPlayed: session.matchesPlayed,
     );
+    if (!mounted || showedFirstRun) {
+      return;
+    }
+    await WhatsNewHelp.showIfNeeded(context);
   }
 
   @override

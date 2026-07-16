@@ -108,9 +108,9 @@ echo ""
 echo "==> Notas da versão (teste interno)"
 cat <<EOF
 
-v$VERSION_NAME — gestão offline com PSE; polish UI congelado para Play.
-- Modo Express e Diretor · liga, taça, mercado, finanças
-- Acessibilidade ampla · desktop Ctrl/⌘+S/Q · edge-to-edge
+v$VERSION_NAME — gestão offline com PSE; onboarding e novidades para beta.
+- Sheet primeiros passos · dicas dashboard · feedback no menu
+- «Novidades» ao actualizar · Express / Diretor
 - Saves locais · sem conta · sem anúncios
 - Motor Phoenix Simulation Engine v$VERSION_NAME
 

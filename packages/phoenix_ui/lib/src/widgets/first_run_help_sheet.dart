@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:phoenix_ui/src/game/play_mode.dart';
+import 'package:phoenix_ui/src/widgets/whats_new_help_sheet.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 /// Diálogos de ajuda partilhados: modos de jogo (menu) e first-run (shell).
@@ -25,19 +26,20 @@ abstract final class PlayModeHelp {
 abstract final class FirstRunHelp {
   static const prefsKey = 'phoenix_first_run_help_shown';
 
-  static Future<void> showIfNeeded(
+  /// Devolve `true` se mostrou o diálogo.
+  static Future<bool> showIfNeeded(
     BuildContext context, {
     required int matchesPlayed,
   }) async {
     if (matchesPlayed > 0) {
-      return;
+      return false;
     }
     final prefs = await SharedPreferences.getInstance();
     if (prefs.getBool(prefsKey) ?? false) {
-      return;
+      return false;
     }
     if (!context.mounted) {
-      return;
+      return false;
     }
     await showDialog<void>(
       context: context,
@@ -80,6 +82,8 @@ abstract final class FirstRunHelp {
       ),
     );
     await prefs.setBool(prefsKey, true);
+    await WhatsNewHelp.markCurrent();
+    return true;
   }
 }
 

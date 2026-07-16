@@ -2,7 +2,7 @@
 
 **Plano mestre (Cursor):** `phoenix_manager_game_2a890b62.plan.md`  
 **Roadmap vivo (lançamento):** [`docs/plano.md`](../plano.md)  
-**Versão actual:** `0.8.19` · **Fase:** **E — Lançamento** (polish UI congelado → Play)
+**Versão actual:** `0.8.20` · **Fase:** **E — Lançamento** (polish UI congelado → Play)
 
 Este ficheiro liga o **Master Roadmap** do plano de arquitectura ao estado **real** do repositório.
 

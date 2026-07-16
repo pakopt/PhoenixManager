@@ -4,6 +4,9 @@ set -euo pipefail
 ROOT="$(cd "$(dirname "$0")/.." && pwd)"
 cd "$ROOT"
 
+echo "==> Version sync"
+"$ROOT/scripts/check_app_version_sync.sh"
+
 echo "==> Dart packages"
 dart pub get
 dart analyze

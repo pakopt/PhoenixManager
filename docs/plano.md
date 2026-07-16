@@ -1,7 +1,7 @@
 # Plano — Project Phoenix Manager
 
-**Versão:** v0.8.19  
-**Actualizado:** 15 de Julho de 2026  
+**Versão:** v0.8.20  
+**Actualizado:** 16 de Julho de 2026  
 **Fase actual:** **E — Lançamento**
 
 Documento vivo do roadmap. O plano detalhado de arquitectura (PSE, GDD, motores) vive no **Cursor plan** (`phoenix_manager_game_2a890b62.plan.md`) e em [`docs/roadmap/master-roadmap-v1.md`](roadmap/master-roadmap-v1.md); este ficheiro reflecte **o que está feito** e **o que falta para publicar**.
@@ -121,14 +121,15 @@ CLEAN_GRADLE=1 ./scripts/clean_dev_artifacts.sh   # inclui ~/.gradle/caches
 1. **Testar e lançar** → **Teste fechado** → **Testadores** → lista com **14–16 emails** (buffer contra desistências).
 2. Enviar o **link de adesão** oficial da Console (não APK sideload):
    `./scripts/play_testers_invite.sh 'URL_DO_LINK'` — mensagem + checklist
-3. Cada pessoa: abrir o link no telemóvel → **Tornar-me testador** → instalar/actualizar na Play Store.
-4. Na Console, confirmar que ≥12 aparecem como **opted-in** — aí começa a contagem dos 14 dias (se descer abaixo de 12, o relógio arrisca-se).
-5. Após 14 dias contínuos com ≥12: Dashboard → **candidatar a acesso a produção** (questionário sobre o teste).
-6. Depois da aprovação → **Produção** → promover release / enviar para revisão.
+3. Acompanhar opted-in e dias: `./scripts/play_14day_tracker.sh` (follow-up: `--follow-up`)
+4. Cada pessoa: abrir o link no telemóvel → **Tornar-me testador** → instalar/actualizar na Play Store.
+5. Na Console, confirmar que ≥12 aparecem como **opted-in** — aí começa a contagem dos 14 dias (se descer abaixo de 12, o relógio arrisca-se).
+6. Após 14 dias contínuos com ≥12: Dashboard → **candidatar a acesso a produção** (questionário sobre o teste).
+7. Depois da aprovação → **Produção** → promover release / enviar para revisão.
 
 Detalhe oficial: [requisitos de teste Play](https://support.google.com/googleplay/android-developer/answer/14151465) · guia local: [`docs/STORE.md`](STORE.md) §9c–10
 
-**AAB actual:** `build/release/mobile/android/phoenix_manager.aab` (v0.8.19, versionCode 20)
+**AAB actual:** `build/release/mobile/android/phoenix_manager.aab` (v0.8.20, versionCode 21)
 
 Convite / QA para amigos: [`docs/BETA.md`](BETA.md) · textos: `./scripts/play_console_brief.sh`
 
@@ -199,23 +200,24 @@ Saída: `build/release/store/android/` — reutilizar quando a conta activar.
 
 | Campo | Valor actual |
 |-------|--------------|
-| `versionName` | `0.8.19` |
-| `versionCode` | `20` |
+| `versionName` | `0.8.20` |
+| `versionCode` | `21` |
 | Package / Bundle ID | `com.phoenix.manager` |
 
 **Próxima release:** editar `apps/phoenix_manager/pubspec.yaml`:
 
 ```yaml
-version: 0.8.19+20   # nome visível + versionCode (obrigatório incrementar +N)
+version: 0.8.20+21   # nome visível + versionCode (obrigatório incrementar +N)
 ```
 
-Depois: `./scripts/build_mobile.sh android` → novo AAB.
+Depois: `./scripts/build_mobile.sh android` → novo AAB · `./scripts/check_app_version_sync.sh`
 
 ---
 
 ## Histórico recente (Fase E + v0.8.x)
 
 - ✅ **Scripts disco/Gradle** — `clean_dev_artifacts.sh`, `repair_gradle.sh`, `install_local.sh` verifica espaço  
+- ✅ **v0.8.20** — «Novidades» ao actualizar · tracker 12×14 · sync AppVersion no CI  
 - ✅ **v0.8.19** — sheet first-run (novos testadores) · modos de jogo partilhados  
 - ✅ **v0.8.18** — sync versão UI · dicas dashboard rotativas · feedback/bug no drawer  
 - ✅ **v0.8.17** — Semantics ordenação plantel · **freeze polish UI** (pivot Play)  
@@ -249,10 +251,10 @@ Depois: `./scripts/build_mobile.sh android` → novo AAB.
 - ✅ `play_console_day1.sh` — guia upload quando conta activar  
 - ✅ Beta local — `local_beta.sh`, `docs/BETA.md`, `qa_manual.sh`  
 - ✅ Screenshots App Store — 5 capturas iOS (`capture_app_store_screenshots.sh`)  
-- ✅ Play Console — conta aprovada · **teste fechado activo** · AAB **v0.8.19+20**  
-- 🔄 Produção — **≥12 opted-in × 14 dias** → candidatar acesso → promover (`docs/STORE.md` §9c–10)  
+- ✅ Play Console — conta aprovada · **teste fechado activo** · AAB **v0.8.20+21**  
+- 🔄 Produção — **≥12 opted-in × 14 dias** → candidatar acesso → promover (`docs/STORE.md` §9c–10) · `./scripts/play_14day_tracker.sh`  
 - ✅ Desktop — fullscreen Mac / Windows / Linux + «Sair do jogo»  
-- ✅ Polish UI v0.8.x — **congelado** em v0.8.17; v0.8.18–0.8.19 = onboarding/beta  
+- ✅ Polish UI v0.8.x — **congelado** em v0.8.17; v0.8.18–0.8.20 = onboarding/beta  
 
 
 

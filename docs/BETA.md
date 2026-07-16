@@ -59,16 +59,17 @@ Corre em cada plataforma antes de enviar para lojas:
 | 11 | **Treino** — filtro margem, toque abre ficha do jogador | |
 | 12 | **Detalhe do jogo** — «Ver relato completo» expande | |
 | 13 | **Nova carreira / Jogar agora** — sheet «Primeiros passos» (modos, guardar, feedback) | |
-| 14 | **Dashboard** — dicas rotativas (até 3 jogos; «Próxima dica» / «Entendi») | |
-| 15 | **Drawer** — «Feedback / reportar bug» copia modelo com versão | |
-| 16 | **Dashboard** — alertas «Antes do próximo jogo» (modo Diretor) | |
-| 17 | **Dashboard** — «Forma recente» (vazia ou com V/E/D após jogos) | |
-| 18 | **Android** — edge-to-edge: barras não tapam navegação/conteúdo ([`MOBILE.md`](../apps/phoenix_manager/MOBILE.md)) | |
-| 19 | **Menu drawer** — rodapé mostra versão PSE | |
-| 20 | **Desktop** — abre em fullscreen (Mac / Windows / Linux) | |
-| 21 | **Desktop** — sair/voltar fullscreen (Mac: Esc · Win: Esc/F11 · Linux: Esc/F11) | |
-| 22 | **Desktop** — «Sair do jogo» no menu carreira e no drawer | |
-| 23 | **Desktop** — Ctrl/⌘+S guarda slot activo; Ctrl/⌘+Q pede sair | |
+| 14 | **Actualizar app** — diálogo «Novidades» (uma vez por versão) | |
+| 15 | **Dashboard** — dicas rotativas (até 3 jogos; «Próxima dica» / «Entendi») | |
+| 16 | **Drawer** — «Feedback / reportar bug» copia modelo com versão | |
+| 17 | **Dashboard** — alertas «Antes do próximo jogo» (modo Diretor) | |
+| 18 | **Dashboard** — «Forma recente» (vazia ou com V/E/D após jogos) | |
+| 19 | **Android** — edge-to-edge: barras não tapam navegação/conteúdo ([`MOBILE.md`](../apps/phoenix_manager/MOBILE.md)) | |
+| 20 | **Menu drawer** — rodapé mostra versão PSE | |
+| 21 | **Desktop** — abre em fullscreen (Mac / Windows / Linux) | |
+| 22 | **Desktop** — sair/voltar fullscreen (Mac: Esc · Win: Esc/F11 · Linux: Esc/F11) | |
+| 23 | **Desktop** — «Sair do jogo» no menu carreira e no drawer | |
+| 24 | **Desktop** — Ctrl/⌘+S guarda slot activo; Ctrl/⌘+Q pede sair | |
 
 Automático (saves):
 
@@ -92,7 +93,7 @@ CLEAN_GRADLE=1 ./scripts/clean_dev_artifacts.sh   # inclui ~/.gradle/caches (~5 
 Envia bugs ou sugestões para **pakopt7@gmail.com** com:
 
 - Dispositivo (Mac / Android / modelo)
-- Versão da app (menu carreira → rodapé, ex. `PSE v0.8.19`)
+- Versão da app (menu carreira → rodapé, ex. `PSE v0.8.20`)
 - Passos para reproduzir
 - Screenshot opcional
 
@@ -107,8 +108,12 @@ Contas pessoais novas precisam de **≥12 testadores opted-in** no teste fechado
    ```bash
    ./scripts/play_testers_invite.sh 'URL_DO_LINK'
    ```
-3. Confirma na Console que aparecem como opted-in (lista de emails sozinha **não** chega)
-4. Após 14 dias → Dashboard → candidatar acesso a produção
+3. Acompanha opted-in / dias:
+   ```bash
+   DAY=3 OPTED_IN=12 ./scripts/play_14day_tracker.sh --follow-up
+   ```
+4. Confirma na Console que aparecem como opted-in (lista de emails sozinha **não** chega)
+5. Após 14 dias → Dashboard → candidatar acesso a produção
 
 ```bash
 ./scripts/qa_manual.sh   # roteiro para os testadores

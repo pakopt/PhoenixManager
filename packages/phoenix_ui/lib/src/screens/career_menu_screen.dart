@@ -47,7 +47,7 @@ class CareerMenuScreen extends StatelessWidget {
                     ),
                     const SizedBox(height: 12),
                     Text(
-                      'Project Phoenix Manager',
+                      'Phoenix Manager',
                       style: theme.textTheme.headlineSmall?.copyWith(
                         fontWeight: FontWeight.bold,
                       ),

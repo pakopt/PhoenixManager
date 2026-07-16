@@ -21,7 +21,7 @@ void main() {
 
     await _waitFor(
       tester,
-      find.text('Project Phoenix Manager'),
+      find.text('Phoenix Manager'),
       reason: 'menu carreira',
     );
     await _shot(binding, tester, 'menu-carreira', convertSurface: true);

@@ -35,7 +35,7 @@ class _PhoenixManagerAppState extends State<PhoenixManagerApp> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Project Phoenix Manager',
+      title: 'Phoenix Manager',
       debugShowCheckedModeBanner: false,
       theme: PhoenixTheme.dark(),
       home: BootScreen(controller: _controller),

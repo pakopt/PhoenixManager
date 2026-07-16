@@ -507,7 +507,7 @@ class _GameDrawer extends StatelessWidget {
           const Divider(),
           ListTile(
             leading: const Icon(Icons.info_outline),
-            title: const Text('Project Phoenix Manager'),
+            title: const Text('Phoenix Manager'),
             subtitle: Text(AppVersion.engineLabel),
           ),
           ListTile(

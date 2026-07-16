@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/foundation.dart';
 import 'package:phoenix_core/phoenix_core.dart';
 import 'package:phoenix_engine/phoenix_engine.dart';
@@ -6,6 +8,7 @@ import 'package:phoenix_ui/src/game/play_mode.dart';
 import 'package:phoenix_ui/src/game/save_slot.dart';
 import 'package:phoenix_ui/src/game/save_storage.dart';
 import 'package:phoenix_ui/src/util/date_format.dart';
+import 'package:phoenix_ui/src/widgets/beta_checklist_help.dart';
 
 /// Mutable UI controller — notifies widgets when the engine state changes.
 class GameController extends ChangeNotifier {
@@ -86,6 +89,7 @@ class GameController extends ChangeNotifier {
       _lastSavedAt = null;
       _unsavedChanges = false;
       notifyListeners();
+      await BetaChecklistHelp.markDone('career');
     }
   }
 
@@ -114,6 +118,7 @@ class GameController extends ChangeNotifier {
     await boot();
     if (_session != null) {
       await loadGame(slot);
+      await BetaChecklistHelp.markDone('career');
     }
   }
 
@@ -148,6 +153,7 @@ class GameController extends ChangeNotifier {
     _unsavedChanges = false;
     await refreshSlots();
     notifyListeners();
+    await BetaChecklistHelp.markDone('save');
   }
 
   Future<bool> loadGame([int? slot]) async {
@@ -189,6 +195,7 @@ class GameController extends ChangeNotifier {
   void advanceToNextMatch() {
     _session?.advanceToNextUserMatch();
     _afterSessionMutation();
+    unawaited(BetaChecklistHelp.markDone('play'));
   }
 
   /// Returns error message on failure, null on success.
@@ -220,6 +227,9 @@ class GameController extends ChangeNotifier {
     _session!.advanceToNextUserMatch();
     final match = _session!.getLatestUserMatch();
     _afterSessionMutation();
+    if (match != null) {
+      unawaited(BetaChecklistHelp.markDone('play'));
+    }
     return match;
   }
 

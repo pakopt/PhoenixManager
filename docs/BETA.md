@@ -66,6 +66,8 @@ Corre em cada plataforma antes de enviar para lojas:
 | 16b | **Modo Diretor** — chip «Por guardar» no AppBar (tap → guardar) | |
 | 16c | **Modo Diretor** — Menu principal / voltar com por guardar (3 opções) | |
 | 16d | **Menu / drawer** — roteiro beta mostra progresso N/5 | |
+| 16e | **Roteiro** — auto-marca ao jogar / guardar / plantel+tabela / feedback | |
+| 16f | **Carregar save** com por guardar — 3 opções | |
 | 17 | **Dashboard** — dicas rotativas (até 3 jogos; «Próxima dica» / «Entendi») | |
 | 18 | **Drawer** — «Feedback / reportar bug» (modelo + progresso do roteiro) | |
 | 19 | **Dashboard** — alertas «Antes do próximo jogo» (modo Diretor) | |
@@ -99,7 +101,7 @@ CLEAN_GRADLE=1 ./scripts/clean_dev_artifacts.sh   # inclui ~/.gradle/caches (~5 
 Envia bugs ou sugestões para **pakopt7@gmail.com** com:
 
 - Dispositivo (Mac / Android / modelo)
-- Versão da app (menu carreira → rodapé, ex. `PSE v0.8.23`)
+- Versão da app (menu carreira → rodapé, ex. `PSE v0.8.24`)
 - Passos para reproduzir
 - Screenshot opcional
 

@@ -38,6 +38,48 @@ abstract final class BetaChecklistHelp {
 
   static const contact = 'pakopt7@gmail.com';
 
+  /// Notifica badges quando o progresso muda.
+  static final progressTick = ValueNotifier<int>(0);
+
+  /// Marca um item (idempotente). Usado quando o jogador faz a acção real.
+  static Future<bool> markDone(String id) async {
+    final valid = items.any((item) => item.id == id);
+    if (!valid) {
+      return false;
+    }
+    final prefs = await SharedPreferences.getInstance();
+    final key = '$prefsPrefix$id';
+    if (prefs.getBool(key) ?? false) {
+      return false;
+    }
+    await prefs.setBool(key, true);
+    progressTick.value++;
+    return true;
+  }
+
+  /// Plantel (1) + Classificação (4) — marca «squad» quando ambos foram vistos.
+  static Future<void> noteTabVisit(int destinationIndex) async {
+    final prefs = await SharedPreferences.getInstance();
+    if (destinationIndex == 1) {
+      const key = '${prefsPrefix}visited_squad';
+      if (!(prefs.getBool(key) ?? false)) {
+        await prefs.setBool(key, true);
+      }
+    } else if (destinationIndex == 4) {
+      const key = '${prefsPrefix}visited_table';
+      if (!(prefs.getBool(key) ?? false)) {
+        await prefs.setBool(key, true);
+      }
+    } else {
+      return;
+    }
+    final sawSquad = prefs.getBool('${prefsPrefix}visited_squad') ?? false;
+    final sawTable = prefs.getBool('${prefsPrefix}visited_table') ?? false;
+    if (sawSquad && sawTable) {
+      await markDone('squad');
+    }
+  }
+
   /// Contagem para badges (ex. «2/5»).
   static Future<({int done, int total})> progressCounts() async {
     final prefs = await SharedPreferences.getInstance();
@@ -72,6 +114,7 @@ abstract final class BetaChecklistHelp {
       context: context,
       builder: (ctx) => const _BetaChecklistDialog(),
     );
+    progressTick.value++;
   }
 }
 
@@ -86,12 +129,17 @@ class BetaChecklistProgressLabel extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder<({int done, int total})>(
-      future: BetaChecklistHelp.progressCounts(),
-      builder: (context, snap) {
-        final done = snap.data?.done ?? 0;
-        final total = snap.data?.total ?? BetaChecklistHelp.items.length;
-        return builder(context, done, total);
+    return ValueListenableBuilder<int>(
+      valueListenable: BetaChecklistHelp.progressTick,
+      builder: (context, _, __) {
+        return FutureBuilder<({int done, int total})>(
+          future: BetaChecklistHelp.progressCounts(),
+          builder: (context, snap) {
+            final done = snap.data?.done ?? 0;
+            final total = snap.data?.total ?? BetaChecklistHelp.items.length;
+            return builder(context, done, total);
+          },
+        );
       },
     );
   }
@@ -136,6 +184,7 @@ class _BetaChecklistDialogState extends State<_BetaChecklistDialog> {
   Future<void> _toggle(String id, bool value) async {
     final prefs = await SharedPreferences.getInstance();
     await prefs.setBool('${BetaChecklistHelp.prefsPrefix}$id', value);
+    BetaChecklistHelp.progressTick.value++;
     if (!mounted) {
       return;
     }
@@ -192,7 +241,8 @@ class _BetaChecklistDialogState extends State<_BetaChecklistDialog> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      'Checklist rápido para o teste fechado Play ($done/$total).',
+                      'Checklist rápido para o teste fechado Play ($done/$total). '
+                      'Alguns itens marcam-se sozinhos quando fazes a acção no jogo.',
                       style: Theme.of(context).textTheme.bodySmall,
                     ),
                     const SizedBox(height: 8),

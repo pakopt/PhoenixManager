@@ -2,15 +2,17 @@ import 'package:flutter/material.dart';
 import 'package:phoenix_ui/src/game/game_controller.dart';
 import 'package:phoenix_ui/src/util/ui_feedback.dart';
 
-/// Confirma saída / menu quando há alterações por guardar.
+/// Confirma saída / menu / carga quando há alterações por guardar.
 abstract final class UnsavedLeaveHelp {
-  /// `true` = pode sair (guardou, descartou, ou não havia alterações).
+  /// `true` = pode continuar (guardou, descartou, ou não havia alterações).
   static Future<bool> confirmLeave(
     BuildContext context,
     GameController controller, {
     String title = 'Sair sem guardar?',
     String body =
         'Há alterações por guardar. Queres guardar a carreira antes de sair?',
+    String discardLabel = 'Sair sem guardar',
+    String saveLabel = 'Guardar e sair',
   }) async {
     if (!controller.hasUnsavedChanges) {
       return true;
@@ -28,11 +30,11 @@ abstract final class UnsavedLeaveHelp {
           ),
           TextButton(
             onPressed: () => Navigator.pop(ctx, _LeaveChoice.discard),
-            child: const Text('Sair sem guardar'),
+            child: Text(discardLabel),
           ),
           FilledButton(
             onPressed: () => Navigator.pop(ctx, _LeaveChoice.save),
-            child: const Text('Guardar e sair'),
+            child: Text(saveLabel),
           ),
         ],
       ),

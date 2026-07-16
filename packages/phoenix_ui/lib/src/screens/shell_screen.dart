@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:phoenix_ui/src/game/game_controller.dart';
@@ -171,6 +173,7 @@ class _ShellScreenState extends State<ShellScreen> {
       }
       _index = value;
     });
+    unawaited(BetaChecklistHelp.noteTabVisit(value));
   }
 
   Future<void> _quickSaveActiveSlot() async {
@@ -619,6 +622,7 @@ class _GameDrawer extends StatelessWidget {
       betaChecklistSummary: checklist,
     );
     await Clipboard.setData(ClipboardData(text: text));
+    await BetaChecklistHelp.markDone('feedback');
     if (!context.mounted) {
       return;
     }
@@ -701,6 +705,19 @@ class _GameDrawer extends StatelessWidget {
       ),
     );
     if (slot == null || !context.mounted) {
+      return;
+    }
+    final proceed = await UnsavedLeaveHelp.confirmLeave(
+      context,
+      controller,
+      title: 'Carregar outro save?',
+      body:
+          'Há alterações por guardar na carreira actual. '
+          'Queres guardar antes de carregar outro slot?',
+      discardLabel: 'Carregar sem guardar',
+      saveLabel: 'Guardar e carregar',
+    );
+    if (!proceed || !context.mounted) {
       return;
     }
     final ok = await controller.loadGame(slot);

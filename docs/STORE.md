@@ -231,6 +231,10 @@ chmod +x scripts/capture_play_screenshots.sh scripts/export_feature_graphic.sh
 # Modo guiado (recomendado) — instala APK + 5 ecrãs sugeridos
 ./scripts/capture_play_screenshots.sh --install --batch
 
+# Desktop / PC (macOS — Steam, site)
+./scripts/capture_desktop_screenshots.sh
+# → build/release/store/desktop/screenshots/
+
 # Feature graphic 1024×500
 ./scripts/export_feature_graphic.sh
 ```

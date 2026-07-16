@@ -57,6 +57,7 @@ Documento vivo do roadmap. O plano detalhado de arquitectura (PSE, GDD, motores)
 | **Scripts gráficos loja** | ✅ | `play_console_brief.sh`, `package_play_store.sh`, screenshots, gráficos |
 | **Publicar URL https** | ✅ | [pakopt.github.io/PhoenixManager/privacy.html](https://pakopt.github.io/PhoenixManager/privacy.html) |
 | Screenshots telemóvel | ✅ | `./scripts/capture_play_screenshots_auto.sh` (flutter drive → Mac) |
+| Screenshots desktop (PC) | ✅ | `./scripts/capture_desktop_screenshots.sh` (macOS fullscreen) |
 | Feature graphic 1024×500 | ✅ | `./scripts/export_feature_graphic.sh` |
 | Conta Play Developer | ✅ | Conta aprovada (Jul 2026) |
 | Teste interno Play Console | 🔄 | Ficha da loja + AAB — aguardar revisão Google |

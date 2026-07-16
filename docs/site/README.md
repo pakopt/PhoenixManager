@@ -7,7 +7,16 @@ Páginas públicas para a **Play Store** e **App Store** (política de privacida
 | `privacy.html` | `https://pakopt.github.io/PhoenixManager/privacy.html` |
 | `index.html` | Redirecciona para `privacy.html` |
 | `motor-pse.svg` / `motor-pse.png` | Arte do **Phoenix Simulation Engine** (métricas reais) |
-| `img/*.png` | Screenshots da UI do jogo (dashboard, express, plantel) |
+| `img/*.png` | Screenshots da UI do jogo (preferir desktop via `capture_desktop_screenshots.sh`) |
+
+## Screenshots desktop (PC)
+
+```bash
+./scripts/install_local.sh                    # se ainda não tiveres a app
+./scripts/capture_desktop_screenshots.sh      # batch interactivo (5 ecrãs)
+# → build/release/store/desktop/screenshots/
+# → actualiza docs/site/img/{dashboard,express,plantel}.png
+```
 
 ## Arte do motor (PSE)
 

@@ -23,15 +23,18 @@ if [[ -d "$OUT/screenshots" ]]; then
 fi
 
 cat > "$STAGE/README.txt" <<EOF
-Project Phoenix Manager — upload Play Console
+Phoenix Manager — upload Play Console
 Package: com.phoenix.manager
 Version: $VERSION_NAME (code $VERSION_CODE)
 Privacidade: https://pakopt.github.io/PhoenixManager/privacy.html
 
-phoenix_manager.aab  → Teste interno → Carregar
+phoenix_manager.aab  → Teste fechado → Criar versão → Carregar
 icon-512.png         → Presença na loja → Ícone
 feature-graphic.png  → Presença na loja → Feature graphic
 screenshots/         → Presença na loja → Capturas de ecrã
+
+Notas da versão (exemplo):
+v0.8.25 — título Phoenix Manager + logo de marca no menu.
 
 Textos e Data safety: ./scripts/play_console_brief.sh
 Guia: docs/STORE.md

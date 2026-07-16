@@ -24,6 +24,7 @@ class GameController extends ChangeNotifier {
     SaveSlotMeta.empty,
   );
   DateTime? _lastSavedAt;
+  bool _unsavedChanges = false;
   final List<AchievementId> _pendingAchievementUnlocks = [];
   Set<AchievementId> _seenAchievementIds = {};
 
@@ -36,6 +37,7 @@ class GameController extends ChangeNotifier {
   List<SaveSlotMeta> get slots => List.unmodifiable(_slots);
   bool get hasSave => _slots.any((s) => !s.isEmpty);
   DateTime? get lastSavedAt => _lastSavedAt;
+  bool get hasUnsavedChanges => _unsavedChanges;
 
   Future<void> initializeMenu() async {
     await refreshSlots();
@@ -82,6 +84,7 @@ class GameController extends ChangeNotifier {
     await boot();
     if (_session != null) {
       _lastSavedAt = null;
+      _unsavedChanges = false;
       notifyListeners();
     }
   }
@@ -142,6 +145,7 @@ class GameController extends ChangeNotifier {
     await _saveStorage.writeSlot(slot: target, json: json, meta: meta);
     _activeSlot = target;
     _lastSavedAt = now;
+    _unsavedChanges = false;
     await refreshSlots();
     notifyListeners();
   }
@@ -166,6 +170,7 @@ class GameController extends ChangeNotifier {
           : PlayMode.director;
     }
     _lastSavedAt = meta.savedAt;
+    _unsavedChanges = false;
     await refreshSlots();
     notifyListeners();
     return true;
@@ -243,6 +248,7 @@ class GameController extends ChangeNotifier {
   }
 
   void _afterSessionMutation() {
+    _unsavedChanges = true;
     _trackNewAchievements();
     notifyListeners();
   }

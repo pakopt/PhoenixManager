@@ -1,15 +1,15 @@
 /// Versão visível ao jogador — manter alinhada com `apps/phoenix_manager/pubspec.yaml`.
 /// Validar: `./scripts/check_app_version_sync.sh`
 abstract final class AppVersion {
-  static const label = '0.8.20';
-  static const buildNumber = 21;
-  static const engineLabel = 'PSE v0.8.20';
+  static const label = '0.8.21';
+  static const buildNumber = 22;
+  static const engineLabel = 'PSE v0.8.21';
 
   /// Pontos curtos para o diálogo «Novidades» após actualizar.
   static const whatsNew = <String>[
-    'Diálogo «Novidades» quando actualizas a app.',
-    'Primeiros passos e dicas no dashboard para carreiras novas.',
-    'Menu → Feedback / reportar bug (copia modelo com versão).',
+    'Roteiro de teste (beta) no menu — checklist do teste fechado.',
+    'Aviso «Alterações por guardar» no modo Diretor (com atalho Guardar).',
+    'Novidades ao actualizar · primeiros passos · feedback por email.',
   ];
 
   /// Bloco curto para emails de feedback / bugs.

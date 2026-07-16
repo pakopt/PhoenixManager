@@ -18,6 +18,7 @@ import 'package:phoenix_ui/src/util/app_version.dart';
 import 'package:phoenix_ui/src/util/date_format.dart';
 import 'package:phoenix_ui/src/util/platform_chrome.dart';
 import 'package:phoenix_ui/src/util/ui_feedback.dart';
+import 'package:phoenix_ui/src/widgets/beta_checklist_help.dart';
 import 'package:phoenix_ui/src/widgets/content_width.dart';
 import 'package:phoenix_ui/src/widgets/first_run_help_sheet.dart';
 import 'package:phoenix_ui/src/widgets/whats_new_help_sheet.dart';
@@ -35,6 +36,7 @@ class _ShellScreenState extends State<ShellScreen> {
   int _index = 0;
   int _clubInitialTab = 0;
   final _scaffoldKey = GlobalKey<ScaffoldState>();
+  var _saveHintShown = false;
 
   @override
   void initState() {
@@ -68,7 +70,40 @@ class _ShellScreenState extends State<ShellScreen> {
     if (mounted) {
       setState(() {});
       _showPendingAchievementToasts();
+      _maybeShowSaveHint();
     }
+  }
+
+  void _maybeShowSaveHint() {
+    if (_saveHintShown || !widget.controller.hasUnsavedChanges) {
+      return;
+    }
+    // Express auto-guarda após jornada — o aviso importa sobretudo no Diretor.
+    if (widget.controller.playMode == PlayMode.express) {
+      return;
+    }
+    _saveHintShown = true;
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (!mounted || !widget.controller.hasUnsavedChanges) {
+        return;
+      }
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          behavior: SnackBarBehavior.floating,
+          content: const Text('Alterações por guardar'),
+          action: SnackBarAction(
+            label: 'Guardar',
+            onPressed: () async {
+              await widget.controller.saveGame();
+              if (!mounted) {
+                return;
+              }
+              UiFeedback.action();
+            },
+          ),
+        ),
+      );
+    });
   }
 
   void _showPendingAchievementToasts() {
@@ -383,6 +418,7 @@ class _GameDrawer extends StatelessWidget {
             title: const Text('Guardar carreira'),
             subtitle: () {
               final parts = <String>[
+                if (controller.hasUnsavedChanges) 'Alterações por guardar',
                 if (PhoenixPlatformChrome.isDesktop) 'Ctrl/⌘+S (slot activo)',
                 if (controller.lastSavedAt != null)
                   'Último: ${DateFormatUtil.relative(controller.lastSavedAt!)}',
@@ -416,6 +452,15 @@ class _GameDrawer extends StatelessWidget {
             title: const Text('Feedback / reportar bug'),
             subtitle: const Text('Copia um modelo para email'),
             onTap: () => _copyFeedbackTemplate(context),
+          ),
+          ListTile(
+            leading: const Icon(Icons.checklist),
+            title: const Text('Roteiro de teste (beta)'),
+            subtitle: const Text('Checklist rápido do teste fechado'),
+            onTap: () {
+              Navigator.pop(context);
+              BetaChecklistHelp.show(context);
+            },
           ),
           ListTile(
             leading: const Icon(Icons.privacy_tip_outlined),

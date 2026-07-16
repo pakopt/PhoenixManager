@@ -28,16 +28,18 @@ Corre em Mac, Android ou iOS (dev) antes de lojas.
   [ ] 12. Detalhe jogo — «Ver relato completo»
   [ ] 13. Nova carreira / Jogar agora — sheet «Primeiros passos»
   [ ] 14. Actualizar app — diálogo «Novidades» (uma vez por versão)
-  [ ] 15. Dashboard — dicas rotativas (até 3 jogos)
-  [ ] 16. Drawer — «Feedback / reportar bug» copia modelo
-  [ ] 17. Dashboard — alertas «Antes do próximo jogo» (Diretor)
-  [ ] 18. Dashboard — «Forma recente» (vazia no início ou após jogos)
-  [ ] 19. Android — barras sistema não tapam botões (edge-to-edge; ver MOBILE.md)
-  [ ] 20. Rodapé menu — versão PSE visível (ex. v$VERSION_NAME)
-  [ ] 21. Desktop (Mac/Windows/Linux) — abre em fullscreen
-  [ ] 22. Desktop — sair/voltar fullscreen (Mac: Esc · Win: Esc/F11 · Linux: Esc/F11)
-  [ ] 23. Desktop — «Sair do jogo» no menu carreira e no drawer (confirma e fecha)
-  [ ] 24. Desktop — Ctrl/⌘+S guarda o slot activo; Ctrl/⌘+Q pede sair
+  [ ] 15. Drawer — «Roteiro de teste (beta)» (checklist + copiar)
+  [ ] 16. Modo Diretor — snack «Alterações por guardar» após avançar
+  [ ] 17. Dashboard — dicas rotativas (até 3 jogos)
+  [ ] 18. Drawer — «Feedback / reportar bug» copia modelo
+  [ ] 19. Dashboard — alertas «Antes do próximo jogo» (Diretor)
+  [ ] 20. Dashboard — «Forma recente» (vazia no início ou após jogos)
+  [ ] 21. Android — barras sistema não tapam botões (edge-to-edge; ver MOBILE.md)
+  [ ] 22. Rodapé menu — versão PSE visível (ex. v$VERSION_NAME)
+  [ ] 23. Desktop (Mac/Windows/Linux) — abre em fullscreen
+  [ ] 24. Desktop — sair/voltar fullscreen (Mac: Esc · Win: Esc/F11 · Linux: Esc/F11)
+  [ ] 25. Desktop — «Sair do jogo» no menu carreira e no drawer (confirma e fecha)
+  [ ] 26. Desktop — Ctrl/⌘+S guarda o slot activo; Ctrl/⌘+Q pede sair
 
 Automático (saves):
   ./scripts/test_mac.sh

@@ -6,6 +6,18 @@ Páginas públicas para a **Play Store** e **App Store** (política de privacida
 |----------|-------------------|
 | `privacy.html` | `https://pakopt.github.io/PhoenixManager/privacy.html` |
 | `index.html` | Redirecciona para `privacy.html` |
+| `motor-pse.svg` / `motor-pse.png` | Arte do **Phoenix Simulation Engine** (métricas reais) |
+| `img/*.png` | Screenshots da UI do jogo (dashboard, express, plantel) |
+
+## Arte do motor (PSE)
+
+```bash
+./scripts/capture_site_engine_screenshot.sh
+# → docs/site/motor-pse.svg (+ PNG)
+```
+
+No site de apresentação, preferir o **SVG** (nítido em qualquer resolução). O PNG serve para embeds que não aceitam SVG.
+
 
 ## Publicar no GitHub Pages
 

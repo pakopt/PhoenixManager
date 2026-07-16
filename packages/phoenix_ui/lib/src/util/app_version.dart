@@ -1,15 +1,14 @@
 /// Versão visível ao jogador — manter alinhada com `apps/phoenix_manager/pubspec.yaml`.
 /// Validar: `./scripts/check_app_version_sync.sh`
 abstract final class AppVersion {
-  static const label = '0.8.24';
-  static const buildNumber = 25;
-  static const engineLabel = 'PSE v0.8.24';
+  static const label = '0.8.25';
+  static const buildNumber = 26;
+  static const engineLabel = 'PSE v0.8.25';
 
   /// Pontos curtos para o diálogo «Novidades» após actualizar.
   static const whatsNew = <String>[
-    'Roteiro beta marca-se sozinho ao jogar, guardar, abrir plantel/tabela e copiar feedback.',
-    'Aviso ao carregar outro save com alterações por guardar.',
-    'Progresso do roteiro actualiza em tempo real no menu e drawer.',
+    'Título do menu: Phoenix Manager (sem «Project»).',
+    'Logo de marca no menu de carreira (mesma arte do ícone da app).',
   ];
 
   /// Bloco curto para emails de feedback / bugs.
@@ -19,7 +18,7 @@ abstract final class AppVersion {
     String? betaChecklistSummary,
   }) {
     final buffer = StringBuffer()
-      ..writeln('Project Phoenix Manager $label ($buildNumber)')
+      ..writeln('Phoenix Manager $label ($buildNumber)')
       ..writeln(engineLabel);
     if (playMode != null) {
       buffer.writeln('Modo: $playMode');

@@ -199,7 +199,7 @@ class _BetaChecklistDialogState extends State<_BetaChecklistDialog> {
 
   Future<void> _copySummary(BuildContext context) async {
     final buffer = StringBuffer()
-      ..writeln('Roteiro beta — Project Phoenix Manager ${AppVersion.label}')
+      ..writeln('Roteiro beta — Phoenix Manager ${AppVersion.label}')
       ..writeln();
     for (final item in BetaChecklistHelp.items) {
       final mark = _checked.contains(item.id) ? '[x]' : '[ ]';

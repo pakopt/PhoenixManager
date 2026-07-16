@@ -51,6 +51,7 @@ fi
 if [[ -n "$DAY" && "$DAY" -ge 14 && -n "$OPTED_IN" && "$OPTED_IN" -ge 12 ]]; then
   echo ""
   echo "  ✅  Pronto para candidatar acesso a produção no Dashboard."
+  echo "      ./scripts/play_production_apply.sh"
 fi
 
 echo ""
@@ -97,4 +98,4 @@ EOF
 fi
 
 echo ""
-echo "Comandos: ./scripts/play_testers_invite.sh · ./scripts/phase_e_status.sh"
+echo "Comandos: ./scripts/play_testers_invite.sh · ./scripts/play_production_apply.sh · ./scripts/phase_e_status.sh"

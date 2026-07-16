@@ -114,6 +114,10 @@ Contas pessoais novas precisam de **≥12 testadores opted-in** no teste fechado
    ```
 4. Confirma na Console que aparecem como opted-in (lista de emails sozinha **não** chega)
 5. Após 14 dias → Dashboard → candidatar acesso a produção
+   ```bash
+   ./scripts/play_production_apply.sh      # rascunhos PT
+   ./scripts/play_production_apply.sh --en # EN
+   ```
 
 ```bash
 ./scripts/qa_manual.sh   # roteiro para os testadores

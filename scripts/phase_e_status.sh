@@ -66,6 +66,7 @@ section "Trabalho activo"
 cat <<EOF
   ./scripts/play_14day_tracker.sh     # checklist 12×14 + follow-up
   ./scripts/play_testers_invite.sh    # mensagem de convite
+  ./scripts/play_production_apply.sh  # rascunhos questionário produção
   ./scripts/play_console_brief.sh     # textos copy-paste
   ./scripts/check_app_version_sync.sh # AppVersion = pubspec
   ./scripts/qa_manual.sh              # roteiro QA manual

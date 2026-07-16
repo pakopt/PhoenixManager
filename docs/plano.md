@@ -124,7 +124,8 @@ CLEAN_GRADLE=1 ./scripts/clean_dev_artifacts.sh   # inclui ~/.gradle/caches
 3. Acompanhar opted-in e dias: `./scripts/play_14day_tracker.sh` (follow-up: `--follow-up`)
 4. Cada pessoa: abrir o link no telemóvel → **Tornar-me testador** → instalar/actualizar na Play Store.
 5. Na Console, confirmar que ≥12 aparecem como **opted-in** — aí começa a contagem dos 14 dias (se descer abaixo de 12, o relógio arrisca-se).
-6. Após 14 dias contínuos com ≥12: Dashboard → **candidatar a acesso a produção** (questionário sobre o teste).
+6. Após 14 dias contínuos com ≥12: Dashboard → **candidatar a acesso a produção** (questionário):
+   `./scripts/play_production_apply.sh` — rascunhos PT/EN
 7. Depois da aprovação → **Produção** → promover release / enviar para revisão.
 
 Detalhe oficial: [requisitos de teste Play](https://support.google.com/googleplay/android-developer/answer/14151465) · guia local: [`docs/STORE.md`](STORE.md) §9c–10
@@ -218,6 +219,7 @@ Depois: `./scripts/build_mobile.sh android` → novo AAB · `./scripts/check_app
 
 - ✅ **Scripts disco/Gradle** — `clean_dev_artifacts.sh`, `repair_gradle.sh`, `install_local.sh` verifica espaço  
 - ✅ **v0.8.20** — «Novidades» ao actualizar · tracker 12×14 · sync AppVersion no CI  
+- ✅ **Script candidatura produção** — `play_production_apply.sh` (rascunhos questionário PT/EN)  
 - ✅ **v0.8.19** — sheet first-run (novos testadores) · modos de jogo partilhados  
 - ✅ **v0.8.18** — sync versão UI · dicas dashboard rotativas · feedback/bug no drawer  
 - ✅ **v0.8.17** — Semantics ordenação plantel · **freeze polish UI** (pivot Play)  

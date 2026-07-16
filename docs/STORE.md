@@ -329,12 +329,20 @@ Aplica-se a contas **pessoais** criadas após ~13 Nov 2023 (ver [ajuda Google](h
 - Mantém a faixa fechada estável 14 dias (podes publicar updates; o importante é o opted-in contínuo)  
 - Depois: Dashboard → **Apply for production access** / candidatura → questionário (quem testou, o que mudou, porque está pronta)
 
+Rascunhos do questionário (substitui placeholders com factos reais):
+
+```bash
+./scripts/play_production_apply.sh      # PT
+./scripts/play_production_apply.sh --en # EN (se a Consola estiver em inglês)
+```
+
 Mensagem de convite (gerar + copiar):
 
 ```bash
 ./scripts/play_testers_invite.sh 'https://play.google.com/apps/testing/...'
 ```
 
+Tracker dos 14 dias: `./scripts/play_14day_tracker.sh`  
 Guia de QA para eles: [`docs/BETA.md`](BETA.md) · roteiro: `./scripts/qa_manual.sh`
 
 ### 10. Enviar para revisão (produção)

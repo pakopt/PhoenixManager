@@ -49,6 +49,9 @@ build_android() {
     echo "           Corrigir: Android Studio → SDK Manager → Android SDK Command-line Tools"
     echo "           ou: ./scripts/setup_android_cmdline_tools.sh"
   fi
+  # Regenera GeneratedPluginRegistrant sem dev_dependencies (ex. integration_test)
+  # — evita falha de compileRelease com Flutter ≥3.32.
+  flutter build apk --config-only
   flutter build apk --release
   echo "==> Android App Bundle (Play Store)"
   local aab_path="build/app/outputs/bundle/release/app-release.aab"

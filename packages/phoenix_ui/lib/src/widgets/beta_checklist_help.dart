@@ -38,6 +38,23 @@ abstract final class BetaChecklistHelp {
 
   static const contact = 'pakopt7@gmail.com';
 
+  /// Resumo para emails de feedback (ex. «Roteiro beta: 3/5»).
+  static Future<String> progressSummary() async {
+    final prefs = await SharedPreferences.getInstance();
+    final done = <String>[];
+    for (final item in items) {
+      if (prefs.getBool('$prefsPrefix${item.id}') ?? false) {
+        done.add(item.title);
+      }
+    }
+    final buffer = StringBuffer('Roteiro beta: ${done.length}/${items.length}');
+    for (final title in done) {
+      buffer.writeln();
+      buffer.write('  [x] $title');
+    }
+    return buffer.toString();
+  }
+
   static Future<void> show(BuildContext context) async {
     await showDialog<void>(
       context: context,

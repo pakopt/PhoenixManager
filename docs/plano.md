@@ -1,6 +1,6 @@
 # Plano — Project Phoenix Manager
 
-**Versão:** v0.8.21  
+**Versão:** v0.8.22  
 **Actualizado:** 16 de Julho de 2026  
 **Fase actual:** **E — Lançamento**
 
@@ -130,7 +130,7 @@ CLEAN_GRADLE=1 ./scripts/clean_dev_artifacts.sh   # inclui ~/.gradle/caches
 
 Detalhe oficial: [requisitos de teste Play](https://support.google.com/googleplay/android-developer/answer/14151465) · guia local: [`docs/STORE.md`](STORE.md) §9c–10
 
-**AAB actual:** `build/release/mobile/android/phoenix_manager.aab` (v0.8.21, versionCode 22)
+**AAB actual:** `build/release/mobile/android/phoenix_manager.aab` (v0.8.22, versionCode 23)
 
 Convite / QA para amigos: [`docs/BETA.md`](BETA.md) · textos: `./scripts/play_console_brief.sh`
 
@@ -201,14 +201,14 @@ Saída: `build/release/store/android/` — reutilizar quando a conta activar.
 
 | Campo | Valor actual |
 |-------|--------------|
-| `versionName` | `0.8.21` |
-| `versionCode` | `22` |
+| `versionName` | `0.8.22` |
+| `versionCode` | `23` |
 | Package / Bundle ID | `com.phoenix.manager` |
 
 **Próxima release:** editar `apps/phoenix_manager/pubspec.yaml`:
 
 ```yaml
-version: 0.8.21+22   # nome visível + versionCode (obrigatório incrementar +N)
+version: 0.8.22+23   # nome visível + versionCode (obrigatório incrementar +N)
 ```
 
 Depois: `./scripts/build_mobile.sh android` → novo AAB · `./scripts/check_app_version_sync.sh`
@@ -218,6 +218,7 @@ Depois: `./scripts/build_mobile.sh android` → novo AAB · `./scripts/check_app
 ## Histórico recente (Fase E + v0.8.x)
 
 - ✅ **Scripts disco/Gradle** — `clean_dev_artifacts.sh`, `repair_gradle.sh`, `install_local.sh` verifica espaço  
+- ✅ **v0.8.22** — roteiro no menu carreira · feedback com progresso · chip «Por guardar»  
 - ✅ **v0.8.21** — roteiro beta in-app · aviso guardar (modo Diretor)  
 - ✅ **v0.8.20** — «Novidades» ao actualizar · tracker 12×14 · sync AppVersion no CI  
 - ✅ **Script candidatura produção** — `play_production_apply.sh` (rascunhos questionário PT/EN)  
@@ -254,10 +255,10 @@ Depois: `./scripts/build_mobile.sh android` → novo AAB · `./scripts/check_app
 - ✅ `play_console_day1.sh` — guia upload quando conta activar  
 - ✅ Beta local — `local_beta.sh`, `docs/BETA.md`, `qa_manual.sh`  
 - ✅ Screenshots App Store — 5 capturas iOS (`capture_app_store_screenshots.sh`)  
-- ✅ Play Console — conta aprovada · **teste fechado activo** · AAB **v0.8.21+22**  
+- ✅ Play Console — conta aprovada · **teste fechado activo** · AAB **v0.8.22+23**  
 - 🔄 Produção — **≥12 opted-in × 14 dias** → candidatar acesso → promover (`docs/STORE.md` §9c–10) · `./scripts/play_14day_tracker.sh`  
 - ✅ Desktop — fullscreen Mac / Windows / Linux + «Sair do jogo»  
-- ✅ Polish UI v0.8.x — **congelado** em v0.8.17; v0.8.18–0.8.21 = onboarding/beta  
+- ✅ Polish UI v0.8.x — **congelado** em v0.8.17; v0.8.18–0.8.22 = onboarding/beta  
 
 
 

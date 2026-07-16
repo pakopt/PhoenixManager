@@ -15,6 +15,7 @@ cat <<EOF
 Corre em Mac, Android ou iOS (dev) antes de lojas.
 
   [ ] 1. Menu carreira → Jogar agora / Continuar
+  [ ] 1b. Menu carreira → Roteiro de teste (beta)
   [ ] 2. Dashboard carrega (motor PSE boot)
   [ ] 3. Plantel — lista, pesquisa, ordenação
   [ ] 4. Classificação e calendário

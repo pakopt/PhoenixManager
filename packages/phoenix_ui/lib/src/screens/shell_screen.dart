@@ -274,6 +274,30 @@ class _ShellScreenState extends State<ShellScreen> {
             : null,
         title: Text(session.userClub.name),
         actions: [
+          if (widget.controller.hasUnsavedChanges) ...[
+            ActionChip(
+              avatar: const Icon(Icons.save_outlined, size: 16),
+              label: const Text('Por guardar'),
+              tooltip: 'Guardar carreira no slot activo',
+              onPressed: () async {
+                await widget.controller.saveGame();
+                if (!mounted) {
+                  return;
+                }
+                UiFeedback.action();
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(
+                    behavior: SnackBarBehavior.floating,
+                    content: Text(
+                      'Carreira guardada no slot '
+                      '${widget.controller.activeSlot + 1}',
+                    ),
+                  ),
+                );
+              },
+            ),
+            const SizedBox(width: 8),
+          ],
           Chip(
             avatar: Icon(
               widget.controller.playMode == PlayMode.express
@@ -521,9 +545,11 @@ class _GameDrawer extends StatelessWidget {
   }
 
   Future<void> _copyFeedbackTemplate(BuildContext context) async {
+    final checklist = await BetaChecklistHelp.progressSummary();
     final text = AppVersion.feedbackTemplate(
       playMode: controller.playMode.label,
       saveSlot: controller.activeSlot,
+      betaChecklistSummary: checklist,
     );
     await Clipboard.setData(ClipboardData(text: text));
     if (!context.mounted) {

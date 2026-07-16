@@ -7,6 +7,7 @@ import 'package:phoenix_ui/src/screens/privacy_policy_screen.dart';
 import 'package:phoenix_ui/src/screens/shell_screen.dart';
 import 'package:phoenix_ui/src/screens/simulation_lab_screen.dart';
 import 'package:phoenix_ui/src/widgets/first_run_help_sheet.dart';
+import 'package:phoenix_ui/src/widgets/beta_checklist_help.dart';
 import 'package:phoenix_ui/src/widgets/save_slot_card.dart';
 
 class CareerMenuScreen extends StatelessWidget {
@@ -159,6 +160,21 @@ class CareerMenuScreen extends StatelessWidget {
                       'Balanceamento headless — não afecta saves',
                       style: theme.textTheme.labelSmall?.copyWith(
                         color: theme.colorScheme.outline,
+                      ),
+                    ),
+                    const SizedBox(height: 12),
+                    TextButton.icon(
+                      onPressed: () => BetaChecklistHelp.show(context),
+                      icon: Icon(
+                        Icons.checklist,
+                        size: 18,
+                        color: theme.colorScheme.primary,
+                      ),
+                      label: Text(
+                        'Roteiro de teste (beta)',
+                        style: theme.textTheme.labelMedium?.copyWith(
+                          color: theme.colorScheme.primary,
+                        ),
                       ),
                     ),
                     if (controller.isBooting) ...[

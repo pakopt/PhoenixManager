@@ -47,6 +47,7 @@ Corre em cada plataforma antes de enviar para lojas:
 | # | Passo | OK? |
 |---|-------|-----|
 | 1 | Menu carreira → **Jogar agora** / **Continuar** | |
+| 1b | Menu carreira → **Roteiro de teste (beta)** (checklist) | |
 | 2 | Dashboard carrega (motor PSE boot) | |
 | 3 | **Plantel** — lista, pesquisa, ordenação | |
 | 4 | **Classificação** e calendário | |
@@ -95,7 +96,7 @@ CLEAN_GRADLE=1 ./scripts/clean_dev_artifacts.sh   # inclui ~/.gradle/caches (~5 
 Envia bugs ou sugestões para **pakopt7@gmail.com** com:
 
 - Dispositivo (Mac / Android / modelo)
-- Versão da app (menu carreira → rodapé, ex. `PSE v0.8.21`)
+- Versão da app (menu carreira → rodapé, ex. `PSE v0.8.22`)
 - Passos para reproduzir
 - Screenshot opcional
 

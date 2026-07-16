@@ -34,7 +34,7 @@ feature-graphic.png  → Presença na loja → Feature graphic
 screenshots/         → Presença na loja → Capturas de ecrã
 
 Notas da versão (exemplo):
-v0.8.25 — título Phoenix Manager + logo de marca no menu.
+v0.8.26 — branding Phoenix Manager + assets desktop / Play.
 
 Textos e Data safety: ./scripts/play_console_brief.sh
 Guia: docs/STORE.md

@@ -1,14 +1,14 @@
 /// Versão visível ao jogador — manter alinhada com `apps/phoenix_manager/pubspec.yaml`.
 /// Validar: `./scripts/check_app_version_sync.sh`
 abstract final class AppVersion {
-  static const label = '0.8.25';
-  static const buildNumber = 26;
-  static const engineLabel = 'PSE v0.8.25';
+  static const label = '0.8.26';
+  static const buildNumber = 27;
+  static const engineLabel = 'PSE v0.8.26';
 
   /// Pontos curtos para o diálogo «Novidades» após actualizar.
   static const whatsNew = <String>[
-    'Título do menu: Phoenix Manager (sem «Project»).',
-    'Logo de marca no menu de carreira (mesma arte do ícone da app).',
+    'Build de teste fechado com branding Phoenix Manager (título + logo).',
+    'Assets desktop e pacote Play actualizados para o lançamento.',
   ];
 
   /// Bloco curto para emails de feedback / bugs.

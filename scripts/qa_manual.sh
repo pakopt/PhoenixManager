@@ -31,8 +31,9 @@ Corre em Mac, Android ou iOS (dev) antes de lojas.
   [ ] 14. Actualizar app — diálogo «Novidades» (uma vez por versão)
   [ ] 15. Drawer — «Roteiro de teste (beta)» (checklist + copiar)
   [ ] 16. Modo Diretor — snack «Alterações por guardar» após avançar
+  [ ] 16b. Modo Diretor — chip «Por guardar» no AppBar (tap guarda)
   [ ] 17. Dashboard — dicas rotativas (até 3 jogos)
-  [ ] 18. Drawer — «Feedback / reportar bug» copia modelo
+  [ ] 18. Drawer — «Feedback / reportar bug» (modelo + progresso do roteiro)
   [ ] 19. Dashboard — alertas «Antes do próximo jogo» (Diretor)
   [ ] 20. Dashboard — «Forma recente» (vazia no início ou após jogos)
   [ ] 21. Android — barras sistema não tapam botões (edge-to-edge; ver MOBILE.md)

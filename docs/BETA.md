@@ -63,8 +63,9 @@ Corre em cada plataforma antes de enviar para lojas:
 | 14 | **Actualizar app** — diálogo «Novidades» (uma vez por versão) | |
 | 15 | **Drawer** — «Roteiro de teste (beta)» (checklist + copiar) | |
 | 16 | **Modo Diretor** — snack «Alterações por guardar» após avançar | |
+| 16b | **Modo Diretor** — chip «Por guardar» no AppBar (tap → guardar) | |
 | 17 | **Dashboard** — dicas rotativas (até 3 jogos; «Próxima dica» / «Entendi») | |
-| 18 | **Drawer** — «Feedback / reportar bug» copia modelo com versão | |
+| 18 | **Drawer** — «Feedback / reportar bug» (modelo + progresso do roteiro) | |
 | 19 | **Dashboard** — alertas «Antes do próximo jogo» (modo Diretor) | |
 | 20 | **Dashboard** — «Forma recente» (vazia ou com V/E/D após jogos) | |
 | 21 | **Android** — edge-to-edge: barras não tapam navegação/conteúdo ([`MOBILE.md`](../apps/phoenix_manager/MOBILE.md)) | |

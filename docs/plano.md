@@ -121,7 +121,9 @@ CLEAN_GRADLE=1 ./scripts/clean_dev_artifacts.sh   # inclui ~/.gradle/caches
 1. **Testar e lançar** → **Teste fechado** → **Testadores** → lista com **14–16 emails** (buffer contra desistências).
 2. Enviar o **link de adesão** oficial da Console (não APK sideload):
    `./scripts/play_testers_invite.sh 'URL_DO_LINK'` — mensagem + checklist
-3. Acompanhar opted-in e dias: `./scripts/play_14day_tracker.sh` (follow-up: `--follow-up`)
+3. Acompanhar opted-in e dias: `./scripts/play_14day_tracker.sh`  
+   Gravar: `DAY=1 OPTED_IN=12 CLOCK_START=AAAA-MM-DD ./scripts/play_14day_tracker.sh --save`  
+   Follow-up: `--follow-up`
 4. Cada pessoa: abrir o link no telemóvel → **Tornar-me testador** → instalar/actualizar na Play Store.
 5. Na Console, confirmar que ≥12 aparecem como **opted-in** — aí começa a contagem dos 14 dias (se descer abaixo de 12, o relógio arrisca-se).
 6. Após 14 dias contínuos com ≥12: Dashboard → **candidatar a acesso a produção** (questionário):

@@ -37,3 +37,6 @@ steam/sdk/
 .env.local
 .env.*
 !.env.example
+
+# Play Console — progresso 12×14 (local)
+.play_tracker.env

@@ -342,7 +342,14 @@ Mensagem de convite (gerar + copiar):
 ./scripts/play_testers_invite.sh 'https://play.google.com/apps/testing/...'
 ```
 
-Tracker dos 14 dias: `./scripts/play_14day_tracker.sh`  
+Tracker dos 14 dias (estado em `.play_tracker.env`, gitignored):
+
+```bash
+./scripts/play_14day_tracker.sh
+DAY=1 OPTED_IN=12 CLOCK_START=2026-07-16 ./scripts/play_14day_tracker.sh --save
+./scripts/play_14day_tracker.sh --follow-up
+```
+
 Guia de QA para eles: [`docs/BETA.md`](BETA.md) · roteiro: `./scripts/qa_manual.sh`
 
 ### 10. Enviar para revisão (produção)

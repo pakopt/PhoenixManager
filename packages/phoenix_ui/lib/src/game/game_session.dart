@@ -350,6 +350,33 @@ class GameSession {
         : events.sublist(events.length - 12).reversed.toList();
   }
 
+  /// Eventos relevantes para a Inbox (sem dias vazios / boot).
+  List<PhoenixEvent> get inboxEvents {
+    final events = _context.eventBus.history;
+    return events.reversed.where(_isInboxEvent).take(80).toList();
+  }
+
+  bool _isInboxEvent(PhoenixEvent event) {
+    return switch (event) {
+      DayAdvancedEvent() ||
+      WorldInitializedEvent() ||
+      WorldSavedEvent() =>
+        false,
+      MatchPlayedEvent e =>
+        e.homeClubId == userClubId || e.awayClubId == userClubId,
+      TransferCompletedEvent e =>
+        e.record.fromClubId == userClubId || e.record.toClubId == userClubId,
+      ContractRenewedEvent e => e.clubId == userClubId,
+      PlayerInjuredEvent e => e.clubId == userClubId,
+      PlayerRecoveredEvent e => e.clubId == userClubId,
+      AchievementUnlockedEvent e => e.clubId == userClubId,
+      SalariesPaidEvent e => e.clubId == userClubId,
+      TicketRevenueEvent e => e.clubId == userClubId,
+      YouthIntakeEvent e => e.clubId == userClubId,
+      SeasonFinishedEvent() || NewSeasonStartedEvent() => true,
+    };
+  }
+
   /// Returns error message on failure, null on success.
   String? beginNextSeason() {
     if (!isFullSeasonComplete) {

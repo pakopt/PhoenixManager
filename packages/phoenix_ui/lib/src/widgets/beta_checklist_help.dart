@@ -57,15 +57,15 @@ abstract final class BetaChecklistHelp {
     return true;
   }
 
-  /// Plantel (1) + Classificação (4) — marca «squad» quando ambos foram vistos.
+  /// Plantel (2) + Classificação (5) — marca «squad» quando ambos foram vistos.
   static Future<void> noteTabVisit(int destinationIndex) async {
     final prefs = await SharedPreferences.getInstance();
-    if (destinationIndex == 1) {
+    if (destinationIndex == 2) {
       const key = '${prefsPrefix}visited_squad';
       if (!(prefs.getBool(key) ?? false)) {
         await prefs.setBool(key, true);
       }
-    } else if (destinationIndex == 4) {
+    } else if (destinationIndex == 5) {
       const key = '${prefsPrefix}visited_table';
       if (!(prefs.getBool(key) ?? false)) {
         await prefs.setBool(key, true);

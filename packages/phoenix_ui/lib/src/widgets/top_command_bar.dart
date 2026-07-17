@@ -12,9 +12,11 @@ class TopCommandBar extends StatelessWidget implements PreferredSizeWidget {
     required this.playMode,
     required this.activeSlot,
     this.hasUnsavedChanges = false,
+    this.inboxUnread = 0,
     this.onSave,
     this.onGoToMatch,
     this.onOpenMenu,
+    this.onOpenInbox,
     this.compact = false,
     this.showLeadingMenu = false,
     super.key,
@@ -24,9 +26,11 @@ class TopCommandBar extends StatelessWidget implements PreferredSizeWidget {
   final PlayMode playMode;
   final int activeSlot;
   final bool hasUnsavedChanges;
+  final int inboxUnread;
   final VoidCallback? onSave;
   final VoidCallback? onGoToMatch;
   final VoidCallback? onOpenMenu;
+  final VoidCallback? onOpenInbox;
   final bool compact;
   final bool showLeadingMenu;
 
@@ -98,6 +102,19 @@ class TopCommandBar extends StatelessWidget implements PreferredSizeWidget {
                 ),
               ] else
                 const Spacer(),
+              if (onOpenInbox != null)
+                IconButton(
+                  tooltip: inboxUnread > 0
+                      ? 'Inbox ($inboxUnread não lidas)'
+                      : 'Inbox',
+                  onPressed: onOpenInbox,
+                  icon: Badge(
+                    isLabelVisible: inboxUnread > 0,
+                    label: Text('$inboxUnread'),
+                    backgroundColor: PhoenixColors.seed,
+                    child: const Icon(Icons.mail_outline),
+                  ),
+                ),
               if (hasUnsavedChanges && onSave != null) ...[
                 compact
                     ? IconButton(

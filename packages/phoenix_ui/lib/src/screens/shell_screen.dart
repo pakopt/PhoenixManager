@@ -9,6 +9,7 @@ import 'package:phoenix_ui/src/screens/boot_screen.dart';
 import 'package:phoenix_ui/src/screens/dashboard_screen.dart';
 import 'package:phoenix_ui/src/screens/finances_screen.dart';
 import 'package:phoenix_ui/src/screens/fixtures_screen.dart';
+import 'package:phoenix_ui/src/screens/inbox_screen.dart';
 import 'package:phoenix_ui/src/screens/market_screen.dart';
 import 'package:phoenix_ui/src/legal/app_privacy_policy.dart';
 import 'package:phoenix_ui/src/screens/privacy_policy_screen.dart';
@@ -16,6 +17,8 @@ import 'package:phoenix_ui/src/screens/squad_screen.dart';
 import 'package:phoenix_ui/src/screens/standings_screen.dart';
 import 'package:phoenix_ui/src/screens/club_screen.dart';
 import 'package:phoenix_ui/src/screens/training_screen.dart';
+import 'package:phoenix_ui/src/game/inbox_message.dart';
+import 'package:phoenix_ui/src/game/inbox_read_store.dart';
 import 'package:phoenix_ui/src/util/app_version.dart';
 import 'package:phoenix_ui/src/util/date_format.dart';
 import 'package:phoenix_ui/src/util/platform_chrome.dart';
@@ -40,14 +43,25 @@ class ShellScreen extends StatefulWidget {
 class _ShellScreenState extends State<ShellScreen> {
   int _index = 0;
   int _clubInitialTab = 0;
+  int _inboxUnread = 0;
   final _scaffoldKey = GlobalKey<ScaffoldState>();
   var _saveHintShown = false;
+
+  static const _inboxIndex = 1;
+  static const _squadIndex = 2;
+  static const _fixturesIndex = 4;
+  static const _standingsIndex = 5;
+  static const _financesIndex = 7;
+  static const _clubIndex = 8;
 
   @override
   void initState() {
     super.initState();
     widget.controller.addListener(_onControllerUpdate);
-    WidgetsBinding.instance.addPostFrameCallback((_) => _maybeShowOnboarding());
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _maybeShowOnboarding();
+      _refreshInboxUnread();
+    });
   }
 
   Future<void> _maybeShowOnboarding() async {
@@ -76,6 +90,23 @@ class _ShellScreenState extends State<ShellScreen> {
       setState(() {});
       _showPendingAchievementToasts();
       _maybeShowSaveHint();
+      _refreshInboxUnread();
+    }
+  }
+
+  Future<void> _refreshInboxUnread() async {
+    final session = widget.controller.session;
+    if (session == null) {
+      return;
+    }
+    final read = await InboxReadStore.loadReadIds(widget.controller.activeSlot);
+    final messages = InboxMessageBuilder.fromSession(session);
+    final unread = messages.where((m) => !read.contains(m.id)).length;
+    if (!mounted) {
+      return;
+    }
+    if (unread != _inboxUnread) {
+      setState(() => _inboxUnread = unread);
     }
   }
 
@@ -163,14 +194,14 @@ class _ShellScreenState extends State<ShellScreen> {
   void _openAchievementsTab() {
     setState(() {
       _clubInitialTab = 3;
-      _index = 7;
+      _index = _clubIndex;
     });
   }
 
   void _selectDestination(int value) {
     UiFeedback.tap();
     setState(() {
-      if (value == 7 && _index != 7) {
+      if (value == _clubIndex && _index != _clubIndex) {
         _clubInitialTab = 0;
       }
       _index = value;
@@ -237,6 +268,7 @@ class _ShellScreenState extends State<ShellScreen> {
 
   static const _destinations = [
     (Icons.home_outlined, Icons.home, 'Início'),
+    (Icons.inbox_outlined, Icons.inbox, 'Inbox'),
     (Icons.groups_outlined, Icons.groups, 'Plantel'),
     (Icons.fitness_center_outlined, Icons.fitness_center, 'Treinos'),
     (Icons.calendar_month_outlined, Icons.calendar_month, 'Jogos'),
@@ -287,10 +319,18 @@ class _ShellScreenState extends State<ShellScreen> {
       DashboardScreen(
         controller: widget.controller,
         onOpenAchievements: _openAchievementsTab,
-        onOpenStandings: () => _selectDestination(4),
-        onOpenFixtures: () => _selectDestination(3),
-        onOpenFinances: () => _selectDestination(6),
-        onOpenSquad: () => _selectDestination(1),
+        onOpenStandings: () => _selectDestination(_standingsIndex),
+        onOpenFixtures: () => _selectDestination(_fixturesIndex),
+        onOpenFinances: () => _selectDestination(_financesIndex),
+        onOpenSquad: () => _selectDestination(_squadIndex),
+      ),
+      InboxScreen(
+        controller: widget.controller,
+        onUnreadChanged: (count) {
+          if (count != _inboxUnread) {
+            setState(() => _inboxUnread = count);
+          }
+        },
       ),
       SquadScreen(controller: widget.controller),
       TrainingScreen(controller: widget.controller),
@@ -320,8 +360,10 @@ class _ShellScreenState extends State<ShellScreen> {
       playMode: widget.controller.playMode,
       activeSlot: widget.controller.activeSlot,
       hasUnsavedChanges: widget.controller.hasUnsavedChanges,
+      inboxUnread: _inboxUnread,
       onSave: _saveFromTopBar,
       onGoToMatch: _goToMatchFromTopBar,
+      onOpenInbox: () => _selectDestination(_inboxIndex),
       onOpenMenu: () => wide
           ? _scaffoldKey.currentState?.openEndDrawer()
           : _scaffoldKey.currentState?.openDrawer(),
@@ -341,6 +383,9 @@ class _ShellScreenState extends State<ShellScreen> {
                   destinations: _destinations,
                   selectedIndex: _index,
                   onSelect: _selectDestination,
+                  badges: {
+                    if (_inboxUnread > 0) _inboxIndex: _inboxUnread,
+                  },
                   extended: extendedSidebar,
                   onOpenMenu: () =>
                       _scaffoldKey.currentState?.openEndDrawer(),
@@ -355,13 +400,19 @@ class _ShellScreenState extends State<ShellScreen> {
           : NavigationBar(
               selectedIndex: _index,
               onDestinationSelected: _selectDestination,
-              labelBehavior: NavigationDestinationLabelBehavior.alwaysShow,
+              labelBehavior: NavigationDestinationLabelBehavior.alwaysHide,
               destinations: [
-                for (final d in _destinations)
+                for (var i = 0; i < _destinations.length; i++)
                   NavigationDestination(
-                    icon: Icon(d.$1),
-                    selectedIcon: Icon(d.$2),
-                    label: d.$3,
+                    icon: _inboxUnread > 0 && i == _inboxIndex
+                        ? Badge(
+                            label: Text('$_inboxUnread'),
+                            child: Icon(_destinations[i].$1),
+                          )
+                        : Icon(_destinations[i].$1),
+                    selectedIcon: Icon(_destinations[i].$2),
+                    label: _destinations[i].$3,
+                    tooltip: _destinations[i].$3,
                   ),
               ],
             ),

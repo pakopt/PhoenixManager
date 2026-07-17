@@ -10,6 +10,7 @@ class AppSidebar extends StatelessWidget {
     required this.destinations,
     required this.selectedIndex,
     required this.onSelect,
+    this.badges = const {},
     this.extended = true,
     this.onOpenMenu,
     super.key,
@@ -19,6 +20,8 @@ class AppSidebar extends StatelessWidget {
   final List<ShellDestination> destinations;
   final int selectedIndex;
   final ValueChanged<int> onSelect;
+  /// Índice do destino → contagem no badge (ex. Inbox).
+  final Map<int, int> badges;
   final bool extended;
   final VoidCallback? onOpenMenu;
 
@@ -106,6 +109,7 @@ class AppSidebar extends StatelessWidget {
                     label: dest.$3,
                     selected: selected,
                     extended: extended,
+                    badgeCount: badges[index] ?? 0,
                     onTap: () => onSelect(index),
                   );
                 },
@@ -126,6 +130,7 @@ class _NavItem extends StatelessWidget {
     required this.selected,
     required this.extended,
     required this.onTap,
+    this.badgeCount = 0,
   });
 
   final IconData outlined;
@@ -134,6 +139,7 @@ class _NavItem extends StatelessWidget {
   final bool selected;
   final bool extended;
   final VoidCallback onTap;
+  final int badgeCount;
 
   @override
   Widget build(BuildContext context) {
@@ -141,6 +147,15 @@ class _NavItem extends StatelessWidget {
         ? PhoenixColors.seed.withValues(alpha: 0.22)
         : Colors.transparent;
     final fg = selected ? PhoenixColors.positive : PhoenixColors.muted;
+
+    Widget iconWidget = Icon(selected ? filled : outlined, color: fg, size: 22);
+    if (!extended && badgeCount > 0) {
+      iconWidget = Badge(
+        label: Text('$badgeCount'),
+        backgroundColor: PhoenixColors.seed,
+        child: iconWidget,
+      );
+    }
 
     final child = Container(
       margin: const EdgeInsets.only(bottom: 4),
@@ -164,7 +179,7 @@ class _NavItem extends StatelessWidget {
             child: extended
                 ? Row(
                     children: [
-                      Icon(selected ? filled : outlined, color: fg, size: 22),
+                      iconWidget,
                       const SizedBox(width: 12),
                       Expanded(
                         child: Text(
@@ -178,15 +193,28 @@ class _NavItem extends StatelessWidget {
                           ),
                         ),
                       ),
+                      if (badgeCount > 0)
+                        Container(
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 7,
+                            vertical: 2,
+                          ),
+                          decoration: BoxDecoration(
+                            color: PhoenixColors.seed,
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                          child: Text(
+                            '$badgeCount',
+                            style: const TextStyle(
+                              color: Colors.white,
+                              fontSize: 11,
+                              fontWeight: FontWeight.w800,
+                            ),
+                          ),
+                        ),
                     ],
                   )
-                : Center(
-                    child: Icon(
-                      selected ? filled : outlined,
-                      color: fg,
-                      size: 22,
-                    ),
-                  ),
+                : Center(child: iconWidget),
           ),
         ),
       ),

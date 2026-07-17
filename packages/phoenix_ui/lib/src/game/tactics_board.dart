@@ -125,6 +125,15 @@ abstract final class TacticsCatalog {
     'Muito ofensiva',
   ];
 
+  /// Labels curtos para chips em layout compacto (não cortar «Muito …»).
+  static const mentalityShort = [
+    'M. def.',
+    'Defensiva',
+    'Equilibrada',
+    'Ofensiva',
+    'M. of.',
+  ];
+
   static const tempos = ['Lento', 'Normal', 'Rápido'];
 
   static const setPieceOptions = ['Auto', 'Mais alto', 'Mais técnico'];

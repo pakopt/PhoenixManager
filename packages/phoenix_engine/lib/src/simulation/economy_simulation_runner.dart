@@ -6,6 +6,7 @@ import 'package:phoenix_engine/src/modules/transfer/transfer_engine.dart';
 import 'package:phoenix_engine/src/modules/contract/contract_engine.dart';
 import 'package:phoenix_engine/src/modules/injury/injury_engine.dart';
 import 'package:phoenix_engine/src/modules/youth/youth_engine.dart';
+import 'package:phoenix_engine/src/world/squad_generator.dart';
 import 'package:phoenix_engine/src/world/world_registry.dart';
 
 /// Orchestrates economy systems on daily and season-end ticks.
@@ -38,6 +39,17 @@ class EconomySimulationRunner {
 
   void initialize() {
     _financeEngine.initializeFromClubs();
+  }
+
+  /// Completa plantéis curtos (ex. saves antigos) e actualiza salários.
+  int ensureSquadDepth(SeededRng rng) {
+    final created = SquadGenerator(rng: rng).ensureMinimumSquad(_registry);
+    if (created > 0) {
+      for (final club in _registry.clubs.values) {
+        _financeEngine.refreshMonthlyWages(club.id);
+      }
+    }
+    return created;
   }
 
   int runDaily(GameDate date) {

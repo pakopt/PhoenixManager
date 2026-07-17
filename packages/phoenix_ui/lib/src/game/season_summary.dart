@@ -1,7 +1,6 @@
 import 'package:phoenix_core/phoenix_core.dart';
 import 'package:phoenix_ui/src/game/game_session.dart';
 import 'package:phoenix_ui/src/game/match_fixture_extensions.dart';
-import 'package:phoenix_ui/src/game/season_honour.dart';
 
 enum CupSeasonOutcome {
   inProgress,

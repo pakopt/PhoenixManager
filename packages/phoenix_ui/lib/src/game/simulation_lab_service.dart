@@ -1,7 +1,6 @@
 import 'package:phoenix_core/phoenix_core.dart';
 import 'package:phoenix_engine/phoenix_engine.dart';
 import 'package:phoenix_tools/phoenix_tools.dart';
-import 'package:phoenix_ui/src/game/simulation_lab_presets.dart';
 import 'package:phoenix_ui/src/game/simulation_lab_report.dart';
 
 /// Top-level entry for [Isolate.run] — boots a fresh world and returns metrics.
@@ -111,7 +110,7 @@ SimulationLabReport _buildReport(
 }
 
 String _configYaml({required int seed}) => '''
-engineVersion: 0.8.35
+engineVersion: 0.8.36
 sport: football
 defaultSeed: $seed
 simulation:

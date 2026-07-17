@@ -17,6 +17,7 @@ import 'package:phoenix_engine/src/simulation/economy_simulation_runner.dart';
 import 'package:phoenix_engine/src/simulation/simulation_engine.dart';
 import 'package:phoenix_engine/src/simulation/time_controller.dart';
 import 'package:phoenix_engine/src/world/world_manager.dart';
+import 'package:phoenix_engine/src/world/squad_generator.dart';
 import 'package:phoenix_engine/src/world/staff_generator.dart';
 import 'package:phoenix_engine/src/world/world_pack_loader.dart';
 import 'package:phoenix_engine/src/world/world_registry.dart';
@@ -67,6 +68,7 @@ class AppBootstrap {
 
     final registry = _packLoader.loadLigaPhoenixAlpha();
     StaffGenerator(rng: rng).ensureRoster(registry);
+    SquadGenerator(rng: rng).ensureMinimumSquad(registry);
     final competitionManager = CompetitionManager(
       registry: registry,
       eventBus: eventBus,
@@ -211,7 +213,7 @@ class AppBootstrap {
 }
 
 const _defaultConfigYaml = '''
-engineVersion: 0.8.35
+engineVersion: 0.8.36
 sport: football
 defaultSeed: 42
 simulation:

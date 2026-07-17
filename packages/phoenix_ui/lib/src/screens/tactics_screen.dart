@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:phoenix_core/phoenix_core.dart';
 import 'package:phoenix_ui/src/game/game_controller.dart';
 import 'package:phoenix_ui/src/game/tactics_board.dart';
+import 'package:phoenix_ui/src/game/tactics_prefs.dart';
 import 'package:phoenix_ui/src/screens/player_detail_screen.dart';
 import 'package:phoenix_ui/src/theme/phoenix_theme.dart';
 import 'package:phoenix_ui/src/util/player_display_profile.dart';
@@ -26,11 +27,13 @@ class _TacticsScreenState extends State<TacticsScreen> {
   var _freeKick = 0;
   var _penalty = 0;
   TacticsLineup? _lineup;
+  var _prefsLoaded = false;
 
   @override
   void initState() {
     super.initState();
     widget.controller.addListener(_rebuildLineup);
+    _loadPrefs();
     _rebuildLineup();
   }
 
@@ -38,6 +41,34 @@ class _TacticsScreenState extends State<TacticsScreen> {
   void dispose() {
     widget.controller.removeListener(_rebuildLineup);
     super.dispose();
+  }
+
+  Future<void> _loadPrefs() async {
+    final snap = await TacticsPrefs.load(widget.controller.activeSlot);
+    if (!mounted) {
+      return;
+    }
+    if (snap == null) {
+      setState(() => _prefsLoaded = true);
+      return;
+    }
+    final formation = TacticsCatalog.formations.firstWhere(
+      (f) => f.id == snap.formationId,
+      orElse: () => TacticsCatalog.formations[1],
+    );
+    setState(() {
+      _formation = formation;
+      _mentality =
+          snap.mentality.clamp(0, TacticsCatalog.mentalities.length - 1);
+      _tempo = snap.tempo.clamp(0, TacticsCatalog.tempos.length - 1);
+      _corner = snap.corner.clamp(0, TacticsCatalog.setPieceOptions.length - 1);
+      _freeKick =
+          snap.freeKick.clamp(0, TacticsCatalog.setPieceOptions.length - 1);
+      _penalty =
+          snap.penalty.clamp(0, TacticsCatalog.setPieceOptions.length - 1);
+      _prefsLoaded = true;
+    });
+    _rebuildLineup();
   }
 
   void _rebuildLineup() {
@@ -79,8 +110,22 @@ class _TacticsScreenState extends State<TacticsScreen> {
     );
   }
 
-  void _saveTactics() {
+  Future<void> _saveTactics() async {
     UiFeedback.action();
+    await TacticsPrefs.save(
+      widget.controller.activeSlot,
+      TacticsSnapshot(
+        formationId: _formation.id,
+        mentality: _mentality,
+        tempo: _tempo,
+        corner: _corner,
+        freeKick: _freeKick,
+        penalty: _penalty,
+      ),
+    );
+    if (!mounted) {
+      return;
+    }
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         behavior: SnackBarBehavior.floating,
@@ -128,7 +173,7 @@ class _TacticsScreenState extends State<TacticsScreen> {
                   ),
                 ),
                 FilledButton.icon(
-                  onPressed: _saveTactics,
+                  onPressed: _prefsLoaded ? _saveTactics : null,
                   icon: const Icon(Icons.save_outlined, size: 18),
                   label: const Text('Guardar táctica'),
                 ),
@@ -344,7 +389,7 @@ class _SettingsPanel extends StatelessWidget {
               ChoiceChip(
                 label: Text(
                   compact
-                      ? TacticsCatalog.mentalities[i].split(' ').first
+                      ? TacticsCatalog.mentalityShort[i]
                       : TacticsCatalog.mentalities[i],
                   style: const TextStyle(fontSize: 11),
                 ),

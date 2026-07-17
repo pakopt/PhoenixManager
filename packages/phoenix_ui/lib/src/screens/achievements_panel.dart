@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:phoenix_core/phoenix_core.dart';
 import 'package:phoenix_ui/src/game/achievement_entry.dart';
 import 'package:phoenix_ui/src/game/game_session.dart';
 import 'package:phoenix_ui/src/util/date_format.dart';

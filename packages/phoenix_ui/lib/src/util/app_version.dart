@@ -1,16 +1,16 @@
 /// Versão visível ao jogador — manter alinhada com `apps/phoenix_manager/pubspec.yaml`.
 /// Validar: `./scripts/check_app_version_sync.sh`
 abstract final class AppVersion {
-  static const label = '0.8.35';
-  static const buildNumber = 36;
-  static const engineLabel = 'PSE v0.8.35';
+  static const label = '0.8.36';
+  static const buildNumber = 37;
+  static const engineLabel = 'PSE v0.8.36';
 
   /// Pontos curtos para o diálogo «Novidades» após actualizar.
   static const whatsNew = <String>[
-    'Ecrã de Táctica: formação, mentalidade, ritmo e campo visual.',
-    'XI automático com titulares e suplentes; ficha de jogador ao clicar.',
-    'A Coruja na Liga Phoenix · Phoenix FC jogável.',
-    'Actualização de build para teste fechado Play.',
+    'Plantéis completos (16 jogadores) — XI e suplentes na Táctica.',
+    'Táctica: guardar formação/mentalidade/ritmo por save; chips corrigidos.',
+    'Testes e finanças alinhados com 5 clubes na Liga Phoenix.',
+    'Correcções de estabilidade para teste fechado Play.',
   ];
 
   /// Bloco curto para emails de feedback / bugs.

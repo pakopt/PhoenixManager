@@ -476,6 +476,9 @@ class GameSession {
     final envelope = _context.saveManager.deserializeEnvelope(json);
     _context.worldManager.loadState(envelope.world);
     registry.replaceWith(envelope.registry);
+    _context.economyRunner.ensureSquadDepth(
+      _context.container.get<SeededRng>(),
+    );
     _context.eventBus.clearHistory();
   }
 

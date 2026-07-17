@@ -13,7 +13,7 @@ void main() {
 
     test('boot loads Liga Phoenix with 5 clubs and players', () {
       expect(context.registry.clubs.length, 5);
-      expect(context.registry.players.length, 12);
+      expect(context.registry.players.length, 5 * 16);
       expect(context.registry.fixtures.isNotEmpty, isTrue);
     });
 
@@ -31,7 +31,7 @@ void main() {
     test('SquadQueryService uses clubId SSOT', () {
       const clubId = ClubId('club-phoenix');
       final squad = context.registry.squadQuery.getByClubId(clubId);
-      expect(squad.length, 3);
+      expect(squad.length, 16);
       expect(squad.every((p) => p.clubId == clubId), isTrue);
     });
 

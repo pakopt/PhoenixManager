@@ -7,6 +7,7 @@ import 'package:phoenix_ui/src/util/money_format.dart';
 import 'package:phoenix_ui/src/util/ui_feedback.dart';
 import 'package:phoenix_ui/src/widgets/empty_state.dart';
 import 'package:phoenix_ui/src/widgets/player_stat_bar.dart';
+import 'package:phoenix_ui/src/widgets/section_card.dart';
 
 enum SquadSort { ability, age, name, form }
 
@@ -38,9 +39,11 @@ class _SquadScreenState extends State<SquadScreen> {
     return SafeArea(
       child: CustomScrollView(
         slivers: [
-          SliverAppBar(
-            floating: true,
-            title: Text('Plantel · ${session.squad.length} jogadores'),
+          SliverToBoxAdapter(
+            child: ScreenPageHeader(
+              title: 'Plantel',
+              subtitle: '${session.squad.length} jogadores',
+            ),
           ),
           SliverToBoxAdapter(
             child: Padding(

@@ -20,9 +20,11 @@ import 'package:phoenix_ui/src/util/app_version.dart';
 import 'package:phoenix_ui/src/util/date_format.dart';
 import 'package:phoenix_ui/src/util/platform_chrome.dart';
 import 'package:phoenix_ui/src/util/ui_feedback.dart';
+import 'package:phoenix_ui/src/widgets/app_sidebar.dart';
 import 'package:phoenix_ui/src/widgets/beta_checklist_help.dart';
 import 'package:phoenix_ui/src/widgets/content_width.dart';
 import 'package:phoenix_ui/src/widgets/first_run_help_sheet.dart';
+import 'package:phoenix_ui/src/widgets/top_command_bar.dart';
 import 'package:phoenix_ui/src/widgets/unsaved_leave_help.dart';
 import 'package:phoenix_ui/src/widgets/whats_new_help_sheet.dart';
 
@@ -244,15 +246,51 @@ class _ShellScreenState extends State<ShellScreen> {
     (Icons.shield_outlined, Icons.shield, 'Clube'),
   ];
 
+  Future<void> _saveFromTopBar() async {
+    await widget.controller.saveGame();
+    if (!mounted) {
+      return;
+    }
+    UiFeedback.action();
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        behavior: SnackBarBehavior.floating,
+        content: Text(
+          'Carreira guardada no slot ${widget.controller.activeSlot + 1}',
+        ),
+      ),
+    );
+  }
+
+  void _goToMatchFromTopBar() {
+    UiFeedback.tap();
+    final session = widget.controller.session!;
+    if (session.isFullSeasonComplete || session.nextFixture == null) {
+      return;
+    }
+    if (widget.controller.playMode == PlayMode.express) {
+      setState(() => _index = 0);
+      return;
+    }
+    widget.controller.advanceToNextMatch();
+    setState(() => _index = 0);
+  }
+
   @override
   Widget build(BuildContext context) {
     final session = widget.controller.session!;
-    final wide = MediaQuery.sizeOf(context).width >= 900;
+    final width = MediaQuery.sizeOf(context).width;
+    final wide = width >= 900;
+    final extendedSidebar = width >= 1100;
 
     final pages = [
       DashboardScreen(
         controller: widget.controller,
         onOpenAchievements: _openAchievementsTab,
+        onOpenStandings: () => _selectDestination(4),
+        onOpenFixtures: () => _selectDestination(3),
+        onOpenFinances: () => _selectDestination(6),
+        onOpenSquad: () => _selectDestination(1),
       ),
       SquadScreen(controller: widget.controller),
       TrainingScreen(controller: widget.controller),
@@ -277,83 +315,36 @@ class _ShellScreenState extends State<ShellScreen> {
       ),
     );
 
+    final topBar = TopCommandBar(
+      session: session,
+      playMode: widget.controller.playMode,
+      activeSlot: widget.controller.activeSlot,
+      hasUnsavedChanges: widget.controller.hasUnsavedChanges,
+      onSave: _saveFromTopBar,
+      onGoToMatch: _goToMatchFromTopBar,
+      onOpenMenu: () => wide
+          ? _scaffoldKey.currentState?.openEndDrawer()
+          : _scaffoldKey.currentState?.openDrawer(),
+      compact: !wide,
+      showLeadingMenu: !wide,
+    );
+
     final scaffold = Scaffold(
       key: _scaffoldKey,
-      appBar: AppBar(
-        leading: wide
-            ? IconButton(
-                icon: const Icon(Icons.menu),
-                tooltip: 'Menu do jogo',
-                onPressed: () => _scaffoldKey.currentState?.openEndDrawer(),
-              )
-            : null,
-        title: Text(session.userClub.name),
-        actions: [
-          if (widget.controller.hasUnsavedChanges) ...[
-            ActionChip(
-              avatar: const Icon(Icons.save_outlined, size: 16),
-              label: const Text('Por guardar'),
-              tooltip: 'Guardar carreira no slot activo',
-              onPressed: () async {
-                await widget.controller.saveGame();
-                if (!mounted) {
-                  return;
-                }
-                UiFeedback.action();
-                ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(
-                    behavior: SnackBarBehavior.floating,
-                    content: Text(
-                      'Carreira guardada no slot '
-                      '${widget.controller.activeSlot + 1}',
-                    ),
-                  ),
-                );
-              },
-            ),
-            const SizedBox(width: 8),
-          ],
-          Chip(
-            avatar: Icon(
-              widget.controller.playMode == PlayMode.express
-                  ? Icons.flash_on
-                  : Icons.manage_accounts,
-              size: 16,
-            ),
-            label: Text(
-              '${widget.controller.playMode.label} · S${widget.controller.activeSlot + 1}',
-            ),
-          ),
-          const SizedBox(width: 8),
-        ],
-      ),
+      appBar: topBar,
       drawer: wide ? null : _GameDrawer(controller: widget.controller),
       body: wide
           ? Row(
               children: [
-                NavigationRail(
+                AppSidebar(
+                  clubName: session.userClub.name,
+                  destinations: _destinations,
                   selectedIndex: _index,
-                  onDestinationSelected: _selectDestination,
-                  extended: MediaQuery.sizeOf(context).width >= 1100,
-                  labelType: MediaQuery.sizeOf(context).width >= 1100
-                      ? NavigationRailLabelType.none
-                      : NavigationRailLabelType.selected,
-                  destinations: [
-                    for (final d in _destinations)
-                      NavigationRailDestination(
-                        icon: Tooltip(
-                          message: d.$3,
-                          child: Icon(d.$1),
-                        ),
-                        selectedIcon: Tooltip(
-                          message: d.$3,
-                          child: Icon(d.$2),
-                        ),
-                        label: Text(d.$3),
-                      ),
-                  ],
+                  onSelect: _selectDestination,
+                  extended: extendedSidebar,
+                  onOpenMenu: () =>
+                      _scaffoldKey.currentState?.openEndDrawer(),
                 ),
-                const VerticalDivider(width: 1),
                 Expanded(child: body),
               ],
             )

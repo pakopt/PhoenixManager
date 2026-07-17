@@ -7,6 +7,7 @@ import 'package:phoenix_ui/src/screens/match_detail_screen.dart';
 import 'package:phoenix_ui/src/widgets/common_widgets.dart';
 import 'package:phoenix_ui/src/widgets/cup_bracket_panel.dart';
 import 'package:phoenix_ui/src/widgets/empty_state.dart';
+import 'package:phoenix_ui/src/widgets/section_card.dart';
 
 class FixturesScreen extends StatefulWidget {
   const FixturesScreen({required this.controller, super.key});
@@ -33,12 +34,9 @@ class _FixturesScreenState extends State<FixturesScreen> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          Padding(
-            padding: const EdgeInsets.fromLTRB(16, 16, 16, 8),
-            child: Text(
-              'Calendário',
-              style: Theme.of(context).textTheme.titleLarge,
-            ),
+          const ScreenPageHeader(
+            title: 'Calendário',
+            subtitle: 'Liga e taça',
           ),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 16),

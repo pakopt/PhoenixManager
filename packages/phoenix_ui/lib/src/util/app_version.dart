@@ -1,14 +1,15 @@
 /// Versão visível ao jogador — manter alinhada com `apps/phoenix_manager/pubspec.yaml`.
 /// Validar: `./scripts/check_app_version_sync.sh`
 abstract final class AppVersion {
-  static const label = '0.8.30';
-  static const buildNumber = 31;
-  static const engineLabel = 'PSE v0.8.30';
+  static const label = '0.8.31';
+  static const buildNumber = 32;
+  static const engineLabel = 'PSE v0.8.31';
 
   /// Pontos curtos para o diálogo «Novidades» após actualizar.
   static const whatsNew = <String>[
-    'Actualização do teste fechado Play (build 31).',
-    'Branding Phoenix Manager mantido (título + logo no menu).',
+    'Redesign UI FootSim × Phoenix: sidebar, barra de comando e dashboard em 3 colunas.',
+    'Top bar com saldo, data e CTA «Ir ao jogo» (verde Phoenix).',
+    'Pass visual nos ecrãs de carreira (plantel, jogos, tabela, mercado, finanças, clube).',
   ];
 
   /// Bloco curto para emails de feedback / bugs.

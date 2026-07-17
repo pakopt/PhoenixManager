@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:phoenix_core/phoenix_core.dart';
-import 'package:phoenix_engine/phoenix_engine.dart';
 import 'package:phoenix_ui/src/game/game_controller.dart';
 import 'package:phoenix_ui/src/screens/academy_panel.dart';
 import 'package:phoenix_ui/src/screens/player_detail_screen.dart';
+import 'package:phoenix_ui/src/theme/phoenix_theme.dart';
 import 'package:phoenix_ui/src/util/ui_feedback.dart';
 import 'package:phoenix_ui/src/widgets/empty_state.dart';
 import 'package:phoenix_ui/src/widgets/player_stat_bar.dart';
+import 'package:phoenix_ui/src/widgets/section_card.dart';
 
 class TrainingScreen extends StatelessWidget {
   const TrainingScreen({required this.controller, super.key});
@@ -20,7 +21,7 @@ class TrainingScreen extends StatelessWidget {
       child: Column(
         children: [
           Material(
-            color: Theme.of(context).colorScheme.surface,
+            color: PhoenixColors.headerBar,
             child: const TabBar(
               tabs: [
                 Tab(text: 'Treinos', icon: Icon(Icons.fitness_center)),
@@ -71,8 +72,17 @@ class _TrainingPanelState extends State<_TrainingPanel> {
 
     return SafeArea(
       child: ListView(
-        padding: const EdgeInsets.all(16),
+        padding: const EdgeInsets.fromLTRB(0, 0, 0, 16),
         children: [
+          const ScreenPageHeader(
+            title: 'Treinos',
+            subtitle: 'Evolução e forma do plantel',
+          ),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
           Row(
             children: [
               _SummaryTile(
@@ -160,6 +170,9 @@ class _TrainingPanelState extends State<_TrainingPanel> {
                 },
               ),
             ),
+              ],
+            ),
+          ),
         ],
       ),
     );

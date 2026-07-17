@@ -4,6 +4,7 @@ import 'package:phoenix_ui/src/util/money_format.dart';
 import 'package:phoenix_ui/src/util/date_format.dart';
 import 'package:phoenix_ui/src/game/game_session.dart';
 import 'package:phoenix_ui/src/game/match_fixture_extensions.dart';
+import 'package:phoenix_ui/src/theme/phoenix_theme.dart';
 
 class ClubHeader extends StatelessWidget {
   const ClubHeader({required this.session, super.key});
@@ -23,12 +24,12 @@ class ClubHeader extends StatelessWidget {
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
           colors: [
-            theme.colorScheme.primary.withValues(alpha: 0.15),
-            theme.cardTheme.color ?? theme.colorScheme.surface,
+            PhoenixColors.seed.withValues(alpha: 0.18),
+            PhoenixColors.card,
           ],
         ),
         border: Border.all(
-          color: theme.colorScheme.primary.withValues(alpha: 0.25),
+          color: PhoenixColors.seed.withValues(alpha: 0.28),
         ),
       ),
       child: Padding(
@@ -37,7 +38,7 @@ class ClubHeader extends StatelessWidget {
           children: [
             CircleAvatar(
               radius: 28,
-              backgroundColor: theme.colorScheme.primary,
+              backgroundColor: PhoenixColors.seed,
               child: Text(
                 club.name.characters.first,
                 style: const TextStyle(
@@ -56,13 +57,14 @@ class ClubHeader extends StatelessWidget {
                     club.name,
                     style: theme.textTheme.titleLarge?.copyWith(
                       fontWeight: FontWeight.bold,
+                      color: PhoenixColors.textPrimary,
                     ),
                   ),
                   Text(
                     '${DateFormatUtil.gameDate(session.currentDate)} · '
                     'Jornada ${session.tick}',
                     style: theme.textTheme.bodySmall?.copyWith(
-                      color: theme.colorScheme.outline,
+                      color: PhoenixColors.muted,
                     ),
                   ),
                 ],
@@ -75,13 +77,15 @@ class ClubHeader extends StatelessWidget {
                   Text(
                     MoneyFormat.compact(finance.balance),
                     style: theme.textTheme.titleMedium?.copyWith(
-                      color: theme.colorScheme.primary,
-                      fontWeight: FontWeight.w600,
+                      color: PhoenixColors.positive,
+                      fontWeight: FontWeight.w700,
                     ),
                   ),
                   Text(
                     'Orçamento',
-                    style: theme.textTheme.labelSmall,
+                    style: theme.textTheme.labelSmall?.copyWith(
+                      color: PhoenixColors.muted,
+                    ),
                   ),
                 ],
               ),

@@ -3,10 +3,12 @@ import 'package:phoenix_ui/src/game/game_session.dart';
 import 'package:phoenix_ui/src/screens/achievements_panel.dart';
 import 'package:phoenix_ui/src/screens/honours_panel.dart';
 import 'package:phoenix_ui/src/screens/staff_panel.dart';
+import 'package:phoenix_ui/src/theme/phoenix_theme.dart';
 import 'package:phoenix_ui/src/widgets/coach_labels.dart';
 import 'package:phoenix_ui/src/widgets/common_widgets.dart';
 import 'package:phoenix_ui/src/widgets/career_stats_card.dart';
 import 'package:phoenix_ui/src/widgets/empty_state.dart';
+import 'package:phoenix_ui/src/widgets/section_card.dart';
 
 class ClubScreen extends StatelessWidget {
   const ClubScreen({
@@ -30,7 +32,7 @@ class ClubScreen extends StatelessWidget {
       child: Column(
         children: [
           Material(
-            color: Theme.of(context).colorScheme.surface,
+            color: PhoenixColors.headerBar,
             child: const TabBar(
               isScrollable: true,
               tabs: [
@@ -72,8 +74,17 @@ class _ClubOverviewPanel extends StatelessWidget {
 
     return SafeArea(
       child: ListView(
-        padding: const EdgeInsets.all(16),
+        padding: const EdgeInsets.fromLTRB(0, 0, 0, 16),
         children: [
+          const ScreenPageHeader(
+            title: 'Clube',
+            subtitle: 'Identidade, staff e conquistas',
+          ),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
           ClubHeader(session: session),
           const SizedBox(height: 16),
           CareerStatsCard(session: session),
@@ -88,7 +99,7 @@ class _ClubOverviewPanel extends StatelessWidget {
                   children: [
                     CircleAvatar(
                       radius: 32,
-                      backgroundColor: theme.colorScheme.primary,
+                      backgroundColor: PhoenixColors.seed,
                       child: Text(
                         coach.name.characters.first,
                         style: const TextStyle(
@@ -259,6 +270,9 @@ class _ClubOverviewPanel extends StatelessWidget {
                   ],
                 ],
               ),
+            ),
+          ),
+              ],
             ),
           ),
         ],

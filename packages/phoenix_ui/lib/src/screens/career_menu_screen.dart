@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:phoenix_ui/src/theme/phoenix_theme.dart';
 import 'package:phoenix_ui/src/util/app_version.dart';
 import 'package:phoenix_ui/src/util/platform_chrome.dart';
 import 'package:phoenix_ui/src/game/game_controller.dart';
@@ -22,14 +23,14 @@ class CareerMenuScreen extends StatelessWidget {
 
     return Scaffold(
       body: Container(
-        decoration: BoxDecoration(
+        decoration: const BoxDecoration(
           gradient: LinearGradient(
             begin: Alignment.topLeft,
             end: Alignment.bottomRight,
             colors: [
-              theme.colorScheme.surface,
-              theme.colorScheme.primary.withValues(alpha: 0.12),
-              theme.colorScheme.surface,
+              PhoenixColors.surface,
+              PhoenixColors.heroGradientStart,
+              PhoenixColors.surface,
             ],
           ),
         ),
@@ -47,6 +48,7 @@ class CareerMenuScreen extends StatelessWidget {
                       'Phoenix Manager',
                       style: theme.textTheme.headlineSmall?.copyWith(
                         fontWeight: FontWeight.bold,
+                        color: PhoenixColors.textPrimary,
                       ),
                       textAlign: TextAlign.center,
                     ),
@@ -54,14 +56,14 @@ class CareerMenuScreen extends StatelessWidget {
                     Text(
                       AppVersion.engineLabel,
                       style: theme.textTheme.labelSmall?.copyWith(
-                        color: theme.colorScheme.outline,
+                        color: PhoenixColors.muted,
                       ),
                     ),
                     const SizedBox(height: 4),
                     Text(
                       'Escolhe um slot de carreira',
                       style: theme.textTheme.bodyMedium?.copyWith(
-                        color: theme.colorScheme.outline,
+                        color: PhoenixColors.muted,
                       ),
                     ),
                     const SizedBox(height: 16),

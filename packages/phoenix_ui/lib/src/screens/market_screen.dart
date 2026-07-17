@@ -4,6 +4,7 @@ import 'package:phoenix_ui/src/game/game_session.dart';
 import 'package:phoenix_ui/src/util/money_format.dart';
 import 'package:phoenix_ui/src/util/date_format.dart';
 import 'package:phoenix_ui/src/widgets/empty_state.dart';
+import 'package:phoenix_ui/src/widgets/section_card.dart';
 
 class MarketScreen extends StatefulWidget {
   const MarketScreen({required this.session, super.key});
@@ -29,12 +30,9 @@ class _MarketScreenState extends State<MarketScreen> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          Padding(
-            padding: const EdgeInsets.fromLTRB(16, 16, 16, 8),
-            child: Text(
-              'Mercado',
-              style: Theme.of(context).textTheme.titleLarge,
-            ),
+          ScreenPageHeader(
+            title: 'Mercado',
+            subtitle: isOpen ? 'Janela aberta' : 'Janela fechada',
           ),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 16),

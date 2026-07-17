@@ -1,7 +1,7 @@
 # Plano — Project Phoenix Manager
 
-**Versão:** v0.8.30  
-**Actualizado:** 16 de Julho de 2026  
+**Versão:** v0.8.31  
+**Actualizado:** 17 de Julho de 2026  
 **Fase actual:** **E — Lançamento**
 
 Documento vivo do roadmap. O plano detalhado de arquitectura (PSE, GDD, motores) vive no **Cursor plan** (`phoenix_manager_game_2a890b62.plan.md`) e em [`docs/roadmap/master-roadmap-v1.md`](roadmap/master-roadmap-v1.md); este ficheiro reflecte **o que está feito** e **o que falta para publicar**.
@@ -113,7 +113,7 @@ CLEAN_GRADLE=1 ./scripts/clean_dev_artifacts.sh   # inclui ~/.gradle/caches
 >
 > **Requisito Google (contas pessoais novas):** ≥ **12 testadores opted-in** no teste fechado durante **14 dias contínuos**, depois **candidatar-te a acesso a produção** no Dashboard. Só metê-los na lista de emails **não conta** — têm de aceitar o link, instalar pela Play Store e manter-se opted-in.
 >
-> **Freeze polish UI (v0.8.17):** acabamento visual/a11y saturado.
+> **Freeze polish UI:** levantado em **v0.8.31** para o redesign FootSim × Phoenix (sidebar + dashboard 3 colunas). Sem lógica nova de jogo — só apresentação.
 >
 > **Bloqueio actual:** recrutar e manter 12–16 testadores 14 dias → candidatar produção.
 
@@ -133,7 +133,7 @@ CLEAN_GRADLE=1 ./scripts/clean_dev_artifacts.sh   # inclui ~/.gradle/caches
 
 Detalhe oficial: [requisitos de teste Play](https://support.google.com/googleplay/android-developer/answer/14151465) · guia local: [`docs/STORE.md`](STORE.md) §9c–10
 
-**AAB actual:** `build/release/mobile/android/phoenix_manager.aab` (v0.8.30, versionCode 31)
+**AAB actual:** `build/release/mobile/android/phoenix_manager.aab` (v0.8.31, versionCode 32)
 
 Convite / QA para amigos: [`docs/BETA.md`](BETA.md) · textos: `./scripts/play_console_brief.sh`
 
@@ -204,14 +204,14 @@ Saída: `build/release/store/android/` — reutilizar quando a conta activar.
 
 | Campo | Valor actual |
 |-------|--------------|
-| `versionName` | `0.8.30` |
+| `versionName` | `0.8.31` |
 | `versionCode` | `31` |
 | Package / Bundle ID | `com.phoenix.manager` |
 
 **Próxima release:** editar `apps/phoenix_manager/pubspec.yaml`:
 
 ```yaml
-version: 0.8.30+31   # nome visível + versionCode (obrigatório incrementar +N)
+version: 0.8.31+32   # nome visível + versionCode (obrigatório incrementar +N)
 ```
 
 Depois: `./scripts/build_mobile.sh android` → novo AAB · `./scripts/check_app_version_sync.sh`
@@ -220,6 +220,7 @@ Depois: `./scripts/build_mobile.sh android` → novo AAB · `./scripts/check_app
 
 ## Histórico recente (Fase E + v0.8.x)
 
+- ✅ **v0.8.31** — redesign UI FootSim × Phoenix (sidebar, top bar CTA, dashboard 3 colunas; versionCode 32)  
 - ✅ **v0.8.30** — build teste fechado (versionCode 31)  
 - ✅ **v0.8.29** — actualização teste fechado Play (versionCode 30)  
 - ✅ **v0.8.28** — actualização teste fechado Play (versionCode 29)  
@@ -266,10 +267,10 @@ Depois: `./scripts/build_mobile.sh android` → novo AAB · `./scripts/check_app
 - ✅ `play_console_day1.sh` — guia upload quando conta activar  
 - ✅ Beta local — `local_beta.sh`, `docs/BETA.md`, `qa_manual.sh`  
 - ✅ Screenshots App Store — 5 capturas iOS (`capture_app_store_screenshots.sh`)  
-- ✅ Play Console — conta aprovada · **teste fechado activo** · AAB **v0.8.30+31**  
+- ✅ Play Console — conta aprovada · **teste fechado activo** · AAB **v0.8.31+32**  
 - 🔄 Produção — **≥12 opted-in × 14 dias** → candidatar acesso → promover (`docs/STORE.md` §9c–10) · `./scripts/play_14day_tracker.sh`  
 - ✅ Desktop — fullscreen Mac / Windows / Linux + «Sair do jogo»  
-- ✅ Polish UI v0.8.x — **congelado** em v0.8.17; v0.8.18–0.8.30 = onboarding/beta / branding  
+- ✅ Polish UI v0.8.x — freeze v0.8.17–0.8.30; **redesign FootSim × Phoenix em v0.8.31**
 
 
 

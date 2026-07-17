@@ -3,229 +3,318 @@ import 'package:phoenix_core/phoenix_core.dart';
 import 'package:phoenix_engine/phoenix_engine.dart';
 import 'package:phoenix_ui/src/game/game_controller.dart';
 import 'package:phoenix_ui/src/game/game_session.dart';
+import 'package:phoenix_ui/src/game/match_fixture_extensions.dart';
 import 'package:phoenix_ui/src/game/play_mode.dart';
 import 'package:phoenix_ui/src/game/season_summary.dart';
 import 'package:phoenix_ui/src/screens/match_detail_screen.dart';
-import 'package:phoenix_ui/src/widgets/achievement_progress_card.dart';
-import 'package:phoenix_ui/src/widgets/career_stats_card.dart';
-import 'package:phoenix_ui/src/widgets/common_widgets.dart';
-import 'package:phoenix_ui/src/widgets/cup_status_card.dart';
-import 'package:phoenix_ui/src/widgets/express_match_transition.dart';
-import 'package:phoenix_ui/src/widgets/form_strip.dart';
-import 'package:phoenix_ui/src/widgets/season_summary_card.dart';
+import 'package:phoenix_ui/src/theme/phoenix_theme.dart';
 import 'package:phoenix_ui/src/util/date_format.dart';
 import 'package:phoenix_ui/src/util/money_format.dart';
 import 'package:phoenix_ui/src/util/ui_feedback.dart';
-import 'package:phoenix_ui/src/widgets/empty_state.dart';
+import 'package:phoenix_ui/src/widgets/achievement_progress_card.dart';
+import 'package:phoenix_ui/src/widgets/career_stats_card.dart';
+import 'package:phoenix_ui/src/widgets/cup_status_card.dart';
 import 'package:phoenix_ui/src/widgets/dashboard_tip_card.dart';
+import 'package:phoenix_ui/src/widgets/empty_state.dart';
+import 'package:phoenix_ui/src/widgets/express_match_transition.dart';
+import 'package:phoenix_ui/src/widgets/fixture_list_tile.dart';
+import 'package:phoenix_ui/src/widgets/form_dots.dart';
+import 'package:phoenix_ui/src/widgets/match_day_hero.dart';
+import 'package:phoenix_ui/src/widgets/mini_standings.dart';
+import 'package:phoenix_ui/src/widgets/season_summary_card.dart';
+import 'package:phoenix_ui/src/widgets/section_card.dart';
 
 class DashboardScreen extends StatelessWidget {
   const DashboardScreen({
     required this.controller,
     this.onOpenAchievements,
+    this.onOpenStandings,
+    this.onOpenFixtures,
+    this.onOpenFinances,
+    this.onOpenSquad,
     super.key,
   });
 
   final GameController controller;
   final VoidCallback? onOpenAchievements;
+  final VoidCallback? onOpenStandings;
+  final VoidCallback? onOpenFixtures;
+  final VoidCallback? onOpenFinances;
+  final VoidCallback? onOpenSquad;
 
   @override
   Widget build(BuildContext context) {
     final session = controller.session!;
-    final next = session.nextFixture;
-    final userStanding = session.standings.indexWhere(
-      (e) => e.clubId == GameSession.userClubId,
-    );
+    final wide = MediaQuery.sizeOf(context).width >= 1100;
     final seasonSummary = SeasonSummary.fromSession(session);
 
+    final center = _buildCenter(context, session, seasonSummary);
+    final right = _buildRight(context, session);
+
     return SafeArea(
-      child: ListView(
-        padding: const EdgeInsets.all(16),
-        children: [
-          ClubHeader(session: session),
-          const SizedBox(height: 16),
-          DashboardTipCard(
-            playMode: controller.playMode,
-            matchesPlayed: session.matchesPlayed,
-          ),
-          Row(
-            children: [
-              StatChip(
-                label: 'Posição',
-                value: userStanding >= 0 ? '${userStanding + 1}º' : '—',
-              ),
-              const SizedBox(width: 8),
-              StatChip(
-                label: 'Jogos',
-                value: '${session.matchesPlayed}/${session.allFixtures.length}',
-              ),
-              const SizedBox(width: 8),
-              StatChip(
-                label: 'Plantel',
-                value: '${session.squad.length}',
-              ),
-            ],
-          ),
-          const SizedBox(height: 16),
-          CareerStatsCard(session: session, compact: true),
-          const SizedBox(height: 16),
-          AchievementProgressCard(
-            session: session,
-            onTap: onOpenAchievements,
-          ),
-          const SizedBox(height: 16),
-          FormStrip(session: session),
-          const SizedBox(height: 16),
-          if (seasonSummary != null) ...[
-            SeasonSummaryCard(session: session, summary: seasonSummary),
-            const SizedBox(height: 16),
-          ],
-          _StatusOverview(session: session),
-          const SizedBox(height: 16),
-          if (controller.playMode == PlayMode.director &&
-              next != null &&
-              !session.isFullSeasonComplete)
-            _PreMatchAlertCard(session: session),
-          if (controller.playMode == PlayMode.director &&
-              next != null &&
-              !session.isFullSeasonComplete)
-            const SizedBox(height: 16),
-          Card(
-            child: Padding(
-              padding: const EdgeInsets.all(16),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  Text(
-                    'Próximo jogo',
-                    style: Theme.of(context).textTheme.titleMedium,
+      child: wide
+          ? Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Expanded(
+                  flex: 3,
+                  child: ListView(
+                    padding: const EdgeInsets.fromLTRB(20, 16, 12, 24),
+                    children: center,
                   ),
-                  const SizedBox(height: 8),
-                  if (next != null) ...[
-                    Text(
-                      '${session.clubName(next.homeClubId)} vs '
-                      '${session.clubName(next.awayClubId)} · '
-                      '${DateFormatUtil.gameDate(next.date)}',
-                    ),
-                    const SizedBox(height: 4),
-                    Text(
-                      session.competitionName(next.competitionId) +
-                          (next.competitionId == GameSession.cupCompetitionId
-                              ? ' · ${session.cupRoundLabel(next)}'
-                              : ''),
-                      style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                            color: Theme.of(context).colorScheme.outline,
-                          ),
-                    ),
-                  ] else if (session.isFullSeasonComplete)
-                    const Text('Época concluída (liga e taça)')
-                  else if (session.isSeasonComplete)
-                    const Text('Liga concluída · taça em curso')
-                  else
-                    Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 4),
-                      child: Row(
-                        children: [
-                          Icon(
-                            Icons.event_busy,
-                            size: 20,
-                            color: Theme.of(context).colorScheme.outline,
-                          ),
-                          const SizedBox(width: 8),
-                          Text(
-                            'Sem jogos agendados',
-                            style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                                  color: Theme.of(context).colorScheme.outline,
-                                ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  const SizedBox(height: 16),
-                  if (session.isFullSeasonComplete)
-                    FilledButton.icon(
-                      onPressed: () => _startNextSeason(context),
-                      icon: const Icon(Icons.restart_alt),
-                      label: Text('Iniciar época ${session.seasonYear + 1}'),
-                    )
-                  else if (controller.playMode == PlayMode.express)
-                    FilledButton.icon(
-                      onPressed: session.isFullSeasonComplete
-                          ? null
-                          : () {
-                              UiFeedback.action();
-                              _simulateExpressRound(context);
-                            },
-                      icon: const Icon(Icons.flash_on),
-                      label: const Text('Simular jornada (Express)'),
-                    )
-                  else
-                    Wrap(
-                      spacing: 8,
-                      runSpacing: 8,
-                      children: [
-                        FilledButton.icon(
-                          onPressed: session.isFullSeasonComplete
-                              ? null
-                              : () {
-                                  UiFeedback.tap();
-                                  controller.advanceDay();
-                                },
-                          icon: const Icon(Icons.skip_next),
-                          label: const Text('Avançar 1 dia'),
-                        ),
-                        OutlinedButton.icon(
-                          onPressed: session.isFullSeasonComplete
-                              ? null
-                              : () {
-                                  UiFeedback.tap();
-                                  controller.advanceWeek();
-                                },
-                          icon: const Icon(Icons.date_range),
-                          label: const Text('Avançar 1 semana'),
-                        ),
-                        if (next != null && !session.isFullSeasonComplete)
-                          OutlinedButton.icon(
-                            onPressed: () {
-                              UiFeedback.tap();
-                              controller.advanceToNextMatch();
-                            },
-                            icon: const Icon(Icons.sports_soccer),
-                            label: const Text('Ir ao próximo jogo'),
-                          ),
-                      ],
+                ),
+                SizedBox(
+                  width: 320,
+                  child: ListView(
+                    padding: const EdgeInsets.fromLTRB(8, 16, 20, 24),
+                    children: right,
+                  ),
+                ),
+              ],
+            )
+          : ListView(
+              padding: const EdgeInsets.fromLTRB(16, 12, 16, 24),
+              children: [
+                ...center,
+                const SizedBox(height: 8),
+                ...right,
+              ],
+            ),
+    );
+  }
+
+  List<Widget> _buildCenter(
+    BuildContext context,
+    GameSession session,
+    SeasonSummary? seasonSummary,
+  ) {
+    final next = session.nextFixture;
+    final upcoming = session.upcomingFixtures
+        .where((f) => f.involvesClub(GameSession.userClubId))
+        .take(5)
+        .toList();
+    final recent = session.recentForm(limit: 5);
+
+    return _spaced([
+      MatchDayHero(
+        session: session,
+        onGoToMatch: next == null || session.isFullSeasonComplete
+            ? null
+            : () {
+                UiFeedback.action();
+                if (controller.playMode == PlayMode.express) {
+                  _simulateExpressRound(context);
+                } else {
+                  controller.advanceToNextMatch();
+                }
+              },
+        ctaLabel: controller.playMode == PlayMode.express
+            ? 'Simular jornada'
+            : 'Ir ao jogo',
+      ),
+      _AdvanceControls(
+        controller: controller,
+        onExpress: () => _simulateExpressRound(context),
+        onStartNextSeason: () => _startNextSeason(context),
+      ),
+      if (controller.playMode == PlayMode.director &&
+          next != null &&
+          !session.isFullSeasonComplete)
+        _PreMatchAlertCard(session: session),
+      SectionCard(
+        title: 'Próximos jogos',
+        trailing: onOpenFixtures == null
+            ? null
+            : TextButton(
+                onPressed: onOpenFixtures,
+                child: const Text('Calendário'),
+              ),
+        child: upcoming.isEmpty
+            ? const Text(
+                'Sem jogos agendados.',
+                style: TextStyle(color: PhoenixColors.muted),
+              )
+            : Column(
+                children: [
+                  for (final fixture in upcoming)
+                    FixtureListTile(
+                      fixture: fixture,
+                      session: session,
+                      dense: true,
                     ),
                 ],
               ),
-            ),
-          ),
-          const SizedBox(height: 16),
-          CupStatusCard(session: session),
-          const SizedBox(height: 16),
-          if (session.getUserMatchOnDate(session.currentDate) != null) ...[
-            Text('Jogo de hoje', style: Theme.of(context).textTheme.titleMedium),
-            const SizedBox(height: 8),
-            _TodayMatchCard(
-              controller: controller,
-              output: session.getUserMatchOnDate(session.currentDate)!,
-            ),
-            const SizedBox(height: 16),
-          ],
-          Text('Eventos recentes', style: Theme.of(context).textTheme.titleMedium),
-          const SizedBox(height: 8),
-          if (session.recentEvents.isEmpty)
-            const EmptyState(
-              icon: Icons.history,
-              message:
-                  'Ainda sem eventos. Avança dias ou simula jogos para ver o feed.',
-            )
-          else
-            ...session.recentEvents.map(
-              (event) => _EventTile(event: event, session: session),
-            ),
-        ],
       ),
+      SectionCard(
+        title: 'Resultados recentes',
+        child: recent.isEmpty
+            ? const Text(
+                'Ainda sem jogos disputados.',
+                style: TextStyle(color: PhoenixColors.muted),
+              )
+            : Column(
+                children: [
+                  FormDots(session: session, limit: 5),
+                  const SizedBox(height: 12),
+                  for (final entry in recent)
+                    FixtureListTile(
+                      fixture: entry.fixture,
+                      session: session,
+                      dense: true,
+                      onTap: () {
+                        final result =
+                            session.registry.matchResults[entry.fixture.id];
+                        if (result == null) {
+                          return;
+                        }
+                        Navigator.of(context).push(
+                          MaterialPageRoute<void>(
+                            builder: (_) => MatchDetailScreen(
+                              session: session,
+                              output: MatchSimulationOutput(
+                                fixture: entry.fixture,
+                                result: result,
+                              ),
+                            ),
+                          ),
+                        );
+                      },
+                    ),
+                ],
+              ),
+      ),
+      DashboardTipCard(
+        playMode: controller.playMode,
+        matchesPlayed: session.matchesPlayed,
+      ),
+      if (seasonSummary != null)
+        SeasonSummaryCard(session: session, summary: seasonSummary),
+      CupStatusCard(session: session),
+      if (session.getUserMatchOnDate(session.currentDate) != null)
+        _TodayMatchCard(
+          controller: controller,
+          output: session.getUserMatchOnDate(session.currentDate)!,
+        ),
+      SectionCard(
+        title: 'Eventos recentes',
+        child: session.recentEvents.isEmpty
+            ? const EmptyState(
+                icon: Icons.history,
+                message:
+                    'Ainda sem eventos. Avança dias ou simula jogos para ver o feed.',
+              )
+            : Column(
+                children: [
+                  for (final event in session.recentEvents.take(8))
+                    _EventTile(event: event, session: session),
+                ],
+              ),
+      ),
+    ]);
+  }
+
+  List<Widget> _buildRight(BuildContext context, GameSession session) {
+    final finance = session.userFinance;
+    final injured = session.injuredPlayers;
+    final userStanding = session.standings.indexWhere(
+      (e) => e.clubId == GameSession.userClubId,
     );
+
+    return _spaced([
+      MiniStandings(session: session, onOpenFull: onOpenStandings),
+      SectionCard(
+        title: 'Forma',
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            FormDots(session: session),
+            const SizedBox(height: 8),
+            Text(
+              userStanding >= 0
+                  ? '${userStanding + 1}º · ${session.matchesPlayed} jogos'
+                  : '${session.matchesPlayed} jogos',
+              style: const TextStyle(color: PhoenixColors.muted, fontSize: 12),
+            ),
+          ],
+        ),
+      ),
+      SectionCard(
+        title: 'Plantel',
+        trailing: onOpenSquad == null
+            ? null
+            : TextButton(onPressed: onOpenSquad, child: const Text('Ver')),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              '${session.squad.length} jogadores',
+              style: const TextStyle(
+                fontWeight: FontWeight.w600,
+                color: PhoenixColors.textPrimary,
+              ),
+            ),
+            const SizedBox(height: 6),
+            Text(
+              injured.isEmpty
+                  ? 'Sem lesionados'
+                  : '${injured.length} lesionado${injured.length == 1 ? '' : 's'}',
+              style: TextStyle(
+                color:
+                    injured.isEmpty ? PhoenixColors.muted : PhoenixColors.warning,
+                fontSize: 13,
+              ),
+            ),
+            if (injured.isNotEmpty) ...[
+              const SizedBox(height: 8),
+              for (final p in injured.take(3))
+                Text(
+                  '· ${p.name} (${p.injuredDaysRemaining}d)',
+                  style: const TextStyle(
+                    fontSize: 12,
+                    color: PhoenixColors.textSecondary,
+                  ),
+                ),
+            ],
+          ],
+        ),
+      ),
+      if (finance != null)
+        SectionCard(
+          title: 'Finanças',
+          trailing: onOpenFinances == null
+              ? null
+              : TextButton(
+                  onPressed: onOpenFinances,
+                  child: const Text('Abrir'),
+                ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                MoneyFormat.compact(finance.balance),
+                style: const TextStyle(
+                  fontSize: 22,
+                  fontWeight: FontWeight.w800,
+                  color: PhoenixColors.positive,
+                ),
+              ),
+              const SizedBox(height: 4),
+              Text(
+                'Salários ${MoneyFormat.compact(session.salaryBreakdown.total)}/mês',
+                style: const TextStyle(
+                  color: PhoenixColors.muted,
+                  fontSize: 12,
+                ),
+              ),
+            ],
+          ),
+        ),
+      CareerStatsCard(session: session, compact: true),
+      AchievementProgressCard(
+        session: session,
+        onTap: onOpenAchievements,
+      ),
+    ]);
   }
 
   Future<void> _simulateExpressRound(BuildContext context) async {
@@ -276,10 +365,83 @@ class DashboardScreen extends StatelessWidget {
     }
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
-        content: Text(
-          'Época ${controller.session!.seasonYear} iniciada',
-        ),
+        content: Text('Época ${controller.session!.seasonYear} iniciada'),
       ),
+    );
+  }
+}
+
+List<Widget> _spaced(List<Widget> children, {double gap = 16}) {
+  final out = <Widget>[];
+  for (var i = 0; i < children.length; i++) {
+    out.add(children[i]);
+    if (i < children.length - 1) {
+      out.add(SizedBox(height: gap));
+    }
+  }
+  return out;
+}
+
+class _AdvanceControls extends StatelessWidget {
+  const _AdvanceControls({
+    required this.controller,
+    required this.onExpress,
+    required this.onStartNextSeason,
+  });
+
+  final GameController controller;
+  final VoidCallback onExpress;
+  final VoidCallback onStartNextSeason;
+
+  @override
+  Widget build(BuildContext context) {
+    final session = controller.session!;
+
+    return SectionCard(
+      title: 'Avançar',
+      child: session.isFullSeasonComplete
+          ? FilledButton.icon(
+              onPressed: onStartNextSeason,
+              icon: const Icon(Icons.restart_alt),
+              label: Text('Iniciar época ${session.seasonYear + 1}'),
+            )
+          : controller.playMode == PlayMode.express
+              ? FilledButton.icon(
+                  onPressed: onExpress,
+                  icon: const Icon(Icons.flash_on),
+                  label: const Text('Simular jornada (Express)'),
+                )
+              : Wrap(
+                  spacing: 8,
+                  runSpacing: 8,
+                  children: [
+                    FilledButton.icon(
+                      onPressed: () {
+                        UiFeedback.tap();
+                        controller.advanceDay();
+                      },
+                      icon: const Icon(Icons.skip_next),
+                      label: const Text('Avançar 1 dia'),
+                    ),
+                    OutlinedButton.icon(
+                      onPressed: () {
+                        UiFeedback.tap();
+                        controller.advanceWeek();
+                      },
+                      icon: const Icon(Icons.date_range),
+                      label: const Text('Avançar 1 semana'),
+                    ),
+                    if (session.nextFixture != null)
+                      OutlinedButton.icon(
+                        onPressed: () {
+                          UiFeedback.tap();
+                          controller.advanceToNextMatch();
+                        },
+                        icon: const Icon(Icons.sports_soccer),
+                        label: const Text('Ir ao próximo jogo'),
+                      ),
+                  ],
+                ),
     );
   }
 }
@@ -297,238 +459,39 @@ class _PreMatchAlertCard extends StatelessWidget {
       return const SizedBox.shrink();
     }
 
-    final theme = Theme.of(context);
-
-    return Card(
-      color: theme.colorScheme.tertiaryContainer.withValues(alpha: 0.35),
-      child: Padding(
-        padding: const EdgeInsets.all(16),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Row(
-              children: [
-                Icon(Icons.fact_check, color: theme.colorScheme.tertiary),
-                const SizedBox(width: 8),
-                Text(
-                  'Antes do próximo jogo',
-                  style: theme.textTheme.titleSmall,
-                ),
-              ],
-            ),
-            const SizedBox(height: 8),
-            if (injured.isNotEmpty) ...[
-              Text(
-                'Lesionados (${injured.length})',
-                style: theme.textTheme.labelMedium,
-              ),
-              ...injured.take(3).map(
-                    (p) => Text(
-                      '· ${p.name} (${p.injuredDaysRemaining} dias)',
-                      style: theme.textTheme.bodySmall,
-                    ),
-                  ),
-              if (injured.length > 3)
-                Text(
-                  '· +${injured.length - 3} mais',
-                  style: theme.textTheme.bodySmall?.copyWith(
-                    color: theme.colorScheme.outline,
-                  ),
-                ),
-            ],
-            if (injured.isNotEmpty && expiring.isNotEmpty)
-              const SizedBox(height: 8),
-            if (expiring.isNotEmpty) ...[
-              Text(
-                'Contratos a expirar esta época (${expiring.length})',
-                style: theme.textTheme.labelMedium,
-              ),
-              ...expiring.take(3).map(
-                    (p) => Text(
-                      '· ${p.name} (até ${p.contractEndYear})',
-                      style: theme.textTheme.bodySmall,
-                    ),
-                  ),
-            ],
-            const SizedBox(height: 4),
+    return SectionCard(
+      title: 'Antes do próximo jogo',
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          if (injured.isNotEmpty) ...[
             Text(
-              'Revê o plantel em Treino ou Plantel.',
-              style: theme.textTheme.labelSmall?.copyWith(
-                color: theme.colorScheme.outline,
-              ),
+              'Lesionados (${injured.length})',
+              style: Theme.of(context).textTheme.labelMedium,
             ),
+            ...injured.take(3).map(
+                  (p) => Text(
+                    '· ${p.name} (${p.injuredDaysRemaining} dias)',
+                    style: Theme.of(context).textTheme.bodySmall,
+                  ),
+                ),
           ],
-        ),
+          if (injured.isNotEmpty && expiring.isNotEmpty)
+            const SizedBox(height: 8),
+          if (expiring.isNotEmpty) ...[
+            Text(
+              'Contratos a expirar esta época (${expiring.length})',
+              style: Theme.of(context).textTheme.labelMedium,
+            ),
+            ...expiring.take(3).map(
+                  (p) => Text(
+                    '· ${p.name} (até ${p.contractEndYear})',
+                    style: Theme.of(context).textTheme.bodySmall,
+                  ),
+                ),
+          ],
+        ],
       ),
-    );
-  }
-}
-
-class _StatusOverview extends StatelessWidget {
-  const _StatusOverview({required this.session});
-
-  final GameSession session;
-
-  @override
-  Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-    final finance = session.userFinance;
-    final breakdown = session.salaryBreakdown;
-    final injured = session.injuredPlayers;
-    final expiring = session.expiringContractsThisSeason;
-    final soon = session.contractsExpiringSoon;
-
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.stretch,
-      children: [
-        if (finance != null)
-          Card(
-            child: Padding(
-              padding: const EdgeInsets.all(16),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text('Finanças rápidas', style: theme.textTheme.titleSmall),
-                  const SizedBox(height: 8),
-                  Row(
-                    children: [
-                      Expanded(
-                        child: _MiniStat(
-                          label: 'Saldo',
-                          value: MoneyFormat.compact(finance.balance),
-                        ),
-                      ),
-                      Expanded(
-                        child: _MiniStat(
-                          label: 'Salários/mês',
-                          value: MoneyFormat.compact(breakdown.total),
-                        ),
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: 8),
-                  Text(
-                    'Jogadores ${MoneyFormat.compact(breakdown.players)} · '
-                    'Staff ${MoneyFormat.compact(breakdown.staff)} · '
-                    'Treinador ${MoneyFormat.compact(breakdown.coach)}',
-                    style: theme.textTheme.bodySmall?.copyWith(
-                      color: theme.colorScheme.outline,
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ),
-        if (injured.isNotEmpty) ...[
-          const SizedBox(height: 8),
-          Card(
-            color: theme.colorScheme.errorContainer.withValues(alpha: 0.35),
-            child: Padding(
-              padding: const EdgeInsets.all(16),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Row(
-                    children: [
-                      Icon(Icons.healing, color: theme.colorScheme.error),
-                      const SizedBox(width: 8),
-                      Text(
-                        'Lesionados (${injured.length})',
-                        style: theme.textTheme.titleSmall,
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: 8),
-                  ...injured.take(3).map(
-                        (p) => Text(
-                          '${p.name} · ${p.injuredDaysRemaining} dias',
-                          style: theme.textTheme.bodySmall,
-                        ),
-                      ),
-                ],
-              ),
-            ),
-          ),
-        ],
-        if (session.hasContractAlerts) ...[
-          const SizedBox(height: 8),
-          Card(
-            color: theme.colorScheme.tertiaryContainer.withValues(alpha: 0.35),
-            child: Padding(
-              padding: const EdgeInsets.all(16),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Row(
-                    children: [
-                      Icon(
-                        Icons.assignment_late,
-                        color: theme.colorScheme.tertiary,
-                      ),
-                      const SizedBox(width: 8),
-                      Text(
-                        'Contratos',
-                        style: theme.textTheme.titleSmall,
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: 4),
-                  Text(
-                    'Época ${session.seasonYear}',
-                    style: theme.textTheme.bodySmall?.copyWith(
-                      color: theme.colorScheme.outline,
-                    ),
-                  ),
-                  if (expiring.isNotEmpty) ...[
-                    const SizedBox(height: 8),
-                    Text(
-                      'Expiram esta época (${expiring.length})',
-                      style: theme.textTheme.labelMedium,
-                    ),
-                    ...expiring.take(3).map(
-                          (p) => Text(
-                            '${p.name} · ${p.contractEndYear}',
-                            style: theme.textTheme.bodySmall,
-                          ),
-                        ),
-                  ],
-                  if (soon.isNotEmpty) ...[
-                    const SizedBox(height: 8),
-                    Text(
-                      'Expiram na próxima época (${soon.length})',
-                      style: theme.textTheme.labelMedium,
-                    ),
-                    ...soon.take(3).map(
-                          (p) => Text(
-                            '${p.name} · ${p.contractEndYear}',
-                            style: theme.textTheme.bodySmall,
-                          ),
-                        ),
-                  ],
-                ],
-              ),
-            ),
-          ),
-        ],
-      ],
-    );
-  }
-}
-
-class _MiniStat extends StatelessWidget {
-  const _MiniStat({required this.label, required this.value});
-
-  final String label;
-  final String value;
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(value, style: Theme.of(context).textTheme.titleMedium),
-        Text(label, style: Theme.of(context).textTheme.labelSmall),
-      ],
     );
   }
 }
@@ -593,8 +556,12 @@ class _EventTile extends StatelessWidget {
   Widget build(BuildContext context) {
     return ListTile(
       dense: true,
-      leading: Icon(_iconFor(event), size: 18),
-      title: Text(_labelFor(event), style: Theme.of(context).textTheme.bodySmall),
+      contentPadding: EdgeInsets.zero,
+      leading: Icon(_iconFor(event), size: 18, color: PhoenixColors.muted),
+      title: Text(
+        _labelFor(event),
+        style: Theme.of(context).textTheme.bodySmall,
+      ),
     );
   }
 
@@ -619,17 +586,16 @@ class _EventTile extends StatelessWidget {
     return switch (event) {
       MatchPlayedEvent e =>
         '${session.clubName(e.homeClubId)} ${e.homeScore} a ${e.awayScore} '
-        '${session.clubName(e.awayClubId)}',
+            '${session.clubName(e.awayClubId)}',
       TransferCompletedEvent e =>
         '${e.playerName} → ${session.clubName(e.record.toClubId)}',
       YouthIntakeEvent e =>
         '${session.clubName(e.clubId)}: ${e.players.length} jovens',
-      PlayerInjuredEvent e =>
-        '${e.playerName} lesionado (${e.daysOut} dias)',
+      PlayerInjuredEvent e => '${e.playerName} lesionado (${e.daysOut} dias)',
       PlayerRecoveredEvent e => '${e.playerName} recuperado',
       ContractRenewedEvent e =>
         '${e.playerName} renovado até ${e.newContractEndYear} '
-        '(${MoneyFormat.perMonth(e.newSalary)})',
+            '(${MoneyFormat.perMonth(e.newSalary)})',
       AchievementUnlockedEvent e =>
         'Conquista: ${session.achievementTitle(e.achievementId)}',
       SeasonFinishedEvent e =>

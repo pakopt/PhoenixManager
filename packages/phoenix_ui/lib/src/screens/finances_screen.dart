@@ -4,6 +4,8 @@ import 'package:phoenix_ui/src/util/date_format.dart';
 import 'package:phoenix_ui/src/game/game_session.dart';
 import 'package:phoenix_ui/src/widgets/common_widgets.dart';
 import 'package:phoenix_ui/src/widgets/empty_state.dart';
+import 'package:phoenix_ui/src/widgets/section_card.dart';
+import 'package:phoenix_ui/src/theme/phoenix_theme.dart';
 
 class FinancesScreen extends StatelessWidget {
   const FinancesScreen({required this.session, super.key});
@@ -20,17 +22,24 @@ class FinancesScreen extends StatelessWidget {
 
     return SafeArea(
       child: ListView(
-        padding: const EdgeInsets.all(16),
+        padding: const EdgeInsets.fromLTRB(0, 0, 0, 16),
         children: [
-          Text('Finanças', style: theme.textTheme.titleLarge),
-          const SizedBox(height: 16),
+          const ScreenPageHeader(
+            title: 'Finanças',
+            subtitle: 'Saldo, salários e transferências',
+          ),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
           if (finance != null) ...[
             Row(
               children: [
                 StatChip(
                   label: 'Saldo',
                   value: MoneyFormat.compact(finance.balance),
-                  color: theme.colorScheme.primary,
+                  color: PhoenixColors.positive,
                 ),
                 const SizedBox(width: 8),
                 StatChip(
@@ -215,6 +224,9 @@ class FinancesScreen extends StatelessWidget {
                     );
                   },
                 ),
+              ],
+            ),
+          ),
         ],
       ),
     );

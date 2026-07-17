@@ -1,7 +1,7 @@
 /// Texto da política de privacidade (espelha docs/PRIVACY.md).
 abstract final class AppPrivacyPolicy {
-  static const version = '0.8.31';
-  static const updated = '16 de Julho de 2026';
+  static const version = '0.8.32';
+  static const updated = '17 de Julho de 2026';
   static const contactEmail = 'pakopt7@gmail.com';
 
   static const sections = <({String title, String body})>[

@@ -1,15 +1,16 @@
 /// Versão visível ao jogador — manter alinhada com `apps/phoenix_manager/pubspec.yaml`.
 /// Validar: `./scripts/check_app_version_sync.sh`
 abstract final class AppVersion {
-  static const label = '0.8.31';
-  static const buildNumber = 32;
-  static const engineLabel = 'PSE v0.8.31';
+  static const label = '0.8.32';
+  static const buildNumber = 33;
+  static const engineLabel = 'PSE v0.8.32';
 
   /// Pontos curtos para o diálogo «Novidades» após actualizar.
   static const whatsNew = <String>[
-    'Redesign UI FootSim × Phoenix: sidebar, barra de comando e dashboard em 3 colunas.',
-    'Top bar com saldo, data e CTA «Ir ao jogo» (verde Phoenix).',
-    'Pass visual nos ecrãs de carreira (plantel, jogos, tabela, mercado, finanças, clube).',
+    'Associação Desportiva «A Coruja» na Liga Phoenix (logo, identidade e estrutura de equipas).',
+    'Phoenix FC continua como clube jogável; a Coruja é rival na liga.',
+    'Ficha de jogador estilo FootSim (visão geral, desenvolvimento, contrato).',
+    'Plantel em tabela e Inbox com eventos da carreira.',
   ];
 
   /// Bloco curto para emails de feedback / bugs.

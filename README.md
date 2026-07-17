@@ -174,6 +174,10 @@ SAVE_TEST=1 ./scripts/launch_doctor.sh
 # Ícones e splash
 ./scripts/regenerate_branding.sh
 # Ver apps/phoenix_manager/BRANDING.md
+
+# Limpar caches locais (~GiB: Flutter build, Gradle, Steam temp)
+./scripts/clean_dev_artifacts.sh
+# CLEAN_RELEASE=1 …  # também apaga build/release (AAB/APK)
 ```
 
 ### Steam

@@ -5,6 +5,7 @@ import 'package:phoenix_ui/src/util/date_format.dart';
 import 'package:phoenix_ui/src/game/game_session.dart';
 import 'package:phoenix_ui/src/game/match_fixture_extensions.dart';
 import 'package:phoenix_ui/src/theme/phoenix_theme.dart';
+import 'package:phoenix_ui/src/widgets/club_crest.dart';
 
 class ClubHeader extends StatelessWidget {
   const ClubHeader({required this.session, super.key});
@@ -16,6 +17,7 @@ class ClubHeader extends StatelessWidget {
     final club = session.userClub;
     final finance = session.userFinance;
     final theme = Theme.of(context);
+    final city = session.registry.cities[club.cityId];
 
     return Container(
       decoration: BoxDecoration(
@@ -36,18 +38,7 @@ class ClubHeader extends StatelessWidget {
         padding: const EdgeInsets.all(16),
         child: Row(
           children: [
-            CircleAvatar(
-              radius: 28,
-              backgroundColor: PhoenixColors.seed,
-              child: Text(
-                club.name.characters.first,
-                style: const TextStyle(
-                  fontSize: 22,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.white,
-                ),
-              ),
-            ),
+            ClubCrest(club: club, size: 56),
             const SizedBox(width: 16),
             Expanded(
               child: Column(
@@ -61,8 +52,11 @@ class ClubHeader extends StatelessWidget {
                     ),
                   ),
                   Text(
-                    '${DateFormatUtil.gameDate(session.currentDate)} · '
-                    'Jornada ${session.tick}',
+                    [
+                      if (city != null) city.name,
+                      DateFormatUtil.gameDate(session.currentDate),
+                      'Jornada ${session.tick}',
+                    ].join(' · '),
                     style: theme.textTheme.bodySmall?.copyWith(
                       color: PhoenixColors.muted,
                     ),

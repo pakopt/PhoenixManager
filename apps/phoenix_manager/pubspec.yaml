@@ -26,6 +26,7 @@ flutter:
   uses-material-design: true
   assets:
     - assets/branding/
+    - assets/clubs/
 
 # Regenerar: dart run flutter_launcher_icons && dart run flutter_native_splash:create
 flutter_launcher_icons:

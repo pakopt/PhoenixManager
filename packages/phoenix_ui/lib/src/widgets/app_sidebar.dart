@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:phoenix_core/phoenix_core.dart';
 import 'package:phoenix_ui/src/theme/phoenix_theme.dart';
+import 'package:phoenix_ui/src/widgets/club_crest.dart';
 
 typedef ShellDestination = (IconData outlined, IconData filled, String label);
 
 /// Sidebar escura estilo FootSim (wide layout).
 class AppSidebar extends StatelessWidget {
   const AppSidebar({
-    required this.clubName,
+    required this.club,
     required this.destinations,
     required this.selectedIndex,
     required this.onSelect,
@@ -16,7 +18,7 @@ class AppSidebar extends StatelessWidget {
     super.key,
   });
 
-  final String clubName;
+  final Club club;
   final List<ShellDestination> destinations;
   final int selectedIndex;
   final ValueChanged<int> onSelect;
@@ -52,24 +54,15 @@ class AppSidebar extends StatelessWidget {
               ),
               child: Row(
                 children: [
-                  CircleAvatar(
-                    radius: extended ? 18 : 16,
-                    backgroundColor: PhoenixColors.seed,
-                    child: Text(
-                      clubName.isEmpty
-                          ? '?'
-                          : clubName.characters.first.toUpperCase(),
-                      style: const TextStyle(
-                        fontWeight: FontWeight.w800,
-                        color: Colors.white,
-                      ),
-                    ),
+                  ClubCrest(
+                    club: club,
+                    size: extended ? 36 : 32,
                   ),
                   if (extended) ...[
                     const SizedBox(width: 10),
                     Expanded(
                       child: Text(
-                        clubName,
+                        club.displayShortName,
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
                         style: const TextStyle(

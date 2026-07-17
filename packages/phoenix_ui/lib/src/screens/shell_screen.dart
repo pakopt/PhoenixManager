@@ -379,7 +379,7 @@ class _ShellScreenState extends State<ShellScreen> {
           ? Row(
               children: [
                 AppSidebar(
-                  clubName: session.userClub.name,
+                  club: session.userClub,
                   destinations: _destinations,
                   selectedIndex: _index,
                   onSelect: _selectDestination,

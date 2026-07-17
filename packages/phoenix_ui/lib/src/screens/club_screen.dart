@@ -7,6 +7,7 @@ import 'package:phoenix_ui/src/theme/phoenix_theme.dart';
 import 'package:phoenix_ui/src/widgets/coach_labels.dart';
 import 'package:phoenix_ui/src/widgets/common_widgets.dart';
 import 'package:phoenix_ui/src/widgets/career_stats_card.dart';
+import 'package:phoenix_ui/src/widgets/club_crest.dart';
 import 'package:phoenix_ui/src/widgets/empty_state.dart';
 import 'package:phoenix_ui/src/widgets/section_card.dart';
 
@@ -86,6 +87,8 @@ class _ClubOverviewPanel extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
           ClubHeader(session: session),
+          const SizedBox(height: 16),
+          _ClubIdentityCard(session: session),
           const SizedBox(height: 16),
           CareerStatsCard(session: session),
           const SizedBox(height: 16),
@@ -277,6 +280,133 @@ class _ClubOverviewPanel extends StatelessWidget {
           ),
         ],
       ),
+    );
+  }
+}
+
+class _ClubIdentityCard extends StatelessWidget {
+  const _ClubIdentityCard({required this.session});
+
+  final GameSession session;
+
+  @override
+  Widget build(BuildContext context) {
+    final club = session.userClub;
+    final city = session.registry.cities[club.cityId];
+    final region = city != null ? session.registry.regions[city.regionId] : null;
+    final country =
+        region != null ? session.registry.countries[region.countryId] : null;
+
+    final rows = <(String, String)>[
+      if (club.foundedOn != null) ('Fundação', _formatFounded(club.foundedOn!)),
+      if (city != null) ('Cidade', city.name),
+      if (country != null) ('País', country.name),
+      if (club.association != null) ('Associação', club.association!),
+      if (club.president != null) ('Presidente', club.president!),
+      if (club.address != null) ('Morada', club.address!),
+    ];
+
+    if (rows.isEmpty) {
+      return const SizedBox.shrink();
+    }
+
+    return Card(
+      child: Padding(
+        padding: const EdgeInsets.all(16),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            Row(
+              children: [
+                ClubCrest(club: club, size: 64),
+                const SizedBox(width: 14),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        'Identidade',
+                        style: Theme.of(context).textTheme.titleSmall?.copyWith(
+                              fontWeight: FontWeight.w700,
+                            ),
+                      ),
+                      const SizedBox(height: 2),
+                      Text(
+                        club.displayShortName,
+                        style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                              color: PhoenixColors.muted,
+                            ),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+            const SizedBox(height: 14),
+            for (final row in rows) ...[
+              _IdentityRow(label: row.$1, value: row.$2),
+              if (row != rows.last) const SizedBox(height: 8),
+            ],
+          ],
+        ),
+      ),
+    );
+  }
+
+  static String _formatFounded(String iso) {
+    final parts = iso.split('-');
+    if (parts.length != 3) {
+      return iso;
+    }
+    final year = int.tryParse(parts[0]);
+    final month = int.tryParse(parts[1]);
+    final day = int.tryParse(parts[2]);
+    if (year == null || month == null || day == null) {
+      return iso;
+    }
+    const months = [
+      'Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun',
+      'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez',
+    ];
+    if (month < 1 || month > 12) {
+      return iso;
+    }
+    return '$day ${months[month - 1]} $year';
+  }
+}
+
+class _IdentityRow extends StatelessWidget {
+  const _IdentityRow({required this.label, required this.value});
+
+  final String label;
+  final String value;
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        SizedBox(
+          width: 100,
+          child: Text(
+            label,
+            style: const TextStyle(
+              color: PhoenixColors.muted,
+              fontSize: 13,
+              fontWeight: FontWeight.w600,
+            ),
+          ),
+        ),
+        Expanded(
+          child: Text(
+            value,
+            style: const TextStyle(
+              color: PhoenixColors.textPrimary,
+              fontWeight: FontWeight.w500,
+            ),
+          ),
+        ),
+      ],
     );
   }
 }

@@ -5,8 +5,16 @@ import 'package:phoenix_ui/src/game/game_session.dart';
 import 'package:phoenix_ui/src/game/season_summary.dart';
 
 void main() {
-  test('GameSession user club is Phoenix FC', () {
+  test('GameSession user club is A Coruja', () async {
     expect(GameSession.userClubId.value, 'club-phoenix');
+    final context = await AppBootstrap().boot(worldId: 'coruja-ui-test');
+    final session = GameSession(context);
+    expect(session.userClub.name, contains('Coruja'));
+    expect(session.userClub.shortName, 'A Coruja');
+    expect(session.userClub.president, 'José Gomes');
+    expect(session.userClub.association, 'AF Madeira');
+    expect(session.userClub.foundedOn, '1976-04-09');
+    expect(session.userClub.logoAsset, 'assets/clubs/coruja.png');
   });
 
   test('salaryBreakdown matches club finance monthly wages', () async {

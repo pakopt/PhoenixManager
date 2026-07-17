@@ -11,14 +11,23 @@ void main() {
       context = await AppBootstrap().boot(worldId: 'test-world');
     });
 
-    test('boot loads Liga Phoenix with 5 clubs and players', () {
-      expect(context.registry.clubs.length, 5);
-      expect(context.registry.players.length, 5 * 16);
+    test('boot loads Liga Phoenix with 6 clubs and players', () {
+      expect(context.registry.clubs.length, 6);
+      // 5 clubs padded to 16 + Sindicato Jun.B S17 (37 seeded).
+      expect(context.registry.players.length, 5 * 16 + 37);
       expect(context.registry.fixtures.isNotEmpty, isTrue);
+      final sindicato = context.registry.squadQuery
+          .getByClubId(const ClubId('club-sindicato'));
+      expect(sindicato.length, 37);
+      expect(sindicato.any((p) => p.name == 'Vítor Fraga'), isTrue);
+      expect(
+        sindicato.firstWhere((p) => p.name == 'Vítor Fraga').position,
+        'PL',
+      );
     });
 
     test('boot generates full staff roster for every club', () {
-      expect(context.registry.staff.length, 5 * StaffRole.values.length);
+      expect(context.registry.staff.length, 6 * StaffRole.values.length);
       final phoenixStaff =
           context.registry.staffQuery.getByClubId(const ClubId('club-phoenix'));
       expect(phoenixStaff.length, StaffRole.values.length);
@@ -100,10 +109,10 @@ void main() {
       final result = lab.runUntilSeasonEnd();
 
       expect(result.seasonComplete, isTrue);
-      expect(result.matchesPlayed, 22);
+      expect(result.matchesPlayed, 32);
       expect(
         context.competitionManager.standings(const CompetitionId('liga-phoenix')).length,
-        5,
+        6,
       );
     });
   });

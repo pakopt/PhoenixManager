@@ -12,6 +12,7 @@ class Club {
     this.stadiumCapacity = 10000,
     this.coachId,
     this.logoAsset,
+    this.kitAsset,
     this.foundedOn,
     this.association,
     this.president,
@@ -32,6 +33,7 @@ class Club {
       coachId:
           map['coachId'] != null ? CoachId(map['coachId'] as String) : null,
       logoAsset: map['logoAsset'] as String?,
+      kitAsset: map['kitAsset'] as String?,
       foundedOn: map['foundedOn'] as String?,
       association: map['association'] as String?,
       president: map['president'] as String?,
@@ -49,6 +51,8 @@ class Club {
   final int stadiumCapacity;
   final CoachId? coachId;
   final String? logoAsset;
+  /// Optional home kit illustration asset path.
+  final String? kitAsset;
   /// ISO date `YYYY-MM-DD` when known.
   final String? foundedOn;
   final String? association;
@@ -68,6 +72,7 @@ class Club {
     int? stadiumCapacity,
     CoachId? coachId,
     String? logoAsset,
+    String? kitAsset,
     String? foundedOn,
     String? association,
     String? president,
@@ -84,6 +89,7 @@ class Club {
       stadiumCapacity: stadiumCapacity ?? this.stadiumCapacity,
       coachId: coachId ?? this.coachId,
       logoAsset: logoAsset ?? this.logoAsset,
+      kitAsset: kitAsset ?? this.kitAsset,
       foundedOn: foundedOn ?? this.foundedOn,
       association: association ?? this.association,
       president: president ?? this.president,
@@ -102,6 +108,7 @@ class Club {
         'stadiumCapacity': stadiumCapacity,
         if (coachId != null) 'coachId': coachId!.value,
         if (logoAsset != null) 'logoAsset': logoAsset,
+        if (kitAsset != null) 'kitAsset': kitAsset,
         if (foundedOn != null) 'foundedOn': foundedOn,
         if (association != null) 'association': association,
         if (president != null) 'president': president,

@@ -41,6 +41,8 @@ class SquadGenerator {
     return created;
   }
 
+  static const _roles = ['GR', 'DF', 'DF', 'DF', 'MD', 'MD', 'MD', 'MO', 'EX', 'PL', 'PL'];
+
   Player _generate({
     required Club club,
     required int index,
@@ -55,6 +57,7 @@ class SquadGenerator {
     final salary = (ca * 280 + club.reputation * 40 + _rng.nextInt(4000))
         .clamp(2500, 48000);
     final contractEnd = 2027 + _rng.nextInt(4);
+    final position = _roles[index % _roles.length];
 
     return Player(
       id: PlayerId('p-gen-${club.id.value}-$index'),
@@ -67,6 +70,7 @@ class SquadGenerator {
       form: 45 + _rng.nextInt(30),
       salary: salary,
       contractEndYear: contractEnd,
+      position: position,
       nationalityId: registry.countries.values.isNotEmpty
           ? registry.countries.values.first.id
           : null,

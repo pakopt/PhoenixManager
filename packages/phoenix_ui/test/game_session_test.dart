@@ -5,7 +5,7 @@ import 'package:phoenix_ui/src/game/game_session.dart';
 import 'package:phoenix_ui/src/game/season_summary.dart';
 
 void main() {
-  test('GameSession user club is Phoenix FC; A Coruja is a peer club', () async {
+  test('GameSession user club is Phoenix FC; PT peers have identity', () async {
     expect(GameSession.userClubId.value, 'club-phoenix');
     final context = await AppBootstrap().boot(worldId: 'coruja-ui-test');
     final session = GameSession(context);
@@ -33,6 +33,46 @@ void main() {
         'Fut.7 Jun.D S12',
         'Fut.7 Jun.E S11',
       ],
+    );
+
+    final sindicato = context.registry.clubs[const ClubId('club-sindicato')];
+    expect(sindicato, isNotNull);
+    expect(sindicato!.name, 'Grupo Desportivo Recreativo «O Sindicato»');
+    expect(sindicato.shortName, 'GDR «O Sindicato»');
+    expect(sindicato.president, 'João Raimundo');
+    expect(sindicato.association, 'AAF Setúbal');
+    expect(sindicato.foundedOn, '1977-02-06');
+    expect(sindicato.logoAsset, 'assets/clubs/sindicato.png');
+    expect(sindicato.kitAsset, 'assets/clubs/sindicato-kit.png');
+    expect(sindicato.cityId.value, 'setubal');
+    expect(
+      sindicato.teams,
+      [
+        'Equipa Principal',
+        'Jun.A S19',
+        'Jun.B S17',
+        'Jun.C S15',
+        'Jun.D S13',
+        'Fut.7 Jun.D S13',
+        'Fut.7 Jun.D S12',
+        'Fut.7 Jun.E S11',
+        'Fut.7 Jun.E S10',
+        'Fut.7 Jun.F S9',
+      ],
+    );
+
+    final squad = context.registry.squadQuery
+        .getByClubId(const ClubId('club-sindicato'));
+    expect(squad.length, 37);
+    expect(squad.any((p) => p.name == 'Diogo Correia'), isTrue);
+    expect(squad.any((p) => p.name == 'João Raimundo'), isTrue);
+    expect(
+      squad.where((p) => p.nationalityId?.value == 'brazil').length,
+      6,
+    );
+    expect(
+      squad.where((p) => p.nationalityId?.value == 'angola').length,
+      5,
     );
   });
 
@@ -83,7 +123,7 @@ void main() {
     final context = await AppBootstrap().boot(worldId: 'cup-ui-test');
     final session = GameSession(context);
 
-    expect(session.leagueFixtures.length, 20);
+    expect(session.leagueFixtures.length, 30);
     expect(session.cupFixtures.length, 2);
     expect(
       session.leagueFixtures.every(

@@ -405,6 +405,13 @@ class _ClubTeamsCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final identityRows = <(String, String)>[
+      if (club.foundedOn != null)
+        ('Fundação', _ClubIdentityCard._formatFounded(club.foundedOn!)),
+      if (club.association != null) ('Associação', club.association!),
+      if (club.president != null) ('Presidente', club.president!),
+    ];
+
     return Card(
       child: Padding(
         padding: const EdgeInsets.all(16),
@@ -427,7 +434,7 @@ class _ClubTeamsCard extends StatelessWidget {
                       ),
                       const SizedBox(height: 2),
                       Text(
-                        'Estrutura de equipas',
+                        club.name,
                         style: theme.textTheme.bodySmall?.copyWith(
                           color: PhoenixColors.muted,
                         ),
@@ -437,10 +444,44 @@ class _ClubTeamsCard extends StatelessWidget {
                 ),
               ],
             ),
-            const SizedBox(height: 12),
-            for (final team in club.teams) ...[
-              _TeamChip(label: team),
-              if (team != club.teams.last) const SizedBox(height: 6),
+            if (identityRows.isNotEmpty) ...[
+              const SizedBox(height: 12),
+              for (final row in identityRows) ...[
+                _IdentityRow(label: row.$1, value: row.$2),
+                if (row != identityRows.last) const SizedBox(height: 8),
+              ],
+            ],
+            if (club.kitAsset != null && club.kitAsset!.isNotEmpty) ...[
+              const SizedBox(height: 14),
+              Text(
+                'Equipamento',
+                style: theme.textTheme.titleSmall?.copyWith(
+                  fontWeight: FontWeight.w700,
+                ),
+              ),
+              const SizedBox(height: 8),
+              Center(
+                child: Image.asset(
+                  club.kitAsset!,
+                  height: 160,
+                  fit: BoxFit.contain,
+                  errorBuilder: (_, __, ___) => const SizedBox.shrink(),
+                ),
+              ),
+            ],
+            if (club.teams.isNotEmpty) ...[
+              const SizedBox(height: 14),
+              Text(
+                'Estrutura de equipas',
+                style: theme.textTheme.titleSmall?.copyWith(
+                  fontWeight: FontWeight.w700,
+                ),
+              ),
+              const SizedBox(height: 8),
+              for (final team in club.teams) ...[
+                _TeamChip(label: team),
+                if (team != club.teams.last) const SizedBox(height: 6),
+              ],
             ],
           ],
         ),

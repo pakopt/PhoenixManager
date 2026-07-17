@@ -1,16 +1,16 @@
 /// Versão visível ao jogador — manter alinhada com `apps/phoenix_manager/pubspec.yaml`.
 /// Validar: `./scripts/check_app_version_sync.sh`
 abstract final class AppVersion {
-  static const label = '0.8.38';
-  static const buildNumber = 39;
-  static const engineLabel = 'PSE v0.8.38';
+  static const label = '0.8.39';
+  static const buildNumber = 40;
+  static const engineLabel = 'PSE v0.8.39';
 
   /// Pontos curtos para o diálogo «Novidades» após actualizar.
   static const whatsNew = <String>[
-    'Táctica: arrasta jogadores livremente no campo.',
-    'Posições guardadas com a táctica; botão «Repor» volta à formação.',
-    'Toca no marcador para abrir a ficha do jogador.',
-    'Campo estável em telemóvel (scroll bloqueado ao arrastar).',
+    'GDR «O Sindicato» na Liga Phoenix (Setúbal) — plantel Jun.B completo.',
+    'Posições reais nos jogadores; equipamento na ficha do clube.',
+    'Classificação com nomes curtos (sem cortar clubes longos).',
+    'Geração de plantel com papéis GR/DF/MD/… para o XI.',
   ];
 
   /// Bloco curto para emails de feedback / bugs.

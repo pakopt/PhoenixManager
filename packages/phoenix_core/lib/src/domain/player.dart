@@ -14,6 +14,7 @@ class Player {
     this.salary = 0,
     this.contractEndYear = 2028,
     this.nationalityId,
+    this.position,
     this.injuredDaysRemaining = 0,
   });
 
@@ -32,6 +33,7 @@ class Player {
       nationalityId: map['nationalityId'] != null
           ? CountryId(map['nationalityId'] as String)
           : null,
+      position: map['position'] as String?,
       injuredDaysRemaining: map['injuredDaysRemaining'] as int? ?? 0,
     );
   }
@@ -47,6 +49,8 @@ class Player {
   final int salary;
   final int contractEndYear;
   final CountryId? nationalityId;
+  /// Preferred role code: `GR`, `DF`, `MD`, `MO`, `PL`, `EX`.
+  final String? position;
   final int injuredDaysRemaining;
 
   bool get isInjured => injuredDaysRemaining > 0;
@@ -59,6 +63,7 @@ class Player {
     int? form,
     int? salary,
     int? contractEndYear,
+    String? position,
     int? injuredDaysRemaining,
   }) {
     return Player(
@@ -73,6 +78,7 @@ class Player {
       salary: salary ?? this.salary,
       contractEndYear: contractEndYear ?? this.contractEndYear,
       nationalityId: nationalityId,
+      position: position ?? this.position,
       injuredDaysRemaining: injuredDaysRemaining ?? this.injuredDaysRemaining,
     );
   }
@@ -89,6 +95,7 @@ class Player {
         'salary': salary,
         'contractEndYear': contractEndYear,
         if (nationalityId != null) 'nationalityId': nationalityId!.value,
+        if (position != null) 'position': position,
         if (injuredDaysRemaining > 0)
           'injuredDaysRemaining': injuredDaysRemaining,
       };

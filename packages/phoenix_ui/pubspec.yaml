@@ -1,6 +1,6 @@
 name: phoenix_ui
 description: Phoenix Manager UI — Flutter presentation layer over PSE (zero game logic).
-version: 0.8.38
+version: 0.8.39
 publish_to: none
 
 environment:

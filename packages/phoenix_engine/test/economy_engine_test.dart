@@ -12,7 +12,7 @@ void main() {
     });
 
     test('boot initializes club finances for all clubs', () {
-      expect(context.registry.clubFinances.length, 5);
+      expect(context.registry.clubFinances.length, 6);
       for (final club in context.registry.clubs.values) {
         final finance = context.registry.clubFinances[club.id];
         expect(finance, isNotNull);
@@ -98,7 +98,7 @@ void main() {
 
       final youthEvents =
           context.eventBus.history.whereType<YouthIntakeEvent>().toList();
-      expect(youthEvents.length, 5);
+      expect(youthEvents.length, 6);
       expect(context.registry.players.length, greaterThan(playersBefore));
     });
 
@@ -129,7 +129,7 @@ void main() {
       );
       final envelope = context.saveManager.deserializeEnvelope(json);
 
-      expect(envelope.registry.clubFinances.length, 5);
+      expect(envelope.registry.clubFinances.length, 6);
       expect(envelope.registry.transfers, envelope.registry.transfers);
     });
 

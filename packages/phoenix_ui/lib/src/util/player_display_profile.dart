@@ -56,6 +56,18 @@ class PlayerDisplayProfile {
 
   /// Papel estável e com ~1 GR por plantel (não 1/6 aleatório).
   static (String, String) _roleFor(Player player) {
+    final seeded = player.position;
+    if (seeded != null) {
+      return switch (seeded) {
+        'GR' => ('GR', 'Guarda-redes'),
+        'DF' => ('DF', 'Defesa'),
+        'MD' => ('MD', 'Médio'),
+        'MO' => ('MO', 'Médio ofensivo'),
+        'PL' => ('PL', 'Ponta de lança'),
+        'EX' => ('EX', 'Extremo'),
+        _ => ('MD', 'Médio'),
+      };
+    }
     final h = Object.hash(player.id.value, 'role').abs();
     if (h % 14 == 0) {
       return ('GR', 'Guarda-redes');

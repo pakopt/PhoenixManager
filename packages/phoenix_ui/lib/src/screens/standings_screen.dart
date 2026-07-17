@@ -160,7 +160,9 @@ class _LeagueTableState extends State<_LeagueTable> {
               final isUser = entry.clubId == GameSession.userClubId;
               final played = entry.won + entry.drawn + entry.lost;
 
-              final clubName = club?.name ?? entry.clubId.value;
+              final clubName = club?.displayShortName ??
+                  club?.name ??
+                  entry.clubId.value;
               final gdSign = entry.goalDifference >= 0 ? '+' : '';
               final row = Semantics(
                 label:
@@ -186,6 +188,8 @@ class _LeagueTableState extends State<_LeagueTable> {
                         flex: 4,
                         child: Text(
                           clubName,
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
                           style: TextStyle(
                             fontWeight:
                                 isUser ? FontWeight.bold : FontWeight.normal,

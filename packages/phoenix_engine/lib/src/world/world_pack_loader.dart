@@ -14,7 +14,7 @@ class WorldPackLoader {
     return loadFromJson(File(path).readAsStringSync());
   }
 
-  /// Built-in Liga Phoenix MVP pack (4 clubs, fictional data).
+  /// Built-in Liga Phoenix MVP pack (5 clubs: Phoenix FC + A Coruja + rivals).
   WorldRegistry loadLigaPhoenixAlpha() {
     return loadFromJson(_ligaPhoenixAlphaJson);
   }
@@ -43,13 +43,23 @@ const _ligaPhoenixAlphaJson = '''
   "clubs": [
     {
       "id": "club-phoenix",
+      "name": "Phoenix FC",
+      "shortName": "Phoenix",
+      "cityId": "phoenix-city",
+      "reputation": 78,
+      "budget": 8500000,
+      "stadiumCapacity": 32000,
+      "coachId": "coach-phoenix"
+    },
+    {
+      "id": "club-coruja",
       "name": "Associação Desportiva «A Coruja»",
       "shortName": "A Coruja",
       "cityId": "monte-funchal",
       "reputation": 52,
       "budget": 650000,
       "stadiumCapacity": 1200,
-      "coachId": "coach-phoenix",
+      "coachId": "coach-coruja",
       "logoAsset": "assets/clubs/coruja.png",
       "foundedOn": "1976-04-09",
       "association": "AF Madeira",
@@ -62,14 +72,18 @@ const _ligaPhoenixAlphaJson = '''
   ],
   "coaches": [
     {"id": "coach-phoenix", "name": "Marco Silva", "clubId": "club-phoenix", "reputation": 74, "personality": "idealist", "licenseLevel": 4},
+    {"id": "coach-coruja", "name": "Carlos Correia", "clubId": "club-coruja", "reputation": 48, "personality": "youthDeveloper", "licenseLevel": 2},
     {"id": "coach-union", "name": "Ana Costa", "clubId": "club-union", "reputation": 68, "personality": "pragmatist", "licenseLevel": 3},
     {"id": "coach-riverside", "name": "João Mendes", "clubId": "club-riverside", "reputation": 61, "personality": "youthDeveloper", "licenseLevel": 2},
     {"id": "coach-highland", "name": "Pedro Alves", "clubId": "club-highland", "reputation": 55, "personality": "disciplinarian", "licenseLevel": 2}
   ],
   "players": [
-    {"id": "p-phx-1", "name": "Rui Costa", "clubId": "club-phoenix", "age": 27, "currentAbility": 74, "potentialAbility": 76, "morale": 78, "salary": 45000, "contractEndYear": 2028, "nationalityId": "portugal"},
-    {"id": "p-phx-2", "name": "Diego Lima", "clubId": "club-phoenix", "age": 24, "currentAbility": 71, "potentialAbility": 80, "morale": 75, "salary": 38000, "contractEndYear": 2029, "nationalityId": "portugal"},
-    {"id": "p-phx-3", "name": "Tomás Ferreira", "clubId": "club-phoenix", "age": 31, "currentAbility": 72, "potentialAbility": 72, "morale": 70, "salary": 42000, "contractEndYear": 2027, "nationalityId": "portugal"},
+    {"id": "p-phx-1", "name": "Rui Costa", "clubId": "club-phoenix", "age": 27, "currentAbility": 74, "potentialAbility": 76, "morale": 78, "salary": 45000, "contractEndYear": 2028, "nationalityId": "phoenix-nation"},
+    {"id": "p-phx-2", "name": "Diego Lima", "clubId": "club-phoenix", "age": 24, "currentAbility": 71, "potentialAbility": 80, "morale": 75, "salary": 38000, "contractEndYear": 2029, "nationalityId": "phoenix-nation"},
+    {"id": "p-phx-3", "name": "Tomás Ferreira", "clubId": "club-phoenix", "age": 31, "currentAbility": 72, "potentialAbility": 72, "morale": 70, "salary": 42000, "contractEndYear": 2027, "nationalityId": "phoenix-nation"},
+    {"id": "p-cor-1", "name": "Fábio Andrade", "clubId": "club-coruja", "age": 28, "currentAbility": 58, "potentialAbility": 60, "morale": 72, "salary": 8000, "contractEndYear": 2027, "nationalityId": "portugal"},
+    {"id": "p-cor-2", "name": "Ricardo Gouveia", "clubId": "club-coruja", "age": 23, "currentAbility": 55, "potentialAbility": 68, "morale": 78, "salary": 5500, "contractEndYear": 2029, "nationalityId": "portugal"},
+    {"id": "p-cor-3", "name": "Paulo Freitas", "clubId": "club-coruja", "age": 34, "currentAbility": 54, "potentialAbility": 54, "morale": 65, "salary": 6000, "contractEndYear": 2026, "nationalityId": "portugal"},
     {"id": "p-uni-1", "name": "Bruno Santos", "clubId": "club-union", "age": 26, "currentAbility": 70, "potentialAbility": 73, "morale": 72, "salary": 35000, "contractEndYear": 2028, "nationalityId": "phoenix-nation"},
     {"id": "p-uni-2", "name": "Carlos Neto", "clubId": "club-union", "age": 29, "currentAbility": 68, "potentialAbility": 68, "morale": 68, "salary": 32000, "contractEndYear": 2027, "nationalityId": "phoenix-nation"},
     {"id": "p-riv-1", "name": "Miguel Rocha", "clubId": "club-riverside", "age": 22, "currentAbility": 65, "potentialAbility": 78, "morale": 80, "salary": 18000, "contractEndYear": 2030, "nationalityId": "phoenix-nation"},
@@ -83,7 +97,7 @@ const _ligaPhoenixAlphaJson = '''
       "name": "Liga Phoenix",
       "type": "league",
       "seasonYear": 2026,
-      "participantClubIds": ["club-phoenix", "club-union", "club-riverside", "club-highland"],
+      "participantClubIds": ["club-phoenix", "club-coruja", "club-union", "club-riverside", "club-highland"],
       "rules": {"pointsWin": 3, "pointsDraw": 1, "pointsLoss": 0, "homeAdvantage": 5, "doubleRoundRobin": true},
       "leagueStyle": "formation_export"
     },

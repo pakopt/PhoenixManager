@@ -5,16 +5,22 @@ import 'package:phoenix_ui/src/game/game_session.dart';
 import 'package:phoenix_ui/src/game/season_summary.dart';
 
 void main() {
-  test('GameSession user club is A Coruja', () async {
+  test('GameSession user club is Phoenix FC; A Coruja is a peer club', () async {
     expect(GameSession.userClubId.value, 'club-phoenix');
     final context = await AppBootstrap().boot(worldId: 'coruja-ui-test');
     final session = GameSession(context);
-    expect(session.userClub.name, contains('Coruja'));
-    expect(session.userClub.shortName, 'A Coruja');
-    expect(session.userClub.president, 'José Gomes');
-    expect(session.userClub.association, 'AF Madeira');
-    expect(session.userClub.foundedOn, '1976-04-09');
-    expect(session.userClub.logoAsset, 'assets/clubs/coruja.png');
+    expect(session.userClub.name, 'Phoenix FC');
+    expect(session.userClub.shortName, 'Phoenix');
+    expect(session.userClub.logoAsset, isNull);
+
+    final coruja = context.registry.clubs[const ClubId('club-coruja')];
+    expect(coruja, isNotNull);
+    expect(coruja!.name, contains('Coruja'));
+    expect(coruja.shortName, 'A Coruja');
+    expect(coruja.president, 'José Gomes');
+    expect(coruja.association, 'AF Madeira');
+    expect(coruja.foundedOn, '1976-04-09');
+    expect(coruja.logoAsset, 'assets/clubs/coruja.png');
   });
 
   test('salaryBreakdown matches club finance monthly wages', () async {
@@ -64,7 +70,7 @@ void main() {
     final context = await AppBootstrap().boot(worldId: 'cup-ui-test');
     final session = GameSession(context);
 
-    expect(session.leagueFixtures.length, 12);
+    expect(session.leagueFixtures.length, 20);
     expect(session.cupFixtures.length, 2);
     expect(
       session.leagueFixtures.every(

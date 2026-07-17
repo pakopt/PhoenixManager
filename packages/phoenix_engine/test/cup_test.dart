@@ -169,7 +169,7 @@ void main() {
           .where((f) => f.competitionId == const CompetitionId('taca-phoenix'))
           .length;
 
-      expect(leagueCount, 12);
+      expect(leagueCount, 20);
       expect(cupCount, 2);
       expect(registry.competitions.containsKey(const CompetitionId('taca-phoenix')),
           isTrue);

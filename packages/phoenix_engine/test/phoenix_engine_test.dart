@@ -11,14 +11,14 @@ void main() {
       context = await AppBootstrap().boot(worldId: 'test-world');
     });
 
-    test('boot loads Liga Phoenix with 4 clubs and players', () {
-      expect(context.registry.clubs.length, 4);
-      expect(context.registry.players.length, 9);
+    test('boot loads Liga Phoenix with 5 clubs and players', () {
+      expect(context.registry.clubs.length, 5);
+      expect(context.registry.players.length, 12);
       expect(context.registry.fixtures.isNotEmpty, isTrue);
     });
 
     test('boot generates full staff roster for every club', () {
-      expect(context.registry.staff.length, 4 * StaffRole.values.length);
+      expect(context.registry.staff.length, 5 * StaffRole.values.length);
       final phoenixStaff =
           context.registry.staffQuery.getByClubId(const ClubId('club-phoenix'));
       expect(phoenixStaff.length, StaffRole.values.length);
@@ -100,10 +100,10 @@ void main() {
       final result = lab.runUntilSeasonEnd();
 
       expect(result.seasonComplete, isTrue);
-      expect(result.matchesPlayed, 12);
+      expect(result.matchesPlayed, 22);
       expect(
         context.competitionManager.standings(const CompetitionId('liga-phoenix')).length,
-        4,
+        5,
       );
     });
   });

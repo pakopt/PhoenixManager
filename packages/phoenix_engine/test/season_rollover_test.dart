@@ -49,11 +49,11 @@ void main() {
           .where((f) => f.competitionId == const CompetitionId('taca-phoenix'))
           .toList();
 
-      expect(leagueFixtures.length, 12);
+      expect(leagueFixtures.length, 20);
       expect(cupFixtures.length, 2);
       expect(leagueFixtures.every((f) => !f.isPlayed), isTrue);
       expect(cupFixtures.every((f) => !f.isPlayed), isTrue);
-      expect(manager.standings(const CompetitionId('liga-phoenix')).length, 4);
+      expect(manager.standings(const CompetitionId('liga-phoenix')).length, 5);
     });
   });
 }

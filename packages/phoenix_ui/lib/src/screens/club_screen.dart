@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:phoenix_core/phoenix_core.dart';
 import 'package:phoenix_ui/src/game/game_session.dart';
 import 'package:phoenix_ui/src/screens/achievements_panel.dart';
 import 'package:phoenix_ui/src/screens/honours_panel.dart';
@@ -72,6 +73,9 @@ class _ClubOverviewPanel extends StatelessWidget {
     final finance = session.userFinance;
     final city = session.registry.cities[club.cityId];
     final theme = Theme.of(context);
+    final peerClubsWithTeams = session.registry.clubs.values
+        .where((c) => c.id != GameSession.userClubId && c.teams.isNotEmpty)
+        .toList();
 
     return SafeArea(
       child: ListView(
@@ -89,6 +93,10 @@ class _ClubOverviewPanel extends StatelessWidget {
           ClubHeader(session: session),
           const SizedBox(height: 16),
           _ClubIdentityCard(session: session),
+          for (final peer in peerClubsWithTeams) ...[
+            const SizedBox(height: 16),
+            _ClubTeamsCard(club: peer),
+          ],
           const SizedBox(height: 16),
           CareerStatsCard(session: session),
           const SizedBox(height: 16),
@@ -306,7 +314,7 @@ class _ClubIdentityCard extends StatelessWidget {
       if (club.address != null) ('Morada', club.address!),
     ];
 
-    if (rows.isEmpty) {
+    if (rows.isEmpty && club.teams.isEmpty) {
       return const SizedBox.shrink();
     }
 
@@ -347,6 +355,20 @@ class _ClubIdentityCard extends StatelessWidget {
               _IdentityRow(label: row.$1, value: row.$2),
               if (row != rows.last) const SizedBox(height: 8),
             ],
+            if (club.teams.isNotEmpty) ...[
+              const SizedBox(height: 14),
+              Text(
+                'Equipas',
+                style: Theme.of(context).textTheme.titleSmall?.copyWith(
+                      fontWeight: FontWeight.w700,
+                    ),
+              ),
+              const SizedBox(height: 8),
+              for (final team in club.teams) ...[
+                _TeamChip(label: team),
+                if (team != club.teams.last) const SizedBox(height: 6),
+              ],
+            ],
           ],
         ),
       ),
@@ -372,6 +394,81 @@ class _ClubIdentityCard extends StatelessWidget {
       return iso;
     }
     return '$day ${months[month - 1]} $year';
+  }
+}
+
+class _ClubTeamsCard extends StatelessWidget {
+  const _ClubTeamsCard({required this.club});
+
+  final Club club;
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    return Card(
+      child: Padding(
+        padding: const EdgeInsets.all(16),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            Row(
+              children: [
+                ClubCrest(club: club, size: 48),
+                const SizedBox(width: 12),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        club.displayShortName,
+                        style: theme.textTheme.titleSmall?.copyWith(
+                          fontWeight: FontWeight.w700,
+                        ),
+                      ),
+                      const SizedBox(height: 2),
+                      Text(
+                        'Estrutura de equipas',
+                        style: theme.textTheme.bodySmall?.copyWith(
+                          color: PhoenixColors.muted,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+            const SizedBox(height: 12),
+            for (final team in club.teams) ...[
+              _TeamChip(label: team),
+              if (team != club.teams.last) const SizedBox(height: 6),
+            ],
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class _TeamChip extends StatelessWidget {
+  const _TeamChip({required this.label});
+
+  final String label;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: double.infinity,
+      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+      decoration: BoxDecoration(
+        color: PhoenixColors.card,
+        borderRadius: BorderRadius.circular(8),
+        border: Border.all(color: PhoenixColors.cardBorder),
+      ),
+      child: Text(
+        label,
+        style: Theme.of(context).textTheme.bodyMedium,
+      ),
+    );
   }
 }
 

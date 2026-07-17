@@ -64,7 +64,17 @@ const _ligaPhoenixAlphaJson = '''
       "foundedOn": "1976-04-09",
       "association": "AF Madeira",
       "president": "José Gomes",
-      "address": "Corujeira De Fora, N.º 95, Monte, Funchal"
+      "address": "Corujeira De Fora, N.º 95, Monte, Funchal",
+      "teams": [
+        "Equipa Principal",
+        "Jun.A S19",
+        "Jun.B S17",
+        "Jun.C S15",
+        "Jun.D S13",
+        "Veteranos",
+        "Fut.7 Jun.D S12",
+        "Fut.7 Jun.E S11"
+      ]
     },
     {"id": "club-union", "name": "Union City", "cityId": "union-town", "reputation": 71, "budget": 5200000, "stadiumCapacity": 24000, "coachId": "coach-union"},
     {"id": "club-riverside", "name": "Riverside SC", "cityId": "riverside", "reputation": 65, "budget": 3100000, "stadiumCapacity": 14000, "coachId": "coach-riverside"},

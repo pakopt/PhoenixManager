@@ -21,6 +21,19 @@ void main() {
     expect(coruja.association, 'AF Madeira');
     expect(coruja.foundedOn, '1976-04-09');
     expect(coruja.logoAsset, 'assets/clubs/coruja.png');
+    expect(
+      coruja.teams,
+      [
+        'Equipa Principal',
+        'Jun.A S19',
+        'Jun.B S17',
+        'Jun.C S15',
+        'Jun.D S13',
+        'Veteranos',
+        'Fut.7 Jun.D S12',
+        'Fut.7 Jun.E S11',
+      ],
+    );
   });
 
   test('salaryBreakdown matches club finance monthly wages', () async {

@@ -16,9 +16,11 @@ class Club {
     this.association,
     this.president,
     this.address,
+    this.teams = const [],
   });
 
   factory Club.fromMap(Map<String, dynamic> map) {
+    final rawTeams = map['teams'] as List<dynamic>?;
     return Club(
       id: ClubId(map['id'] as String),
       name: map['name'] as String,
@@ -34,6 +36,7 @@ class Club {
       association: map['association'] as String?,
       president: map['president'] as String?,
       address: map['address'] as String?,
+      teams: rawTeams?.map((e) => e as String).toList() ?? const [],
     );
   }
 
@@ -51,6 +54,8 @@ class Club {
   final String? association;
   final String? president;
   final String? address;
+  /// Named squads / age groups (display metadata).
+  final List<String> teams;
 
   String get displayShortName => shortName ?? name;
 
@@ -67,6 +72,7 @@ class Club {
     String? association,
     String? president,
     String? address,
+    List<String>? teams,
   }) {
     return Club(
       id: id,
@@ -82,6 +88,7 @@ class Club {
       association: association ?? this.association,
       president: president ?? this.president,
       address: address ?? this.address,
+      teams: teams ?? this.teams,
     );
   }
 
@@ -99,5 +106,6 @@ class Club {
         if (association != null) 'association': association,
         if (president != null) 'president': president,
         if (address != null) 'address': address,
+        if (teams.isNotEmpty) 'teams': teams,
       };
 }

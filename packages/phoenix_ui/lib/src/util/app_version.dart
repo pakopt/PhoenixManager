@@ -1,9 +1,9 @@
 /// Versão visível ao jogador — manter alinhada com `apps/phoenix_manager/pubspec.yaml`.
 /// Validar: `./scripts/check_app_version_sync.sh`
 abstract final class AppVersion {
-  static const label = '0.8.34';
-  static const buildNumber = 35;
-  static const engineLabel = 'PSE v0.8.34';
+  static const label = '0.8.35';
+  static const buildNumber = 36;
+  static const engineLabel = 'PSE v0.8.35';
 
   /// Pontos curtos para o diálogo «Novidades» após actualizar.
   static const whatsNew = <String>[

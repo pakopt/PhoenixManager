@@ -28,7 +28,7 @@ Guia para **Google Play** e App Store. Steam: ver [steam/README.md](../steam/REA
 |-------|-------|
 | **Package name** | `com.phoenix.manager` |
 | **AAB para upload** | `build/release/mobile/android/phoenix_manager.aab` |
-| **Versão actual** | `0.8.27` (`versionCode` **28**) |
+| **Versão actual** | `0.8.28` (`versionCode` **29**) |
 | **Tipo** | Jogo, gratuito, offline |
 | **Contacto** | pakopt7@gmail.com |
 
@@ -96,7 +96,7 @@ Enquanto esperavas, estes comandos preparavam assets (já prontos):
 
 **Não podes** converter uma app **gratuita** em **paga à entrada** na mesma ficha Play Store.
 
-**Phoenix Manager (v0.8.27+):** escolhe **Gratuita** — sem anúncios, sem compras in-app, sem billing. A «receita» no jogo é simulação (finanças do clube), não monetização real.
+**Phoenix Manager (v0.8.28+):** escolhe **Gratuita** — sem anúncios, sem compras in-app, sem billing. A «receita» no jogo é simulação (finanças do clube), não monetização real.
 
 Monetização futura (opcional, requer código novo): IAP ou subscrição **mantendo a app gratuita**; ou nova app com outro package name se quiseres modelo «só paga para instalar».
 
@@ -127,12 +127,12 @@ Recomendado: **Teste interno** antes de produção — revisão mais rápida, at
    ```
 3. Aguardar processamento (1–5 min). Verificar:
    - Package: `com.phoenix.manager`
-   - Version name: `0.8.27` (ou a versão actual do `pubspec.yaml`)
+   - Version name: `0.8.28` (ou a versão actual do `pubspec.yaml`)
    - Version code: `24` (número após `+` no pubspec)
-4. **Nome da versão:** `0.8.27 (28)` (notas internas)
+4. **Nome da versão:** `0.8.28 (29)` (notas internas)
 5. **Notas da versão** (visíveis aos testadores) — ver também `./scripts/play_console_brief.sh`:
    ```
-   v0.8.27 — actualização teste fechado (build 28).
+   v0.8.28 — actualização teste fechado (build 29).
    - Roteiro marca-se ao jogar, guardar, plantel/tabela e feedback
    - Aviso ao carregar outro save com alterações por guardar
    - Saves locais · sem conta · sem anúncios
@@ -304,7 +304,7 @@ Respostas alinhadas com [`docs/PRIVACY.md`](PRIVACY.md):
 4. Instalar pela **Play Store** (não sideload)
 5. QA completo: [`docs/BETA.md`](BETA.md) (passos 1–17) ou `./scripts/qa_manual.sh`
 6. **Android 15+:** confirmar edge-to-edge — [`MOBILE.md`](../apps/phoenix_manager/MOBILE.md) § Android 15
-7. Problemas → pakopt7@gmail.com com versão (ex. `0.8.27 (28)`) e modelo do telemóvel
+7. Problemas → pakopt7@gmail.com com versão (ex. `0.8.28 (29)`) e modelo do telemóvel
 
 Quando estiveres satisfeito (e, se a conta for pessoal nova, após cumprir §9c):
 
@@ -380,7 +380,7 @@ Cada upload precisa de **`versionCode` maior** que o anterior.
 
 1. Editar `apps/phoenix_manager/pubspec.yaml`:
    ```yaml
-   version: 0.8.27+28   # nome visível + versionCode (número após +)
+   version: 0.8.28+29   # nome visível + versionCode (número após +)
    ```
 2. Rebuild e upload:
    ```bash

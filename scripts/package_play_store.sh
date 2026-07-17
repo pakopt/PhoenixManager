@@ -34,7 +34,7 @@ feature-graphic.png  → Presença na loja → Feature graphic
 screenshots/         → Presença na loja → Capturas de ecrã
 
 Notas da versão (exemplo):
-v0.8.27 — actualização teste fechado (build 28).
+v0.8.28 — actualização teste fechado (build 29).
 
 Textos e Data safety: ./scripts/play_console_brief.sh
 Guia: docs/STORE.md

@@ -17,15 +17,7 @@ class PlayerDisplayProfile {
   final List<PlayerAttribute> attributes;
 
   factory PlayerDisplayProfile.from(Player player) {
-    const roles = [
-      ('GR', 'Guarda-redes'),
-      ('DF', 'Defesa'),
-      ('MD', 'Médio'),
-      ('MO', 'Médio ofensivo'),
-      ('PL', 'Ponta de lança'),
-      ('EX', 'Extremo'),
-    ];
-    final role = roles[Object.hash(player.id.value, 'role').abs() % roles.length];
+    final role = _roleFor(player);
     final rightFoot = Object.hash(player.id.value, 'foot').isEven;
     final height = 170 + (Object.hash(player.id.value, 'h').abs() % 21);
 
@@ -60,6 +52,25 @@ class PlayerDisplayProfile {
         PlayerAttribute('Posicionamento', attr('pos')),
       ],
     );
+  }
+
+  /// Papel estável e com ~1 GR por plantel (não 1/6 aleatório).
+  static (String, String) _roleFor(Player player) {
+    final h = Object.hash(player.id.value, 'role').abs();
+    if (h % 14 == 0) {
+      return ('GR', 'Guarda-redes');
+    }
+    const outfield = [
+      ('DF', 'Defesa'),
+      ('DF', 'Defesa'),
+      ('MD', 'Médio'),
+      ('MD', 'Médio'),
+      ('MO', 'Médio ofensivo'),
+      ('PL', 'Ponta de lança'),
+      ('EX', 'Extremo'),
+      ('EX', 'Extremo'),
+    ];
+    return outfield[h % outfield.length];
   }
 }
 

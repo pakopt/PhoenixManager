@@ -1,16 +1,16 @@
 /// Versão visível ao jogador — manter alinhada com `apps/phoenix_manager/pubspec.yaml`.
 /// Validar: `./scripts/check_app_version_sync.sh`
 abstract final class AppVersion {
-  static const label = '0.8.36';
-  static const buildNumber = 37;
-  static const engineLabel = 'PSE v0.8.36';
+  static const label = '0.8.37';
+  static const buildNumber = 38;
+  static const engineLabel = 'PSE v0.8.37';
 
   /// Pontos curtos para o diálogo «Novidades» após actualizar.
   static const whatsNew = <String>[
-    'Plantéis completos (16 jogadores) — XI e suplentes na Táctica.',
-    'Táctica: guardar formação/mentalidade/ritmo por save; chips corrigidos.',
-    'Testes e finanças alinhados com 5 clubes na Liga Phoenix.',
-    'Correcções de estabilidade para teste fechado Play.',
+    'Táctica: campo redesenhado (áreas, penáltis, faixas) alinhado aos slots.',
+    'Marcadores com posição + OVR; sem crash em ecrãs pequenos.',
+    'XI automático evita lesionados e escolhe melhor por slot.',
+    'Posições no plantel batem certo com a formação.',
   ];
 
   /// Bloco curto para emails de feedback / bugs.

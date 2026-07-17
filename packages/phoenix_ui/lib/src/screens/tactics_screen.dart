@@ -72,6 +72,9 @@ class _TacticsScreenState extends State<TacticsScreen> {
   }
 
   void _rebuildLineup() {
+    if (!mounted) {
+      return;
+    }
     final session = widget.controller.session;
     if (session == null) {
       return;
@@ -275,9 +278,10 @@ class _TacticsScreenState extends State<TacticsScreen> {
                   );
                 }
                 return ListView(
+                  padding: const EdgeInsets.only(bottom: 16),
                   children: [
                     SizedBox(
-                      height: 260,
+                      height: 240,
                       child: _SettingsPanel(
                         formation: _formation,
                         mentality: _mentality,
@@ -294,16 +298,19 @@ class _TacticsScreenState extends State<TacticsScreen> {
                         compact: true,
                       ),
                     ),
-                    SizedBox(
-                      height: 420,
-                      child: _PitchPanel(
-                        formation: _formation,
-                        starters: lineup.starters,
-                        onOpenPlayer: _openPlayer,
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 12),
+                      child: AspectRatio(
+                        aspectRatio: 0.72,
+                        child: _PitchPanel(
+                          formation: _formation,
+                          starters: lineup.starters,
+                          onOpenPlayer: _openPlayer,
+                        ),
                       ),
                     ),
                     SizedBox(
-                      height: 480,
+                      height: 420,
                       child: _SquadPanel(
                         formation: _formation,
                         lineup: lineup,
@@ -542,8 +549,13 @@ class _SquadPanel extends StatelessWidget {
               const _GroupLabel('Titulares'),
               for (var i = 0; i < lineup.starters.length; i++)
                 _PlayerRow(
-                  slot: formation.slots[i].label,
+                  slot: i < formation.slots.length
+                      ? formation.slots[i].label
+                      : '—',
                   player: lineup.starters[i],
+                  positionOverride: i < formation.slots.length
+                      ? formation.slots[i].label
+                      : null,
                   onTap: () => onOpenPlayer(lineup.starters[i].id),
                 ),
               if (lineup.reserves.isNotEmpty) ...[
@@ -616,15 +628,18 @@ class _PlayerRow extends StatelessWidget {
     required this.slot,
     required this.player,
     required this.onTap,
+    this.positionOverride,
   });
 
   final String slot;
   final Player player;
   final VoidCallback onTap;
+  final String? positionOverride;
 
   @override
   Widget build(BuildContext context) {
     final profile = PlayerDisplayProfile.from(player);
+    final pos = positionOverride ?? profile.position;
     final ovrColor = player.currentAbility >= 72
         ? PhoenixColors.positive
         : player.currentAbility >= 62
@@ -676,7 +691,7 @@ class _PlayerRow extends StatelessWidget {
             SizedBox(
               width: 40,
               child: Text(
-                profile.position,
+                pos,
                 style: const TextStyle(
                   color: PhoenixColors.muted,
                   fontSize: 12,
@@ -727,7 +742,7 @@ class _PitchPanel extends StatelessWidget {
       padding: const EdgeInsets.fromLTRB(8, 8, 16, 16),
       child: DecoratedBox(
         decoration: BoxDecoration(
-          color: PhoenixColors.card,
+          color: const Color(0xFF0A1F12),
           borderRadius: BorderRadius.circular(14),
           border: Border.all(color: PhoenixColors.cardBorder),
         ),
@@ -735,21 +750,24 @@ class _PitchPanel extends StatelessWidget {
           borderRadius: BorderRadius.circular(14),
           child: LayoutBuilder(
             builder: (context, constraints) {
+              final size = Size(constraints.maxWidth, constraints.maxHeight);
+              if (size.width < 8 || size.height < 8) {
+                return const SizedBox.shrink();
+              }
+              final count = formation.slots.length < starters.length
+                  ? formation.slots.length
+                  : starters.length;
               return Stack(
+                clipBehavior: Clip.hardEdge,
                 children: [
                   Positioned.fill(
                     child: CustomPaint(painter: _PitchPainter()),
                   ),
-                  for (var i = 0;
-                      i < formation.slots.length && i < starters.length;
-                      i++)
+                  for (var i = 0; i < count; i++)
                     _PitchPlayerMarker(
                       slot: formation.slots[i],
                       player: starters[i],
-                      pitchSize: Size(
-                        constraints.maxWidth,
-                        constraints.maxHeight,
-                      ),
+                      pitchSize: size,
                       onTap: () => onOpenPlayer(starters[i].id),
                     ),
                 ],
@@ -775,60 +793,154 @@ class _PitchPlayerMarker extends StatelessWidget {
   final Size pitchSize;
   final VoidCallback onTap;
 
+  static String _surname(String name) {
+    final parts = name.trim().split(RegExp(r'\s+'));
+    if (parts.isEmpty) {
+      return '?';
+    }
+    return parts.last;
+  }
+
   @override
   Widget build(BuildContext context) {
-    const markerW = 76.0;
-    const markerH = 64.0;
-    final left = (slot.x * pitchSize.width) - markerW / 2;
-    final top = ((1 - slot.y) * pitchSize.height) - markerH / 2;
-    final initial = player.name.isNotEmpty
-        ? player.name.characters.first.toUpperCase()
-        : '?';
+    final compact = pitchSize.width < 280;
+    final markerW = compact ? 56.0 : 68.0;
+    final markerH = compact ? 52.0 : 58.0;
+    final center = _PitchGeom.slotCenter(slot, pitchSize);
+    final left = _safeClamp(
+      center.dx - markerW / 2,
+      2,
+      pitchSize.width - markerW - 2,
+    );
+    final top = _safeClamp(
+      center.dy - markerH / 2,
+      2,
+      pitchSize.height - markerH - 2,
+    );
 
     return Positioned(
-      left: left.clamp(4, pitchSize.width - markerW - 4),
-      top: top.clamp(4, pitchSize.height - markerH - 4),
+      left: left,
+      top: top,
       width: markerW,
       height: markerH,
-      child: InkWell(
-        onTap: onTap,
-        borderRadius: BorderRadius.circular(10),
-        child: Column(
-          children: [
-            Container(
-              width: 34,
-              height: 34,
-              decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                color: PhoenixColors.surface,
-                border: Border.all(color: PhoenixColors.seed, width: 2),
+      child: Material(
+        color: Colors.transparent,
+        child: InkWell(
+          onTap: onTap,
+          borderRadius: BorderRadius.circular(10),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Stack(
+                clipBehavior: Clip.none,
+                alignment: Alignment.center,
+                children: [
+                  Container(
+                    width: compact ? 30 : 34,
+                    height: compact ? 30 : 34,
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      color: const Color(0xFF122018),
+                      border: Border.all(color: PhoenixColors.seed, width: 2),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.black.withValues(alpha: 0.35),
+                          blurRadius: 4,
+                          offset: const Offset(0, 1),
+                        ),
+                      ],
+                    ),
+                    alignment: Alignment.center,
+                    child: Text(
+                      slot.label,
+                      style: TextStyle(
+                        fontWeight: FontWeight.w800,
+                        fontSize: compact ? 9 : 10,
+                        color: PhoenixColors.positive,
+                      ),
+                    ),
+                  ),
+                  Positioned(
+                    right: -6,
+                    top: -4,
+                    child: Container(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 4,
+                        vertical: 1,
+                      ),
+                      decoration: BoxDecoration(
+                        color: PhoenixColors.seed,
+                        borderRadius: BorderRadius.circular(6),
+                      ),
+                      child: Text(
+                        '${player.currentAbility}',
+                        style: const TextStyle(
+                          fontSize: 9,
+                          fontWeight: FontWeight.w800,
+                          color: Colors.white,
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
               ),
-              alignment: Alignment.center,
-              child: Text(
-                initial,
-                style: const TextStyle(
-                  fontWeight: FontWeight.w800,
-                  color: PhoenixColors.positive,
+              const SizedBox(height: 3),
+              Container(
+                constraints: BoxConstraints(maxWidth: markerW),
+                padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 1),
+                decoration: BoxDecoration(
+                  color: Colors.black.withValues(alpha: 0.55),
+                  borderRadius: BorderRadius.circular(5),
+                ),
+                child: Text(
+                  _surname(player.name),
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    fontSize: compact ? 9 : 10,
+                    fontWeight: FontWeight.w700,
+                    color: Colors.white,
+                  ),
                 ),
               ),
-            ),
-            const SizedBox(height: 2),
-            Container(
-              padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 2),
-              decoration: BoxDecoration(
-                color: PhoenixColors.surface.withValues(alpha: 0.88),
-                borderRadius: BorderRadius.circular(6),
-              ),
-              child: Text(
-                '${player.name.split(' ').last} · ${player.currentAbility}',
-                maxLines: 1,
-                overflow: TextOverflow.ellipsis,
-                style: const TextStyle(fontSize: 10, fontWeight: FontWeight.w600),
-              ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
+    );
+  }
+}
+
+double _safeClamp(double value, double min, double max) {
+  if (max < min) {
+    return min;
+  }
+  return value.clamp(min, max);
+}
+
+/// Geometria do relvado — partilhada entre painter e markers.
+abstract final class _PitchGeom {
+  static const insetX = 0.07;
+  static const insetY = 0.05;
+  static const insetW = 0.86;
+  static const insetH = 0.90;
+
+  static Rect playArea(Size size) {
+    return Rect.fromLTWH(
+      size.width * insetX,
+      size.height * insetY,
+      size.width * insetW,
+      size.height * insetH,
+    );
+  }
+
+  /// y=0 baliza própria (baixo do ecrã); y=1 ataque (cima).
+  static Offset slotCenter(FormationSlot slot, Size size) {
+    final area = playArea(size);
+    return Offset(
+      area.left + slot.x * area.width,
+      area.top + (1 - slot.y) * area.height,
     );
   }
 }
@@ -836,61 +948,142 @@ class _PitchPlayerMarker extends StatelessWidget {
 class _PitchPainter extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
+    final area = _PitchGeom.playArea(size);
+
+    // Relvado base
     final pitch = Paint()
       ..shader = const LinearGradient(
         begin: Alignment.topCenter,
         end: Alignment.bottomCenter,
-        colors: [Color(0xFF1B5E20), Color(0xFF145A32), Color(0xFF0F3D24)],
+        colors: [Color(0xFF1F7A3A), Color(0xFF176B32), Color(0xFF0F4F24)],
       ).createShader(Offset.zero & size);
     canvas.drawRect(Offset.zero & size, pitch);
 
-    // Stripe effect
-    final stripe = Paint()..color = Colors.white.withValues(alpha: 0.03);
-    for (var i = 0; i < 8; i++) {
-      final y = size.height * (i / 8);
+    // Faixas de relva
+    final stripeA = Paint()..color = const Color(0xFF228B3F);
+    final stripeB = Paint()..color = const Color(0xFF1A7034);
+    const bands = 10;
+    for (var i = 0; i < bands; i++) {
+      final y = area.top + area.height * (i / bands);
       canvas.drawRect(
-        Rect.fromLTWH(0, y, size.width, size.height / 16),
-        stripe,
+        Rect.fromLTWH(area.left, y, area.width, area.height / bands),
+        i.isEven ? stripeA : stripeB,
       );
     }
 
     final line = Paint()
-      ..color = Colors.white.withValues(alpha: 0.55)
+      ..color = Colors.white.withValues(alpha: 0.82)
       ..style = PaintingStyle.stroke
-      ..strokeWidth = 1.4;
+      ..strokeWidth = 1.6
+      ..isAntiAlias = true;
 
-    final inset = Rect.fromLTWH(
-      size.width * 0.06,
-      size.height * 0.04,
-      size.width * 0.88,
-      size.height * 0.92,
+    final thin = Paint()
+      ..color = Colors.white.withValues(alpha: 0.65)
+      ..style = PaintingStyle.stroke
+      ..strokeWidth = 1.2;
+
+    // Contorno
+    canvas.drawRRect(
+      RRect.fromRectAndRadius(area, const Radius.circular(2)),
+      line,
     );
-    canvas.drawRect(inset, line);
+
+    // Meio-campo
     canvas.drawLine(
-      Offset(inset.left, inset.center.dy),
-      Offset(inset.right, inset.center.dy),
+      Offset(area.left, area.center.dy),
+      Offset(area.right, area.center.dy),
       line,
     );
-    canvas.drawCircle(inset.center, size.width * 0.09, line);
+    final circleR = area.width * 0.12;
+    canvas.drawCircle(area.center, circleR, line);
+    canvas.drawCircle(
+      area.center,
+      2.2,
+      Paint()..color = Colors.white.withValues(alpha: 0.85),
+    );
 
-    final boxH = inset.height * 0.16;
-    final boxW = inset.width * 0.42;
-    canvas.drawRect(
-      Rect.fromCenter(
-        center: Offset(inset.center.dx, inset.bottom - boxH / 2),
+    void drawBox({required bool atBottom}) {
+      final boxH = area.height * 0.18;
+      final boxW = area.width * 0.56;
+      final sixH = area.height * 0.08;
+      final sixW = area.width * 0.28;
+      final cy = atBottom ? area.bottom - boxH / 2 : area.top + boxH / 2;
+      final sixCy = atBottom ? area.bottom - sixH / 2 : area.top + sixH / 2;
+      final box = Rect.fromCenter(
+        center: Offset(area.center.dx, cy),
         width: boxW,
         height: boxH,
-      ),
-      line,
-    );
-    canvas.drawRect(
-      Rect.fromCenter(
-        center: Offset(inset.center.dx, inset.top + boxH / 2),
-        width: boxW,
-        height: boxH,
-      ),
-      line,
-    );
+      );
+      final six = Rect.fromCenter(
+        center: Offset(area.center.dx, sixCy),
+        width: sixW,
+        height: sixH,
+      );
+      canvas.drawRect(box, line);
+      canvas.drawRect(six, thin);
+
+      // Baliza
+      final goalW = area.width * 0.18;
+      final goalH = area.height * 0.018;
+      final goal = Rect.fromCenter(
+        center: Offset(
+          area.center.dx,
+          atBottom ? area.bottom : area.top,
+        ),
+        width: goalW,
+        height: goalH,
+      );
+      canvas.drawRect(
+        goal,
+        Paint()
+          ..color = Colors.white.withValues(alpha: 0.9)
+          ..style = PaintingStyle.stroke
+          ..strokeWidth = 2,
+      );
+
+      // Marca de penálti
+      final penY = atBottom
+          ? area.bottom - area.height * 0.12
+          : area.top + area.height * 0.12;
+      canvas.drawCircle(
+        Offset(area.center.dx, penY),
+        2.0,
+        Paint()..color = Colors.white.withValues(alpha: 0.85),
+      );
+
+      // Arco da área
+      final arcRect = Rect.fromCircle(
+        center: Offset(area.center.dx, penY),
+        radius: area.width * 0.1,
+      );
+      canvas.drawArc(
+        arcRect,
+        atBottom ? 3.6 : 0.55,
+        atBottom ? 2.5 : 2.05,
+        false,
+        thin,
+      );
+    }
+
+    drawBox(atBottom: true);
+    drawBox(atBottom: false);
+
+    // Cantos
+    final cornerR = area.width * 0.035;
+    void corner(Offset o, double start) {
+      canvas.drawArc(
+        Rect.fromCircle(center: o, radius: cornerR),
+        start,
+        1.57,
+        false,
+        thin,
+      );
+    }
+
+    corner(area.topLeft, 0);
+    corner(area.topRight, 1.57);
+    corner(area.bottomLeft, -1.57);
+    corner(area.bottomRight, 3.14);
   }
 
   @override

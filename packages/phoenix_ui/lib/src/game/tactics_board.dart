@@ -165,9 +165,14 @@ class TacticsLineup {
       if (remaining.isEmpty) {
         break;
       }
-      remaining.sort(
-        (a, b) => _slotScore(b, slot.code).compareTo(_slotScore(a, slot.code)),
-      );
+      remaining.sort((a, b) {
+        final injuredCmp =
+            (a.isInjured ? 1 : 0).compareTo(b.isInjured ? 1 : 0);
+        if (injuredCmp != 0) {
+          return injuredCmp;
+        }
+        return _slotScore(b, slot.code).compareTo(_slotScore(a, slot.code));
+      });
       starters.add(remaining.removeAt(0));
     }
 
@@ -177,7 +182,8 @@ class TacticsLineup {
   static int _slotScore(Player player, String slotCode) {
     final profile = PlayerDisplayProfile.from(player);
     final affinity = _affinity(profile.position, slotCode);
-    return player.currentAbility * 10 + affinity * 8 + (100 - player.age);
+    final formBonus = player.form ~/ 10;
+    return player.currentAbility * 10 + affinity * 12 + formBonus + (90 - player.age);
   }
 
   static int _affinity(String role, String slot) {

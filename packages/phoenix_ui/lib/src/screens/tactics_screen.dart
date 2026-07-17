@@ -29,6 +29,10 @@ class _TacticsScreenState extends State<TacticsScreen> {
   TacticsLineup? _lineup;
   var _prefsLoaded = false;
 
+  /// Posições livres no campo (playerId → x/y 0–1).
+  final Map<String, PitchPos> _pitchPositions = {};
+  var _pitchDragging = false;
+
   @override
   void initState() {
     super.initState();
@@ -66,9 +70,26 @@ class _TacticsScreenState extends State<TacticsScreen> {
           snap.freeKick.clamp(0, TacticsCatalog.setPieceOptions.length - 1);
       _penalty =
           snap.penalty.clamp(0, TacticsCatalog.setPieceOptions.length - 1);
+      _pitchPositions
+        ..clear()
+        ..addAll(snap.playerPositions);
       _prefsLoaded = true;
     });
     _rebuildLineup();
+  }
+
+  void _seedDefaultPositions({required bool force}) {
+    final lineup = _lineup;
+    if (lineup == null) {
+      return;
+    }
+    for (var i = 0; i < lineup.starters.length && i < _formation.slots.length; i++) {
+      final id = lineup.starters[i].id.value;
+      final slot = _formation.slots[i];
+      if (force || !_pitchPositions.containsKey(id)) {
+        _pitchPositions[id] = PitchPos(slot.x, slot.y);
+      }
+    }
   }
 
   void _rebuildLineup() {
@@ -84,6 +105,7 @@ class _TacticsScreenState extends State<TacticsScreen> {
         squad: session.squad,
         formation: _formation,
       );
+      _seedDefaultPositions(force: false);
     });
   }
 
@@ -98,7 +120,24 @@ class _TacticsScreenState extends State<TacticsScreen> {
           formation: formation,
         );
       }
+      _seedDefaultPositions(force: true);
     });
+  }
+
+  void _resetPitchPositions() {
+    UiFeedback.tap();
+    setState(() => _seedDefaultPositions(force: true));
+  }
+
+  void _movePlayer(String playerId, PitchPos pos) {
+    setState(() => _pitchPositions[playerId] = pos.clamp01());
+  }
+
+  void _setPitchDragging(bool value) {
+    if (_pitchDragging == value) {
+      return;
+    }
+    setState(() => _pitchDragging = value);
   }
 
   void _openPlayer(PlayerId id) {
@@ -124,6 +163,7 @@ class _TacticsScreenState extends State<TacticsScreen> {
         corner: _corner,
         freeKick: _freeKick,
         penalty: _penalty,
+        playerPositions: Map<String, PitchPos>.from(_pitchPositions),
       ),
     );
     if (!mounted) {
@@ -138,6 +178,18 @@ class _TacticsScreenState extends State<TacticsScreen> {
           '${TacticsCatalog.tempos[_tempo]}',
         ),
       ),
+    );
+  }
+
+  Widget _pitch({required List<Player> starters}) {
+    return _PitchPanel(
+      formation: _formation,
+      starters: starters,
+      positions: _pitchPositions,
+      onMoved: _movePlayer,
+      onDragState: _setPitchDragging,
+      onOpenPlayer: _openPlayer,
+      onResetPositions: _resetPitchPositions,
     );
   }
 
@@ -219,11 +271,7 @@ class _TacticsScreenState extends State<TacticsScreen> {
                       ),
                       SizedBox(
                         width: constraints.maxWidth * 0.34,
-                        child: _PitchPanel(
-                          formation: _formation,
-                          starters: lineup.starters,
-                          onOpenPlayer: _openPlayer,
-                        ),
+                        child: _pitch(starters: lineup.starters),
                       ),
                     ],
                   );
@@ -268,16 +316,15 @@ class _TacticsScreenState extends State<TacticsScreen> {
                       ),
                       Expanded(
                         flex: 4,
-                        child: _PitchPanel(
-                          formation: _formation,
-                          starters: lineup.starters,
-                          onOpenPlayer: _openPlayer,
-                        ),
+                        child: _pitch(starters: lineup.starters),
                       ),
                     ],
                   );
                 }
                 return ListView(
+                  physics: _pitchDragging
+                      ? const NeverScrollableScrollPhysics()
+                      : null,
                   padding: const EdgeInsets.only(bottom: 16),
                   children: [
                     SizedBox(
@@ -302,11 +349,7 @@ class _TacticsScreenState extends State<TacticsScreen> {
                       padding: const EdgeInsets.symmetric(horizontal: 12),
                       child: AspectRatio(
                         aspectRatio: 0.72,
-                        child: _PitchPanel(
-                          formation: _formation,
-                          starters: lineup.starters,
-                          onOpenPlayer: _openPlayer,
-                        ),
+                        child: _pitch(starters: lineup.starters),
                       ),
                     ),
                     SizedBox(
@@ -729,12 +772,32 @@ class _PitchPanel extends StatelessWidget {
   const _PitchPanel({
     required this.formation,
     required this.starters,
+    required this.positions,
+    required this.onMoved,
+    required this.onDragState,
     required this.onOpenPlayer,
+    required this.onResetPositions,
   });
 
   final TacticsFormation formation;
   final List<Player> starters;
+  final Map<String, PitchPos> positions;
+  final void Function(String playerId, PitchPos pos) onMoved;
+  final ValueChanged<bool> onDragState;
   final ValueChanged<PlayerId> onOpenPlayer;
+  final VoidCallback onResetPositions;
+
+  PitchPos _posFor(Player player, int index) {
+    final saved = positions[player.id.value];
+    if (saved != null) {
+      return saved;
+    }
+    if (index < formation.slots.length) {
+      final slot = formation.slots[index];
+      return PitchPos(slot.x, slot.y);
+    }
+    return const PitchPos(0.5, 0.5);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -763,11 +826,74 @@ class _PitchPanel extends StatelessWidget {
                   Positioned.fill(
                     child: CustomPaint(painter: _PitchPainter()),
                   ),
+                  Positioned(
+                    top: 8,
+                    right: 8,
+                    child: Material(
+                      color: Colors.black.withValues(alpha: 0.45),
+                      borderRadius: BorderRadius.circular(8),
+                      child: InkWell(
+                        onTap: onResetPositions,
+                        borderRadius: BorderRadius.circular(8),
+                        child: const Padding(
+                          padding: EdgeInsets.symmetric(
+                            horizontal: 10,
+                            vertical: 6,
+                          ),
+                          child: Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Icon(
+                                Icons.restart_alt,
+                                size: 14,
+                                color: Colors.white,
+                              ),
+                              SizedBox(width: 4),
+                              Text(
+                                'Repor',
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 11,
+                                  fontWeight: FontWeight.w700,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                  Positioned(
+                    left: 8,
+                    bottom: 8,
+                    child: Container(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 8,
+                        vertical: 4,
+                      ),
+                      decoration: BoxDecoration(
+                        color: Colors.black.withValues(alpha: 0.4),
+                        borderRadius: BorderRadius.circular(6),
+                      ),
+                      child: const Text(
+                        'Arrasta para posicionar · toca para ficha',
+                        style: TextStyle(
+                          color: Colors.white70,
+                          fontSize: 10,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                    ),
+                  ),
                   for (var i = 0; i < count; i++)
                     _PitchPlayerMarker(
-                      slot: formation.slots[i],
+                      key: ValueKey(starters[i].id.value),
+                      slotLabel: formation.slots[i].label,
                       player: starters[i],
+                      position: _posFor(starters[i], i),
                       pitchSize: size,
+                      onMoved: (pos) => onMoved(starters[i].id.value, pos),
+                      onDragState: onDragState,
                       onTap: () => onOpenPlayer(starters[i].id),
                     ),
                 ],
@@ -780,18 +906,33 @@ class _PitchPanel extends StatelessWidget {
   }
 }
 
-class _PitchPlayerMarker extends StatelessWidget {
+class _PitchPlayerMarker extends StatefulWidget {
   const _PitchPlayerMarker({
-    required this.slot,
+    super.key,
+    required this.slotLabel,
     required this.player,
+    required this.position,
     required this.pitchSize,
+    required this.onMoved,
+    required this.onDragState,
     required this.onTap,
   });
 
-  final FormationSlot slot;
+  final String slotLabel;
   final Player player;
+  final PitchPos position;
   final Size pitchSize;
+  final ValueChanged<PitchPos> onMoved;
+  final ValueChanged<bool> onDragState;
   final VoidCallback onTap;
+
+  @override
+  State<_PitchPlayerMarker> createState() => _PitchPlayerMarkerState();
+}
+
+class _PitchPlayerMarkerState extends State<_PitchPlayerMarker> {
+  var _dragging = false;
+  var _dragged = false;
 
   static String _surname(String name) {
     final parts = name.trim().split(RegExp(r'\s+'));
@@ -803,10 +944,11 @@ class _PitchPlayerMarker extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final pitchSize = widget.pitchSize;
     final compact = pitchSize.width < 280;
     final markerW = compact ? 56.0 : 68.0;
     final markerH = compact ? 52.0 : 58.0;
-    final center = _PitchGeom.slotCenter(slot, pitchSize);
+    final center = _PitchGeom.normalizedToOffset(widget.position, pitchSize);
     final left = _safeClamp(
       center.dx - markerW / 2,
       2,
@@ -823,88 +965,136 @@ class _PitchPlayerMarker extends StatelessWidget {
       top: top,
       width: markerW,
       height: markerH,
-      child: Material(
-        color: Colors.transparent,
-        child: InkWell(
-          onTap: onTap,
-          borderRadius: BorderRadius.circular(10),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Stack(
-                clipBehavior: Clip.none,
-                alignment: Alignment.center,
-                children: [
-                  Container(
-                    width: compact ? 30 : 34,
-                    height: compact ? 30 : 34,
-                    decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                      color: const Color(0xFF122018),
-                      border: Border.all(color: PhoenixColors.seed, width: 2),
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.black.withValues(alpha: 0.35),
-                          blurRadius: 4,
-                          offset: const Offset(0, 1),
-                        ),
-                      ],
-                    ),
-                    alignment: Alignment.center,
-                    child: Text(
-                      slot.label,
-                      style: TextStyle(
-                        fontWeight: FontWeight.w800,
-                        fontSize: compact ? 9 : 10,
-                        color: PhoenixColors.positive,
-                      ),
-                    ),
-                  ),
-                  Positioned(
-                    right: -6,
-                    top: -4,
-                    child: Container(
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 4,
-                        vertical: 1,
-                      ),
+      child: GestureDetector(
+        behavior: HitTestBehavior.opaque,
+        onPanStart: (_) {
+          widget.onDragState(true);
+          setState(() {
+            _dragging = true;
+            _dragged = false;
+          });
+        },
+        onPanUpdate: (details) {
+          _dragged = true;
+          final area = _PitchGeom.playArea(pitchSize);
+          if (area.width <= 0 || area.height <= 0) {
+            return;
+          }
+          final next = PitchPos(
+            widget.position.x + details.delta.dx / area.width,
+            widget.position.y - details.delta.dy / area.height,
+          ).clamp01();
+          widget.onMoved(next);
+        },
+        onPanEnd: (_) {
+          final wasDrag = _dragged;
+          widget.onDragState(false);
+          setState(() {
+            _dragging = false;
+            _dragged = false;
+          });
+          if (!wasDrag) {
+            widget.onTap();
+          } else {
+            UiFeedback.tap();
+          }
+        },
+        onPanCancel: () {
+          widget.onDragState(false);
+          setState(() {
+            _dragging = false;
+            _dragged = false;
+          });
+        },
+        child: AnimatedScale(
+          scale: _dragging ? 1.08 : 1,
+          duration: const Duration(milliseconds: 120),
+          child: Opacity(
+            opacity: _dragging ? 0.95 : 1,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Stack(
+                  clipBehavior: Clip.none,
+                  alignment: Alignment.center,
+                  children: [
+                    Container(
+                      width: compact ? 30 : 34,
+                      height: compact ? 30 : 34,
                       decoration: BoxDecoration(
-                        color: PhoenixColors.seed,
-                        borderRadius: BorderRadius.circular(6),
+                        shape: BoxShape.circle,
+                        color: const Color(0xFF122018),
+                        border: Border.all(
+                          color: _dragging
+                              ? Colors.white
+                              : PhoenixColors.seed,
+                          width: 2,
+                        ),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.black.withValues(alpha: 0.35),
+                            blurRadius: _dragging ? 8 : 4,
+                            offset: const Offset(0, 1),
+                          ),
+                        ],
                       ),
+                      alignment: Alignment.center,
                       child: Text(
-                        '${player.currentAbility}',
-                        style: const TextStyle(
-                          fontSize: 9,
+                        widget.slotLabel,
+                        style: TextStyle(
                           fontWeight: FontWeight.w800,
-                          color: Colors.white,
+                          fontSize: compact ? 9 : 10,
+                          color: PhoenixColors.positive,
                         ),
                       ),
                     ),
-                  ),
-                ],
-              ),
-              const SizedBox(height: 3),
-              Container(
-                constraints: BoxConstraints(maxWidth: markerW),
-                padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 1),
-                decoration: BoxDecoration(
-                  color: Colors.black.withValues(alpha: 0.55),
-                  borderRadius: BorderRadius.circular(5),
+                    Positioned(
+                      right: -6,
+                      top: -4,
+                      child: Container(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 4,
+                          vertical: 1,
+                        ),
+                        decoration: BoxDecoration(
+                          color: PhoenixColors.seed,
+                          borderRadius: BorderRadius.circular(6),
+                        ),
+                        child: Text(
+                          '${widget.player.currentAbility}',
+                          style: const TextStyle(
+                            fontSize: 9,
+                            fontWeight: FontWeight.w800,
+                            color: Colors.white,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
-                child: Text(
-                  _surname(player.name),
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                    fontSize: compact ? 9 : 10,
-                    fontWeight: FontWeight.w700,
-                    color: Colors.white,
+                const SizedBox(height: 3),
+                Container(
+                  constraints: BoxConstraints(maxWidth: markerW),
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 4, vertical: 1),
+                  decoration: BoxDecoration(
+                    color: Colors.black.withValues(alpha: 0.55),
+                    borderRadius: BorderRadius.circular(5),
+                  ),
+                  child: Text(
+                    _surname(widget.player.name),
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      fontSize: compact ? 9 : 10,
+                      fontWeight: FontWeight.w700,
+                      color: Colors.white,
+                    ),
                   ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       ),
@@ -936,11 +1126,11 @@ abstract final class _PitchGeom {
   }
 
   /// y=0 baliza própria (baixo do ecrã); y=1 ataque (cima).
-  static Offset slotCenter(FormationSlot slot, Size size) {
+  static Offset normalizedToOffset(PitchPos pos, Size size) {
     final area = playArea(size);
     return Offset(
-      area.left + slot.x * area.width,
-      area.top + (1 - slot.y) * area.height,
+      area.left + pos.x * area.width,
+      area.top + (1 - pos.y) * area.height,
     );
   }
 }

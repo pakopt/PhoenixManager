@@ -1,16 +1,16 @@
 /// Versão visível ao jogador — manter alinhada com `apps/phoenix_manager/pubspec.yaml`.
 /// Validar: `./scripts/check_app_version_sync.sh`
 abstract final class AppVersion {
-  static const label = '0.8.37';
-  static const buildNumber = 38;
-  static const engineLabel = 'PSE v0.8.37';
+  static const label = '0.8.38';
+  static const buildNumber = 39;
+  static const engineLabel = 'PSE v0.8.38';
 
   /// Pontos curtos para o diálogo «Novidades» após actualizar.
   static const whatsNew = <String>[
-    'Táctica: campo redesenhado (áreas, penáltis, faixas) alinhado aos slots.',
-    'Marcadores com posição + OVR; sem crash em ecrãs pequenos.',
-    'XI automático evita lesionados e escolhe melhor por slot.',
-    'Posições no plantel batem certo com a formação.',
+    'Táctica: arrasta jogadores livremente no campo.',
+    'Posições guardadas com a táctica; botão «Repor» volta à formação.',
+    'Toca no marcador para abrir a ficha do jogador.',
+    'Campo estável em telemóvel (scroll bloqueado ao arrastar).',
   ];
 
   /// Bloco curto para emails de feedback / bugs.

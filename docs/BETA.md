@@ -101,7 +101,7 @@ CLEAN_GRADLE=1 ./scripts/clean_dev_artifacts.sh   # inclui ~/.gradle/caches (~5 
 Envia bugs ou sugestões para **pakopt7@gmail.com** com:
 
 - Dispositivo (Mac / Android / modelo)
-- Versão da app (menu carreira → rodapé, ex. `PSE v0.8.37`)
+- Versão da app (menu carreira → rodapé, ex. `PSE v0.8.38`)
 - Passos para reproduzir
 - Screenshot opcional
 

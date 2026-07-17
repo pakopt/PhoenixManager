@@ -66,13 +66,13 @@ packages/phoenix_core    ← domain + config
 
 ## Fase E — Lançamento (em curso)
 
-**Versão actual:** `0.8.33+34` · AAB: `build/release/mobile/android/phoenix_manager.aab`
+**Versão actual:** `0.8.34+35` · AAB: `build/release/mobile/android/phoenix_manager.aab`
 **Bloqueio Play:** ≥12 testadores opted-in × 14 dias → candidatar produção ([`docs/STORE.md`](docs/STORE.md) §9c) · `./scripts/play_14day_tracker.sh`
 
 | Plataforma | Estado |
 |------------|--------|
 | Web (Chrome) | ✅ dev |
-| **Android** (APK + AAB) | ✅ teste fechado Play · AAB v0.8.33 |
+| **Android** (APK + AAB) | ✅ teste fechado Play · AAB v0.8.34 |
 | **macOS** | ✅ em /Applications (`com.phoenix.manager`) · fullscreen |
 | **Windows** | ✅ build desktop · fullscreen (Esc restaura janela) |
 | **Linux** | ✅ build desktop · fullscreen (SteamPipe) |

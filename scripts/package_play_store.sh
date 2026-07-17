@@ -34,9 +34,8 @@ feature-graphic.png  → Presença na loja → Feature graphic
 screenshots/         → Presença na loja → Capturas de ecrã
 
 Notas da versão (exemplo):
-v$VERSION_NAME — Táctica FootSim × Phoenix (build $VERSION_CODE).
-- Formação, mentalidade, ritmo e bolas paradas
-- XI automático + campo visual
+v$VERSION_NAME — actualização teste fechado (build $VERSION_CODE).
+- Táctica: formação, XI automático e campo visual
 - Ficha de jogador · A Coruja na liga
 - Saves locais · sem conta · sem anúncios
 

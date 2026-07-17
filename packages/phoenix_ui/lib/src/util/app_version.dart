@@ -1,16 +1,16 @@
 /// Versão visível ao jogador — manter alinhada com `apps/phoenix_manager/pubspec.yaml`.
 /// Validar: `./scripts/check_app_version_sync.sh`
 abstract final class AppVersion {
-  static const label = '0.8.33';
-  static const buildNumber = 34;
-  static const engineLabel = 'PSE v0.8.33';
+  static const label = '0.8.34';
+  static const buildNumber = 35;
+  static const engineLabel = 'PSE v0.8.34';
 
   /// Pontos curtos para o diálogo «Novidades» após actualizar.
   static const whatsNew = <String>[
-    'Novo ecrã de Táctica: formação, mentalidade, ritmo e campo visual.',
-    'XI automático com titulares e suplentes; clique abre a ficha do jogador.',
-    'Ficha de jogador estilo FootSim (visão geral, desenvolvimento, contrato).',
+    'Ecrã de Táctica: formação, mentalidade, ritmo e campo visual.',
+    'XI automático com titulares e suplentes; ficha de jogador ao clicar.',
     'A Coruja na Liga Phoenix · Phoenix FC jogável.',
+    'Actualização de build para teste fechado Play.',
   ];
 
   /// Bloco curto para emails de feedback / bugs.

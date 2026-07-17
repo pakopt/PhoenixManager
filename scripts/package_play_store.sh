@@ -34,10 +34,10 @@ feature-graphic.png  → Presença na loja → Feature graphic
 screenshots/         → Presença na loja → Capturas de ecrã
 
 Notas da versão (exemplo):
-v$VERSION_NAME — A Coruja na liga + plantel/Inbox (build $VERSION_CODE).
-- Associação Desportiva «A Coruja» (logo, identidade, equipas)
-- Phoenix FC jogável; Coruja rival na Liga Phoenix
-- Plantel em tabela FootSim · Inbox com eventos da carreira
+v$VERSION_NAME — Táctica FootSim × Phoenix (build $VERSION_CODE).
+- Formação, mentalidade, ritmo e bolas paradas
+- XI automático + campo visual
+- Ficha de jogador · A Coruja na liga
 - Saves locais · sem conta · sem anúncios
 
 Textos e Data safety: ./scripts/play_console_brief.sh

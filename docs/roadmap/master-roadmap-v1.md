@@ -2,7 +2,7 @@
 
 **Plano mestre (Cursor):** `phoenix_manager_game_2a890b62.plan.md`  
 **Roadmap vivo (lançamento):** [`docs/plano.md`](../plano.md)  
-**Versão actual:** `0.8.32` · **Fase:** **E — Lançamento** (A Coruja na liga + polish UI → Play)
+**Versão actual:** `0.8.33` · **Fase:** **E — Lançamento** (Táctica FootSim × Phoenix → Play)
 
 Este ficheiro liga o **Master Roadmap** do plano de arquitectura ao estado **real** do repositório.
 

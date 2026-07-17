@@ -16,6 +16,7 @@ import 'package:phoenix_ui/src/screens/privacy_policy_screen.dart';
 import 'package:phoenix_ui/src/screens/squad_screen.dart';
 import 'package:phoenix_ui/src/screens/standings_screen.dart';
 import 'package:phoenix_ui/src/screens/club_screen.dart';
+import 'package:phoenix_ui/src/screens/tactics_screen.dart';
 import 'package:phoenix_ui/src/screens/training_screen.dart';
 import 'package:phoenix_ui/src/game/inbox_message.dart';
 import 'package:phoenix_ui/src/game/inbox_read_store.dart';
@@ -49,10 +50,10 @@ class _ShellScreenState extends State<ShellScreen> {
 
   static const _inboxIndex = 1;
   static const _squadIndex = 2;
-  static const _fixturesIndex = 4;
-  static const _standingsIndex = 5;
-  static const _financesIndex = 7;
-  static const _clubIndex = 8;
+  static const _fixturesIndex = 5;
+  static const _standingsIndex = 6;
+  static const _financesIndex = 8;
+  static const _clubIndex = 9;
 
   @override
   void initState() {
@@ -270,6 +271,7 @@ class _ShellScreenState extends State<ShellScreen> {
     (Icons.home_outlined, Icons.home, 'Início'),
     (Icons.inbox_outlined, Icons.inbox, 'Inbox'),
     (Icons.groups_outlined, Icons.groups, 'Plantel'),
+    (Icons.sports_soccer_outlined, Icons.sports_soccer, 'Táctica'),
     (Icons.fitness_center_outlined, Icons.fitness_center, 'Treinos'),
     (Icons.calendar_month_outlined, Icons.calendar_month, 'Jogos'),
     (Icons.leaderboard_outlined, Icons.leaderboard, 'Tabela'),
@@ -333,6 +335,7 @@ class _ShellScreenState extends State<ShellScreen> {
         },
       ),
       SquadScreen(controller: widget.controller),
+      TacticsScreen(controller: widget.controller),
       TrainingScreen(controller: widget.controller),
       FixturesScreen(controller: widget.controller),
       StandingsScreen(session: session),

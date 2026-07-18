@@ -13,6 +13,7 @@ import 'package:phoenix_ui/src/util/money_format.dart';
 import 'package:phoenix_ui/src/util/ui_feedback.dart';
 import 'package:phoenix_ui/src/widgets/achievement_progress_card.dart';
 import 'package:phoenix_ui/src/widgets/career_stats_card.dart';
+import 'package:phoenix_ui/src/widgets/club_crest.dart';
 import 'package:phoenix_ui/src/widgets/cup_status_card.dart';
 import 'package:phoenix_ui/src/widgets/dashboard_tip_card.dart';
 import 'package:phoenix_ui/src/widgets/empty_state.dart';
@@ -513,8 +514,12 @@ class _TodayMatchCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final session = controller.session!;
-    final home = session.clubName(output.fixture.homeClubId);
-    final away = session.clubName(output.fixture.awayClubId);
+    final homeClub = session.registry.getClub(output.fixture.homeClubId);
+    final awayClub = session.registry.getClub(output.fixture.awayClubId);
+    final home = homeClub?.displayShortName ??
+        session.clubName(output.fixture.homeClubId);
+    final away = awayClub?.displayShortName ??
+        session.clubName(output.fixture.awayClubId);
     final homeScore = output.result.homeScore;
     final awayScore = output.result.awayScore;
     return Card(
@@ -522,9 +527,40 @@ class _TodayMatchCard extends StatelessWidget {
         title: Semantics(
           label: '$home $homeScore a $awayScore $away',
           excludeSemantics: true,
-          child: Text(
-            '$home $homeScore-$awayScore $away',
-            style: const TextStyle(fontWeight: FontWeight.bold),
+          child: Row(
+            children: [
+              if (homeClub != null) ...[
+                ClubCrest(club: homeClub, size: 24, showBorder: false),
+                const SizedBox(width: 8),
+              ],
+              Flexible(
+                child: Text(
+                  home,
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  style: const TextStyle(fontWeight: FontWeight.bold),
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 8),
+                child: Text(
+                  '$homeScore–$awayScore',
+                  style: const TextStyle(fontWeight: FontWeight.w800),
+                ),
+              ),
+              if (awayClub != null) ...[
+                ClubCrest(club: awayClub, size: 24, showBorder: false),
+                const SizedBox(width: 8),
+              ],
+              Flexible(
+                child: Text(
+                  away,
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  style: const TextStyle(fontWeight: FontWeight.bold),
+                ),
+              ),
+            ],
           ),
         ),
         subtitle: Text(

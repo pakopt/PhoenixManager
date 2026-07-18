@@ -4,6 +4,7 @@ import 'package:phoenix_ui/src/game/game_session.dart';
 import 'package:phoenix_ui/src/game/match_fixture_extensions.dart';
 import 'package:phoenix_ui/src/theme/phoenix_theme.dart';
 import 'package:phoenix_ui/src/util/date_format.dart';
+import 'package:phoenix_ui/src/widgets/club_crest.dart';
 
 /// Linha de calendário / resultado no estilo dashboard FootSim.
 class FixtureListTile extends StatelessWidget {
@@ -22,12 +23,19 @@ class FixtureListTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final home = session.clubName(fixture.homeClubId);
-    final away = session.clubName(fixture.awayClubId);
+    final homeClub = session.registry.getClub(fixture.homeClubId);
+    final awayClub = session.registry.getClub(fixture.awayClubId);
+    final home = homeClub?.displayShortName ??
+        homeClub?.name ??
+        session.clubName(fixture.homeClubId);
+    final away = awayClub?.displayShortName ??
+        awayClub?.name ??
+        session.clubName(fixture.awayClubId);
     final isUser = fixture.involvesClub(GameSession.userClubId);
     final played = fixture.isPlayed;
     final competition = session.competitionName(fixture.competitionId);
     final pad = dense ? 10.0 : 12.0;
+    final crestSize = dense ? 22.0 : 26.0;
 
     return Material(
       color: Colors.transparent,
@@ -63,15 +71,67 @@ class FixtureListTile extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(
-                      '$home vs $away',
-                      style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                            fontWeight:
-                                isUser ? FontWeight.w600 : FontWeight.w500,
-                            color: PhoenixColors.textPrimary,
+                    Row(
+                      children: [
+                        if (homeClub != null) ...[
+                          ClubCrest(
+                            club: homeClub,
+                            size: crestSize,
+                            showBorder: false,
                           ),
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
+                          const SizedBox(width: 6),
+                        ],
+                        Flexible(
+                          child: Text(
+                            home,
+                            style: Theme.of(context)
+                                .textTheme
+                                .bodyMedium
+                                ?.copyWith(
+                                  fontWeight: isUser
+                                      ? FontWeight.w600
+                                      : FontWeight.w500,
+                                  color: PhoenixColors.textPrimary,
+                                ),
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 6),
+                          child: Text(
+                            'vs',
+                            style: Theme.of(context)
+                                .textTheme
+                                .labelSmall
+                                ?.copyWith(color: PhoenixColors.muted),
+                          ),
+                        ),
+                        if (awayClub != null) ...[
+                          ClubCrest(
+                            club: awayClub,
+                            size: crestSize,
+                            showBorder: false,
+                          ),
+                          const SizedBox(width: 6),
+                        ],
+                        Flexible(
+                          child: Text(
+                            away,
+                            style: Theme.of(context)
+                                .textTheme
+                                .bodyMedium
+                                ?.copyWith(
+                                  fontWeight: isUser
+                                      ? FontWeight.w600
+                                      : FontWeight.w500,
+                                  color: PhoenixColors.textPrimary,
+                                ),
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                        ),
+                      ],
                     ),
                     Text(
                       competition,
@@ -91,7 +151,7 @@ class FixtureListTile extends StatelessWidget {
                       ),
                 )
               else
-                Icon(
+                const Icon(
                   Icons.schedule,
                   size: 18,
                   color: PhoenixColors.muted,

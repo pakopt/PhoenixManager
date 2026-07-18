@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:phoenix_core/phoenix_core.dart';
 import 'package:phoenix_ui/src/game/game_session.dart';
 import 'package:phoenix_ui/src/theme/phoenix_theme.dart';
 import 'package:phoenix_ui/src/util/date_format.dart';
+import 'package:phoenix_ui/src/widgets/club_crest.dart';
 
 /// Banner do próximo jogo (centro do dashboard).
 class MatchDayHero extends StatelessWidget {
@@ -99,8 +101,14 @@ class _MatchContent extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final next = session.nextFixture!;
-    final home = session.clubName(next.homeClubId);
-    final away = session.clubName(next.awayClubId);
+    final homeClub = session.registry.getClub(next.homeClubId);
+    final awayClub = session.registry.getClub(next.awayClubId);
+    final home = homeClub?.displayShortName ??
+        homeClub?.name ??
+        session.clubName(next.homeClubId);
+    final away = awayClub?.displayShortName ??
+        awayClub?.name ??
+        session.clubName(next.awayClubId);
     final competition = session.competitionName(next.competitionId);
     final cupSuffix = next.competitionId == GameSession.cupCompetitionId
         ? ' · ${session.cupRoundLabel(next)}'
@@ -147,15 +155,36 @@ class _MatchContent extends StatelessWidget {
                 color: PhoenixColors.textSecondary,
               ),
         ),
-        const SizedBox(height: 6),
-        Text(
-          '$home  vs  $away',
-          style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-                fontWeight: FontWeight.w800,
-                color: PhoenixColors.textPrimary,
+        const SizedBox(height: 14),
+        Row(
+          children: [
+            Expanded(
+              child: _ClubSide(
+                club: homeClub,
+                name: home,
+                alignEnd: false,
               ),
+            ),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 10),
+              child: Text(
+                'vs',
+                style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                      fontWeight: FontWeight.w800,
+                      color: PhoenixColors.muted,
+                    ),
+              ),
+            ),
+            Expanded(
+              child: _ClubSide(
+                club: awayClub,
+                name: away,
+                alignEnd: true,
+              ),
+            ),
+          ],
         ),
-        const SizedBox(height: 4),
+        const SizedBox(height: 10),
         Text(
           'vs $opponent · ${DateFormatUtil.gameDate(next.date)}',
           style: Theme.of(context).textTheme.bodyMedium?.copyWith(
@@ -174,6 +203,50 @@ class _MatchContent extends StatelessWidget {
           ),
         ],
       ],
+    );
+  }
+}
+
+class _ClubSide extends StatelessWidget {
+  const _ClubSide({
+    required this.club,
+    required this.name,
+    required this.alignEnd,
+  });
+
+  final Club? club;
+  final String name;
+  final bool alignEnd;
+
+  @override
+  Widget build(BuildContext context) {
+    final crest = club == null
+        ? null
+        : ClubCrest(club: club!, size: 40, showBorder: true);
+
+    final children = <Widget>[
+      if (crest != null) ...[
+        crest,
+        const SizedBox(width: 10),
+      ],
+      Flexible(
+        child: Text(
+          name,
+          textAlign: alignEnd ? TextAlign.right : TextAlign.left,
+          maxLines: 2,
+          overflow: TextOverflow.ellipsis,
+          style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                fontWeight: FontWeight.w800,
+                color: PhoenixColors.textPrimary,
+              ),
+        ),
+      ),
+    ];
+
+    return Row(
+      mainAxisAlignment:
+          alignEnd ? MainAxisAlignment.end : MainAxisAlignment.start,
+      children: alignEnd ? children.reversed.toList() : children,
     );
   }
 }

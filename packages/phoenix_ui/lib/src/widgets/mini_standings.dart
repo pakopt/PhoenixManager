@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:phoenix_core/phoenix_core.dart';
 import 'package:phoenix_ui/src/game/game_session.dart';
 import 'package:phoenix_ui/src/screens/club_detail_screen.dart';
 import 'package:phoenix_ui/src/theme/phoenix_theme.dart';
+import 'package:phoenix_ui/src/widgets/club_crest.dart';
 import 'package:phoenix_ui/src/widgets/section_card.dart';
 
 /// Mini classificação centrada no clube do utilizador.
@@ -51,6 +53,7 @@ class MiniStandings extends StatelessWidget {
           for (var i = 0; i < slice.length; i++)
             _Row(
               position: start + i + 1,
+              club: session.registry.getClub(slice[i].clubId),
               clubName: session.clubName(slice[i].clubId),
               points: slice[i].points,
               played: slice[i].played,
@@ -70,6 +73,7 @@ class MiniStandings extends StatelessWidget {
 class _Row extends StatelessWidget {
   const _Row({
     required this.position,
+    required this.club,
     required this.clubName,
     required this.points,
     required this.played,
@@ -78,6 +82,7 @@ class _Row extends StatelessWidget {
   });
 
   final int position;
+  final Club? club;
   final String clubName;
   final int points;
   final int played;
@@ -86,6 +91,8 @@ class _Row extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final displayName = club?.displayShortName ?? clubName;
+
     return Material(
       color: Colors.transparent,
       child: InkWell(
@@ -112,9 +119,13 @@ class _Row extends StatelessWidget {
                   ),
                 ),
               ),
+              if (club != null) ...[
+                ClubCrest(club: club!, size: 22, showBorder: false),
+                const SizedBox(width: 8),
+              ],
               Expanded(
                 child: Text(
-                  clubName,
+                  displayName,
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
                   style: TextStyle(

@@ -4,6 +4,7 @@ import 'package:phoenix_ui/src/game/cup_bracket_snapshot.dart';
 import 'package:phoenix_ui/src/game/game_session.dart';
 import 'package:phoenix_ui/src/game/match_fixture_extensions.dart';
 import 'package:phoenix_ui/src/util/date_format.dart';
+import 'package:phoenix_ui/src/widgets/club_crest.dart';
 
 class CupStatusCard extends StatelessWidget {
   const CupStatusCard({required this.session, super.key});
@@ -65,6 +66,8 @@ class _ChampionRow extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final isUser = championId == GameSession.userClubId;
+    final club = session.registry.getClub(championId);
+    final name = club?.displayShortName ?? session.clubName(championId);
     return Row(
       children: [
         Icon(
@@ -72,6 +75,10 @@ class _ChampionRow extends StatelessWidget {
           color: Theme.of(context).colorScheme.primary,
         ),
         const SizedBox(width: 12),
+        if (club != null) ...[
+          ClubCrest(club: club, size: 28, showBorder: false),
+          const SizedBox(width: 10),
+        ],
         Expanded(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -81,7 +88,7 @@ class _ChampionRow extends StatelessWidget {
                 style: Theme.of(context).textTheme.labelMedium,
               ),
               Text(
-                session.clubName(championId),
+                name,
                 style: Theme.of(context).textTheme.titleMedium?.copyWith(
                       fontWeight: FontWeight.bold,
                     ),
@@ -90,8 +97,8 @@ class _ChampionRow extends StatelessWidget {
           ),
         ),
         if (isUser)
-          Chip(
-            label: const Text('Título'),
+          const Chip(
+            label: Text('Título'),
             visualDensity: VisualDensity.compact,
           ),
       ],
@@ -111,6 +118,12 @@ class _NextCupMatchRow extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final round = session.cupRoundLabel(fixture);
+    final homeClub = session.registry.getClub(fixture.homeClubId);
+    final awayClub = session.registry.getClub(fixture.awayClubId);
+    final home =
+        homeClub?.displayShortName ?? session.clubName(fixture.homeClubId);
+    final away =
+        awayClub?.displayShortName ?? session.clubName(fixture.awayClubId);
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -118,12 +131,45 @@ class _NextCupMatchRow extends StatelessWidget {
           'Próximo jogo · $round',
           style: Theme.of(context).textTheme.labelMedium,
         ),
-        const SizedBox(height: 4),
-        Text(
-          '${session.clubName(fixture.homeClubId)} vs '
-          '${session.clubName(fixture.awayClubId)}',
-          style: Theme.of(context).textTheme.bodyLarge,
+        const SizedBox(height: 8),
+        Row(
+          children: [
+            if (homeClub != null) ...[
+              ClubCrest(club: homeClub, size: 24, showBorder: false),
+              const SizedBox(width: 8),
+            ],
+            Flexible(
+              child: Text(
+                home,
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+                style: Theme.of(context).textTheme.bodyLarge,
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 8),
+              child: Text(
+                'vs',
+                style: Theme.of(context).textTheme.labelMedium?.copyWith(
+                      color: Theme.of(context).colorScheme.outline,
+                    ),
+              ),
+            ),
+            if (awayClub != null) ...[
+              ClubCrest(club: awayClub, size: 24, showBorder: false),
+              const SizedBox(width: 8),
+            ],
+            Flexible(
+              child: Text(
+                away,
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+                style: Theme.of(context).textTheme.bodyLarge,
+              ),
+            ),
+          ],
         ),
+        const SizedBox(height: 4),
         Text(
           DateFormatUtil.gameDate(fixture.date),
           style: Theme.of(context).textTheme.bodySmall?.copyWith(

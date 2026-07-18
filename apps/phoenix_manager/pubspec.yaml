@@ -21,6 +21,7 @@ dev_dependencies:
   flutter_lints: ^5.0.0
   flutter_launcher_icons: ^0.14.3
   flutter_native_splash: ^2.4.4
+  msix: ^3.16.8
 
 flutter:
   uses-material-design: true
@@ -56,3 +57,14 @@ flutter_native_splash:
   ios: true
   android: true
   web: false
+
+msix_config:
+  display_name: Project Phoenix Manager
+  publisher_display_name: Phoenix Manager
+  identity_name: PhoenixManager.PhoenixManager
+  publisher: CN=4402D5F1-A78E-42D6-B8A3-BAEBB8F0513B
+  msix_version: 1.8.48.49
+  logo_path: assets/branding/icon.png
+  languages: pt-pt, en-us
+  store: true
+  # capabilities: omitir extras (offline); msix aplica defaults Flutter full-trust

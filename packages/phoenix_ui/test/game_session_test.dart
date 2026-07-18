@@ -60,6 +60,20 @@ void main() {
         'Fut.7 Jun.F S9',
       ],
     );
+
+    final squad = context.registry.squadQuery
+        .getByClubId(const ClubId('club-sindicato'));
+    expect(squad.length, 37);
+    expect(squad.any((p) => p.name == 'Diogo Correia'), isTrue);
+    expect(squad.any((p) => p.name == 'João Raimundo'), isTrue);
+    expect(
+      squad.where((p) => p.nationalityId?.value == 'brazil').length,
+      6,
+    );
+    expect(
+      squad.where((p) => p.nationalityId?.value == 'angola').length,
+      5,
+    );
   });
 
   test('salaryBreakdown matches club finance monthly wages', () async {

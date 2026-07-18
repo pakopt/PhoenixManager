@@ -13,8 +13,17 @@ void main() {
 
     test('boot loads Liga Phoenix with 6 clubs and players', () {
       expect(context.registry.clubs.length, 6);
-      expect(context.registry.players.length, 6 * 16);
+      // 5 clubs padded to 16 + Sindicato Jun.B S17 (37 seeded).
+      expect(context.registry.players.length, 5 * 16 + 37);
       expect(context.registry.fixtures.isNotEmpty, isTrue);
+      final sindicato = context.registry.squadQuery
+          .getByClubId(const ClubId('club-sindicato'));
+      expect(sindicato.length, 37);
+      expect(sindicato.any((p) => p.name == 'Vítor Fraga'), isTrue);
+      expect(
+        sindicato.firstWhere((p) => p.name == 'Vítor Fraga').position,
+        'PL',
+      );
     });
 
     test('boot generates full staff roster for every club', () {

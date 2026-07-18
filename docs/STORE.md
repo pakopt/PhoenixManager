@@ -1,6 +1,6 @@
 # Publicação nas lojas — Project Phoenix Manager
 
-Guia para **Google Play** e App Store. Steam: ver [steam/README.md](../steam/README.md).
+Guia para **Google Play**, App Store e **Microsoft Store**. Steam: ver [steam/README.md](../steam/README.md).
 
 **Guia detalhado Play Store:** secção [Google Play — upload passo a passo](#google-play--upload-passo-a-passo) abaixo.
 
@@ -453,6 +453,99 @@ Build local sem signing: `./scripts/build_mobile.sh ios` (Runner.app).
 Bundle ID: `com.phoenix.manager`. Distribuição directa actual: `./scripts/install_local.sh` → `/Applications`.
 
 Mac App Store exige notarização Apple + sandbox — fora do scope v0.8 alpha.
+
+---
+
+## Microsoft Store — upload passo a passo
+
+### 1. Pré-requisitos
+
+| Item | Estado | Acção |
+|------|--------|-------|
+| Conta Partner Center | ⏳ | Criar app e reservar nome no [Partner Center](https://partner.microsoft.com/dashboard) |
+| Identidade MSIX alinhada | ✅ | Validar com `./scripts/msix_doctor.sh` |
+| Toolchain Windows | ✅ | Windows + Visual Studio Build Tools + Flutter desktop |
+| Scripts MSIX | ✅ | `build_msix.sh`, `package_msix_store.sh`, `msix_partner_brief.sh` |
+
+### 2. Build e pacote Store
+
+1. Validar configuração:
+   ```bash
+   ./scripts/msix_doctor.sh
+   ```
+2. Em **Windows**, gerar o MSIX de Store:
+   ```bash
+   ./scripts/build_msix.sh
+   ```
+3. Empacotar ZIP para submissão:
+   ```bash
+   ./scripts/package_msix_store.sh
+   ```
+4. Opcional (textos copy-paste Partner Center):
+   ```bash
+   ./scripts/msix_partner_brief.sh
+   ```
+
+> Em macOS/Linux, os scripts validam configuração e mostram instruções; o build MSIX final é feito em Windows.
+
+### 3. Product identity (Partner Center)
+
+Usar estes valores **exactos**:
+
+| Campo MSIX / Store | Valor |
+|--------------------|-------|
+| `Package/Identity/Name` (`identity_name`) | `PhoenixManager.PhoenixManager` |
+| `Package/Identity/Publisher` (`publisher`) | `CN=4402D5F1-A78E-42D6-B8A3-BAEBB8F0513B` |
+| `Package/Properties/PublisherDisplayName` | `Phoenix Manager` |
+| Display name (`display_name`) | `Project Phoenix Manager` |
+
+### 4. Upload de Packages no Partner Center
+
+1. Abrir a app reservada no Partner Center
+2. Ir a **Packages** / **App packages**
+3. Upload do `.msix` gerado em `build/release/store/windows/`
+4. Confirmar versão, arquitectura e assinatura
+
+### 5. Assets de loja
+
+- Screenshots desktop (mín. 1366x768 recomendado)  
+  Fonte: `build/release/store/desktop/screenshots/` (`./scripts/capture_desktop_screenshots.sh`)
+- Ícone da app (branding)  
+  Fonte: `apps/phoenix_manager/assets/branding/icon.png`
+
+### 6. Política de privacidade
+
+URL a usar na ficha:
+
+- [https://pakopt.github.io/PhoenixManager/privacy.html](https://pakopt.github.io/PhoenixManager/privacy.html)
+
+### 7. Age rating e declarações
+
+Respostas base para esta release:
+
+- App/jogo offline
+- Sem compras in-app
+- Público 13+
+- Sem recolha de dados pessoais para analytics/publicidade
+
+### 8. Actualizações (novas versões)
+
+Para publicar update na Microsoft Store:
+
+1. Aumentar `version` em `apps/phoenix_manager/pubspec.yaml`
+2. Regerar MSIX com `./scripts/build_msix.sh` (novo `msix_version`)
+3. Upload no Partner Center com versão **maior** que a anterior
+
+### 9. Checklist final Microsoft Store
+
+- [ ] `./scripts/msix_doctor.sh` sem erros
+- [ ] Build MSIX gerado em Windows (`./scripts/build_msix.sh`)
+- [ ] ZIP de submissão criado (`./scripts/package_msix_store.sh`)
+- [ ] Identidade Partner Center confere (Name/Publisher/Display)
+- [ ] Screenshots desktop + ícone preparados
+- [ ] URL de privacidade preenchida
+- [ ] Age rating e declarações concluídos
+- [ ] Package enviado para revisão no Partner Center
 
 ---
 

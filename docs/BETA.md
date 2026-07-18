@@ -40,6 +40,18 @@ Sem conta Apple Developer:
 
 Com conta Apple Developer → ver [`docs/STORE.md`](STORE.md) e `./scripts/app_store_brief.sh`.
 
+## Windows (desktop)
+
+**Microsoft Store (recomendado para updates):** ver [`docs/STORE.md`](STORE.md) — MSIX.  
+Quem instala pela Store recebe actualizações automáticas.
+
+**Partilha manual (sem updates automáticos):**
+1. Em Windows: `flutter build windows --release`
+2. ZIP da pasta `build/windows/x64/runner/Release/`
+3. Amigo descompacta e corre `phoenix_manager.exe`
+
+**MSIX `store: true`:** só para Partner Center (não é sideload fiável).
+
 ## Roteiro QA manual
 
 Corre em cada plataforma antes de enviar para lojas:

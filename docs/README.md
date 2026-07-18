@@ -3,7 +3,7 @@
 | Ficheiro / pasta | Conteúdo |
 |---|---|
 | [plano.md](plano.md) | Plano vivo, histórico de versões, checklist Play |
-| [STORE.md](STORE.md) | Guia Play Console / App Store |
+| [STORE.md](STORE.md) | Guia Play Console / App Store / Microsoft Store |
 | [BETA.md](BETA.md) | Teste fechado e feedback |
 | [PRIVACY.md](PRIVACY.md) | Política de privacidade (fonte) |
 | [roadmap/](roadmap/) | Roadmap master (visão de fases) |

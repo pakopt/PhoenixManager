@@ -156,6 +156,12 @@ chmod +x scripts/build_mobile.sh scripts/mobile_doctor.sh
 ./scripts/mobile_doctor.sh
 ./scripts/build_mobile.sh android   # APK + AAB
 ./scripts/build_mobile.sh ios       # Runner.app (Mac)
+
+# Microsoft Store (MSIX — Partner Center)
+./scripts/msix_doctor.sh
+./scripts/build_msix.sh
+./scripts/package_msix_store.sh
+./scripts/msix_partner_brief.sh
 # Ver apps/phoenix_manager/MOBILE.md
 
 # Diagnóstico pré-lançamento (branding + Steam + mobile + testes)
@@ -214,8 +220,9 @@ cp steam/steam.env.example steam/steam.env   # App ID + depot IDs
 4. **12 × 14** — convites opted-in ([`docs/STORE.md`](docs/STORE.md) §9c)
 5. **Produção** — após aprovação Google no Dashboard
 6. App Store prep — screenshots iOS (`capture_app_store_screenshots.sh`)
-7. Apple Developer — `./scripts/app_store_brief.sh`
-8. Steam — adiado
+7. Microsoft Store — docs/scripts prontos; upload Partner Center pendente (`docs/STORE.md`)
+8. Apple Developer — `./scripts/app_store_brief.sh`
+9. Steam — adiado
 
 ```bash
 ./scripts/install_local.sh          # Mac release

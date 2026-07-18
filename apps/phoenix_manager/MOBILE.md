@@ -180,6 +180,8 @@ Comandos úteis durante `flutter run`: `r` hot reload, `R` restart, `d` detach, 
 
 Artefactos em `build/release/store/android/`. Ver [`docs/STORE.md`](../../docs/STORE.md).
 
+Microsoft Store (Windows / MSIX): ver secção dedicada em [`docs/STORE.md`](../../docs/STORE.md#microsoft-store--upload-passo-a-passo).
+
 ## macOS (local)
 
 ```bash

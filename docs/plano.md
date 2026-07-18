@@ -75,6 +75,15 @@ Documento vivo do roadmap. O plano detalhado de arquitectura (PSE, GDD, motores)
 | TestFlight | ⏳ | `flutter build ipa` |
 | App Store Connect | ⏳ | Mesma URL privacidade |
 
+### Lojas — Microsoft Store
+
+| Item | Estado | Acção |
+|------|--------|-------|
+| Identidade Partner Center no `msix_config` | ✅ | `PhoenixManager.PhoenixManager` + publisher CN validado |
+| Scripts MSIX (`doctor/build/package/brief`) | ✅ | `./scripts/msix_doctor.sh`, `build_msix.sh`, `package_msix_store.sh`, `msix_partner_brief.sh` |
+| Guia de publicação MSIX | ✅ | [`docs/STORE.md`](STORE.md#microsoft-store--upload-passo-a-passo) |
+| Publicação no Partner Center | ⏳ | Upload do package `.msix` e submissão |
+
 ### Steam
 
 | Item | Estado | Notas |

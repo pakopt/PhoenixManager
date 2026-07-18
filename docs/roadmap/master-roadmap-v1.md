@@ -16,7 +16,7 @@ Este ficheiro liga o **Master Roadmap** do plano de arquitectura ao estado **rea
 | **B — Simulação** | Player, Club, Comp, Match, Transfer, Economy | v0.2–v0.6 | ✅ Liga, taça, mercado, staff, lesões |
 | **C — Experiência** | UI Flutter, Express/Diretor, saves | v0.7 | ✅ `phoenix_ui`, `phoenix_manager` |
 | **D — Polimento** | Conquistas, palmarés, Simulation Lab, UX | v0.8 | ✅ Fase D concluída |
-| **E — Lançamento** | Mac, Android, iOS, Play Store, App Store | v0.8α→v1.0 | 🔄 **em curso** — ver [`plano.md`](../plano.md) |
+| **E — Lançamento** | Mac, Android, iOS, Play Store, App Store, Microsoft Store | v0.8α→v1.0 | 🔄 **em curso** — ver [`plano.md`](../plano.md) |
 | **F — Pós-v1** | Steam, IA avançada, multiplayer | pós-v1.0 | ⏸️ adiado |
 
 > No plano mestre, «Fase D — Lançamento» (Steam, beta) corresponde à **Fase E** deste repo (lançamento mobile/desktop local).
@@ -41,6 +41,8 @@ Este ficheiro liga o **Master Roadmap** do plano de arquitectura ao estado **rea
 | Play Console teste fechado | ✅ | app activa na faixa fechada |
 | 12 testadores × 14 dias | 🔄 | requisito Google antes de produção ([`STORE.md`](../STORE.md) §9c) |
 | Play Console produção | ⏳ | após candidatura aprovada |
+| Microsoft Store (MSIX scripts + docs) | ✅ | `msix_doctor/build/package/brief` + guia em [`STORE.md`](../STORE.md) |
+| Microsoft Store (Partner Center upload) | ⏳ | submissão manual do `.msix` |
 | Beta local (APK/Mac) | ✅ | `./scripts/local_beta.sh` · [`docs/BETA.md`](../BETA.md) |
 | App Store / TestFlight | ⏳ | screenshots ✅ + `package_app_store.sh` |
 | Steam | ⏸️ adiado |

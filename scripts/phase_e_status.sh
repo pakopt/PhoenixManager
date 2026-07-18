@@ -60,8 +60,8 @@ if compgen -G "$ROOT/build/release/store/windows/*.msix" >/dev/null 2>&1; then
 else
   echo "  --   MSIX em falta — ./scripts/build_msix.sh (em Windows)"
 fi
-[[ -f "$ROOT/build/release/store/windows/phoenix-manager-msix-store-upload.zip" ]] && \
-  echo "  OK   ZIP upload: build/release/store/windows/phoenix-manager-msix-store-upload.zip" || \
+[[ -f "$ROOT/build/release/store/windows/phoenix-manager-msix-upload.zip" ]] && \
+  echo "  OK   ZIP upload: build/release/store/windows/phoenix-manager-msix-upload.zip" || \
   echo "  --   ZIP — ./scripts/package_msix_store.sh"
 
 section "Git"

@@ -31,7 +31,7 @@ dart run msix:create --store --version "$MSIX_VERSION"
 
 mkdir -p "$OUT"
 # msix coloca o .msix sob build/windows/... — procurar e copiar
-MSIX_SRC="$(find build -name '*.msix' -type f | head -1)"
+MSIX_SRC="$(find build -name '*.msix' -type f -print0 2>/dev/null | xargs -0 ls -t 2>/dev/null | head -1)"
 if [[ -z "$MSIX_SRC" ]]; then
   echo "ERRO: .msix não encontrado após msix:create" >&2
   exit 1

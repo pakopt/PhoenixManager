@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:phoenix_core/phoenix_core.dart';
 import 'package:phoenix_ui/src/game/game_session.dart';
 import 'package:phoenix_ui/src/screens/achievements_panel.dart';
-import 'package:phoenix_ui/src/screens/club_detail_screen.dart';
 import 'package:phoenix_ui/src/screens/honours_panel.dart';
 import 'package:phoenix_ui/src/screens/staff_panel.dart';
 import 'package:phoenix_ui/src/theme/phoenix_theme.dart';
@@ -96,14 +95,7 @@ class _ClubOverviewPanel extends StatelessWidget {
           _ClubIdentityCard(session: session),
           for (final peer in peerClubsWithTeams) ...[
             const SizedBox(height: 16),
-            _ClubTeamsCard(
-              club: peer,
-              onOpen: () => ClubDetailScreen.open(
-                context,
-                session: session,
-                clubId: peer.id,
-              ),
-            ),
+            _ClubTeamsCard(club: peer),
           ],
           const SizedBox(height: 16),
           CareerStatsCard(session: session),
@@ -314,8 +306,7 @@ class _ClubIdentityCard extends StatelessWidget {
         region != null ? session.registry.countries[region.countryId] : null;
 
     final rows = <(String, String)>[
-      if (club.foundedOn != null)
-        ('Fundação', formatClubFoundedDate(club.foundedOn!)),
+      if (club.foundedOn != null) ('Fundação', _formatFounded(club.foundedOn!)),
       if (city != null) ('Cidade', city.name),
       if (country != null) ('País', country.name),
       if (club.association != null) ('Associação', club.association!),
@@ -384,107 +375,115 @@ class _ClubIdentityCard extends StatelessWidget {
     );
   }
 
+  static String _formatFounded(String iso) {
+    final parts = iso.split('-');
+    if (parts.length != 3) {
+      return iso;
+    }
+    final year = int.tryParse(parts[0]);
+    final month = int.tryParse(parts[1]);
+    final day = int.tryParse(parts[2]);
+    if (year == null || month == null || day == null) {
+      return iso;
+    }
+    const months = [
+      'Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun',
+      'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez',
+    ];
+    if (month < 1 || month > 12) {
+      return iso;
+    }
+    return '$day ${months[month - 1]} $year';
+  }
 }
 
 class _ClubTeamsCard extends StatelessWidget {
-  const _ClubTeamsCard({
-    required this.club,
-    required this.onOpen,
-  });
+  const _ClubTeamsCard({required this.club});
 
   final Club club;
-  final VoidCallback onOpen;
 
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final identityRows = <(String, String)>[
       if (club.foundedOn != null)
-        ('Fundação', formatClubFoundedDate(club.foundedOn!)),
+        ('Fundação', _ClubIdentityCard._formatFounded(club.foundedOn!)),
       if (club.association != null) ('Associação', club.association!),
       if (club.president != null) ('Presidente', club.president!),
     ];
 
     return Card(
-      clipBehavior: Clip.antiAlias,
-      child: InkWell(
-        onTap: onOpen,
-        child: Padding(
-          padding: const EdgeInsets.all(16),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              Row(
-                children: [
-                  ClubCrest(club: club, size: 48),
-                  const SizedBox(width: 12),
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          club.displayShortName,
-                          style: theme.textTheme.titleSmall?.copyWith(
-                            fontWeight: FontWeight.w700,
-                          ),
+      child: Padding(
+        padding: const EdgeInsets.all(16),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            Row(
+              children: [
+                ClubCrest(club: club, size: 48),
+                const SizedBox(width: 12),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        club.displayShortName,
+                        style: theme.textTheme.titleSmall?.copyWith(
+                          fontWeight: FontWeight.w700,
                         ),
-                        const SizedBox(height: 2),
-                        Text(
-                          club.name,
-                          style: theme.textTheme.bodySmall?.copyWith(
-                            color: PhoenixColors.muted,
-                          ),
+                      ),
+                      const SizedBox(height: 2),
+                      Text(
+                        club.name,
+                        style: theme.textTheme.bodySmall?.copyWith(
+                          color: PhoenixColors.muted,
                         ),
-                      ],
-                    ),
-                  ),
-                  Icon(
-                    Icons.chevron_right,
-                    color: theme.colorScheme.outline,
-                  ),
-                ],
-              ),
-              if (identityRows.isNotEmpty) ...[
-                const SizedBox(height: 12),
-                for (final row in identityRows) ...[
-                  _IdentityRow(label: row.$1, value: row.$2),
-                  if (row != identityRows.last) const SizedBox(height: 8),
-                ],
-              ],
-              if (club.kitAsset != null && club.kitAsset!.isNotEmpty) ...[
-                const SizedBox(height: 14),
-                Text(
-                  'Equipamento',
-                  style: theme.textTheme.titleSmall?.copyWith(
-                    fontWeight: FontWeight.w700,
-                  ),
-                ),
-                const SizedBox(height: 8),
-                Center(
-                  child: Image.asset(
-                    club.kitAsset!,
-                    height: 160,
-                    fit: BoxFit.contain,
-                    errorBuilder: (_, __, ___) => const SizedBox.shrink(),
+                      ),
+                    ],
                   ),
                 ),
               ],
-              if (club.teams.isNotEmpty) ...[
-                const SizedBox(height: 14),
-                Text(
-                  'Estrutura de equipas',
-                  style: theme.textTheme.titleSmall?.copyWith(
-                    fontWeight: FontWeight.w700,
-                  ),
-                ),
-                const SizedBox(height: 8),
-                for (final team in club.teams) ...[
-                  _TeamChip(label: team),
-                  if (team != club.teams.last) const SizedBox(height: 6),
-                ],
+            ),
+            if (identityRows.isNotEmpty) ...[
+              const SizedBox(height: 12),
+              for (final row in identityRows) ...[
+                _IdentityRow(label: row.$1, value: row.$2),
+                if (row != identityRows.last) const SizedBox(height: 8),
               ],
             ],
-          ),
+            if (club.kitAsset != null && club.kitAsset!.isNotEmpty) ...[
+              const SizedBox(height: 14),
+              Text(
+                'Equipamento',
+                style: theme.textTheme.titleSmall?.copyWith(
+                  fontWeight: FontWeight.w700,
+                ),
+              ),
+              const SizedBox(height: 8),
+              Center(
+                child: Image.asset(
+                  club.kitAsset!,
+                  height: 160,
+                  fit: BoxFit.contain,
+                  errorBuilder: (_, __, ___) => const SizedBox.shrink(),
+                ),
+              ),
+            ],
+            if (club.teams.isNotEmpty) ...[
+              const SizedBox(height: 14),
+              Text(
+                'Estrutura de equipas',
+                style: theme.textTheme.titleSmall?.copyWith(
+                  fontWeight: FontWeight.w700,
+                ),
+              ),
+              const SizedBox(height: 8),
+              for (final team in club.teams) ...[
+                _TeamChip(label: team),
+                if (team != club.teams.last) const SizedBox(height: 6),
+              ],
+            ],
+          ],
         ),
       ),
     );

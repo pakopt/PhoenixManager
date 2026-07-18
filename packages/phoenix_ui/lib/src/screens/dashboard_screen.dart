@@ -45,11 +45,16 @@ class DashboardScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final session = controller.session!;
-    final wide = MediaQuery.sizeOf(context).width >= 1100;
+    final width = MediaQuery.sizeOf(context).width;
+    final wide = width >= 1100;
     final seasonSummary = SeasonSummary.fromSession(session);
 
     final center = _buildCenter(context, session, seasonSummary);
     final right = _buildRight(context, session);
+    // Em desktop largo o painel direito cresce um pouco com a janela.
+    final rightWidth = wide
+        ? (width * 0.26).clamp(320.0, 420.0)
+        : 320.0;
 
     return SafeArea(
       child: wide
@@ -59,14 +64,14 @@ class DashboardScreen extends StatelessWidget {
                 Expanded(
                   flex: 3,
                   child: ListView(
-                    padding: const EdgeInsets.fromLTRB(20, 16, 12, 24),
+                    padding: const EdgeInsets.fromLTRB(24, 16, 16, 24),
                     children: center,
                   ),
                 ),
                 SizedBox(
-                  width: 320,
+                  width: rightWidth,
                   child: ListView(
-                    padding: const EdgeInsets.fromLTRB(8, 16, 20, 24),
+                    padding: const EdgeInsets.fromLTRB(8, 16, 24, 24),
                     children: right,
                   ),
                 ),

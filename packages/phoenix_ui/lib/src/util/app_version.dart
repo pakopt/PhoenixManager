@@ -1,16 +1,16 @@
 /// Versão visível ao jogador — manter alinhada com `apps/phoenix_manager/pubspec.yaml`.
 /// Validar: `./scripts/check_app_version_sync.sh`
 abstract final class AppVersion {
-  static const label = '0.8.41';
-  static const buildNumber = 42;
-  static const engineLabel = 'PSE v0.8.41';
+  static const label = '0.8.42';
+  static const buildNumber = 43;
+  static const engineLabel = 'PSE v0.8.42';
 
   /// Pontos curtos para o diálogo «Novidades» após actualizar.
   static const whatsNew = <String>[
-    'Transferências FootSim: Mercado, Livres e Histórico.',
-    'Fazer oferta / assinar a custo zero (janela aberta).',
-    'Resumo de orçamento, salários, saldo e plantel.',
-    'Pesquisa e fichas de jogadores no mercado.',
+    'Dashboard a preencher a largura no desktop.',
+    'Notificações de conquistas com fechar e auto-desaparecem.',
+    'Aviso «por guardar» também com botão fechar.',
+    'Correcções de layout e polish UI.',
   ];
 
   /// Bloco curto para emails de feedback / bugs.

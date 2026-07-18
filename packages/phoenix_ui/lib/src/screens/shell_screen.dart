@@ -89,9 +89,14 @@ class _ShellScreenState extends State<ShellScreen> {
   void _onControllerUpdate() {
     if (mounted) {
       setState(() {});
-      _showPendingAchievementToasts();
-      _maybeShowSaveHint();
-      _refreshInboxUnread();
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        if (!mounted) {
+          return;
+        }
+        _showPendingAchievementToasts();
+        _maybeShowSaveHint();
+        _refreshInboxUnread();
+      });
     }
   }
 
@@ -127,14 +132,19 @@ class _ShellScreenState extends State<ShellScreen> {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           behavior: SnackBarBehavior.floating,
+          showCloseIcon: true,
+          duration: const Duration(seconds: 6),
+          margin: const EdgeInsets.fromLTRB(16, 0, 16, 16),
           content: const Text('Alterações por guardar'),
           action: SnackBarAction(
             label: 'Guardar',
             onPressed: () async {
+              final messenger = ScaffoldMessenger.of(context);
               await widget.controller.saveGame();
               if (!mounted) {
                 return;
               }
+              messenger.hideCurrentSnackBar();
               UiFeedback.action();
             },
           ),
@@ -155,11 +165,15 @@ class _ShellScreenState extends State<ShellScreen> {
 
     final messenger = ScaffoldMessenger.of(context);
     messenger.clearSnackBars();
+    messenger.hideCurrentSnackBar();
 
     if (ids.length == 1) {
       messenger.showSnackBar(
         SnackBar(
           behavior: SnackBarBehavior.floating,
+          showCloseIcon: true,
+          duration: const Duration(seconds: 5),
+          margin: const EdgeInsets.fromLTRB(16, 0, 16, 16),
           content: Row(
             children: [
               const Icon(Icons.military_tech),
@@ -173,7 +187,10 @@ class _ShellScreenState extends State<ShellScreen> {
           ),
           action: SnackBarAction(
             label: 'Ver',
-            onPressed: _openAchievementsTab,
+            onPressed: () {
+              messenger.hideCurrentSnackBar();
+              _openAchievementsTab();
+            },
           ),
         ),
       );
@@ -183,10 +200,16 @@ class _ShellScreenState extends State<ShellScreen> {
     messenger.showSnackBar(
       SnackBar(
         behavior: SnackBarBehavior.floating,
+        showCloseIcon: true,
+        duration: const Duration(seconds: 5),
+        margin: const EdgeInsets.fromLTRB(16, 0, 16, 16),
         content: Text('${ids.length} conquistas desbloqueadas'),
         action: SnackBarAction(
           label: 'Ver',
-          onPressed: _openAchievementsTab,
+          onPressed: () {
+            messenger.hideCurrentSnackBar();
+            _openAchievementsTab();
+          },
         ),
       ),
     );
@@ -349,6 +372,8 @@ class _ShellScreenState extends State<ShellScreen> {
     ];
 
     final body = ContentWidth(
+      expand: wide,
+      maxWidth: 1100,
       child: AnimatedSwitcher(
         duration: const Duration(milliseconds: 200),
         child: KeyedSubtree(

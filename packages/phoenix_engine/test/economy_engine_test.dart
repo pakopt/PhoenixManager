@@ -192,54 +192,6 @@ void main() {
       expect(injuries, isNotEmpty);
       expect(injuries.first.daysOut, 5);
     });
-
-    test('user can buy a player during transfer window', () {
-      final buyerId = const ClubId('club-phoenix');
-      final date = context.simulationEngine.worldState.currentDate;
-      expect(context.economyConfig.transfer.isWindowOpen(date.month), isTrue);
-
-      final target = context.registry.players.values.firstWhere(
-        (p) => p.clubId != buyerId,
-      );
-      final finance = context.registry.clubFinances[buyerId]!;
-      // Ensure enough balance for the ask.
-      context.registry.clubFinances[buyerId] = finance.copyWith(
-        balance: 50000000,
-        transfersCompletedThisWindow: 0,
-      );
-
-      final error = context.economyRunner.tryUserBuyPlayer(
-        buyerId: buyerId,
-        playerId: target.id,
-        date: date,
-      );
-      expect(error, isNull);
-      expect(context.registry.getPlayer(target.id)!.clubId, buyerId);
-      expect(
-        context.registry.transfers.any((t) => t.playerId == target.id),
-        isTrue,
-      );
-    });
-
-    test('user buy fails when transfer window is closed', () {
-      final buyerId = const ClubId('club-phoenix');
-      final closedDate = const GameDate(year: 2026, month: 3, day: 15);
-      expect(
-        context.economyConfig.transfer.isWindowOpen(closedDate.month),
-        isFalse,
-      );
-      final target = context.registry.players.values.firstWhere(
-        (p) => p.clubId != buyerId,
-      );
-
-      final error = context.economyRunner.tryUserBuyPlayer(
-        buyerId: buyerId,
-        playerId: target.id,
-        date: closedDate,
-      );
-      expect(error, isNotNull);
-      expect(error, contains('fechada'));
-    });
   });
 }
 

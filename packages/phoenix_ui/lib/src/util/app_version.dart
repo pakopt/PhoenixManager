@@ -1,15 +1,14 @@
 /// Versão visível ao jogador — manter alinhada com `apps/phoenix_manager/pubspec.yaml`.
 /// Validar: `./scripts/check_app_version_sync.sh`
 abstract final class AppVersion {
-  static const label = '0.8.46';
-  static const buildNumber = 47;
-  static const engineLabel = 'PSE v0.8.46';
+  static const label = '0.8.47';
+  static const buildNumber = 48;
+  static const engineLabel = 'PSE v0.8.47';
 
   /// Pontos curtos para o diálogo «Novidades» após actualizar.
   static const whatsNew = <String>[
-    'Polish UI FootSim: emblemas na classificação e calendário.',
-    'Calendário alinhado com o tile da Dashboard.',
-    'Táctica com cabeçalho padrão · crests no mercado.',
+    'Emblemas maiores no «PRÓXIMO JOGO» da Dashboard.',
+    'Layout espelhado: crest à frente do nome de cada clube.',
   ];
 
   /// Bloco curto para emails de feedback / bugs.

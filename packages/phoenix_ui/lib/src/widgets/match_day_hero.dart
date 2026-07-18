@@ -155,21 +155,22 @@ class _MatchContent extends StatelessWidget {
                 color: PhoenixColors.textSecondary,
               ),
         ),
-        const SizedBox(height: 14),
+        const SizedBox(height: 16),
         Row(
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             Expanded(
               child: _ClubSide(
                 club: homeClub,
                 name: home,
-                alignEnd: false,
+                crestFirst: true,
               ),
             ),
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 10),
+              padding: const EdgeInsets.symmetric(horizontal: 12),
               child: Text(
                 'vs',
-                style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                style: Theme.of(context).textTheme.titleLarge?.copyWith(
                       fontWeight: FontWeight.w800,
                       color: PhoenixColors.muted,
                     ),
@@ -179,12 +180,12 @@ class _MatchContent extends StatelessWidget {
               child: _ClubSide(
                 club: awayClub,
                 name: away,
-                alignEnd: true,
+                crestFirst: false,
               ),
             ),
           ],
         ),
-        const SizedBox(height: 10),
+        const SizedBox(height: 12),
         Text(
           'vs $opponent · ${DateFormatUtil.gameDate(next.date)}',
           style: Theme.of(context).textTheme.bodyMedium?.copyWith(
@@ -211,42 +212,52 @@ class _ClubSide extends StatelessWidget {
   const _ClubSide({
     required this.club,
     required this.name,
-    required this.alignEnd,
+    required this.crestFirst,
   });
 
   final Club? club;
   final String name;
-  final bool alignEnd;
+  /// `true` = emblema à esquerda do nome (casa); `false` = emblema à direita (fora).
+  final bool crestFirst;
+
+  static const _crestSize = 64.0;
 
   @override
   Widget build(BuildContext context) {
     final crest = club == null
         ? null
-        : ClubCrest(club: club!, size: 40, showBorder: true);
+        : ClubCrest(club: club!, size: _crestSize, showBorder: true);
 
-    final children = <Widget>[
-      if (crest != null) ...[
-        crest,
-        const SizedBox(width: 10),
-      ],
-      Flexible(
-        child: Text(
-          name,
-          textAlign: alignEnd ? TextAlign.right : TextAlign.left,
-          maxLines: 2,
-          overflow: TextOverflow.ellipsis,
-          style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                fontWeight: FontWeight.w800,
-                color: PhoenixColors.textPrimary,
-              ),
-        ),
+    final nameText = Flexible(
+      child: Text(
+        name,
+        textAlign: crestFirst ? TextAlign.left : TextAlign.right,
+        maxLines: 2,
+        overflow: TextOverflow.ellipsis,
+        style: Theme.of(context).textTheme.titleLarge?.copyWith(
+              fontWeight: FontWeight.w800,
+              color: PhoenixColors.textPrimary,
+              height: 1.15,
+            ),
       ),
-    ];
+    );
+
+    final gap = crest == null ? const SizedBox.shrink() : const SizedBox(width: 12);
 
     return Row(
       mainAxisAlignment:
-          alignEnd ? MainAxisAlignment.end : MainAxisAlignment.start,
-      children: alignEnd ? children.reversed.toList() : children,
+          crestFirst ? MainAxisAlignment.start : MainAxisAlignment.end,
+      children: crestFirst
+          ? [
+              if (crest != null) crest,
+              gap,
+              nameText,
+            ]
+          : [
+              nameText,
+              gap,
+              if (crest != null) crest,
+            ],
     );
   }
 }

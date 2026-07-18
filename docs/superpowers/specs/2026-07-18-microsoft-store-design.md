@@ -1,7 +1,7 @@
 # Design: Microsoft Store (MSIX) — Project Phoenix Manager
 
 **Data:** 2026-07-18  
-**Estado:** implementado parcialmente (scripts + docs + índices) · upload Partner Center pendente  
+**Estado:** implementado (scripts + docs + índices) · build Windows real + upload Partner Center pendentes  
 **Âmbito:** Opção A — packaging MSIX + scripts + guia Partner Center (espelho Play Store)
 
 ---
@@ -125,7 +125,7 @@ Alternativa beta sem Store: continuar a partilhar pasta/ZIP do `flutter build wi
 - [x] Secção Microsoft Store em `docs/STORE.md` utilizável sem conhecimento prévio
 - [x] Roadmap/plano/README actualizados
 - [ ] Em máquina Windows: comando documentado produz `.msix` em `build/release/store/windows/`
-- [ ] Sem regressão: `dart analyze` / testes existentes continuam verdes (mudança só packaging/docs)
+- [x] Sem regressão: `dart analyze` / testes existentes continuam verdes (mudança só packaging/docs)
 
 ---
 

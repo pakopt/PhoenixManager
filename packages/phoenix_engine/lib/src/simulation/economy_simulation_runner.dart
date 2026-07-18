@@ -37,6 +37,34 @@ class EconomySimulationRunner {
 
   ContractEngine get contractEngine => _contractEngine;
 
+  TransferEngine get transferEngine => _transferEngine;
+
+  /// Compra no mercado pelo clube do utilizador.
+  String? tryUserBuyPlayer({
+    required ClubId buyerId,
+    required PlayerId playerId,
+    required GameDate date,
+  }) {
+    return _transferEngine.tryUserBuy(
+      buyerId: buyerId,
+      playerId: playerId,
+      date: date,
+    );
+  }
+
+  /// Assinatura a custo zero (contrato expirado).
+  String? tryUserSignFreeAgent({
+    required ClubId buyerId,
+    required PlayerId playerId,
+    required GameDate date,
+  }) {
+    return _transferEngine.tryUserSignFree(
+      buyerId: buyerId,
+      playerId: playerId,
+      date: date,
+    );
+  }
+
   void initialize() {
     _financeEngine.initializeFromClubs();
   }

@@ -116,6 +116,100 @@ class TransferEngine {
     }
   }
 
+  /// Compra iniciada pelo jogador. Devolve mensagem de erro ou `null` se OK.
+  String? tryUserBuy({
+    required ClubId buyerId,
+    required PlayerId playerId,
+    required GameDate date,
+  }) {
+    if (!_config.isWindowOpen(date.month)) {
+      return 'A janela de transferências está fechada.';
+    }
+
+    final player = _registry.getPlayer(playerId);
+    if (player == null) {
+      return 'Jogador não encontrado.';
+    }
+    if (player.clubId == buyerId) {
+      return 'Este jogador já está no teu plantel.';
+    }
+
+    final buyerFinance = _registry.clubFinances[buyerId];
+    if (buyerFinance == null) {
+      return 'Finanças do clube indisponíveis.';
+    }
+    if (buyerFinance.transfersCompletedThisWindow >=
+        _config.maxTransfersPerClubPerWindow) {
+      return 'Limite de transferências nesta janela '
+          '(${_config.maxTransfersPerClubPerWindow}).';
+    }
+
+    if (_alreadyTransferredThisMonth(playerId, date)) {
+      return 'Este jogador já foi transferido este mês.';
+    }
+
+    final sellerId = player.clubId;
+    final fee = _valueService.calculate(
+      player,
+      club: _registry.getClub(sellerId),
+    );
+    final ask = (fee * _config.feeAcceptRatio).round();
+    if (buyerFinance.balance < ask) {
+      return 'Saldo insuficiente para esta oferta.';
+    }
+
+    _executeTransfer(
+      player: player,
+      fromClubId: sellerId,
+      toClubId: buyerId,
+      fee: ask,
+      date: date,
+    );
+    return null;
+  }
+
+  /// Contratação a custo zero (contrato a acabar / livre).
+  String? tryUserSignFree({
+    required ClubId buyerId,
+    required PlayerId playerId,
+    required GameDate date,
+  }) {
+    if (!_config.isWindowOpen(date.month)) {
+      return 'A janela de transferências está fechada.';
+    }
+
+    final player = _registry.getPlayer(playerId);
+    if (player == null) {
+      return 'Jogador não encontrado.';
+    }
+    if (player.clubId == buyerId) {
+      return 'Este jogador já está no teu plantel.';
+    }
+    if (player.contractEndYear > date.year) {
+      return 'Este jogador ainda tem contrato em vigor.';
+    }
+
+    final buyerFinance = _registry.clubFinances[buyerId];
+    if (buyerFinance == null) {
+      return 'Finanças do clube indisponíveis.';
+    }
+    if (buyerFinance.transfersCompletedThisWindow >=
+        _config.maxTransfersPerClubPerWindow) {
+      return 'Limite de transferências nesta janela '
+          '(${_config.maxTransfersPerClubPerWindow}).';
+    }
+
+    _executeTransfer(
+      player: player,
+      fromClubId: player.clubId,
+      toClubId: buyerId,
+      fee: 0,
+      date: date,
+      isFree: true,
+    );
+    return null;
+  }
+
   (Player, int)? _findTransferTarget(
     ClubId buyerId,
     int maxBudget,

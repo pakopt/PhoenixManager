@@ -210,6 +210,24 @@ class GameController extends ChangeNotifier {
     return error;
   }
 
+  /// Compra no mercado. Devolve erro ou `null`.
+  String? tryBuyPlayer(PlayerId playerId) {
+    final error = _session?.tryBuyPlayer(playerId);
+    if (error == null) {
+      _afterSessionMutation();
+    }
+    return error;
+  }
+
+  /// Assinatura livre. Devolve erro ou `null`.
+  String? trySignFreeAgent(PlayerId playerId) {
+    final error = _session?.trySignFreeAgent(playerId);
+    if (error == null) {
+      _afterSessionMutation();
+    }
+    return error;
+  }
+
   /// Returns error message on failure, null on success.
   String? startNextSeason() {
     final error = _session?.beginNextSeason();

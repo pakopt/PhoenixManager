@@ -112,6 +112,57 @@ class GameSession {
     );
   }
 
+  /// Oferta de compra no mercado. Devolve erro ou `null`.
+  String? tryBuyPlayer(PlayerId playerId) {
+    return _context.economyRunner.tryUserBuyPlayer(
+      buyerId: userClubId,
+      playerId: playerId,
+      date: currentDate,
+    );
+  }
+
+  /// Assinatura a custo zero (contrato expirado). Devolve erro ou `null`.
+  String? trySignFreeAgent(PlayerId playerId) {
+    return _context.economyRunner.tryUserSignFreeAgent(
+      buyerId: userClubId,
+      playerId: playerId,
+      date: currentDate,
+    );
+  }
+
+  /// Valor de mercado estimado (PlayerValueService).
+  int playerMarketValue(Player player) {
+    return const PlayerValueService().calculate(
+      player,
+      club: registry.getClub(player.clubId),
+    );
+  }
+
+  /// Valor pedido (feeAcceptRatio).
+  int playerAskPrice(Player player) {
+    final value = playerMarketValue(player);
+    return (value * transferConfig.feeAcceptRatio).round();
+  }
+
+  /// Jogadores de outros clubes (mercado), ordenados por CA.
+  List<Player> get marketPlayers {
+    final list = registry.players.values
+        .where((p) => p.clubId != userClubId)
+        .toList()
+      ..sort((a, b) => b.currentAbility.compareTo(a.currentAbility));
+    return list;
+  }
+
+  /// Jogadores com contrato a terminar / expirado (outros clubes).
+  List<Player> get freeAgentCandidates {
+    final year = currentDate.year;
+    final list = registry.players.values
+        .where((p) => p.clubId != userClubId && p.contractEndYear <= year)
+        .toList()
+      ..sort((a, b) => b.currentAbility.compareTo(a.currentAbility));
+    return list;
+  }
+
   Player? getPlayer(PlayerId id) => registry.getPlayer(id);
 
   List<Player> get lowMoralePlayers =>

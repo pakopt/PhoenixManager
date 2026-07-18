@@ -1,16 +1,16 @@
 /// Versão visível ao jogador — manter alinhada com `apps/phoenix_manager/pubspec.yaml`.
 /// Validar: `./scripts/check_app_version_sync.sh`
 abstract final class AppVersion {
-  static const label = '0.8.40';
-  static const buildNumber = 41;
-  static const engineLabel = 'PSE v0.8.40';
+  static const label = '0.8.41';
+  static const buildNumber = 42;
+  static const engineLabel = 'PSE v0.8.41';
 
   /// Pontos curtos para o diálogo «Novidades» após actualizar.
   static const whatsNew = <String>[
-    'Treinos estilo FootSim: rotina semanal e foco por jogador.',
-    'Clubes clicáveis na classificação — ficha com identidade e kit.',
-    'Dias de jogo na rotina de treino (adversário destacado).',
-    'Rotina e focos guardados por slot de carreira.',
+    'Transferências FootSim: Mercado, Livres e Histórico.',
+    'Fazer oferta / assinar a custo zero (janela aberta).',
+    'Resumo de orçamento, salários, saldo e plantel.',
+    'Pesquisa e fichas de jogadores no mercado.',
   ];
 
   /// Bloco curto para emails de feedback / bugs.

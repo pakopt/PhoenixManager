@@ -496,7 +496,7 @@ Usar estes valores **exactos**:
 |--------------------|-------|
 | `Package/Identity/Name` (`identity_name`) | `PhoenixManager.PhoenixManager` |
 | `Package/Identity/Publisher` (`publisher`) | `CN=4402D5F1-A78E-42D6-B8A3-BAEBB8F0513B` |
-| `Package/Properties/PublisherDisplayName` | `Phoenix Manager` |
+| `Package/Properties/PublisherDisplayName` (`publisher_display_name`) | `Phoenix Manager` |
 | Display name (`display_name`) | `Project Phoenix Manager` |
 
 ### 4. Upload de Packages no Partner Center

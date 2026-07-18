@@ -1,228 +1,534 @@
 import 'package:flutter/material.dart';
-import 'package:phoenix_ui/src/util/money_format.dart';
-import 'package:phoenix_ui/src/util/date_format.dart';
+import 'package:phoenix_core/phoenix_core.dart';
+import 'package:phoenix_engine/phoenix_engine.dart';
 import 'package:phoenix_ui/src/game/game_session.dart';
-import 'package:phoenix_ui/src/widgets/common_widgets.dart';
+import 'package:phoenix_ui/src/theme/phoenix_theme.dart';
+import 'package:phoenix_ui/src/util/money_format.dart';
+import 'package:phoenix_ui/src/util/player_display_profile.dart';
+import 'package:phoenix_ui/src/util/ui_feedback.dart';
 import 'package:phoenix_ui/src/widgets/empty_state.dart';
 import 'package:phoenix_ui/src/widgets/section_card.dart';
-import 'package:phoenix_ui/src/theme/phoenix_theme.dart';
+import 'package:phoenix_ui/src/widgets/staff_labels.dart';
 
-class FinancesScreen extends StatelessWidget {
+/// Finanças estilo FootSim × Phoenix — Visão geral + Massa salarial.
+class FinancesScreen extends StatefulWidget {
   const FinancesScreen({required this.session, super.key});
 
   final GameSession session;
 
   @override
+  State<FinancesScreen> createState() => _FinancesScreenState();
+}
+
+class _FinancesScreenState extends State<FinancesScreen> {
+  var _tabIndex = 0;
+
+  GameSession get session => widget.session;
+
+  @override
   Widget build(BuildContext context) {
     final finance = session.userFinance;
     final breakdown = session.salaryBreakdown;
-    final transfers = session.clubTransfers;
-    final ffpLimit = session.context.economyConfig.finance.ffpWageRatioLimit;
-    final theme = Theme.of(context);
+    final snapshot = _FinanceSnapshot.fromSession(session);
 
     return SafeArea(
-      child: ListView(
-        padding: const EdgeInsets.fromLTRB(0, 0, 0, 16),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          const ScreenPageHeader(
+          ScreenPageHeader(
             title: 'Finanças',
-            subtitle: 'Saldo, salários e transferências',
+            subtitle: finance == null
+                ? 'Sem dados financeiros'
+                : 'Saldo, orçamentos e infraestruturas',
           ),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 16),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-          if (finance != null) ...[
-            Row(
-              children: [
-                StatChip(
-                  label: 'Saldo',
-                  value: MoneyFormat.compact(finance.balance),
-                  color: PhoenixColors.positive,
-                ),
-                const SizedBox(width: 8),
-                StatChip(
-                  label: 'Salários/mês',
-                  value: MoneyFormat.compact(finance.monthlyWages),
-                ),
+            child: SegmentedButton<int>(
+              segments: const [
+                ButtonSegment(value: 0, label: Text('Visão geral')),
+                ButtonSegment(value: 1, label: Text('Massa salarial')),
               ],
-            ),
-            const SizedBox(height: 8),
-            Row(
-              children: [
-                StatChip(
-                  label: 'Receita época',
-                  value: MoneyFormat.compact(finance.seasonRevenue),
-                ),
-                const SizedBox(width: 8),
-                StatChip(
-                  label: 'Despesas época',
-                  value: MoneyFormat.compact(finance.seasonExpenses),
-                ),
-              ],
-            ),
-            const SizedBox(height: 8),
-            Row(
-              children: [
-                StatChip(
-                  label: 'Resultado época',
-                  value: MoneyFormat.compact(
-                    finance.seasonRevenue - finance.seasonExpenses,
-                  ),
-                  color: finance.seasonRevenue >= finance.seasonExpenses
-                      ? Colors.green
-                      : Colors.red,
-                ),
-              ],
-            ),
-            const SizedBox(height: 16),
-            Card(
-              child: Padding(
-                padding: const EdgeInsets.all(16),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      'Despesas salariais mensais',
-                      style: theme.textTheme.titleSmall,
-                    ),
-                    const SizedBox(height: 4),
-                    Text(
-                      '${session.squad.length} jogadores · '
-                      '${session.userStaff.length} staff · '
-                      '${session.userCoach != null ? '1 treinador' : 'sem treinador'}',
-                      style: theme.textTheme.bodySmall?.copyWith(
-                        color: theme.colorScheme.outline,
-                      ),
-                    ),
-                    const SizedBox(height: 12),
-                    _SalaryRow(
-                      label: 'Jogadores',
-                      amount: breakdown.players,
-                      total: breakdown.total,
-                      color: theme.colorScheme.primary,
-                    ),
-                    _SalaryRow(
-                      label: 'Staff',
-                      amount: breakdown.staff,
-                      total: breakdown.total,
-                      color: theme.colorScheme.secondary,
-                    ),
-                    _SalaryRow(
-                      label: 'Treinador',
-                      amount: breakdown.coach,
-                      total: breakdown.total,
-                      color: theme.colorScheme.tertiary,
-                    ),
-                    const Divider(height: 24),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(
-                          'Total mensal',
-                          style: theme.textTheme.titleSmall,
-                        ),
-                        Text(
-                          MoneyFormat.compact(breakdown.total),
-                          style: theme.textTheme.titleSmall?.copyWith(
-                            fontWeight: FontWeight.bold,
-                            color: theme.colorScheme.primary,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
-              ),
-            ),
-            const SizedBox(height: 16),
-            Builder(
-              builder: (context) {
-                final overLimit = finance.wageToRevenueRatio > ffpLimit;
-                final ratioPct =
-                    (finance.wageToRevenueRatio * 100).toStringAsFixed(1);
-                final limitPct = (ffpLimit * 100).toStringAsFixed(0);
-                final status =
-                    overLimit ? 'Acima do limite FFP' : 'Dentro do limite FFP';
-                return Semantics(
-                  label:
-                      'Rácio salarial sobre receita $ratioPct por cento. '
-                      'Limite $limitPct por cento. $status',
-                  excludeSemantics: true,
-                  child: Card(
-                    child: ListTile(
-                      title: const Text('Rácio salarial / receita (FFP)'),
-                      subtitle: Text('$ratioPct% (limite $limitPct%) · $status'),
-                      trailing: Icon(
-                        overLimit
-                            ? Icons.warning_amber
-                            : Icons.check_circle_outline,
-                        color: overLimit ? Colors.orange : Colors.green,
-                      ),
-                    ),
-                  ),
-                );
+              selected: {_tabIndex},
+              onSelectionChanged: (selection) {
+                setState(() => _tabIndex = selection.first);
               },
             ),
-          ],
-          const SizedBox(height: 24),
-          Row(
-            children: [
-              Text(
-                'Transferências',
-                style: Theme.of(context).textTheme.titleMedium,
-              ),
-              if (transfers.isNotEmpty) ...[
-                const SizedBox(width: 8),
-                Text(
-                  '(${transfers.length > 12 ? '12 de ${transfers.length}' : transfers.length})',
-                  style: theme.textTheme.bodySmall?.copyWith(
-                    color: theme.colorScheme.outline,
-                  ),
-                ),
-              ],
-            ],
           ),
           const SizedBox(height: 8),
-          if (transfers.isEmpty)
-            const EmptyState(
-              icon: Icons.swap_horiz,
-              message: 'Nenhuma transferência registada nesta carreira.',
-            )
-          else
-            ...transfers.take(12).map(
-                  (transfer) {
-                    final playerName =
-                        session.registry.getPlayer(transfer.playerId)?.name ??
-                            transfer.playerId.value;
-                    final from = session.clubName(transfer.fromClubId);
-                    final to = session.clubName(transfer.toClubId);
-                    final feeLabel = transfer.isFree
-                        ? 'livre'
-                        : MoneyFormat.compact(transfer.fee);
-                    return Semantics(
-                      label:
-                          'Transferência: $playerName, de $from para $to, $feeLabel, '
-                          '${DateFormatUtil.gameDate(transfer.date)}',
-                      excludeSemantics: true,
-                      child: ListTile(
-                        leading: Icon(
-                          transfer.isFree
-                              ? Icons.person_off
-                              : Icons.swap_horiz,
-                        ),
-                        title: Text(playerName),
-                        subtitle: Text(
-                          '$from → $to · '
-                          '${DateFormatUtil.gameDate(transfer.date)}',
-                        ),
-                        trailing: transfer.isFree
-                            ? const Text('Livre')
-                            : Text(MoneyFormat.compact(transfer.fee)),
+          Expanded(
+            child: finance == null
+                ? const EmptyState(
+                    icon: Icons.account_balance_wallet_outlined,
+                    message: 'Sem dados financeiros nesta carreira.',
+                  )
+                : _tabIndex == 0
+                    ? _OverviewTab(
+                        session: session,
+                        finance: finance,
+                        snapshot: snapshot,
+                      )
+                    : _WageBillTab(
+                        session: session,
+                        finance: finance,
+                        breakdown: breakdown,
                       ),
-                    );
-                  },
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+// ─── Dados derivados (época actual) ─────────────────────────────────────────
+
+class _FinanceSnapshot {
+  const _FinanceSnapshot({
+    required this.matchDay,
+    required this.sponsors,
+    required this.tvMoney,
+    required this.merchandise,
+    required this.prizeMoney,
+    required this.transfersIn,
+    required this.wages,
+    required this.managerSalary,
+    required this.stadiumUpkeep,
+    required this.academyCost,
+    required this.trainingCost,
+    required this.transfersOut,
+    required this.totalRevenue,
+    required this.totalExpenses,
+    required this.monthlyPnL,
+    required this.transferBudget,
+    required this.sponsorAnnual,
+    required this.trainingLevel,
+    required this.academyLevel,
+    required this.stadiumSeats,
+  });
+
+  factory _FinanceSnapshot.fromSession(GameSession session) {
+    final finance = session.userFinance;
+    final config = session.context.economyConfig.finance;
+    final club = session.userClub;
+    final breakdown = session.salaryBreakdown;
+    final balance = finance?.balance ?? 0;
+    final monthlyWages = finance?.monthlyWages ?? 0;
+    final seasonRevenue = finance?.seasonRevenue ?? 0;
+    final seasonExpenses = finance?.seasonExpenses ?? 0;
+    final academyLevel = finance?.academyLevel ?? 2;
+
+    var matchDay = 0;
+    var wagesPaid = 0;
+    for (final event in session.context.eventBus.history) {
+      if (event is TicketRevenueEvent && event.clubId == GameSession.userClubId) {
+        matchDay += event.amount;
+      } else if (event is SalariesPaidEvent &&
+          event.clubId == GameSession.userClubId) {
+        wagesPaid += event.amount;
+      }
+    }
+
+    var transfersIn = 0;
+    var transfersOut = 0;
+    for (final t in session.clubTransfers) {
+      if (t.fee <= 0) {
+        continue;
+      }
+      if (t.toClubId == GameSession.userClubId) {
+        transfersIn += t.fee;
+      }
+      if (t.fromClubId == GameSession.userClubId) {
+        transfersOut += t.fee;
+      }
+    }
+
+    // Motor: receitas = bilhetes + patrocínio diário + transferências in.
+    final sponsorsRaw = seasonRevenue - matchDay - transfersIn;
+    final sponsors = sponsorsRaw > 0 ? sponsorsRaw : 0;
+    // Categorias ainda sem motor próprio — mantêm linha FootSim a €0.
+    const tvMoney = 0;
+    const merchandise = 0;
+    const prizeMoney = 0;
+
+    // Despesas: salários pagos + transferências out (+ residual operacional).
+    final salaryPool = wagesPaid > 0
+        ? wagesPaid
+        : (seasonExpenses - transfersOut).clamp(0, seasonExpenses);
+    final totalBreakdown = breakdown.total <= 0 ? 1 : breakdown.total;
+    final wages = ((salaryPool * breakdown.players) / totalBreakdown).round();
+    final managerSalary =
+        ((salaryPool * breakdown.coach) / totalBreakdown).round();
+    final staffShare =
+        ((salaryPool * breakdown.staff) / totalBreakdown).round();
+    final residualOps =
+        (seasonExpenses - transfersOut - wages - managerSalary - staffShare)
+            .clamp(0, seasonExpenses);
+    // Staff + residual → linhas de infra (FootSim), sem inventar dinheiro extra.
+    final opsPool = staffShare + residualOps;
+    final stadiumUpkeep = (opsPool * 0.55).round();
+    final academyCost = (opsPool * 0.225).round();
+    final trainingCost = opsPool - stadiumUpkeep - academyCost;
+
+    final monthsIntoSeason = _monthsIntoSeason(session.currentDate);
+    final net = seasonRevenue - seasonExpenses;
+    final monthlyPnL = (net / monthsIntoSeason).round();
+
+    // Orçamento de transferências: saldo menos 1 mês de salários reservado.
+    final transferBudget = (balance - monthlyWages).clamp(0, balance);
+
+    final trainingLevel = academyLevel.clamp(1, 5);
+    final sponsorAnnual = config.dailySponsorIncome * 365;
+
+    return _FinanceSnapshot(
+      matchDay: matchDay,
+      sponsors: sponsors,
+      tvMoney: tvMoney,
+      merchandise: merchandise,
+      prizeMoney: prizeMoney,
+      transfersIn: transfersIn,
+      wages: wages,
+      managerSalary: managerSalary,
+      stadiumUpkeep: stadiumUpkeep,
+      academyCost: academyCost,
+      trainingCost: trainingCost,
+      transfersOut: transfersOut,
+      totalRevenue: seasonRevenue,
+      totalExpenses: seasonExpenses,
+      monthlyPnL: monthlyPnL,
+      transferBudget: transferBudget,
+      sponsorAnnual: sponsorAnnual,
+      trainingLevel: trainingLevel,
+      academyLevel: academyLevel.clamp(1, 5),
+      stadiumSeats: club.stadiumCapacity,
+    );
+  }
+
+  final int matchDay;
+  final int sponsors;
+  final int tvMoney;
+  final int merchandise;
+  final int prizeMoney;
+  final int transfersIn;
+  final int wages;
+  final int managerSalary;
+  final int stadiumUpkeep;
+  final int academyCost;
+  final int trainingCost;
+  final int transfersOut;
+  final int totalRevenue;
+  final int totalExpenses;
+  final int monthlyPnL;
+  final int transferBudget;
+  final int sponsorAnnual;
+  final int trainingLevel;
+  final int academyLevel;
+  final int stadiumSeats;
+
+  static int _monthsIntoSeason(GameDate date) {
+    // Época começa ~Agosto (mês 8).
+    final month = date.month;
+    if (month >= 8) {
+      return (month - 8) + 1;
+    }
+    return (month + 4).clamp(1, 12);
+  }
+}
+
+// ─── Visão geral ────────────────────────────────────────────────────────────
+
+class _OverviewTab extends StatelessWidget {
+  const _OverviewTab({
+    required this.session,
+    required this.finance,
+    required this.snapshot,
+  });
+
+  final GameSession session;
+  final ClubFinance finance;
+  final _FinanceSnapshot snapshot;
+
+  @override
+  Widget build(BuildContext context) {
+    return ListView(
+      padding: const EdgeInsets.fromLTRB(16, 8, 16, 24),
+      children: [
+        _KpiRow(
+          balance: finance.balance,
+          transferBudget: snapshot.transferBudget,
+          wageBudget: finance.monthlyWages,
+          monthlyPnL: snapshot.monthlyPnL,
+        ),
+        const SizedBox(height: 16),
+        _RevenueExpensesRow(snapshot: snapshot),
+        const SizedBox(height: 20),
+        Text(
+          'Instalações',
+          style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                fontWeight: FontWeight.w700,
+              ),
+        ),
+        const SizedBox(height: 10),
+        _FacilitiesRow(snapshot: snapshot),
+        const SizedBox(height: 20),
+        Text(
+          'Patrocínio',
+          style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                fontWeight: FontWeight.w700,
+              ),
+        ),
+        const SizedBox(height: 10),
+        _SponsorCard(
+          name: 'Phoenix Partners',
+          annual: snapshot.sponsorAnnual,
+          active: snapshot.sponsors > 0 ||
+              session.context.economyConfig.finance.dailySponsorIncome > 0,
+        ),
+        const SizedBox(height: 20),
+        _FfpBanner(finance: finance, session: session),
+      ],
+    );
+  }
+}
+
+class _KpiRow extends StatelessWidget {
+  const _KpiRow({
+    required this.balance,
+    required this.transferBudget,
+    required this.wageBudget,
+    required this.monthlyPnL,
+  });
+
+  final int balance;
+  final int transferBudget;
+  final int wageBudget;
+  final int monthlyPnL;
+
+  @override
+  Widget build(BuildContext context) {
+    final cards = [
+      _KpiCard(
+        label: 'SALDO',
+        value: MoneyFormat.compact(balance),
+        valueColor: PhoenixColors.positive,
+      ),
+      _KpiCard(
+        label: 'ORÇAMENTO TRANSF.',
+        value: MoneyFormat.compact(transferBudget),
+      ),
+      _KpiCard(
+        label: 'ORÇAMENTO SALARIAL',
+        value: '${MoneyFormat.compact(wageBudget)}/mês',
+      ),
+      _KpiCard(
+        label: 'P&L MENSAL',
+        value: _signedMoney(monthlyPnL),
+        valueColor: monthlyPnL >= 0
+            ? PhoenixColors.positive
+            : PhoenixColors.negative,
+      ),
+    ];
+
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        final wide = constraints.maxWidth >= 720;
+        if (wide) {
+          return Row(
+            children: [
+              for (var i = 0; i < cards.length; i++) ...[
+                if (i > 0) const SizedBox(width: 10),
+                Expanded(child: cards[i]),
+              ],
+            ],
+          );
+        }
+        return Column(
+          children: [
+            Row(
+              children: [
+                Expanded(child: cards[0]),
+                const SizedBox(width: 10),
+                Expanded(child: cards[1]),
+              ],
+            ),
+            const SizedBox(height: 10),
+            Row(
+              children: [
+                Expanded(child: cards[2]),
+                const SizedBox(width: 10),
+                Expanded(child: cards[3]),
+              ],
+            ),
+          ],
+        );
+      },
+    );
+  }
+}
+
+class _KpiCard extends StatelessWidget {
+  const _KpiCard({
+    required this.label,
+    required this.value,
+    this.valueColor,
+  });
+
+  final String label;
+  final String value;
+  final Color? valueColor;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.fromLTRB(14, 14, 14, 16),
+      decoration: BoxDecoration(
+        color: PhoenixColors.card,
+        borderRadius: BorderRadius.circular(12),
+        border: Border.all(color: PhoenixColors.cardBorder),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            label,
+            style: const TextStyle(
+              fontSize: 11,
+              letterSpacing: 0.4,
+              fontWeight: FontWeight.w700,
+              color: PhoenixColors.muted,
+            ),
+          ),
+          const SizedBox(height: 8),
+          Text(
+            value,
+            style: TextStyle(
+              fontSize: 22,
+              fontWeight: FontWeight.w800,
+              height: 1.1,
+              color: valueColor ?? PhoenixColors.textPrimary,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class _RevenueExpensesRow extends StatelessWidget {
+  const _RevenueExpensesRow({required this.snapshot});
+
+  final _FinanceSnapshot snapshot;
+
+  @override
+  Widget build(BuildContext context) {
+    final revenue = [
+      ('Bilheteira', snapshot.matchDay),
+      ('Patrocínios', snapshot.sponsors),
+      ('TV', snapshot.tvMoney),
+      ('Merchandising', snapshot.merchandise),
+      ('Prémios', snapshot.prizeMoney),
+      ('Transferências (in)', snapshot.transfersIn),
+    ];
+    final expenses = [
+      ('Salários', snapshot.wages),
+      ('Treinador', snapshot.managerSalary),
+      ('Estádio', snapshot.stadiumUpkeep),
+      ('Academia', snapshot.academyCost),
+      ('Treinos', snapshot.trainingCost),
+      ('Transferências (out)', snapshot.transfersOut),
+    ];
+
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        final wide = constraints.maxWidth >= 700;
+        final revenueCard = _LedgerCard(
+          title: 'Receitas',
+          rows: revenue,
+          totalLabel: 'Total receitas',
+          totalValue: snapshot.totalRevenue,
+          totalColor: PhoenixColors.positive,
+        );
+        final expenseCard = _LedgerCard(
+          title: 'Despesas',
+          rows: expenses,
+          totalLabel: 'Total despesas',
+          totalValue: snapshot.totalExpenses,
+          totalColor: PhoenixColors.negative,
+        );
+        if (wide) {
+          return Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Expanded(child: revenueCard),
+              const SizedBox(width: 12),
+              Expanded(child: expenseCard),
+            ],
+          );
+        }
+        return Column(
+          children: [
+            revenueCard,
+            const SizedBox(height: 12),
+            expenseCard,
+          ],
+        );
+      },
+    );
+  }
+}
+
+class _LedgerCard extends StatelessWidget {
+  const _LedgerCard({
+    required this.title,
+    required this.rows,
+    required this.totalLabel,
+    required this.totalValue,
+    required this.totalColor,
+  });
+
+  final String title;
+  final List<(String, int)> rows;
+  final String totalLabel;
+  final int totalValue;
+  final Color totalColor;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      decoration: BoxDecoration(
+        color: PhoenixColors.card,
+        borderRadius: BorderRadius.circular(12),
+        border: Border.all(color: PhoenixColors.cardBorder),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          Padding(
+            padding: const EdgeInsets.fromLTRB(16, 14, 16, 8),
+            child: Text(
+              title,
+              style: const TextStyle(
+                fontWeight: FontWeight.w700,
+                fontSize: 15,
+              ),
+            ),
+          ),
+          for (final row in rows) _LedgerRow(label: row.$1, amount: row.$2),
+          const Divider(height: 1, color: PhoenixColors.cardBorder),
+          Padding(
+            padding: const EdgeInsets.fromLTRB(16, 12, 16, 14),
+            child: Row(
+              children: [
+                Expanded(
+                  child: Text(
+                    totalLabel,
+                    style: const TextStyle(fontWeight: FontWeight.w800),
+                  ),
+                ),
+                Text(
+                  MoneyFormat.compact(totalValue),
+                  style: TextStyle(
+                    fontWeight: FontWeight.w800,
+                    color: totalColor,
+                  ),
                 ),
               ],
             ),
@@ -233,8 +539,475 @@ class FinancesScreen extends StatelessWidget {
   }
 }
 
-class _SalaryRow extends StatelessWidget {
-  const _SalaryRow({
+class _LedgerRow extends StatelessWidget {
+  const _LedgerRow({required this.label, required this.amount});
+
+  final String label;
+  final int amount;
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 9),
+      child: Row(
+        children: [
+          Expanded(
+            child: Text(
+              label,
+              style: const TextStyle(
+                color: PhoenixColors.textSecondary,
+                fontSize: 13,
+              ),
+            ),
+          ),
+          Text(
+            MoneyFormat.compact(amount),
+            style: const TextStyle(
+              fontWeight: FontWeight.w600,
+              fontSize: 13,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class _FacilitiesRow extends StatelessWidget {
+  const _FacilitiesRow({required this.snapshot});
+
+  final _FinanceSnapshot snapshot;
+
+  @override
+  Widget build(BuildContext context) {
+    final cards = [
+      _FacilityCard(
+        title: 'Centro de treinos',
+        levelLabel: 'Nível ${snapshot.trainingLevel}',
+        detail: snapshot.trainingLevel >= 5
+            ? 'Nível máximo'
+            : 'Upgrade p/ nível ${snapshot.trainingLevel + 1}: '
+                '${MoneyFormat.compact(_upgradeCost(snapshot.trainingLevel))} · 75 dias',
+        showUpgrade: snapshot.trainingLevel < 5,
+      ),
+      _FacilityCard(
+        title: 'Academia de jovens',
+        levelLabel: 'Nível ${snapshot.academyLevel}',
+        detail: snapshot.academyLevel >= 5
+            ? 'Nível máximo'
+            : 'Upgrade p/ nível ${snapshot.academyLevel + 1}: '
+                '${MoneyFormat.compact(_upgradeCost(snapshot.academyLevel))} · 75 dias',
+        showUpgrade: snapshot.academyLevel < 5,
+      ),
+      _FacilityCard(
+        title: 'Estádio',
+        levelLabel: '${_seatsLabel(snapshot.stadiumSeats)} lugares',
+        detail: 'Capacidade actual',
+        showUpgrade: false,
+      ),
+    ];
+
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        final wide = constraints.maxWidth >= 720;
+        if (wide) {
+          return Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              for (var i = 0; i < cards.length; i++) ...[
+                if (i > 0) const SizedBox(width: 10),
+                Expanded(child: cards[i]),
+              ],
+            ],
+          );
+        }
+        return Column(
+          children: [
+            for (var i = 0; i < cards.length; i++) ...[
+              if (i > 0) const SizedBox(height: 10),
+              cards[i],
+            ],
+          ],
+        );
+      },
+    );
+  }
+
+  static int _upgradeCost(int level) {
+    // Escala FootSim-like: ~€2.5M no nível 4→5.
+    return switch (level) {
+      1 => 400000,
+      2 => 800000,
+      3 => 1500000,
+      _ => 2500000,
+    };
+  }
+
+  static String _seatsLabel(int seats) {
+    final formatted = seats.toString().replaceAllMapped(
+          RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'),
+          (m) => '${m[1]}.',
+        );
+    return formatted;
+  }
+}
+
+class _FacilityCard extends StatelessWidget {
+  const _FacilityCard({
+    required this.title,
+    required this.levelLabel,
+    required this.detail,
+    required this.showUpgrade,
+  });
+
+  final String title;
+  final String levelLabel;
+  final String detail;
+  final bool showUpgrade;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.all(14),
+      decoration: BoxDecoration(
+        color: PhoenixColors.card,
+        borderRadius: BorderRadius.circular(12),
+        border: Border.all(color: PhoenixColors.cardBorder),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Expanded(
+                child: Text(
+                  title,
+                  style: const TextStyle(
+                    fontWeight: FontWeight.w700,
+                    fontSize: 14,
+                  ),
+                ),
+              ),
+              Text(
+                levelLabel,
+                style: const TextStyle(
+                  fontWeight: FontWeight.w700,
+                  fontSize: 13,
+                  color: PhoenixColors.textSecondary,
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 8),
+          Text(
+            detail,
+            style: const TextStyle(
+              fontSize: 12,
+              color: PhoenixColors.muted,
+              height: 1.35,
+            ),
+          ),
+          if (showUpgrade) ...[
+            const SizedBox(height: 12),
+            OutlinedButton(
+              onPressed: () {
+                UiFeedback.action();
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(
+                    behavior: SnackBarBehavior.floating,
+                    content: Text(
+                      'Melhorias de instalações — em breve no motor.',
+                    ),
+                  ),
+                );
+              },
+              style: OutlinedButton.styleFrom(
+                foregroundColor: PhoenixColors.textPrimary,
+                side: const BorderSide(color: PhoenixColors.cardBorder),
+                padding: const EdgeInsets.symmetric(vertical: 12),
+              ),
+              child: const Text('Pedir upgrade'),
+            ),
+          ],
+        ],
+      ),
+    );
+  }
+}
+
+class _SponsorCard extends StatelessWidget {
+  const _SponsorCard({
+    required this.name,
+    required this.annual,
+    required this.active,
+  });
+
+  final String name;
+  final int annual;
+  final bool active;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
+      decoration: BoxDecoration(
+        color: PhoenixColors.card,
+        borderRadius: BorderRadius.circular(12),
+        border: Border.all(color: PhoenixColors.cardBorder),
+      ),
+      child: Row(
+        children: [
+          Container(
+            width: 40,
+            height: 40,
+            decoration: BoxDecoration(
+              color: PhoenixColors.headerBar,
+              borderRadius: BorderRadius.circular(8),
+              border: Border.all(color: PhoenixColors.cardBorder),
+            ),
+            child: const Icon(Icons.handshake_outlined, size: 20),
+          ),
+          const SizedBox(width: 12),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  name,
+                  style: const TextStyle(
+                    fontWeight: FontWeight.w700,
+                    fontSize: 14,
+                  ),
+                ),
+                const SizedBox(height: 2),
+                Text(
+                  active
+                      ? 'Contrato activo · rendimento diário'
+                      : 'Contrato de patrocínio expirado',
+                  style: TextStyle(
+                    fontSize: 12,
+                    color: active
+                        ? PhoenixColors.muted
+                        : PhoenixColors.warning,
+                    fontWeight: active ? FontWeight.w400 : FontWeight.w600,
+                  ),
+                ),
+              ],
+            ),
+          ),
+          Text(
+            '${MoneyFormat.compact(annual)}/ano',
+            style: const TextStyle(
+              fontWeight: FontWeight.w800,
+              fontSize: 14,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class _FfpBanner extends StatelessWidget {
+  const _FfpBanner({required this.finance, required this.session});
+
+  final ClubFinance finance;
+  final GameSession session;
+
+  @override
+  Widget build(BuildContext context) {
+    final limit = session.context.economyConfig.finance.ffpWageRatioLimit;
+    final overLimit = finance.wageToRevenueRatio > limit;
+    final ratioPct = (finance.wageToRevenueRatio * 100).toStringAsFixed(1);
+    final limitPct = (limit * 100).toStringAsFixed(0);
+
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
+      decoration: BoxDecoration(
+        color: PhoenixColors.card,
+        borderRadius: BorderRadius.circular(12),
+        border: Border.all(
+          color: overLimit
+              ? PhoenixColors.warning.withValues(alpha: 0.5)
+              : PhoenixColors.cardBorder,
+        ),
+      ),
+      child: Row(
+        children: [
+          Icon(
+            overLimit ? Icons.warning_amber : Icons.check_circle_outline,
+            color: overLimit ? PhoenixColors.warning : PhoenixColors.positive,
+          ),
+          const SizedBox(width: 10),
+          Expanded(
+            child: Text(
+              'FFP · rácio salarial $ratioPct% '
+              '(limite $limitPct%) · '
+              '${overLimit ? 'acima do limite' : 'dentro do limite'}',
+              style: const TextStyle(fontSize: 13),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+// ─── Massa salarial ─────────────────────────────────────────────────────────
+
+class _WageBillTab extends StatelessWidget {
+  const _WageBillTab({
+    required this.session,
+    required this.finance,
+    required this.breakdown,
+  });
+
+  final GameSession session;
+  final ClubFinance finance;
+  final SalaryBreakdown breakdown;
+
+  @override
+  Widget build(BuildContext context) {
+    final players = [...session.squad]
+      ..sort((a, b) => b.salary.compareTo(a.salary));
+    final staff = [...session.userStaff]
+      ..sort((a, b) => b.salary.compareTo(a.salary));
+    final coach = session.userCoach;
+
+    return ListView(
+      padding: const EdgeInsets.fromLTRB(16, 8, 16, 24),
+      children: [
+        Container(
+          padding: const EdgeInsets.all(16),
+          decoration: BoxDecoration(
+            color: PhoenixColors.card,
+            borderRadius: BorderRadius.circular(12),
+            border: Border.all(color: PhoenixColors.cardBorder),
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                'Despesas salariais mensais',
+                style: Theme.of(context).textTheme.titleSmall?.copyWith(
+                      fontWeight: FontWeight.w700,
+                    ),
+              ),
+              const SizedBox(height: 4),
+              Text(
+                '${session.squad.length} jogadores · '
+                '${session.userStaff.length} staff · '
+                '${coach != null ? '1 treinador' : 'sem treinador'}',
+                style: const TextStyle(
+                  color: PhoenixColors.muted,
+                  fontSize: 12,
+                ),
+              ),
+              const SizedBox(height: 14),
+              _SalaryBar(
+                label: 'Jogadores',
+                amount: breakdown.players,
+                total: breakdown.total,
+                color: Theme.of(context).colorScheme.primary,
+              ),
+              _SalaryBar(
+                label: 'Staff',
+                amount: breakdown.staff,
+                total: breakdown.total,
+                color: Theme.of(context).colorScheme.secondary,
+              ),
+              _SalaryBar(
+                label: 'Treinador',
+                amount: breakdown.coach,
+                total: breakdown.total,
+                color: Theme.of(context).colorScheme.tertiary,
+              ),
+              const Divider(height: 24, color: PhoenixColors.cardBorder),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  const Text(
+                    'Total mensal',
+                    style: TextStyle(fontWeight: FontWeight.w700),
+                  ),
+                  Text(
+                    MoneyFormat.compact(breakdown.total),
+                    style: TextStyle(
+                      fontWeight: FontWeight.w800,
+                      color: Theme.of(context).colorScheme.primary,
+                    ),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 4),
+              Text(
+                'Massa registada: ${MoneyFormat.compact(finance.monthlyWages)}/mês',
+                style: const TextStyle(
+                  fontSize: 11,
+                  color: PhoenixColors.muted,
+                ),
+              ),
+            ],
+          ),
+        ),
+        const SizedBox(height: 16),
+        Text(
+          'Plantel',
+          style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                fontWeight: FontWeight.w700,
+              ),
+        ),
+        const SizedBox(height: 8),
+        ...players.map(
+          (p) {
+            final profile = PlayerDisplayProfile.from(p);
+            return _WageTile(
+              title: p.name,
+              subtitle: profile.positionLabel,
+              amount: p.salary,
+            );
+          },
+        ),
+        if (coach != null) ...[
+          const SizedBox(height: 16),
+          Text(
+            'Treinador',
+            style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                  fontWeight: FontWeight.w700,
+                ),
+          ),
+          const SizedBox(height: 8),
+          _WageTile(
+            title: coach.name,
+            subtitle: 'Treinador principal',
+            amount: breakdown.coach,
+          ),
+        ],
+        if (staff.isNotEmpty) ...[
+          const SizedBox(height: 16),
+          Text(
+            'Staff',
+            style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                  fontWeight: FontWeight.w700,
+                ),
+          ),
+          const SizedBox(height: 8),
+          ...staff.map(
+            (s) => _WageTile(
+              title: s.name,
+              subtitle: s.role.labelPt,
+              amount: s.salary,
+            ),
+          ),
+        ],
+      ],
+    );
+  }
+}
+
+class _SalaryBar extends StatelessWidget {
+  const _SalaryBar({
     required this.label,
     required this.amount,
     required this.total,
@@ -248,22 +1021,20 @@ class _SalaryRow extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
     final pct = total <= 0 ? 0.0 : (amount / total * 100);
 
     return Padding(
-      padding: const EdgeInsets.only(bottom: 8),
+      padding: const EdgeInsets.only(bottom: 10),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text(label, style: theme.textTheme.labelMedium),
+              Text(label, style: const TextStyle(fontSize: 13)),
               Text(
-                '${MoneyFormat.compact(amount)} '
-                '(${pct.toStringAsFixed(0)}%)',
-                style: theme.textTheme.labelMedium,
+                '${MoneyFormat.compact(amount)} (${pct.toStringAsFixed(0)}%)',
+                style: const TextStyle(fontSize: 13),
               ),
             ],
           ),
@@ -273,7 +1044,7 @@ class _SalaryRow extends StatelessWidget {
             child: LinearProgressIndicator(
               value: total <= 0 ? 0 : (amount / total).clamp(0.0, 1.0),
               minHeight: 6,
-              backgroundColor: theme.colorScheme.surfaceContainerHighest,
+              backgroundColor: PhoenixColors.headerBar,
               color: color,
             ),
           ),
@@ -281,4 +1052,66 @@ class _SalaryRow extends StatelessWidget {
       ),
     );
   }
+}
+
+class _WageTile extends StatelessWidget {
+  const _WageTile({
+    required this.title,
+    required this.subtitle,
+    required this.amount,
+  });
+
+  final String title;
+  final String subtitle;
+  final int amount;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      margin: const EdgeInsets.only(bottom: 6),
+      padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 11),
+      decoration: BoxDecoration(
+        color: PhoenixColors.card,
+        borderRadius: BorderRadius.circular(10),
+        border: Border.all(color: PhoenixColors.cardBorder),
+      ),
+      child: Row(
+        children: [
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  title,
+                  style: const TextStyle(fontWeight: FontWeight.w600),
+                ),
+                Text(
+                  subtitle,
+                  style: const TextStyle(
+                    fontSize: 11,
+                    color: PhoenixColors.muted,
+                  ),
+                ),
+              ],
+            ),
+          ),
+          Text(
+            MoneyFormat.perMonth(amount),
+            style: const TextStyle(fontWeight: FontWeight.w700),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+String _signedMoney(int value) {
+  final body = MoneyFormat.compact(value.abs());
+  if (value > 0) {
+    return '+$body';
+  }
+  if (value < 0) {
+    return '-$body';
+  }
+  return body;
 }

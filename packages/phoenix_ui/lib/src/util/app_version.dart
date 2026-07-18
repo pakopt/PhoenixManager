@@ -1,15 +1,15 @@
 /// Versão visível ao jogador — manter alinhada com `apps/phoenix_manager/pubspec.yaml`.
 /// Validar: `./scripts/check_app_version_sync.sh`
 abstract final class AppVersion {
-  static const label = '0.8.43';
-  static const buildNumber = 44;
-  static const engineLabel = 'PSE v0.8.43';
+  static const label = '0.8.44';
+  static const buildNumber = 45;
+  static const engineLabel = 'PSE v0.8.44';
 
   /// Pontos curtos para o diálogo «Novidades» após actualizar.
   static const whatsNew = <String>[
-    '«Guardar e sair» fecha a app à primeira (sem segundo clique).',
-    'Fluxo de saída do menu mais estável no desktop.',
-    'Correcções gerais de bugs e polish.',
+    'Finanças redesenhadas estilo FootSim (visão geral + massa salarial).',
+    'KPIs, receitas/despesas, instalações e patrocínio num só ecrã.',
+    'Lista salarial do plantel, staff e treinador.',
   ];
 
   /// Bloco curto para emails de feedback / bugs.

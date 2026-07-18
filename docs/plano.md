@@ -1,6 +1,6 @@
 # Plano — Project Phoenix Manager
 
-**Versão:** v0.8.43  
+**Versão:** v0.8.44  
 **Actualizado:** 18 de Julho de 2026  
 **Fase actual:** **E — Lançamento**
 
@@ -133,7 +133,7 @@ CLEAN_GRADLE=1 ./scripts/clean_dev_artifacts.sh   # inclui ~/.gradle/caches
 
 Detalhe oficial: [requisitos de teste Play](https://support.google.com/googleplay/android-developer/answer/14151465) · guia local: [`docs/STORE.md`](STORE.md) §9c–10
 
-**AAB actual:** `build/release/mobile/android/phoenix_manager.aab` (v0.8.43, versionCode 44)
+**AAB actual:** `build/release/mobile/android/phoenix_manager.aab` (v0.8.44, versionCode 45)
 
 Convite / QA para amigos: [`docs/BETA.md`](BETA.md) · textos: `./scripts/play_console_brief.sh`
 
@@ -204,14 +204,14 @@ Saída: `build/release/store/android/` — reutilizar quando a conta activar.
 
 | Campo | Valor actual |
 |-------|--------------|
-| `versionName` | `0.8.43` |
-| `versionCode` | `44` |
+| `versionName` | `0.8.44` |
+| `versionCode` | `45` |
 | Package / Bundle ID | `com.phoenix.manager` |
 
 **Próxima release:** editar `apps/phoenix_manager/pubspec.yaml`:
 
 ```yaml
-version: 0.8.43+44   # nome visível + versionCode (obrigatório incrementar +N)
+version: 0.8.44+45   # nome visível + versionCode (obrigatório incrementar +N)
 ```
 
 Depois: `./scripts/build_mobile.sh android` → novo AAB · `./scripts/check_app_version_sync.sh`
@@ -220,6 +220,7 @@ Depois: `./scripts/build_mobile.sh android` → novo AAB · `./scripts/check_app
 
 ## Histórico recente (Fase E + v0.8.x)
 
+- ✅ **v0.8.44** — Finanças FootSim (visão geral, massa salarial, instalações, patrocínio; versionCode 45)  
 - ✅ **v0.8.43** — Correcções gerais: «Guardar e sair» à primeira · fluxo de saída do menu (versionCode 44)  
 - ✅ **v0.8.42** — Dashboard full-width desktop · snackbars de conquista corrigidos (versionCode 43)  
 - ✅ **v0.8.41** — Transferências FootSim · ofertas / livres · compra no motor (versionCode 42)  
@@ -279,7 +280,7 @@ Depois: `./scripts/build_mobile.sh android` → novo AAB · `./scripts/check_app
 - ✅ `play_console_day1.sh` — guia upload quando conta activar  
 - ✅ Beta local — `local_beta.sh`, `docs/BETA.md`, `qa_manual.sh`  
 - ✅ Screenshots App Store — 5 capturas iOS (`capture_app_store_screenshots.sh`)  
-- ✅ Play Console — conta aprovada · **teste fechado activo** · AAB **v0.8.43+44**  
+- ✅ Play Console — conta aprovada · **teste fechado activo** · AAB **v0.8.44+45**  
 - 🔄 Produção — **≥12 opted-in × 14 dias** → candidatar acesso → promover (`docs/STORE.md` §9c–10) · `./scripts/play_14day_tracker.sh`  
 - ✅ Desktop — fullscreen Mac / Windows / Linux + «Sair do jogo»  
 - ✅ Polish UI v0.8.x — freeze v0.8.17–0.8.30; redesign FootSim × Phoenix em v0.8.31; A Coruja em v0.8.32; Táctica em v0.8.33

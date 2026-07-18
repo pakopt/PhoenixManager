@@ -74,6 +74,7 @@ abstract final class InboxMessageBuilder {
       NewSeasonStartedEvent e => _newSeason(e, index),
       SalariesPaidEvent e => _salaries(session, e, index),
       TicketRevenueEvent e => _tickets(session, e, index),
+      FacilityUpgradedEvent e => _facility(session, e, index),
       YouthIntakeEvent e => _youth(session, e, index),
       _ => null,
     };
@@ -305,6 +306,32 @@ abstract final class InboxMessageBuilder {
       body: body,
       dateLabel: DateFormatUtil.gameDate(e.date),
       icon: Icons.payments_outlined,
+      sortKey: _dateKey(e.date) * 1000 + (999 - index),
+    );
+  }
+
+  static InboxMessage _facility(
+    GameSession session,
+    FacilityUpgradedEvent e,
+    int index,
+  ) {
+    final kindLabel = switch (e.kind) {
+      FacilityKind.training => 'Centro de treinos',
+      FacilityKind.academy => 'Academia de jovens',
+    };
+    final title = 'Instalação melhorada';
+    final preview = '$kindLabel → nível ${e.newLevel}';
+    final body = '$kindLabel subiu para o nível ${e.newLevel}.\n'
+        'Custo: ${MoneyFormat.compact(e.cost)}\n'
+        'Data: ${DateFormatUtil.gameDate(e.date)}';
+    return InboxMessage(
+      id: 'fac_${e.kind.name}_${e.newLevel}_${e.date}_$index',
+      category: InboxCategory.board,
+      title: title,
+      preview: preview,
+      body: body,
+      dateLabel: DateFormatUtil.gameDate(e.date),
+      icon: Icons.construction_outlined,
       sortKey: _dateKey(e.date) * 1000 + (999 - index),
     );
   }

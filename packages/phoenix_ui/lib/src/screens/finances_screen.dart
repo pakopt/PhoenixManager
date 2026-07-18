@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:phoenix_core/phoenix_core.dart';
 import 'package:phoenix_engine/phoenix_engine.dart';
+import 'package:phoenix_ui/src/game/game_controller.dart';
 import 'package:phoenix_ui/src/game/game_session.dart';
 import 'package:phoenix_ui/src/theme/phoenix_theme.dart';
 import 'package:phoenix_ui/src/util/money_format.dart';
@@ -12,9 +13,9 @@ import 'package:phoenix_ui/src/widgets/staff_labels.dart';
 
 /// Finanças estilo FootSim × Phoenix — Visão geral + Massa salarial.
 class FinancesScreen extends StatefulWidget {
-  const FinancesScreen({required this.session, super.key});
+  const FinancesScreen({required this.controller, super.key});
 
-  final GameSession session;
+  final GameController controller;
 
   @override
   State<FinancesScreen> createState() => _FinancesScreenState();
@@ -23,7 +24,26 @@ class FinancesScreen extends StatefulWidget {
 class _FinancesScreenState extends State<FinancesScreen> {
   var _tabIndex = 0;
 
-  GameSession get session => widget.session;
+  GameController get controller => widget.controller;
+  GameSession get session => controller.session!;
+
+  @override
+  void initState() {
+    super.initState();
+    controller.addListener(_onController);
+  }
+
+  @override
+  void dispose() {
+    controller.removeListener(_onController);
+    super.dispose();
+  }
+
+  void _onController() {
+    if (mounted) {
+      setState(() {});
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -63,6 +83,7 @@ class _FinancesScreenState extends State<FinancesScreen> {
                   )
                 : _tabIndex == 0
                     ? _OverviewTab(
+                        controller: controller,
                         session: session,
                         finance: finance,
                         snapshot: snapshot,
@@ -115,6 +136,7 @@ class _FinanceSnapshot {
     final seasonRevenue = finance?.seasonRevenue ?? 0;
     final seasonExpenses = finance?.seasonExpenses ?? 0;
     final academyLevel = finance?.academyLevel ?? 2;
+    final trainingLevel = (finance?.trainingLevel ?? 2).clamp(1, 5);
 
     var matchDay = 0;
     var wagesPaid = 0;
@@ -175,7 +197,6 @@ class _FinanceSnapshot {
     // Orçamento de transferências: saldo menos 1 mês de salários reservado.
     final transferBudget = (balance - monthlyWages).clamp(0, balance);
 
-    final trainingLevel = academyLevel.clamp(1, 5);
     final sponsorAnnual = config.dailySponsorIncome * 365;
 
     return _FinanceSnapshot(
@@ -237,11 +258,13 @@ class _FinanceSnapshot {
 
 class _OverviewTab extends StatelessWidget {
   const _OverviewTab({
+    required this.controller,
     required this.session,
     required this.finance,
     required this.snapshot,
   });
 
+  final GameController controller;
   final GameSession session;
   final ClubFinance finance;
   final _FinanceSnapshot snapshot;
@@ -267,7 +290,10 @@ class _OverviewTab extends StatelessWidget {
               ),
         ),
         const SizedBox(height: 10),
-        _FacilitiesRow(snapshot: snapshot),
+        _FacilitiesRow(
+          snapshot: snapshot,
+          onUpgrade: (kind) => _requestUpgrade(context, kind),
+        ),
         const SizedBox(height: 20),
         Text(
           'Patrocínio',
@@ -285,6 +311,31 @@ class _OverviewTab extends StatelessWidget {
         const SizedBox(height: 20),
         _FfpBanner(finance: finance, session: session),
       ],
+    );
+  }
+
+  void _requestUpgrade(BuildContext context, FacilityKind kind) {
+    UiFeedback.action();
+    final error = controller.tryUpgradeFacility(kind);
+    final messenger = ScaffoldMessenger.of(context);
+    if (error != null) {
+      messenger.showSnackBar(
+        SnackBar(
+          behavior: SnackBarBehavior.floating,
+          content: Text(error),
+        ),
+      );
+      return;
+    }
+    final label = switch (kind) {
+      FacilityKind.training => 'Centro de treinos',
+      FacilityKind.academy => 'Academia de jovens',
+    };
+    messenger.showSnackBar(
+      SnackBar(
+        behavior: SnackBarBehavior.floating,
+        content: Text('$label melhorado.'),
+      ),
     );
   }
 }
@@ -574,9 +625,13 @@ class _LedgerRow extends StatelessWidget {
 }
 
 class _FacilitiesRow extends StatelessWidget {
-  const _FacilitiesRow({required this.snapshot});
+  const _FacilitiesRow({
+    required this.snapshot,
+    required this.onUpgrade,
+  });
 
   final _FinanceSnapshot snapshot;
+  final void Function(FacilityKind kind) onUpgrade;
 
   @override
   Widget build(BuildContext context) {
@@ -584,20 +639,22 @@ class _FacilitiesRow extends StatelessWidget {
       _FacilityCard(
         title: 'Centro de treinos',
         levelLabel: 'Nível ${snapshot.trainingLevel}',
-        detail: snapshot.trainingLevel >= 5
+        detail: snapshot.trainingLevel >= ClubFinance.maxFacilityLevel
             ? 'Nível máximo'
             : 'Upgrade p/ nível ${snapshot.trainingLevel + 1}: '
-                '${MoneyFormat.compact(_upgradeCost(snapshot.trainingLevel))} · 75 dias',
-        showUpgrade: snapshot.trainingLevel < 5,
+                '${MoneyFormat.compact(ClubFinance.upgradeCost(snapshot.trainingLevel))}',
+        showUpgrade: snapshot.trainingLevel < ClubFinance.maxFacilityLevel,
+        onUpgrade: () => onUpgrade(FacilityKind.training),
       ),
       _FacilityCard(
         title: 'Academia de jovens',
         levelLabel: 'Nível ${snapshot.academyLevel}',
-        detail: snapshot.academyLevel >= 5
+        detail: snapshot.academyLevel >= ClubFinance.maxFacilityLevel
             ? 'Nível máximo'
             : 'Upgrade p/ nível ${snapshot.academyLevel + 1}: '
-                '${MoneyFormat.compact(_upgradeCost(snapshot.academyLevel))} · 75 dias',
-        showUpgrade: snapshot.academyLevel < 5,
+                '${MoneyFormat.compact(ClubFinance.upgradeCost(snapshot.academyLevel))}',
+        showUpgrade: snapshot.academyLevel < ClubFinance.maxFacilityLevel,
+        onUpgrade: () => onUpgrade(FacilityKind.academy),
       ),
       _FacilityCard(
         title: 'Estádio',
@@ -633,16 +690,6 @@ class _FacilitiesRow extends StatelessWidget {
     );
   }
 
-  static int _upgradeCost(int level) {
-    // Escala FootSim-like: ~€2.5M no nível 4→5.
-    return switch (level) {
-      1 => 400000,
-      2 => 800000,
-      3 => 1500000,
-      _ => 2500000,
-    };
-  }
-
   static String _seatsLabel(int seats) {
     final formatted = seats.toString().replaceAllMapped(
           RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'),
@@ -658,12 +705,14 @@ class _FacilityCard extends StatelessWidget {
     required this.levelLabel,
     required this.detail,
     required this.showUpgrade,
+    this.onUpgrade,
   });
 
   final String title;
   final String levelLabel;
   final String detail;
   final bool showUpgrade;
+  final VoidCallback? onUpgrade;
 
   @override
   Widget build(BuildContext context) {
@@ -711,17 +760,7 @@ class _FacilityCard extends StatelessWidget {
           if (showUpgrade) ...[
             const SizedBox(height: 12),
             OutlinedButton(
-              onPressed: () {
-                UiFeedback.action();
-                ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(
-                    behavior: SnackBarBehavior.floating,
-                    content: Text(
-                      'Melhorias de instalações — em breve no motor.',
-                    ),
-                  ),
-                );
-              },
+              onPressed: onUpgrade,
               style: OutlinedButton.styleFrom(
                 foregroundColor: PhoenixColors.textPrimary,
                 side: const BorderSide(color: PhoenixColors.cardBorder),

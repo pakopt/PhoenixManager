@@ -240,6 +240,109 @@ void main() {
       expect(error, isNotNull);
       expect(error, contains('fechada'));
     });
+
+    test('tryUpgradeFacility upgrades academy and deducts balance', () {
+      final clubId = const ClubId('club-phoenix');
+      final bus = EventBus();
+      final financeEngine = FinanceEngine(
+        registry: context.registry,
+        config: context.economyConfig.finance,
+        staffConfig: context.economyConfig.staff,
+        eventBus: bus,
+      );
+      final before = context.registry.clubFinances[clubId]!;
+      final level = before.academyLevel;
+      expect(level, lessThan(ClubFinance.maxFacilityLevel));
+      final cost = ClubFinance.upgradeCost(level);
+      final date = context.simulationEngine.worldState.currentDate;
+
+      final error = financeEngine.tryUpgradeFacility(
+        clubId: clubId,
+        kind: FacilityKind.academy,
+        date: date,
+      );
+
+      expect(error, isNull);
+      final after = context.registry.clubFinances[clubId]!;
+      expect(after.academyLevel, level + 1);
+      expect(after.balance, before.balance - cost);
+      expect(after.seasonExpenses, before.seasonExpenses + cost);
+      expect(context.registry.getClub(clubId)!.budget, after.balance);
+      expect(
+        bus.history.whereType<FacilityUpgradedEvent>().length,
+        1,
+      );
+    });
+
+    test('tryUpgradeFacility rejects insufficient balance', () {
+      final clubId = const ClubId('club-phoenix');
+      final financeEngine = FinanceEngine(
+        registry: context.registry,
+        config: context.economyConfig.finance,
+        staffConfig: context.economyConfig.staff,
+        eventBus: EventBus(),
+      );
+      final before = context.registry.clubFinances[clubId]!;
+      context.registry.clubFinances[clubId] = before.copyWith(balance: 0);
+
+      final error = financeEngine.tryUpgradeFacility(
+        clubId: clubId,
+        kind: FacilityKind.training,
+        date: context.simulationEngine.worldState.currentDate,
+      );
+
+      expect(error, 'Saldo insuficiente');
+      expect(
+        context.registry.clubFinances[clubId]!.trainingLevel,
+        before.trainingLevel,
+      );
+    });
+
+    test('tryUpgradeFacility rejects max level', () {
+      final clubId = const ClubId('club-phoenix');
+      final financeEngine = FinanceEngine(
+        registry: context.registry,
+        config: context.economyConfig.finance,
+        staffConfig: context.economyConfig.staff,
+        eventBus: EventBus(),
+      );
+      final before = context.registry.clubFinances[clubId]!;
+      context.registry.clubFinances[clubId] = before.copyWith(
+        trainingLevel: ClubFinance.maxFacilityLevel,
+        balance: 10000000,
+      );
+
+      final error = financeEngine.tryUpgradeFacility(
+        clubId: clubId,
+        kind: FacilityKind.training,
+        date: context.simulationEngine.worldState.currentDate,
+      );
+
+      expect(error, 'Já estás no nível máximo');
+      expect(
+        context.registry.clubFinances[clubId]!.trainingLevel,
+        ClubFinance.maxFacilityLevel,
+      );
+    });
+
+    test('ClubFinance trainingLevel round-trips through map', () {
+      const finance = ClubFinance(
+        clubId: ClubId('club-phoenix'),
+        balance: 1000000,
+        trainingLevel: 4,
+        academyLevel: 3,
+      );
+      final restored = ClubFinance.fromMap(finance.toMap());
+      expect(restored.trainingLevel, 4);
+      expect(restored.academyLevel, 3);
+
+      final legacy = ClubFinance.fromMap({
+        'clubId': 'club-phoenix',
+        'balance': 500000,
+      });
+      expect(legacy.trainingLevel, 2);
+      expect(legacy.academyLevel, 2);
+    });
   });
 }
 

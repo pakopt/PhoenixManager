@@ -228,6 +228,15 @@ class GameController extends ChangeNotifier {
     return error;
   }
 
+  /// Upgrade de instalação (treinos / academia). Devolve erro ou `null`.
+  String? tryUpgradeFacility(FacilityKind kind) {
+    final error = _session?.tryUpgradeFacility(kind);
+    if (error == null) {
+      _afterSessionMutation();
+    }
+    return error;
+  }
+
   /// Returns error message on failure, null on success.
   String? startNextSeason() {
     final error = _session?.beginNextSeason();

@@ -138,6 +138,55 @@ class FinanceEngine {
     _registry.clubFinances[clubId] = finance.copyWith(monthlyWages: wages);
   }
 
+  /// Melhora centro de treinos ou academia. Devolve mensagem de erro ou `null`.
+  String? tryUpgradeFacility({
+    required ClubId clubId,
+    required FacilityKind kind,
+    required GameDate date,
+  }) {
+    final finance = _registry.clubFinances[clubId];
+    if (finance == null) {
+      return 'Dados financeiros indisponíveis';
+    }
+
+    final current = finance.levelFor(kind);
+    if (current >= ClubFinance.maxFacilityLevel) {
+      return 'Já estás no nível máximo';
+    }
+
+    final cost = ClubFinance.upgradeCost(current);
+    if (finance.balance < cost) {
+      return 'Saldo insuficiente';
+    }
+
+    final nextLevel = current + 1;
+    final updated = switch (kind) {
+      FacilityKind.training => finance.copyWith(
+          balance: finance.balance - cost,
+          seasonExpenses: finance.seasonExpenses + cost,
+          trainingLevel: nextLevel,
+        ),
+      FacilityKind.academy => finance.copyWith(
+          balance: finance.balance - cost,
+          seasonExpenses: finance.seasonExpenses + cost,
+          academyLevel: nextLevel,
+        ),
+    };
+
+    _registry.clubFinances[clubId] = updated;
+    _syncClubBudget(clubId, updated.balance);
+    _eventBus.publish(
+      FacilityUpgradedEvent(
+        clubId: clubId,
+        kind: kind,
+        newLevel: nextLevel,
+        cost: cost,
+        date: date,
+      ),
+    );
+    return null;
+  }
+
   int _monthlyWages(ClubId clubId) {
     final playerWages = _registry.squadQuery
         .getByClubId(clubId)

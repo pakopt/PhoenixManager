@@ -65,6 +65,19 @@ class EconomySimulationRunner {
     );
   }
 
+  /// Upgrade de instalação (treinos / academia).
+  String? tryUpgradeFacility({
+    required ClubId clubId,
+    required FacilityKind kind,
+    required GameDate date,
+  }) {
+    return _financeEngine.tryUpgradeFacility(
+      clubId: clubId,
+      kind: kind,
+      date: date,
+    );
+  }
+
   void initialize() {
     _financeEngine.initializeFromClubs();
   }

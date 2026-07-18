@@ -130,6 +130,15 @@ class GameSession {
     );
   }
 
+  /// Upgrade de instalação. Devolve erro ou `null`.
+  String? tryUpgradeFacility(FacilityKind kind) {
+    return _context.economyRunner.tryUpgradeFacility(
+      clubId: userClubId,
+      kind: kind,
+      date: currentDate,
+    );
+  }
+
   /// Valor de mercado estimado (PlayerValueService).
   int playerMarketValue(Player player) {
     return const PlayerValueService().calculate(
@@ -440,6 +449,7 @@ class GameSession {
       AchievementUnlockedEvent e => e.clubId == userClubId,
       SalariesPaidEvent e => e.clubId == userClubId,
       TicketRevenueEvent e => e.clubId == userClubId,
+      FacilityUpgradedEvent e => e.clubId == userClubId,
       YouthIntakeEvent e => e.clubId == userClubId,
       SeasonFinishedEvent() || NewSeasonStartedEvent() => true,
     };

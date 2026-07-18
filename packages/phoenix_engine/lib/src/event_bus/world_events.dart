@@ -91,6 +91,22 @@ class TicketRevenueEvent extends PhoenixEvent {
   final GameDate date;
 }
 
+class FacilityUpgradedEvent extends PhoenixEvent {
+  const FacilityUpgradedEvent({
+    required this.clubId,
+    required this.kind,
+    required this.newLevel,
+    required this.cost,
+    required this.date,
+  });
+
+  final ClubId clubId;
+  final FacilityKind kind;
+  final int newLevel;
+  final int cost;
+  final GameDate date;
+}
+
 class TransferCompletedEvent extends PhoenixEvent {
   const TransferCompletedEvent({
     required this.record,

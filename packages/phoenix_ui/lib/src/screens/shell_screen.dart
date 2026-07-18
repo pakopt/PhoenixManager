@@ -390,7 +390,7 @@ class _ShellScreenState extends State<ShellScreen> {
       FixturesScreen(controller: widget.controller),
       StandingsScreen(session: session),
       MarketScreen(controller: widget.controller),
-      FinancesScreen(session: session),
+      FinancesScreen(controller: widget.controller),
       ClubScreen(
         key: ValueKey('club-tab-$_clubInitialTab'),
         session: session,

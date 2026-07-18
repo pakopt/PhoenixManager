@@ -619,6 +619,7 @@ class _EventTile extends StatelessWidget {
       NewSeasonStartedEvent() => Icons.restart_alt,
       SalariesPaidEvent() => Icons.payments,
       TicketRevenueEvent() => Icons.confirmation_number,
+      FacilityUpgradedEvent() => Icons.construction,
       _ => Icons.notifications_none,
     };
   }
@@ -647,6 +648,13 @@ class _EventTile extends StatelessWidget {
         'Salários ${session.clubName(e.clubId)}: ${MoneyFormat.compact(e.amount)}',
       TicketRevenueEvent e =>
         'Bilheteira ${session.clubName(e.clubId)}: ${MoneyFormat.compact(e.amount)}',
+      FacilityUpgradedEvent e => switch (e.kind) {
+          FacilityKind.training =>
+            'Centro de treinos → nível ${e.newLevel} '
+                '(${MoneyFormat.compact(e.cost)})',
+          FacilityKind.academy =>
+            'Academia → nível ${e.newLevel} (${MoneyFormat.compact(e.cost)})',
+        },
       DayAdvancedEvent e => 'Dia ${DateFormatUtil.gameDate(e.currentDate)}',
       _ => 'Actualização do clube',
     };

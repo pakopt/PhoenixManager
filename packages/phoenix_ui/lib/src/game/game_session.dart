@@ -336,6 +336,23 @@ class GameSession {
     return squad.map((p) => p.form).reduce((a, b) => a + b) / squad.length;
   }
 
+  double get squadAverageMorale {
+    if (squad.isEmpty) {
+      return 0;
+    }
+    return squad.map((p) => p.morale).reduce((a, b) => a + b) / squad.length;
+  }
+
+  /// Fixture do clube do utilizador numa data (liga ou taça).
+  MatchFixture? userFixtureOn(GameDate date) {
+    for (final fixture in allFixtures) {
+      if (fixture.date == date && fixture.involvesClub(userClubId)) {
+        return fixture;
+      }
+    }
+    return null;
+  }
+
   List<TransferRecord> get clubTransfers => registry.transfers
       .where(
         (t) => t.fromClubId == userClubId || t.toClubId == userClubId,

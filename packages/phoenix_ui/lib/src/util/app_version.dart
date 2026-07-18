@@ -1,16 +1,16 @@
 /// Versão visível ao jogador — manter alinhada com `apps/phoenix_manager/pubspec.yaml`.
 /// Validar: `./scripts/check_app_version_sync.sh`
 abstract final class AppVersion {
-  static const label = '0.8.39';
-  static const buildNumber = 40;
-  static const engineLabel = 'PSE v0.8.39';
+  static const label = '0.8.40';
+  static const buildNumber = 41;
+  static const engineLabel = 'PSE v0.8.40';
 
   /// Pontos curtos para o diálogo «Novidades» após actualizar.
   static const whatsNew = <String>[
-    'GDR «O Sindicato» na Liga Phoenix (Setúbal) — plantel Jun.B completo.',
-    'Posições reais nos jogadores; equipamento na ficha do clube.',
-    'Classificação com nomes curtos (sem cortar clubes longos).',
-    'Geração de plantel com papéis GR/DF/MD/… para o XI.',
+    'Treinos estilo FootSim: rotina semanal e foco por jogador.',
+    'Clubes clicáveis na classificação — ficha com identidade e kit.',
+    'Dias de jogo na rotina de treino (adversário destacado).',
+    'Rotina e focos guardados por slot de carreira.',
   ];
 
   /// Bloco curto para emails de feedback / bugs.

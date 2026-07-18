@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:phoenix_core/phoenix_core.dart';
 import 'package:phoenix_ui/src/game/game_session.dart';
+import 'package:phoenix_ui/src/screens/club_detail_screen.dart';
 import 'package:phoenix_ui/src/screens/match_detail_screen.dart';
 import 'package:phoenix_ui/src/widgets/cup_bracket_panel.dart';
 import 'package:phoenix_ui/src/widgets/empty_state.dart';
@@ -165,54 +166,72 @@ class _LeagueTableState extends State<_LeagueTable> {
                   entry.clubId.value;
               final gdSign = entry.goalDifference >= 0 ? '+' : '';
               final row = Semantics(
+                button: true,
                 label:
                     '${index + 1}. $clubName — $played jogos, ${entry.points} pontos, '
-                    'diferença $gdSign${entry.goalDifference}',
+                    'diferença $gdSign${entry.goalDifference}. Abrir ficha do clube.',
                 excludeSemantics: true,
-                child: Container(
+                child: Material(
                   color: isUser
                       ? Theme.of(context)
                           .colorScheme
                           .primary
                           .withValues(alpha: 0.1)
-                      : null,
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
-                  child: Row(
-                    children: [
-                      SizedBox(
-                        width: 28,
-                        child: Text('${index + 1}'),
+                      : Colors.transparent,
+                  child: InkWell(
+                    onTap: () => ClubDetailScreen.open(
+                      context,
+                      session: session,
+                      clubId: entry.clubId,
+                    ),
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 16,
+                        vertical: 10,
                       ),
-                      Expanded(
-                        flex: 4,
-                        child: Text(
-                          clubName,
-                          maxLines: 1,
-                          overflow: TextOverflow.ellipsis,
-                          style: TextStyle(
-                            fontWeight:
-                                isUser ? FontWeight.bold : FontWeight.normal,
+                      child: Row(
+                        children: [
+                          SizedBox(
+                            width: 28,
+                            child: Text('${index + 1}'),
                           ),
-                        ),
+                          Expanded(
+                            flex: 4,
+                            child: Text(
+                              clubName,
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                              style: TextStyle(
+                                fontWeight: isUser
+                                    ? FontWeight.bold
+                                    : FontWeight.normal,
+                              ),
+                            ),
+                          ),
+                          Expanded(
+                            child: Text(
+                              '$played',
+                              textAlign: TextAlign.center,
+                            ),
+                          ),
+                          Expanded(
+                            child: Text(
+                              '${entry.points}',
+                              textAlign: TextAlign.center,
+                              style: const TextStyle(
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ),
+                          Expanded(
+                            child: Text(
+                              '$gdSign${entry.goalDifference}',
+                              textAlign: TextAlign.center,
+                            ),
+                          ),
+                        ],
                       ),
-                      Expanded(
-                        child: Text('$played', textAlign: TextAlign.center),
-                      ),
-                      Expanded(
-                        child: Text(
-                          '${entry.points}',
-                          textAlign: TextAlign.center,
-                          style: const TextStyle(fontWeight: FontWeight.bold),
-                        ),
-                      ),
-                      Expanded(
-                        child: Text(
-                          '$gdSign${entry.goalDifference}',
-                          textAlign: TextAlign.center,
-                        ),
-                      ),
-                    ],
+                    ),
                   ),
                 ),
               );
@@ -261,6 +280,12 @@ class _CupStandings extends StatelessWidget {
               ),
               title: const Text('Campeão'),
               subtitle: Text(session.clubName(session.cupWinner!)),
+              trailing: const Icon(Icons.chevron_right),
+              onTap: () => ClubDetailScreen.open(
+                context,
+                session: session,
+                clubId: session.cupWinner!,
+              ),
             ),
           ),
         const SizedBox(height: 8),

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:phoenix_ui/src/game/game_session.dart';
+import 'package:phoenix_ui/src/screens/club_detail_screen.dart';
 import 'package:phoenix_ui/src/theme/phoenix_theme.dart';
 import 'package:phoenix_ui/src/widgets/section_card.dart';
 
@@ -54,6 +55,11 @@ class MiniStandings extends StatelessWidget {
               points: slice[i].points,
               played: slice[i].played,
               isUser: slice[i].clubId == GameSession.userClubId,
+              onTap: () => ClubDetailScreen.open(
+                context,
+                session: session,
+                clubId: slice[i].clubId,
+              ),
             ),
         ],
       ),
@@ -68,6 +74,7 @@ class _Row extends StatelessWidget {
     required this.points,
     required this.played,
     required this.isUser,
+    required this.onTap,
   });
 
   final int position;
@@ -75,57 +82,66 @@ class _Row extends StatelessWidget {
   final int points;
   final int played;
   final bool isUser;
+  final VoidCallback onTap;
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      margin: const EdgeInsets.only(bottom: 4),
-      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
-      decoration: BoxDecoration(
-        color: isUser
-            ? PhoenixColors.seed.withValues(alpha: 0.18)
-            : Colors.transparent,
+    return Material(
+      color: Colors.transparent,
+      child: InkWell(
+        onTap: onTap,
         borderRadius: BorderRadius.circular(8),
-      ),
-      child: Row(
-        children: [
-          SizedBox(
-            width: 24,
-            child: Text(
-              '$position',
-              style: TextStyle(
-                fontWeight: FontWeight.w700,
-                color: isUser ? PhoenixColors.positive : PhoenixColors.muted,
+        child: Container(
+          margin: const EdgeInsets.only(bottom: 4),
+          padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
+          decoration: BoxDecoration(
+            color: isUser
+                ? PhoenixColors.seed.withValues(alpha: 0.18)
+                : Colors.transparent,
+            borderRadius: BorderRadius.circular(8),
+          ),
+          child: Row(
+            children: [
+              SizedBox(
+                width: 24,
+                child: Text(
+                  '$position',
+                  style: TextStyle(
+                    fontWeight: FontWeight.w700,
+                    color: isUser ? PhoenixColors.positive : PhoenixColors.muted,
+                  ),
+                ),
               ),
-            ),
-          ),
-          Expanded(
-            child: Text(
-              clubName,
-              maxLines: 1,
-              overflow: TextOverflow.ellipsis,
-              style: TextStyle(
-                fontWeight: isUser ? FontWeight.w700 : FontWeight.w500,
-                color: PhoenixColors.textPrimary,
+              Expanded(
+                child: Text(
+                  clubName,
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  style: TextStyle(
+                    fontWeight: isUser ? FontWeight.w700 : FontWeight.w500,
+                    color: PhoenixColors.textPrimary,
+                  ),
+                ),
               ),
-            ),
+              Text(
+                '$played J',
+                style: const TextStyle(
+                  fontSize: 11,
+                  color: PhoenixColors.muted,
+                ),
+              ),
+              const SizedBox(width: 10),
+              Text(
+                '$points',
+                style: TextStyle(
+                  fontWeight: FontWeight.w800,
+                  color:
+                      isUser ? PhoenixColors.positive : PhoenixColors.textPrimary,
+                ),
+              ),
+            ],
           ),
-          Text(
-            '$played J',
-            style: const TextStyle(
-              fontSize: 11,
-              color: PhoenixColors.muted,
-            ),
-          ),
-          const SizedBox(width: 10),
-          Text(
-            '$points',
-            style: TextStyle(
-              fontWeight: FontWeight.w800,
-              color: isUser ? PhoenixColors.positive : PhoenixColors.textPrimary,
-            ),
-          ),
-        ],
+        ),
       ),
     );
   }

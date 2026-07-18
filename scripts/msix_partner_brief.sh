@@ -37,7 +37,7 @@ fi
 if [[ -f "$ICON" ]]; then pass "icon.png (logo Store)"; else fail_msg "icon — apps/phoenix_manager/assets/branding/icon.png"; fi
 shots=0
 if [[ -d "$STORE/screenshots" ]]; then
-  shots=$(ls "$STORE/screenshots"/*.png 2>/dev/null | wc -l | tr -d ' ')
+  shots=$(find "$STORE/screenshots" -maxdepth 1 -type f -name '*.png' 2>/dev/null | wc -l | tr -d ' ')
 fi
 if [[ "$shots" -ge 2 ]]; then
   pass "$shots screenshots desktop"

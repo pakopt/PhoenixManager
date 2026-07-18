@@ -4,9 +4,9 @@ import 'package:phoenix_ui/src/game/game_controller.dart';
 import 'package:phoenix_ui/src/game/game_session.dart';
 import 'package:phoenix_ui/src/game/match_fixture_extensions.dart';
 import 'package:phoenix_ui/src/screens/match_detail_screen.dart';
-import 'package:phoenix_ui/src/widgets/common_widgets.dart';
 import 'package:phoenix_ui/src/widgets/cup_bracket_panel.dart';
 import 'package:phoenix_ui/src/widgets/empty_state.dart';
+import 'package:phoenix_ui/src/widgets/fixture_list_tile.dart';
 import 'package:phoenix_ui/src/widgets/section_card.dart';
 
 class FixturesScreen extends StatefulWidget {
@@ -201,9 +201,10 @@ class _LeagueListState extends State<_LeagueList> {
                 final fixture = fixtures[index];
                 final tile = Padding(
                   padding: const EdgeInsets.only(bottom: 8),
-                  child: FixtureTile(
+                  child: FixtureListTile(
                     fixture: fixture,
                     session: widget.session,
+                    dense: true,
                     onTap: fixture.isPlayed
                         ? () => widget.onOpenMatch(fixture)
                         : null,

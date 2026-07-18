@@ -8,6 +8,7 @@ import 'package:phoenix_ui/src/theme/phoenix_theme.dart';
 import 'package:phoenix_ui/src/util/player_display_profile.dart';
 import 'package:phoenix_ui/src/util/ui_feedback.dart';
 import 'package:phoenix_ui/src/widgets/empty_state.dart';
+import 'package:phoenix_ui/src/widgets/section_card.dart';
 
 /// Ecrã de táctica estilo FootSim × Phoenix (apresentação).
 class TacticsScreen extends StatefulWidget {
@@ -215,24 +216,13 @@ class _TacticsScreenState extends State<TacticsScreen> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          Padding(
-            padding: const EdgeInsets.fromLTRB(16, 16, 16, 8),
-            child: Row(
-              children: [
-                Expanded(
-                  child: Text(
-                    'Táctica',
-                    style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-                          fontWeight: FontWeight.w800,
-                        ),
-                  ),
-                ),
-                FilledButton.icon(
-                  onPressed: _prefsLoaded ? _saveTactics : null,
-                  icon: const Icon(Icons.save_outlined, size: 18),
-                  label: const Text('Guardar táctica'),
-                ),
-              ],
+          ScreenPageHeader(
+            title: 'Táctica',
+            subtitle: 'Formação e instruções',
+            trailing: FilledButton.icon(
+              onPressed: _prefsLoaded ? _saveTactics : null,
+              icon: const Icon(Icons.save_outlined, size: 18),
+              label: const Text('Guardar táctica'),
             ),
           ),
           Expanded(

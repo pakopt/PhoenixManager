@@ -3,6 +3,7 @@ import 'package:phoenix_core/phoenix_core.dart';
 import 'package:phoenix_ui/src/game/game_session.dart';
 import 'package:phoenix_ui/src/screens/club_detail_screen.dart';
 import 'package:phoenix_ui/src/screens/match_detail_screen.dart';
+import 'package:phoenix_ui/src/widgets/club_crest.dart';
 import 'package:phoenix_ui/src/widgets/cup_bracket_panel.dart';
 import 'package:phoenix_ui/src/widgets/empty_state.dart';
 import 'package:phoenix_ui/src/widgets/section_card.dart';
@@ -197,15 +198,29 @@ class _LeagueTableState extends State<_LeagueTable> {
                           ),
                           Expanded(
                             flex: 4,
-                            child: Text(
-                              clubName,
-                              maxLines: 1,
-                              overflow: TextOverflow.ellipsis,
-                              style: TextStyle(
-                                fontWeight: isUser
-                                    ? FontWeight.bold
-                                    : FontWeight.normal,
-                              ),
+                            child: Row(
+                              children: [
+                                if (club != null) ...[
+                                  ClubCrest(
+                                    club: club,
+                                    size: 22,
+                                    showBorder: false,
+                                  ),
+                                  const SizedBox(width: 8),
+                                ],
+                                Expanded(
+                                  child: Text(
+                                    clubName,
+                                    maxLines: 1,
+                                    overflow: TextOverflow.ellipsis,
+                                    style: TextStyle(
+                                      fontWeight: isUser
+                                          ? FontWeight.bold
+                                          : FontWeight.normal,
+                                    ),
+                                  ),
+                                ),
+                              ],
                             ),
                           ),
                           Expanded(

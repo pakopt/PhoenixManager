@@ -8,6 +8,7 @@ import 'package:phoenix_ui/src/util/date_format.dart';
 import 'package:phoenix_ui/src/util/money_format.dart';
 import 'package:phoenix_ui/src/util/player_display_profile.dart';
 import 'package:phoenix_ui/src/util/ui_feedback.dart';
+import 'package:phoenix_ui/src/widgets/club_crest.dart';
 import 'package:phoenix_ui/src/widgets/empty_state.dart';
 import 'package:phoenix_ui/src/widgets/section_card.dart';
 
@@ -565,15 +566,29 @@ class _MarketPlayerTile extends StatelessWidget {
                           overflow: TextOverflow.ellipsis,
                           style: const TextStyle(fontWeight: FontWeight.w700),
                         ),
-                        Text(
-                          club?.displayShortName ??
-                              session.clubName(player.clubId),
-                          maxLines: 1,
-                          overflow: TextOverflow.ellipsis,
-                          style: const TextStyle(
-                            fontSize: 12,
-                            color: PhoenixColors.muted,
-                          ),
+                        Row(
+                          children: [
+                            if (club != null) ...[
+                              ClubCrest(
+                                club: club,
+                                size: 14,
+                                showBorder: false,
+                              ),
+                              const SizedBox(width: 4),
+                            ],
+                            Flexible(
+                              child: Text(
+                                club?.displayShortName ??
+                                    session.clubName(player.clubId),
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                                style: const TextStyle(
+                                  fontSize: 12,
+                                  color: PhoenixColors.muted,
+                                ),
+                              ),
+                            ),
+                          ],
                         ),
                       ],
                     ),
@@ -810,8 +825,12 @@ class _TransferTile extends StatelessWidget {
   Widget build(BuildContext context) {
     final player = session.registry.getPlayer(transfer.playerId);
     final playerName = player?.name ?? transfer.playerId.value;
-    final from = session.clubName(transfer.fromClubId);
-    final to = session.clubName(transfer.toClubId);
+    final fromClub = session.registry.getClub(transfer.fromClubId);
+    final toClub = session.registry.getClub(transfer.toClubId);
+    final from = fromClub?.displayShortName ??
+        session.clubName(transfer.fromClubId);
+    final to =
+        toClub?.displayShortName ?? session.clubName(transfer.toClubId);
     final isIncoming = transfer.toClubId == GameSession.userClubId;
     final isOutgoing = transfer.fromClubId == GameSession.userClubId;
     final isUser = isIncoming || isOutgoing;
@@ -847,9 +866,43 @@ class _TransferTile extends StatelessWidget {
                     : null,
           ),
           title: Text(playerName),
-          subtitle: Text(
-            '$from → $to · ${DateFormatUtil.gameDate(transfer.date)}',
+          subtitle: Row(
+            children: [
+              if (fromClub != null) ...[
+                ClubCrest(club: fromClub, size: 16, showBorder: false),
+                const SizedBox(width: 4),
+              ],
+              Flexible(
+                child: Text(
+                  from,
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  style: const TextStyle(fontSize: 12),
+                ),
+              ),
+              const Padding(
+                padding: EdgeInsets.symmetric(horizontal: 4),
+                child: Text('→', style: TextStyle(fontSize: 12)),
+              ),
+              if (toClub != null) ...[
+                ClubCrest(club: toClub, size: 16, showBorder: false),
+                const SizedBox(width: 4),
+              ],
+              Flexible(
+                child: Text(
+                  to,
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  style: const TextStyle(fontSize: 12),
+                ),
+              ),
+              Text(
+                ' · ${DateFormatUtil.gameDate(transfer.date)}',
+                style: const TextStyle(fontSize: 12),
+              ),
+            ],
           ),
+          isThreeLine: false,
           trailing: transfer.isFree
               ? const Text('Livre')
               : Text(

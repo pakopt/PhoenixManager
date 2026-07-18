@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:phoenix_core/phoenix_core.dart';
 import 'package:phoenix_ui/src/util/money_format.dart';
 import 'package:phoenix_ui/src/util/date_format.dart';
 import 'package:phoenix_ui/src/game/game_session.dart';
-import 'package:phoenix_ui/src/game/match_fixture_extensions.dart';
 import 'package:phoenix_ui/src/theme/phoenix_theme.dart';
 import 'package:phoenix_ui/src/widgets/club_crest.dart';
 
@@ -130,58 +128,6 @@ class StatChip extends StatelessWidget {
             ),
           ),
         ),
-      ),
-    );
-  }
-}
-
-class FixtureTile extends StatelessWidget {
-  const FixtureTile({
-    required this.fixture,
-    required this.session,
-    this.onTap,
-    this.roundLabel,
-    super.key,
-  });
-
-  final MatchFixture fixture;
-  final GameSession session;
-  final VoidCallback? onTap;
-  final String? roundLabel;
-
-  @override
-  Widget build(BuildContext context) {
-    final home = session.clubName(fixture.homeClubId);
-    final away = session.clubName(fixture.awayClubId);
-    final isUserMatch = fixture.involvesClub(GameSession.userClubId);
-    final played = fixture.isPlayed;
-
-    return Card(
-      color: isUserMatch
-          ? Theme.of(context).colorScheme.primary.withValues(alpha: 0.08)
-          : null,
-      child: ListTile(
-        onTap: played ? onTap : null,
-        leading: Text(
-          DateFormatUtil.gameDate(fixture.date),
-          style: Theme.of(context).textTheme.labelMedium,
-        ),
-        title: Text('$home vs $away'),
-        subtitle: roundLabel != null ? Text(roundLabel!) : null,
-        trailing: played
-            ? Semantics(
-                label:
-                    'Resultado ${fixture.homeScore} a ${fixture.awayScore}',
-                excludeSemantics: true,
-                child: Text(
-                  '${fixture.homeScore} - ${fixture.awayScore}',
-                  style: const TextStyle(fontWeight: FontWeight.bold),
-                ),
-              )
-            : Semantics(
-                label: 'Por jogar',
-                child: const Icon(Icons.schedule, size: 18),
-              ),
       ),
     );
   }

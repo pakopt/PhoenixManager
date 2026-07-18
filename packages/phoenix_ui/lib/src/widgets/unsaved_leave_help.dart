@@ -20,20 +20,21 @@ abstract final class UnsavedLeaveHelp {
 
     final choice = await showDialog<_LeaveChoice>(
       context: context,
+      useRootNavigator: true,
       builder: (ctx) => AlertDialog(
         title: Text(title),
         content: Text(body),
         actions: [
           TextButton(
-            onPressed: () => Navigator.pop(ctx, _LeaveChoice.cancel),
+            onPressed: () => Navigator.of(ctx).pop(_LeaveChoice.cancel),
             child: const Text('Cancelar'),
           ),
           TextButton(
-            onPressed: () => Navigator.pop(ctx, _LeaveChoice.discard),
+            onPressed: () => Navigator.of(ctx).pop(_LeaveChoice.discard),
             child: Text(discardLabel),
           ),
           FilledButton(
-            onPressed: () => Navigator.pop(ctx, _LeaveChoice.save),
+            onPressed: () => Navigator.of(ctx).pop(_LeaveChoice.save),
             child: Text(saveLabel),
           ),
         ],
@@ -51,6 +52,8 @@ abstract final class UnsavedLeaveHelp {
         if (context.mounted) {
           UiFeedback.action();
         }
+        // Deixa o diálogo terminar a animação antes do caller sair/navegar.
+        await Future<void>.delayed(Duration.zero);
         return true;
     }
   }

@@ -1,16 +1,15 @@
 /// Versão visível ao jogador — manter alinhada com `apps/phoenix_manager/pubspec.yaml`.
 /// Validar: `./scripts/check_app_version_sync.sh`
 abstract final class AppVersion {
-  static const label = '0.8.42';
-  static const buildNumber = 43;
-  static const engineLabel = 'PSE v0.8.42';
+  static const label = '0.8.43';
+  static const buildNumber = 44;
+  static const engineLabel = 'PSE v0.8.43';
 
   /// Pontos curtos para o diálogo «Novidades» após actualizar.
   static const whatsNew = <String>[
-    'Dashboard a preencher a largura no desktop.',
-    'Notificações de conquistas com fechar e auto-desaparecem.',
-    'Aviso «por guardar» também com botão fechar.',
-    'Correcções de layout e polish UI.',
+    '«Guardar e sair» fecha a app à primeira (sem segundo clique).',
+    'Fluxo de saída do menu mais estável no desktop.',
+    'Correcções gerais de bugs e polish.',
   ];
 
   /// Bloco curto para emails de feedback / bugs.

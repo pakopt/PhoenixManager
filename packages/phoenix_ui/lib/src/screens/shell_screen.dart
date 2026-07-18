@@ -262,32 +262,59 @@ class _ShellScreenState extends State<ShellScreen> {
         title: 'Sair do jogo?',
         body: 'Há alterações por guardar. A app será fechada.',
       );
-      if (ok) {
-        PhoenixPlatformChrome.quitApp();
+      if (ok && mounted) {
+        _quitAppAfterSettle();
       }
       return;
     }
 
     final ok = await showDialog<bool>(
       context: context,
+      useRootNavigator: true,
       builder: (ctx) => AlertDialog(
         title: const Text('Sair do jogo?'),
         content: const Text('A app será fechada.'),
         actions: [
           TextButton(
-            onPressed: () => Navigator.pop(ctx, false),
+            onPressed: () => Navigator.of(ctx).pop(false),
             child: const Text('Cancelar'),
           ),
           FilledButton(
-            onPressed: () => Navigator.pop(ctx, true),
+            onPressed: () => Navigator.of(ctx).pop(true),
             child: const Text('Sair'),
           ),
         ],
       ),
     );
-    if (ok == true) {
-      PhoenixPlatformChrome.quitApp();
+    if (ok == true && mounted) {
+      _quitAppAfterSettle();
     }
+  }
+
+  /// Sai só depois do diálogo/drawer terminarem a animação (evita precisar de 2 cliques).
+  void _quitAppAfterSettle() {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      PhoenixPlatformChrome.quitApp();
+    });
+  }
+
+  Future<void> _leaveToMainMenu() async {
+    final ok = await UnsavedLeaveHelp.confirmLeave(
+      context,
+      widget.controller,
+      title: 'Voltar ao menu?',
+      body:
+          'Há alterações por guardar. Queres guardar antes de sair da carreira?',
+    );
+    if (!ok || !mounted) {
+      return;
+    }
+    Navigator.of(context).pushAndRemoveUntil(
+      MaterialPageRoute<void>(
+        builder: (_) => BootScreen(controller: widget.controller),
+      ),
+      (_) => false,
+    );
   }
 
   static const _destinations = [
@@ -402,7 +429,13 @@ class _ShellScreenState extends State<ShellScreen> {
     final scaffold = Scaffold(
       key: _scaffoldKey,
       appBar: topBar,
-      drawer: wide ? null : _GameDrawer(controller: widget.controller),
+      drawer: wide
+          ? null
+          : _GameDrawer(
+              controller: widget.controller,
+              onQuitDesktop: _confirmQuitDesktop,
+              onLeaveToMenu: _leaveToMainMenu,
+            ),
       body: wide
           ? Row(
               children: [
@@ -422,7 +455,13 @@ class _ShellScreenState extends State<ShellScreen> {
               ],
             )
           : body,
-      endDrawer: wide ? _GameDrawer(controller: widget.controller) : null,
+      endDrawer: wide
+          ? _GameDrawer(
+              controller: widget.controller,
+              onQuitDesktop: _confirmQuitDesktop,
+              onLeaveToMenu: _leaveToMainMenu,
+            )
+          : null,
       bottomNavigationBar: wide
           ? null
           : NavigationBar(
@@ -494,9 +533,15 @@ class _ShellScreenState extends State<ShellScreen> {
 }
 
 class _GameDrawer extends StatelessWidget {
-  const _GameDrawer({required this.controller});
+  const _GameDrawer({
+    required this.controller,
+    required this.onQuitDesktop,
+    required this.onLeaveToMenu,
+  });
 
   final GameController controller;
+  final VoidCallback onQuitDesktop;
+  final VoidCallback onLeaveToMenu;
 
   @override
   Widget build(BuildContext context) {
@@ -612,24 +657,11 @@ class _GameDrawer extends StatelessWidget {
           ListTile(
             leading: const Icon(Icons.home),
             title: const Text('Menu principal'),
-            onTap: () async {
+            onTap: () {
               Navigator.pop(context);
-              final ok = await UnsavedLeaveHelp.confirmLeave(
-                context,
-                controller,
-                title: 'Voltar ao menu?',
-                body:
-                    'Há alterações por guardar. Queres guardar antes de sair da carreira?',
-              );
-              if (!ok || !context.mounted) {
-                return;
-              }
-              Navigator.of(context).pushAndRemoveUntil(
-                MaterialPageRoute<void>(
-                  builder: (_) => BootScreen(controller: controller),
-                ),
-                (_) => false,
-              );
+              WidgetsBinding.instance.addPostFrameCallback((_) {
+                onLeaveToMenu();
+              });
             },
           ),
           if (PhoenixPlatformChrome.isDesktop) ...[
@@ -642,40 +674,11 @@ class _GameDrawer extends StatelessWidget {
                     ? 'Alterações por guardar · Ctrl/⌘+Q'
                     : 'Ctrl/⌘+Q',
               ),
-              onTap: () async {
+              onTap: () {
                 Navigator.pop(context);
-                if (controller.hasUnsavedChanges) {
-                  final ok = await UnsavedLeaveHelp.confirmLeave(
-                    context,
-                    controller,
-                    title: 'Sair do jogo?',
-                    body: 'Há alterações por guardar. A app será fechada.',
-                  );
-                  if (ok) {
-                    PhoenixPlatformChrome.quitApp();
-                  }
-                  return;
-                }
-                final ok = await showDialog<bool>(
-                  context: context,
-                  builder: (ctx) => AlertDialog(
-                    title: const Text('Sair do jogo?'),
-                    content: const Text('A app será fechada.'),
-                    actions: [
-                      TextButton(
-                        onPressed: () => Navigator.pop(ctx, false),
-                        child: const Text('Cancelar'),
-                      ),
-                      FilledButton(
-                        onPressed: () => Navigator.pop(ctx, true),
-                        child: const Text('Sair'),
-                      ),
-                    ],
-                  ),
-                );
-                if (ok == true) {
-                  PhoenixPlatformChrome.quitApp();
-                }
+                WidgetsBinding.instance.addPostFrameCallback((_) {
+                  onQuitDesktop();
+                });
               },
             ),
           ],

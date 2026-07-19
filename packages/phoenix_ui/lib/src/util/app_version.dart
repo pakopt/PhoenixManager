@@ -1,14 +1,14 @@
 /// Versão visível ao jogador — manter alinhada com `apps/phoenix_manager/pubspec.yaml`.
 /// Validar: `./scripts/check_app_version_sync.sh`
 abstract final class AppVersion {
-  static const label = '0.8.49';
-  static const buildNumber = 50;
-  static const engineLabel = 'PSE v0.8.49';
+  static const label = '0.8.50';
+  static const buildNumber = 51;
+  static const engineLabel = 'PSE v0.8.50';
 
   /// Pontos curtos para o diálogo «Novidades» após actualizar.
   static const whatsNew = <String>[
-    'Classificação estilo FootSim: tabela completa, zona de despromoção e destaque do teu clube.',
-    'Preparação Microsoft Store (Windows) — packaging MSIX e guia Partner Center.',
+    'Submissão Microsoft Store em preparação (Partner Center).',
+    'Classificação estilo FootSim: tabela completa e zona de despromoção.',
   ];
 
   /// Bloco curto para emails de feedback / bugs.

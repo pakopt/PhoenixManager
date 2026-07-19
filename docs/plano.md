@@ -1,6 +1,6 @@
 # Plano — Project Phoenix Manager
 
-**Versão:** v0.8.49  
+**Versão:** v0.8.50  
 **Actualizado:** 19 de Julho de 2026  
 **Fase actual:** **E — Lançamento**
 
@@ -142,7 +142,7 @@ CLEAN_GRADLE=1 ./scripts/clean_dev_artifacts.sh   # inclui ~/.gradle/caches
 
 Detalhe oficial: [requisitos de teste Play](https://support.google.com/googleplay/android-developer/answer/14151465) · guia local: [`docs/STORE.md`](STORE.md) §9c–10
 
-**AAB actual:** `build/release/mobile/android/phoenix_manager.aab` (v0.8.49, versionCode 50)
+**AAB actual:** `build/release/mobile/android/phoenix_manager.aab` (v0.8.50, versionCode 51)
 
 Convite / QA para amigos: [`docs/BETA.md`](BETA.md) · textos: `./scripts/play_console_brief.sh`
 
@@ -213,14 +213,14 @@ Saída: `build/release/store/android/` — reutilizar quando a conta activar.
 
 | Campo | Valor actual |
 |-------|--------------|
-| `versionName` | `0.8.49` |
-| `versionCode` | `50` |
+| `versionName` | `0.8.50` |
+| `versionCode` | `51` |
 | Package / Bundle ID | `com.phoenix.manager` |
 
 **Próxima release:** editar `apps/phoenix_manager/pubspec.yaml`:
 
 ```yaml
-version: 0.8.49+50   # nome visível + versionCode (obrigatório incrementar +N)
+version: 0.8.50+51   # nome visível + versionCode (obrigatório incrementar +N)
 ```
 
 Depois: `./scripts/build_mobile.sh android` → novo AAB · `./scripts/check_app_version_sync.sh`
@@ -229,6 +229,7 @@ Depois: `./scripts/build_mobile.sh android` → novo AAB · `./scripts/check_app
 
 ## Histórico recente (Fase E + v0.8.x)
 
+- ✅ **v0.8.50** — Submissão Microsoft Store (Partner Center em rascunho) (versionCode 51)  
 - ✅ **v0.8.49** — Classificação FootSim (tabela completa + despromoção) · Microsoft Store MSIX (versionCode 50)  
 - ✅ **v0.8.48** — Upgrades de instalações (treino/academia) nas Finanças (versionCode 49)  
 - ✅ **v0.8.47** — Emblemas maiores no «PRÓXIMO JOGO» da Dashboard (versionCode 48)  
@@ -294,8 +295,9 @@ Depois: `./scripts/build_mobile.sh android` → novo AAB · `./scripts/check_app
 - ✅ `play_console_day1.sh` — guia upload quando conta activar  
 - ✅ Beta local — `local_beta.sh`, `docs/BETA.md`, `qa_manual.sh`  
 - ✅ Screenshots App Store — 5 capturas iOS (`capture_app_store_screenshots.sh`)  
-- ✅ Play Console — conta aprovada · **teste fechado activo** · AAB **v0.8.49+50**  
-- ✅ Microsoft Store — scripts MSIX + guia Partner Center (`docs/STORE.md`) · upload ⏳  
+- ✅ Play Console — conta aprovada · **teste fechado activo** · AAB **v0.8.50+51**  
+- 🔄 Microsoft Store — Partner Center submissão em rascunho · Pacotes MSIX ⏳  
+- ✅ Microsoft Store — scripts MSIX + guia Partner Center (`docs/STORE.md`)  
 - 🔄 Produção — **≥12 opted-in × 14 dias** → candidatar acesso → promover (`docs/STORE.md` §9c–10) · `./scripts/play_14day_tracker.sh`  
 - ✅ Desktop — fullscreen Mac / Windows / Linux + «Sair do jogo»  
 - ✅ Polish UI v0.8.x — freeze v0.8.17–0.8.30; redesign FootSim × Phoenix em v0.8.31; A Coruja em v0.8.32; Táctica em v0.8.33

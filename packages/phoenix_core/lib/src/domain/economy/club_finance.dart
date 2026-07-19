@@ -15,6 +15,8 @@ class ClubFinance {
     this.monthlyWages = 0,
     this.seasonRevenue = 0,
     this.seasonExpenses = 0,
+    this.seasonTicketRevenue = 0,
+    this.seasonWageExpenses = 0,
     this.academyLevel = 2,
     this.trainingLevel = 2,
     this.transfersCompletedThisWindow = 0,
@@ -38,6 +40,8 @@ class ClubFinance {
       monthlyWages: map['monthlyWages'] as int? ?? 0,
       seasonRevenue: map['seasonRevenue'] as int? ?? 0,
       seasonExpenses: map['seasonExpenses'] as int? ?? 0,
+      seasonTicketRevenue: map['seasonTicketRevenue'] as int? ?? 0,
+      seasonWageExpenses: map['seasonWageExpenses'] as int? ?? 0,
       academyLevel: map['academyLevel'] as int? ?? 2,
       trainingLevel: map['trainingLevel'] as int? ?? 2,
       transfersCompletedThisWindow:
@@ -52,6 +56,10 @@ class ClubFinance {
   final int monthlyWages;
   final int seasonRevenue;
   final int seasonExpenses;
+  /// Bilheteira acumulada na época (persiste no save; não depende do event bus).
+  final int seasonTicketRevenue;
+  /// Salários pagos na época (persiste no save).
+  final int seasonWageExpenses;
   final int academyLevel;
   final int trainingLevel;
   final int transfersCompletedThisWindow;
@@ -96,6 +104,8 @@ class ClubFinance {
     int? monthlyWages,
     int? seasonRevenue,
     int? seasonExpenses,
+    int? seasonTicketRevenue,
+    int? seasonWageExpenses,
     int? academyLevel,
     int? trainingLevel,
     int? transfersCompletedThisWindow,
@@ -106,6 +116,8 @@ class ClubFinance {
       monthlyWages: monthlyWages ?? this.monthlyWages,
       seasonRevenue: seasonRevenue ?? this.seasonRevenue,
       seasonExpenses: seasonExpenses ?? this.seasonExpenses,
+      seasonTicketRevenue: seasonTicketRevenue ?? this.seasonTicketRevenue,
+      seasonWageExpenses: seasonWageExpenses ?? this.seasonWageExpenses,
       academyLevel: academyLevel ?? this.academyLevel,
       trainingLevel: trainingLevel ?? this.trainingLevel,
       transfersCompletedThisWindow:
@@ -119,6 +131,8 @@ class ClubFinance {
         'monthlyWages': monthlyWages,
         'seasonRevenue': seasonRevenue,
         'seasonExpenses': seasonExpenses,
+        'seasonTicketRevenue': seasonTicketRevenue,
+        'seasonWageExpenses': seasonWageExpenses,
         'academyLevel': academyLevel,
         'trainingLevel': trainingLevel,
         'transfersCompletedThisWindow': transfersCompletedThisWindow,

@@ -28,7 +28,7 @@ Guia para **Google Play**, App Store e **Microsoft Store**. Steam: ver [steam/RE
 |-------|-------|
 | **Package name** | `com.phoenix.manager` |
 | **AAB para upload** | `build/release/mobile/android/phoenix_manager.aab` |
-| **Versão actual** | `0.8.51` (`versionCode` **52**) |
+| **Versão actual** | `0.8.52` (`versionCode` **53**) |
 | **Tipo** | Jogo, gratuito, offline |
 | **Contacto** | pakopt7@gmail.com |
 
@@ -127,14 +127,14 @@ Recomendado: **Teste interno** antes de produção — revisão mais rápida, at
    ```
 3. Aguardar processamento (1–5 min). Verificar:
    - Package: `com.phoenix.manager`
-   - Version name: `0.8.51` (ou a versão actual do `pubspec.yaml`)
-   - Version code: `52` (número após `+` no pubspec)
-4. **Nome da versão:** `0.8.51 (52)` (notas internas)
+   - Version name: `0.8.52` (ou a versão actual do `pubspec.yaml`)
+   - Version code: `53` (número após `+` no pubspec)
+4. **Nome da versão:** `0.8.52 (53)` (notas internas)
 5. **Notas da versão** (visíveis aos testadores) — ver também `./scripts/play_console_brief.sh`:
    ```
-   v0.8.51 — Microsoft Store / MSIX (build 52).
-   - Pacote para Partner Center
-   - Classificação FootSim · saves locais · sem anúncios
+   v0.8.52 — Correcções Finanças (build 53).
+   - Transferências in/out correctas · P&L mensal
+   - Bilheteira e salários persistem ao carregar save
    ```
 6. **Rever versão** → **Iniciar implementação para teste interno**
 
@@ -300,7 +300,7 @@ Respostas alinhadas com [`docs/PRIVACY.md`](PRIVACY.md):
 4. Instalar pela **Play Store** (não sideload)
 5. QA completo: [`docs/BETA.md`](BETA.md) (passos 1–17) ou `./scripts/qa_manual.sh`
 6. **Android 15+:** confirmar edge-to-edge — [`MOBILE.md`](../apps/phoenix_manager/MOBILE.md) § Android 15
-7. Problemas → pakopt7@gmail.com com versão (ex. `0.8.51 (52)`) e modelo do telemóvel
+7. Problemas → pakopt7@gmail.com com versão (ex. `0.8.52 (53)`) e modelo do telemóvel
 
 Quando estiveres satisfeito (e, se a conta for pessoal nova, após cumprir §9c):
 
@@ -376,7 +376,7 @@ Cada upload precisa de **`versionCode` maior** que o anterior.
 
 1. Editar `apps/phoenix_manager/pubspec.yaml`:
    ```yaml
-   version: 0.8.51+52   # nome visível + versionCode (número após +)
+   version: 0.8.52+53   # nome visível + versionCode (número após +)
    ```
 2. Rebuild e upload:
    ```bash

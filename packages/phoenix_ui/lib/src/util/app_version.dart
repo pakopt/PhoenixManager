@@ -1,14 +1,14 @@
 /// Versão visível ao jogador — manter alinhada com `apps/phoenix_manager/pubspec.yaml`.
 /// Validar: `./scripts/check_app_version_sync.sh`
 abstract final class AppVersion {
-  static const label = '0.8.51';
-  static const buildNumber = 52;
-  static const engineLabel = 'PSE v0.8.51';
+  static const label = '0.8.52';
+  static const buildNumber = 53;
+  static const engineLabel = 'PSE v0.8.52';
 
   /// Pontos curtos para o diálogo «Novidades» após actualizar.
   static const whatsNew = <String>[
-    'Build v0.8.51 para submissão Microsoft Store (Pacotes MSIX).',
-    'Classificação FootSim e preparação Partner Center.',
+    'Finanças: transferências in/out correctas e P&L mensal ajustado.',
+    'Bilheteira e salários persistem no save (já não desaparecem ao carregar).',
   ];
 
   /// Bloco curto para emails de feedback / bugs.

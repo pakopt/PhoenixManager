@@ -152,6 +152,8 @@ class EconomySimulationRunner {
       _registry.clubFinances[entry.key] = entry.value.copyWith(
         seasonRevenue: 0,
         seasonExpenses: 0,
+        seasonTicketRevenue: 0,
+        seasonWageExpenses: 0,
       );
     }
   }

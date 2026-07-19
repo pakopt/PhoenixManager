@@ -50,6 +50,7 @@ class FinanceEngine {
         finance = finance.copyWith(
           balance: finance.balance - finance.monthlyWages,
           seasonExpenses: finance.seasonExpenses + finance.monthlyWages,
+          seasonWageExpenses: finance.seasonWageExpenses + finance.monthlyWages,
         );
         _eventBus.publish(
           SalariesPaidEvent(clubId: club.id, amount: finance.monthlyWages, date: date),
@@ -80,6 +81,7 @@ class FinanceEngine {
     final updated = finance.copyWith(
       balance: finance.balance + revenue,
       seasonRevenue: finance.seasonRevenue + revenue,
+      seasonTicketRevenue: finance.seasonTicketRevenue + revenue,
     );
     _registry.clubFinances[homeClubId] = updated;
     _syncClubBudget(homeClubId, updated.balance);

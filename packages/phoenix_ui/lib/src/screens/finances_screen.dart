@@ -138,27 +138,40 @@ class _FinanceSnapshot {
     final academyLevel = finance?.academyLevel ?? 2;
     final trainingLevel = (finance?.trainingLevel ?? 2).clamp(1, 5);
 
-    var matchDay = 0;
-    var wagesPaid = 0;
-    for (final event in session.context.eventBus.history) {
-      if (event is TicketRevenueEvent && event.clubId == GameSession.userClubId) {
-        matchDay += event.amount;
-      } else if (event is SalariesPaidEvent &&
-          event.clubId == GameSession.userClubId) {
-        wagesPaid += event.amount;
+    var matchDay = finance?.seasonTicketRevenue ?? 0;
+    var wagesPaid = finance?.seasonWageExpenses ?? 0;
+    // Saves legados / sessão actual: event bus preenche se os totais persistidos forem 0.
+    if (matchDay == 0 || wagesPaid == 0) {
+      var busTickets = 0;
+      var busWages = 0;
+      for (final event in session.context.eventBus.history) {
+        if (event is TicketRevenueEvent &&
+            event.clubId == GameSession.userClubId) {
+          busTickets += event.amount;
+        } else if (event is SalariesPaidEvent &&
+            event.clubId == GameSession.userClubId) {
+          busWages += event.amount;
+        }
+      }
+      if (matchDay == 0) {
+        matchDay = busTickets;
+      }
+      if (wagesPaid == 0) {
+        wagesPaid = busWages;
       }
     }
 
+    // Vendedor (from) recebe fee → receita; comprador (to) paga → despesa.
     var transfersIn = 0;
     var transfersOut = 0;
     for (final t in session.clubTransfers) {
       if (t.fee <= 0) {
         continue;
       }
-      if (t.toClubId == GameSession.userClubId) {
+      if (t.fromClubId == GameSession.userClubId) {
         transfersIn += t.fee;
       }
-      if (t.fromClubId == GameSession.userClubId) {
+      if (t.toClubId == GameSession.userClubId) {
         transfersOut += t.fee;
       }
     }
@@ -245,12 +258,12 @@ class _FinanceSnapshot {
   final int stadiumSeats;
 
   static int _monthsIntoSeason(GameDate date) {
-    // Época começa ~Agosto (mês 8).
+    // Época começa ~Agosto (mês 8): Ago=1 … Dez=5, Jan=6 … Jul=12.
     final month = date.month;
     if (month >= 8) {
       return (month - 8) + 1;
     }
-    return (month + 4).clamp(1, 12);
+    return (month + 5).clamp(1, 12);
   }
 }
 

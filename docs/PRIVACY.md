@@ -1,7 +1,7 @@
 # Política de Privacidade — Project Phoenix Manager
 
-**Última actualização:** 19 de Julho de 2026  
-**Versão da app:** 0.8.51
+**Última actualização:** 20 de Julho de 2026  
+**Versão da app:** 0.8.52
 
 ## Resumo
 

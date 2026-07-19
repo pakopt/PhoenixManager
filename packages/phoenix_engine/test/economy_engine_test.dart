@@ -331,10 +331,14 @@ void main() {
         balance: 1000000,
         trainingLevel: 4,
         academyLevel: 3,
+        seasonTicketRevenue: 12000,
+        seasonWageExpenses: 45000,
       );
       final restored = ClubFinance.fromMap(finance.toMap());
       expect(restored.trainingLevel, 4);
       expect(restored.academyLevel, 3);
+      expect(restored.seasonTicketRevenue, 12000);
+      expect(restored.seasonWageExpenses, 45000);
 
       final legacy = ClubFinance.fromMap({
         'clubId': 'club-phoenix',
@@ -342,6 +346,34 @@ void main() {
       });
       expect(legacy.trainingLevel, 2);
       expect(legacy.academyLevel, 2);
+      expect(legacy.seasonTicketRevenue, 0);
+      expect(legacy.seasonWageExpenses, 0);
+    });
+
+    test('match day and wages accumulate on persisted season fields', () {
+      final clubId = ClubId('club-phoenix');
+      final financeEngine = FinanceEngine(
+        registry: context.registry,
+        config: context.economyConfig.finance,
+        staffConfig: context.economyConfig.staff,
+        eventBus: context.eventBus,
+      );
+      final before = context.registry.clubFinances[clubId]!;
+      final club = context.registry.getClub(clubId)!;
+      final payDay = context.economyConfig.finance.salaryPaymentDay;
+
+      financeEngine.recordMatchDayRevenue(
+        homeClubId: clubId,
+        homeClub: club,
+        date: const GameDate(year: 2026, month: 8, day: 10),
+      );
+      financeEngine.runDaily(
+        GameDate(year: 2026, month: 8, day: payDay),
+      );
+
+      final after = context.registry.clubFinances[clubId]!;
+      expect(after.seasonTicketRevenue, greaterThan(before.seasonTicketRevenue));
+      expect(after.seasonWageExpenses, before.monthlyWages);
     });
   });
 }

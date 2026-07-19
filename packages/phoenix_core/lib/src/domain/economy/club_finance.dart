@@ -17,6 +17,7 @@ class ClubFinance {
     this.seasonExpenses = 0,
     this.seasonTicketRevenue = 0,
     this.seasonWageExpenses = 0,
+    this.seasonFacilityUpgradeExpenses = 0,
     this.academyLevel = 2,
     this.trainingLevel = 2,
     this.transfersCompletedThisWindow = 0,
@@ -42,6 +43,8 @@ class ClubFinance {
       seasonExpenses: map['seasonExpenses'] as int? ?? 0,
       seasonTicketRevenue: map['seasonTicketRevenue'] as int? ?? 0,
       seasonWageExpenses: map['seasonWageExpenses'] as int? ?? 0,
+      seasonFacilityUpgradeExpenses:
+          map['seasonFacilityUpgradeExpenses'] as int? ?? 0,
       academyLevel: map['academyLevel'] as int? ?? 2,
       trainingLevel: map['trainingLevel'] as int? ?? 2,
       transfersCompletedThisWindow:
@@ -60,6 +63,8 @@ class ClubFinance {
   final int seasonTicketRevenue;
   /// Salários pagos na época (persiste no save).
   final int seasonWageExpenses;
+  /// Custos de upgrade de instalações na época (persiste no save).
+  final int seasonFacilityUpgradeExpenses;
   final int academyLevel;
   final int trainingLevel;
   final int transfersCompletedThisWindow;
@@ -106,6 +111,7 @@ class ClubFinance {
     int? seasonExpenses,
     int? seasonTicketRevenue,
     int? seasonWageExpenses,
+    int? seasonFacilityUpgradeExpenses,
     int? academyLevel,
     int? trainingLevel,
     int? transfersCompletedThisWindow,
@@ -118,6 +124,8 @@ class ClubFinance {
       seasonExpenses: seasonExpenses ?? this.seasonExpenses,
       seasonTicketRevenue: seasonTicketRevenue ?? this.seasonTicketRevenue,
       seasonWageExpenses: seasonWageExpenses ?? this.seasonWageExpenses,
+      seasonFacilityUpgradeExpenses:
+          seasonFacilityUpgradeExpenses ?? this.seasonFacilityUpgradeExpenses,
       academyLevel: academyLevel ?? this.academyLevel,
       trainingLevel: trainingLevel ?? this.trainingLevel,
       transfersCompletedThisWindow:
@@ -133,6 +141,7 @@ class ClubFinance {
         'seasonExpenses': seasonExpenses,
         'seasonTicketRevenue': seasonTicketRevenue,
         'seasonWageExpenses': seasonWageExpenses,
+        'seasonFacilityUpgradeExpenses': seasonFacilityUpgradeExpenses,
         'academyLevel': academyLevel,
         'trainingLevel': trainingLevel,
         'transfersCompletedThisWindow': transfersCompletedThisWindow,

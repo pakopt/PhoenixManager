@@ -420,6 +420,20 @@ class GameSession {
       .toList()
     ..sort((a, b) => b.date.compareTo(a.date));
 
+  /// Transferências do clube do utilizador na época actual (Ago–Jul).
+  List<TransferRecord> get clubTransfersThisSeason {
+    final year = seasonYear;
+    final start = GameDate(year: year, month: 8, day: 1);
+    final endExclusive = GameDate(year: year + 1, month: 8, day: 1);
+    return clubTransfers
+        .where(
+          (t) =>
+              t.date.compareTo(start) >= 0 &&
+              t.date.compareTo(endExclusive) < 0,
+        )
+        .toList();
+  }
+
   List<PhoenixEvent> get recentEvents {
     final events = _context.eventBus.history;
     return events.length <= 12

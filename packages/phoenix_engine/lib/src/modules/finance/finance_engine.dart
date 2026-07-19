@@ -162,15 +162,19 @@ class FinanceEngine {
     }
 
     final nextLevel = current + 1;
+    final nextExpenses = finance.seasonExpenses + cost;
+    final nextUpgrades = finance.seasonFacilityUpgradeExpenses + cost;
     final updated = switch (kind) {
       FacilityKind.training => finance.copyWith(
           balance: finance.balance - cost,
-          seasonExpenses: finance.seasonExpenses + cost,
+          seasonExpenses: nextExpenses,
+          seasonFacilityUpgradeExpenses: nextUpgrades,
           trainingLevel: nextLevel,
         ),
       FacilityKind.academy => finance.copyWith(
           balance: finance.balance - cost,
-          seasonExpenses: finance.seasonExpenses + cost,
+          seasonExpenses: nextExpenses,
+          seasonFacilityUpgradeExpenses: nextUpgrades,
           academyLevel: nextLevel,
         ),
     };

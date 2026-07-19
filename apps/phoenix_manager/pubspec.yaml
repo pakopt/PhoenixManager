@@ -1,7 +1,7 @@
 name: phoenix_manager
 description: Project Phoenix Manager — Flutter app (Fase D / v0.8).
 publish_to: none
-version: 0.8.52+53
+version: 0.8.53+54
 
 environment:
   sdk: ^3.5.0
@@ -63,7 +63,7 @@ msix_config:
   publisher_display_name: Phoenix Manager
   identity_name: PhoenixManager.PhoenixManager
   publisher: CN=4402D5F1-A78E-42D6-B8A3-BAEBB8F0513B
-  msix_version: 1.8.52.53
+  msix_version: 1.8.53.54
   logo_path: assets/branding/icon.png
   languages: pt-pt, en-us
   store: true

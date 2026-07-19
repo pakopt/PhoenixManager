@@ -154,6 +154,7 @@ class EconomySimulationRunner {
         seasonExpenses: 0,
         seasonTicketRevenue: 0,
         seasonWageExpenses: 0,
+        seasonFacilityUpgradeExpenses: 0,
       );
     }
   }

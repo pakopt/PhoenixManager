@@ -1,6 +1,6 @@
 # Plano — Project Phoenix Manager
 
-**Versão:** v0.8.52  
+**Versão:** v0.8.53  
 **Actualizado:** 20 de Julho de 2026  
 **Fase actual:** **E — Lançamento**
 
@@ -142,7 +142,7 @@ CLEAN_GRADLE=1 ./scripts/clean_dev_artifacts.sh   # inclui ~/.gradle/caches
 
 Detalhe oficial: [requisitos de teste Play](https://support.google.com/googleplay/android-developer/answer/14151465) · guia local: [`docs/STORE.md`](STORE.md) §9c–10
 
-**AAB actual:** `build/release/mobile/android/phoenix_manager.aab` (v0.8.52, versionCode 53)
+**AAB actual:** `build/release/mobile/android/phoenix_manager.aab` (v0.8.53, versionCode 54)
 
 Convite / QA para amigos: [`docs/BETA.md`](BETA.md) · textos: `./scripts/play_console_brief.sh`
 
@@ -213,14 +213,14 @@ Saída: `build/release/store/android/` — reutilizar quando a conta activar.
 
 | Campo | Valor actual |
 |-------|--------------|
-| `versionName` | `0.8.52` |
-| `versionCode` | `53` |
+| `versionName` | `0.8.53` |
+| `versionCode` | `54` |
 | Package / Bundle ID | `com.phoenix.manager` |
 
 **Próxima release:** editar `apps/phoenix_manager/pubspec.yaml`:
 
 ```yaml
-version: 0.8.52+53   # nome visível + versionCode (obrigatório incrementar +N)
+version: 0.8.53+54   # nome visível + versionCode (obrigatório incrementar +N)
 ```
 
 Depois: `./scripts/build_mobile.sh android` → novo AAB · `./scripts/check_app_version_sync.sh`
@@ -229,6 +229,7 @@ Depois: `./scripts/build_mobile.sh android` → novo AAB · `./scripts/check_app
 
 ## Histórico recente (Fase E + v0.8.x)
 
+- ✅ **v0.8.53** — Correcções: transfers por época, upgrades nas despesas, salários pós-transferência, táctica por slot (versionCode 54)  
 - ✅ **v0.8.52** — Correcções Finanças: transferências in/out, P&L mensal, bilheteira/salários no save (versionCode 53)  
 - ✅ **v0.8.51** — Build Microsoft Store / Partner Center (Pacotes MSIX) (versionCode 52)  
 - ✅ **v0.8.50** — Submissão Microsoft Store (Partner Center em rascunho) (versionCode 51)  
@@ -297,7 +298,7 @@ Depois: `./scripts/build_mobile.sh android` → novo AAB · `./scripts/check_app
 - ✅ `play_console_day1.sh` — guia upload quando conta activar  
 - ✅ Beta local — `local_beta.sh`, `docs/BETA.md`, `qa_manual.sh`  
 - ✅ Screenshots App Store — 5 capturas iOS (`capture_app_store_screenshots.sh`)  
-- ✅ Play Console — conta aprovada · **teste fechado activo** · AAB **v0.8.52+53**  
+- ✅ Play Console — conta aprovada · **teste fechado activo** · AAB **v0.8.53+54**  
 - 🔄 Microsoft Store — Partner Center submissão em rascunho · Pacotes MSIX ⏳  
 - ✅ Microsoft Store — scripts MSIX + guia Partner Center (`docs/STORE.md`)  
 - 🔄 Produção — **≥12 opted-in × 14 dias** → candidatar acesso → promover (`docs/STORE.md` §9c–10) · `./scripts/play_14day_tracker.sh`  

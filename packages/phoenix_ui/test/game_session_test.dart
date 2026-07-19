@@ -89,6 +89,46 @@ void main() {
     expect(breakdown.coach, greaterThan(0));
   });
 
+  test('clubTransfersThisSeason excludes prior seasons', () async {
+    final context = await AppBootstrap().boot(worldId: 'transfers-season-test');
+    final session = GameSession(context);
+    final year = session.seasonYear;
+    final user = GameSession.userClubId;
+    final peer = context.registry.clubs.values
+        .firstWhere((c) => c.id != user)
+        .id;
+    final player = context.registry.players.values.first;
+
+    context.registry.transfers.addAll([
+      TransferRecord(
+        id: const TransferId('t-old'),
+        playerId: player.id,
+        fromClubId: user,
+        toClubId: peer,
+        fee: 100000,
+        date: GameDate(year: year - 1, month: 9, day: 1),
+      ),
+      TransferRecord(
+        id: const TransferId('t-current'),
+        playerId: player.id,
+        fromClubId: peer,
+        toClubId: user,
+        fee: 200000,
+        date: GameDate(year: year, month: 9, day: 1),
+      ),
+    ]);
+
+    expect(session.clubTransfers.length, greaterThanOrEqualTo(2));
+    expect(
+      session.clubTransfersThisSeason.map((t) => t.id.value),
+      contains('t-current'),
+    );
+    expect(
+      session.clubTransfersThisSeason.map((t) => t.id.value),
+      isNot(contains('t-old')),
+    );
+  });
+
   test('contractsExpiringSoon lists players ending next season', () async {
     final context = await AppBootstrap().boot(worldId: 'contracts-test');
     final session = GameSession(context);

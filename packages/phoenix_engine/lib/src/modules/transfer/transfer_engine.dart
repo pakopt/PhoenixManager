@@ -273,6 +273,10 @@ class TransferEngine {
       );
     }
 
+    // Plantel mudou — massa salarial tem de reflectir comprador e vendedor.
+    _financeEngine.refreshMonthlyWages(fromClubId);
+    _financeEngine.refreshMonthlyWages(toClubId);
+
     _transferCounter += 1;
     final record = TransferRecord(
       id: TransferId('transfer-$_transferCounter-${player.id.value}'),

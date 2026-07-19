@@ -115,6 +115,7 @@ class _FinanceSnapshot {
     required this.stadiumUpkeep,
     required this.academyCost,
     required this.trainingCost,
+    required this.facilityUpgrades,
     required this.transfersOut,
     required this.totalRevenue,
     required this.totalExpenses,
@@ -140,10 +141,12 @@ class _FinanceSnapshot {
 
     var matchDay = finance?.seasonTicketRevenue ?? 0;
     var wagesPaid = finance?.seasonWageExpenses ?? 0;
+    var facilityUpgrades = finance?.seasonFacilityUpgradeExpenses ?? 0;
     // Saves legados / sessão actual: event bus preenche se os totais persistidos forem 0.
-    if (matchDay == 0 || wagesPaid == 0) {
+    if (matchDay == 0 || wagesPaid == 0 || facilityUpgrades == 0) {
       var busTickets = 0;
       var busWages = 0;
+      var busUpgrades = 0;
       for (final event in session.context.eventBus.history) {
         if (event is TicketRevenueEvent &&
             event.clubId == GameSession.userClubId) {
@@ -151,6 +154,9 @@ class _FinanceSnapshot {
         } else if (event is SalariesPaidEvent &&
             event.clubId == GameSession.userClubId) {
           busWages += event.amount;
+        } else if (event is FacilityUpgradedEvent &&
+            event.clubId == GameSession.userClubId) {
+          busUpgrades += event.cost;
         }
       }
       if (matchDay == 0) {
@@ -159,12 +165,16 @@ class _FinanceSnapshot {
       if (wagesPaid == 0) {
         wagesPaid = busWages;
       }
+      if (facilityUpgrades == 0) {
+        facilityUpgrades = busUpgrades;
+      }
     }
 
     // Vendedor (from) recebe fee → receita; comprador (to) paga → despesa.
+    // Só a época actual — histórico multi-época distorce patrocínios residuais.
     var transfersIn = 0;
     var transfersOut = 0;
-    for (final t in session.clubTransfers) {
+    for (final t in session.clubTransfersThisSeason) {
       if (t.fee <= 0) {
         continue;
       }
@@ -184,19 +194,24 @@ class _FinanceSnapshot {
     const merchandise = 0;
     const prizeMoney = 0;
 
-    // Despesas: salários pagos + transferências out (+ residual operacional).
+    // Despesas: salários pagos + transferências out + upgrades (+ residual).
     final salaryPool = wagesPaid > 0
         ? wagesPaid
-        : (seasonExpenses - transfersOut).clamp(0, seasonExpenses);
+        : (seasonExpenses - transfersOut - facilityUpgrades)
+            .clamp(0, seasonExpenses);
     final totalBreakdown = breakdown.total <= 0 ? 1 : breakdown.total;
     final wages = ((salaryPool * breakdown.players) / totalBreakdown).round();
     final managerSalary =
         ((salaryPool * breakdown.coach) / totalBreakdown).round();
     final staffShare =
         ((salaryPool * breakdown.staff) / totalBreakdown).round();
-    final residualOps =
-        (seasonExpenses - transfersOut - wages - managerSalary - staffShare)
-            .clamp(0, seasonExpenses);
+    final residualOps = (seasonExpenses -
+            transfersOut -
+            facilityUpgrades -
+            wages -
+            managerSalary -
+            staffShare)
+        .clamp(0, seasonExpenses);
     // Staff + residual → linhas de infra (FootSim), sem inventar dinheiro extra.
     final opsPool = staffShare + residualOps;
     final stadiumUpkeep = (opsPool * 0.55).round();
@@ -224,6 +239,7 @@ class _FinanceSnapshot {
       stadiumUpkeep: stadiumUpkeep,
       academyCost: academyCost,
       trainingCost: trainingCost,
+      facilityUpgrades: facilityUpgrades,
       transfersOut: transfersOut,
       totalRevenue: seasonRevenue,
       totalExpenses: seasonExpenses,
@@ -247,6 +263,7 @@ class _FinanceSnapshot {
   final int stadiumUpkeep;
   final int academyCost;
   final int trainingCost;
+  final int facilityUpgrades;
   final int transfersOut;
   final int totalRevenue;
   final int totalExpenses;
@@ -497,6 +514,7 @@ class _RevenueExpensesRow extends StatelessWidget {
       ('Estádio', snapshot.stadiumUpkeep),
       ('Academia', snapshot.academyCost),
       ('Treinos', snapshot.trainingCost),
+      ('Upgrades', snapshot.facilityUpgrades),
       ('Transferências (out)', snapshot.transfersOut),
     ];
 

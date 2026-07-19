@@ -201,12 +201,16 @@ void main() {
       final target = context.registry.players.values.firstWhere(
         (p) => p.clubId != buyerId,
       );
+      final sellerId = target.clubId;
       final finance = context.registry.clubFinances[buyerId]!;
       // Ensure enough balance for the ask.
       context.registry.clubFinances[buyerId] = finance.copyWith(
         balance: 50000000,
         transfersCompletedThisWindow: 0,
+        monthlyWages: 1, // força refresh após transferência
       );
+      context.registry.clubFinances[sellerId] =
+          context.registry.clubFinances[sellerId]!.copyWith(monthlyWages: 1);
 
       final error = context.economyRunner.tryUserBuyPlayer(
         buyerId: buyerId,
@@ -218,6 +222,14 @@ void main() {
       expect(
         context.registry.transfers.any((t) => t.playerId == target.id),
         isTrue,
+      );
+      expect(
+        context.registry.clubFinances[buyerId]!.monthlyWages,
+        greaterThan(1),
+      );
+      expect(
+        context.registry.clubFinances[sellerId]!.monthlyWages,
+        greaterThan(1),
       );
     });
 
@@ -267,6 +279,10 @@ void main() {
       expect(after.academyLevel, level + 1);
       expect(after.balance, before.balance - cost);
       expect(after.seasonExpenses, before.seasonExpenses + cost);
+      expect(
+        after.seasonFacilityUpgradeExpenses,
+        before.seasonFacilityUpgradeExpenses + cost,
+      );
       expect(context.registry.getClub(clubId)!.budget, after.balance);
       expect(
         bus.history.whereType<FacilityUpgradedEvent>().length,
@@ -333,12 +349,14 @@ void main() {
         academyLevel: 3,
         seasonTicketRevenue: 12000,
         seasonWageExpenses: 45000,
+        seasonFacilityUpgradeExpenses: 800000,
       );
       final restored = ClubFinance.fromMap(finance.toMap());
       expect(restored.trainingLevel, 4);
       expect(restored.academyLevel, 3);
       expect(restored.seasonTicketRevenue, 12000);
       expect(restored.seasonWageExpenses, 45000);
+      expect(restored.seasonFacilityUpgradeExpenses, 800000);
 
       final legacy = ClubFinance.fromMap({
         'clubId': 'club-phoenix',
@@ -348,6 +366,7 @@ void main() {
       expect(legacy.academyLevel, 2);
       expect(legacy.seasonTicketRevenue, 0);
       expect(legacy.seasonWageExpenses, 0);
+      expect(legacy.seasonFacilityUpgradeExpenses, 0);
     });
 
     test('match day and wages accumulate on persisted season fields', () {

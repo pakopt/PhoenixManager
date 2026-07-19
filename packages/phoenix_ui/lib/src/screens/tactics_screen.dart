@@ -29,6 +29,7 @@ class _TacticsScreenState extends State<TacticsScreen> {
   var _penalty = 0;
   TacticsLineup? _lineup;
   var _prefsLoaded = false;
+  int? _loadedSlot;
 
   /// Posições livres no campo (playerId → x/y 0–1).
   final Map<String, PitchPos> _pitchPositions = {};
@@ -37,24 +38,48 @@ class _TacticsScreenState extends State<TacticsScreen> {
   @override
   void initState() {
     super.initState();
-    widget.controller.addListener(_rebuildLineup);
+    widget.controller.addListener(_onController);
     _loadPrefs();
     _rebuildLineup();
   }
 
   @override
   void dispose() {
-    widget.controller.removeListener(_rebuildLineup);
+    widget.controller.removeListener(_onController);
     super.dispose();
   }
 
+  void _onController() {
+    if (!mounted) {
+      return;
+    }
+    if (_loadedSlot != null &&
+        _loadedSlot != widget.controller.activeSlot) {
+      _loadPrefs();
+      return;
+    }
+    _rebuildLineup();
+  }
+
   Future<void> _loadPrefs() async {
-    final snap = await TacticsPrefs.load(widget.controller.activeSlot);
+    final slot = widget.controller.activeSlot;
+    final snap = await TacticsPrefs.load(slot);
     if (!mounted) {
       return;
     }
     if (snap == null) {
-      setState(() => _prefsLoaded = true);
+      setState(() {
+        _loadedSlot = slot;
+        _formation = TacticsCatalog.formations[1];
+        _mentality = 1;
+        _tempo = 1;
+        _corner = 0;
+        _freeKick = 0;
+        _penalty = 0;
+        _pitchPositions.clear();
+        _prefsLoaded = true;
+      });
+      _rebuildLineup();
       return;
     }
     final formation = TacticsCatalog.formations.firstWhere(
@@ -62,6 +87,7 @@ class _TacticsScreenState extends State<TacticsScreen> {
       orElse: () => TacticsCatalog.formations[1],
     );
     setState(() {
+      _loadedSlot = slot;
       _formation = formation;
       _mentality =
           snap.mentality.clamp(0, TacticsCatalog.mentalities.length - 1);

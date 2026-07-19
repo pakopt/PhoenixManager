@@ -94,6 +94,10 @@ class TransferEngine {
       final weakestClub = _registry.clubs.values.reduce(
         (a, b) => a.reputation < b.reputation ? a : b,
       );
+      if (player.clubId == weakestClub.id) {
+        // Já está no clube mais fraco — evita self-transfer e spam de eventos.
+        continue;
+      }
 
       _executeTransfer(
         player: player,
@@ -255,6 +259,10 @@ class TransferEngine {
     required GameDate date,
     bool isFree = false,
   }) {
+    if (fromClubId == toClubId) {
+      return;
+    }
+
     _registry.players[player.id] = player.copyWith(clubId: toClubId);
 
     if (!isFree && fee > 0) {

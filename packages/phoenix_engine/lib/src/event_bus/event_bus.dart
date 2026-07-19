@@ -27,4 +27,11 @@ class EventBus {
   }
 
   void clearHistory() => _history.clear();
+
+  /// Restaura histórico sem disparar handlers (ex.: após load de save).
+  void restoreHistory(Iterable<PhoenixEvent> events) {
+    _history
+      ..clear()
+      ..addAll(events);
+  }
 }

@@ -4,9 +4,12 @@ import 'package:flutter/foundation.dart';
 import 'package:phoenix_core/phoenix_core.dart';
 import 'package:phoenix_engine/phoenix_engine.dart';
 import 'package:phoenix_ui/src/game/game_session.dart';
+import 'package:phoenix_ui/src/game/inbox_read_store.dart';
 import 'package:phoenix_ui/src/game/play_mode.dart';
 import 'package:phoenix_ui/src/game/save_slot.dart';
 import 'package:phoenix_ui/src/game/save_storage.dart';
+import 'package:phoenix_ui/src/game/tactics_prefs.dart';
+import 'package:phoenix_ui/src/game/training_prefs.dart';
 import 'package:phoenix_ui/src/util/date_format.dart';
 import 'package:phoenix_ui/src/widgets/beta_checklist_help.dart';
 
@@ -124,6 +127,9 @@ class GameController extends ChangeNotifier {
 
   Future<void> deleteSlot(int slot) async {
     await _saveStorage.clearSlot(slot);
+    await InboxReadStore.clearSlot(slot);
+    await TacticsPrefs.clearSlot(slot);
+    await TrainingPrefs.clearSlot(slot);
     await refreshSlots();
     notifyListeners();
   }

@@ -1,14 +1,14 @@
 /// Versão visível ao jogador — manter alinhada com `apps/phoenix_manager/pubspec.yaml`.
 /// Validar: `./scripts/check_app_version_sync.sh`
 abstract final class AppVersion {
-  static const label = '0.8.53';
-  static const buildNumber = 54;
-  static const engineLabel = 'PSE v0.8.53';
+  static const label = '0.8.54';
+  static const buildNumber = 55;
+  static const engineLabel = 'PSE v0.8.54';
 
   /// Pontos curtos para o diálogo «Novidades» após actualizar.
   static const whatsNew = <String>[
-    'Finanças: transfers só da época actual e linha de Upgrades nas despesas.',
-    'Massa salarial actualiza após transferências; táctica recarrega ao mudar de save.',
+    'Inbox e feed reconstrói-se ao carregar save; lidos/táctica/treino limpam ao apagar slot.',
+    'Orçamento de transfers seguro com saldo negativo; sem self-transfers em contratos expirados.',
   ];
 
   /// Bloco curto para emails de feedback / bugs.

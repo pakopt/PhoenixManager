@@ -117,6 +117,43 @@ void main() {
       expect(freeTransfers, isNotEmpty);
     });
 
+    test('expired contracts skip self-transfer to weakest club', () {
+      final weakest = context.registry.clubs.values.reduce(
+        (a, b) => a.reputation < b.reputation ? a : b,
+      );
+      final player = context.registry.players.values.firstWhere(
+        (p) => p.clubId == weakest.id,
+      );
+      context.registry.players[player.id] = player.copyWith(
+        contractEndYear: 2020,
+      );
+      final transfersBefore = context.registry.transfers
+          .where((t) => t.playerId == player.id)
+          .length;
+
+      final engine = TransferEngine(
+        registry: context.registry,
+        config: context.economyConfig.transfer,
+        financeEngine: FinanceEngine(
+          registry: context.registry,
+          config: context.economyConfig.finance,
+          staffConfig: context.economyConfig.staff,
+          eventBus: context.eventBus,
+        ),
+        eventBus: context.eventBus,
+        rng: context.container.get<SeededRng>(),
+      );
+      engine.processExpiredContracts(
+        const GameDate(year: 2026, month: 6, day: 1),
+      );
+
+      expect(context.registry.getPlayer(player.id)!.clubId, weakest.id);
+      expect(
+        context.registry.transfers.where((t) => t.playerId == player.id).length,
+        transfersBefore,
+      );
+    });
+
     test('club finances persist through save round-trip', () {
       context.economyRunner.runDaily(
         context.simulationEngine.worldState.currentDate,

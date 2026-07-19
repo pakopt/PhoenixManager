@@ -571,7 +571,96 @@ class GameSession {
     _context.economyRunner.ensureSquadDepth(
       _context.container.get<SeededRng>(),
     );
-    _context.eventBus.clearHistory();
+    _rehydrateFeedFromRegistry();
+  }
+
+  /// Rebuilds inbox/dashboard feed from persisted world state after load.
+  void _rehydrateFeedFromRegistry() {
+    final restored = <PhoenixEvent>[];
+
+    for (final fixture in allFixtures) {
+      if (!fixture.isPlayed || !fixture.involvesClub(userClubId)) {
+        continue;
+      }
+      final result = registry.matchResults[fixture.id];
+      final homeScore = fixture.homeScore ?? result?.homeScore;
+      final awayScore = fixture.awayScore ?? result?.awayScore;
+      if (homeScore == null || awayScore == null) {
+        continue;
+      }
+      restored.add(
+        MatchPlayedEvent(
+          fixture: fixture,
+          homeClubId: fixture.homeClubId,
+          awayClubId: fixture.awayClubId,
+          homeScore: homeScore,
+          awayScore: awayScore,
+        ),
+      );
+    }
+
+    for (final transfer in clubTransfers) {
+      final name =
+          registry.getPlayer(transfer.playerId)?.name ?? transfer.playerId.value;
+      restored.add(
+        TransferCompletedEvent(record: transfer, playerName: name),
+      );
+    }
+
+    for (final unlocked in registry.unlockedAchievements.values) {
+      restored.add(
+        AchievementUnlockedEvent(
+          achievementId: unlocked.id,
+          clubId: userClubId,
+          unlockedOn: unlocked.unlockedOn,
+          seasonYear: unlocked.seasonYear,
+        ),
+      );
+    }
+
+    for (final player in squad) {
+      if (!player.isInjured) {
+        continue;
+      }
+      restored.add(
+        PlayerInjuredEvent(
+          playerId: player.id,
+          playerName: player.name,
+          clubId: userClubId,
+          daysOut: player.injuredDaysRemaining,
+          date: currentDate,
+        ),
+      );
+    }
+
+    restored.add(
+      NewSeasonStartedEvent(
+        seasonYear: seasonYear,
+        startDate: GameDate(year: seasonYear, month: 8, day: 15),
+      ),
+    );
+
+    restored.sort(_feedEventCompare);
+    // Mantém o feed recente legível (ordem cronológica no bus).
+    final capped = restored.length <= 80
+        ? restored
+        : restored.sublist(restored.length - 80);
+    _context.eventBus.restoreHistory(capped);
+  }
+
+  static int _feedEventCompare(PhoenixEvent a, PhoenixEvent b) {
+    return _feedEventDate(a).compareTo(_feedEventDate(b));
+  }
+
+  static GameDate _feedEventDate(PhoenixEvent event) {
+    return switch (event) {
+      MatchPlayedEvent e => e.fixture.date,
+      TransferCompletedEvent e => e.record.date,
+      AchievementUnlockedEvent e => e.unlockedOn,
+      PlayerInjuredEvent e => e.date,
+      NewSeasonStartedEvent e => e.startDate,
+      _ => const GameDate(year: 0, month: 1, day: 1),
+    };
   }
 
   /// After advancing to match day, returns the user's most recent played match.

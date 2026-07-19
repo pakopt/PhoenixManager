@@ -25,6 +25,7 @@ class _InboxScreenState extends State<InboxScreen> {
   String? _selectedId;
   Set<String> _readIds = {};
   var _loaded = false;
+  int? _loadedSlot;
 
   @override
   void initState() {
@@ -40,20 +41,29 @@ class _InboxScreenState extends State<InboxScreen> {
   }
 
   void _onController() {
-    if (mounted) {
-      setState(() {});
-      _notifyUnread();
+    if (!mounted) {
+      return;
     }
+    if (_loadedSlot != null &&
+        _loadedSlot != widget.controller.activeSlot) {
+      _loadRead();
+      return;
+    }
+    setState(() {});
+    _notifyUnread();
   }
 
   Future<void> _loadRead() async {
-    final ids = await InboxReadStore.loadReadIds(widget.controller.activeSlot);
+    final slot = widget.controller.activeSlot;
+    final ids = await InboxReadStore.loadReadIds(slot);
     if (!mounted) {
       return;
     }
     setState(() {
+      _loadedSlot = slot;
       _readIds = ids;
       _loaded = true;
+      _selectedId = null;
     });
     _notifyUnread();
   }

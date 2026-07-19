@@ -129,6 +129,39 @@ void main() {
     );
   });
 
+  test('importSave rehydrates inbox feed from registry', () async {
+    final context = await AppBootstrap().boot(worldId: 'rehydrate-inbox-test');
+    final session = GameSession(context);
+    final user = GameSession.userClubId;
+    final peer = context.registry.clubs.values
+        .firstWhere((c) => c.id != user)
+        .id;
+    final player = context.registry.players.values.first;
+
+    context.registry.transfers.add(
+      TransferRecord(
+        id: const TransferId('t-rehydrate'),
+        playerId: player.id,
+        fromClubId: peer,
+        toClubId: user,
+        fee: 150000,
+        date: session.currentDate,
+      ),
+    );
+    context.eventBus.clearHistory();
+    expect(session.inboxEvents, isEmpty);
+
+    final json = session.exportSave();
+    session.importSave(json);
+
+    expect(
+      session.inboxEvents.whereType<TransferCompletedEvent>().any(
+            (e) => e.record.id.value == 't-rehydrate',
+          ),
+      isTrue,
+    );
+  });
+
   test('contractsExpiringSoon lists players ending next season', () async {
     final context = await AppBootstrap().boot(worldId: 'contracts-test');
     final session = GameSession(context);

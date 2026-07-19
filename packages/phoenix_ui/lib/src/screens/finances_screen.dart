@@ -223,7 +223,8 @@ class _FinanceSnapshot {
     final monthlyPnL = (net / monthsIntoSeason).round();
 
     // Orçamento de transferências: saldo menos 1 mês de salários reservado.
-    final transferBudget = (balance - monthlyWages).clamp(0, balance);
+    final transferBudget =
+        balance <= 0 ? 0 : (balance - monthlyWages).clamp(0, balance);
 
     final sponsorAnnual = config.dailySponsorIncome * 365;
 

@@ -1,7 +1,7 @@
 # Plano — Project Phoenix Manager
 
-**Versão:** v0.8.48  
-**Actualizado:** 18 de Julho de 2026  
+**Versão:** v0.8.49  
+**Actualizado:** 19 de Julho de 2026  
 **Fase actual:** **E — Lançamento**
 
 Documento vivo do roadmap. O plano detalhado de arquitectura (PSE, GDD, motores) vive no **Cursor plan** (`phoenix_manager_game_2a890b62.plan.md`) e em [`docs/roadmap/master-roadmap-v1.md`](roadmap/master-roadmap-v1.md); este ficheiro reflecte **o que está feito** e **o que falta para publicar**.
@@ -142,7 +142,7 @@ CLEAN_GRADLE=1 ./scripts/clean_dev_artifacts.sh   # inclui ~/.gradle/caches
 
 Detalhe oficial: [requisitos de teste Play](https://support.google.com/googleplay/android-developer/answer/14151465) · guia local: [`docs/STORE.md`](STORE.md) §9c–10
 
-**AAB actual:** `build/release/mobile/android/phoenix_manager.aab` (v0.8.48, versionCode 49)
+**AAB actual:** `build/release/mobile/android/phoenix_manager.aab` (v0.8.49, versionCode 50)
 
 Convite / QA para amigos: [`docs/BETA.md`](BETA.md) · textos: `./scripts/play_console_brief.sh`
 
@@ -200,7 +200,7 @@ Saída: `build/release/store/android/` — reutilizar quando a conta activar.
 | [`docs/plano.md`](plano.md) | Este ficheiro — roadmap vivo (Fase E) |
 | [`docs/roadmap/master-roadmap-v1.md`](roadmap/master-roadmap-v1.md) | Sincronização plano mestre ↔ código |
 | [`docs/BETA.md`](BETA.md) | Beta local sem lojas (APK/Mac + QA) |
-| [`docs/STORE.md`](STORE.md) | Play Store + App Store passo a passo |
+| [`docs/STORE.md`](STORE.md) | Play Store + App Store + Microsoft Store |
 | [`docs/PRIVACY.md`](PRIVACY.md) | Política privacidade (fonte Markdown) |
 | [`docs/site/privacy.html`](site/privacy.html) | Política para URL pública |
 | [`apps/phoenix_manager/MOBILE.md`](../apps/phoenix_manager/MOBILE.md) | Build mobile, signing, dev |
@@ -213,14 +213,14 @@ Saída: `build/release/store/android/` — reutilizar quando a conta activar.
 
 | Campo | Valor actual |
 |-------|--------------|
-| `versionName` | `0.8.48` |
-| `versionCode` | `49` |
+| `versionName` | `0.8.49` |
+| `versionCode` | `50` |
 | Package / Bundle ID | `com.phoenix.manager` |
 
 **Próxima release:** editar `apps/phoenix_manager/pubspec.yaml`:
 
 ```yaml
-version: 0.8.48+49   # nome visível + versionCode (obrigatório incrementar +N)
+version: 0.8.49+50   # nome visível + versionCode (obrigatório incrementar +N)
 ```
 
 Depois: `./scripts/build_mobile.sh android` → novo AAB · `./scripts/check_app_version_sync.sh`
@@ -229,6 +229,7 @@ Depois: `./scripts/build_mobile.sh android` → novo AAB · `./scripts/check_app
 
 ## Histórico recente (Fase E + v0.8.x)
 
+- ✅ **v0.8.49** — Classificação FootSim (tabela completa + despromoção) · Microsoft Store MSIX (versionCode 50)  
 - ✅ **v0.8.48** — Upgrades de instalações (treino/academia) nas Finanças (versionCode 49)  
 - ✅ **v0.8.47** — Emblemas maiores no «PRÓXIMO JOGO» da Dashboard (versionCode 48)  
 - ✅ **v0.8.46** — Polish UI FootSim: crests classificação/calendário/mercado · header Táctica (versionCode 47)  
@@ -293,7 +294,8 @@ Depois: `./scripts/build_mobile.sh android` → novo AAB · `./scripts/check_app
 - ✅ `play_console_day1.sh` — guia upload quando conta activar  
 - ✅ Beta local — `local_beta.sh`, `docs/BETA.md`, `qa_manual.sh`  
 - ✅ Screenshots App Store — 5 capturas iOS (`capture_app_store_screenshots.sh`)  
-- ✅ Play Console — conta aprovada · **teste fechado activo** · AAB **v0.8.48+49**  
+- ✅ Play Console — conta aprovada · **teste fechado activo** · AAB **v0.8.49+50**  
+- ✅ Microsoft Store — scripts MSIX + guia Partner Center (`docs/STORE.md`) · upload ⏳  
 - 🔄 Produção — **≥12 opted-in × 14 dias** → candidatar acesso → promover (`docs/STORE.md` §9c–10) · `./scripts/play_14day_tracker.sh`  
 - ✅ Desktop — fullscreen Mac / Windows / Linux + «Sair do jogo»  
 - ✅ Polish UI v0.8.x — freeze v0.8.17–0.8.30; redesign FootSim × Phoenix em v0.8.31; A Coruja em v0.8.32; Táctica em v0.8.33

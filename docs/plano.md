@@ -1,10 +1,10 @@
 # Plano — Project Phoenix Manager
 
-**Versão:** TS Marco 5a  
+**Versão:** TS Marco 5a.2  
 **Actualizado:** 20 de Julho de 2026  
-**Fase actual:** **TypeScript — Marco 5a Squad + mercado (read-only)**
+**Fase actual:** **TypeScript — Marco 5a.2 Buy/sell transfers**
 
-Desktop: painéis **Plantel** (jogadores do clube gerido) e **Mercado** (resto do mundo, filtro por posição no cliente).
+Desktop: painéis **Plantel** e **Mercado** com **Comprar/Vender**; **Caixa** no cabeçalho. Fee = `rating × 100 000`; saldo inicial `5 000 000`.
 
 ## Marcos
 
@@ -16,7 +16,8 @@ Desktop: painéis **Plantel** (jogadores do clube gerido) e **Mercado** (resto d
 | **3.5** | Entity patches (club reputation) no save v2 | ✅ |
 | **4** | Match L1 (highlight) + taça knockout | ✅ |
 | **5a** | Squad + mercado (read-only) | ✅ |
-| **5a.2+** | Buy/sell, finance, club-ai, editor | ⏳ |
+| **5a.2** | Buy/sell (fee, caixa, save balance/patches) | ✅ |
+| **5b+** | Finance, club-ai, editor | ⏳ |
 
 ## Comandos
 
@@ -28,6 +29,6 @@ pnpm season -- --seed 42
 pnpm dev:desktop
 ```
 
-Saves v2: `saves/<slot>/save.json` inclui `patches.clubs` e estado da taça.  
+Saves v2: `saves/<slot>/save.json` inclui `patches.clubs`, `patches.players`, `balance` e estado da taça.  
 Vitória numa jornada: `reputation +1` (máx. 100).  
 Clube gerido: timeline L1 (~12 eventos); resto L3. Taça após J5/J10/J15 — highlight preferido se houver jogo de taça.

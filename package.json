@@ -11,7 +11,9 @@
     "typecheck": "turbo run typecheck",
     "lint": "turbo run lint",
     "season": "pnpm --filter @phoenix/cli season",
-    "indexes": "pnpm --filter @phoenix/database indexes"
+    "indexes": "pnpm --filter @phoenix/database indexes",
+    "dev:desktop": "pnpm --filter @phoenix/desktop dev",
+    "build:desktop": "pnpm --filter @phoenix/desktop build"
   },
   "devDependencies": {
     "@eslint/js": "^9.17.0",

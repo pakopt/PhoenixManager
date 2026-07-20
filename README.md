@@ -34,9 +34,10 @@ pnpm install
 pnpm test
 pnpm typecheck
 pnpm season -- --seed 42
+pnpm dev:desktop
 ```
 
-Requires **Node 22+** and **pnpm**.
+Requires **Node 22+**, **pnpm**, and (for desktop) Electron deps installed via pnpm.
 
 ## Architecture rules
 

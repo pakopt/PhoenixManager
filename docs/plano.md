@@ -1,60 +1,41 @@
 # Plano — Project Phoenix Manager
 
-**Versão:** TS Marco 1  
+**Versão:** TS Marco 2  
 **Actualizado:** 20 de Julho de 2026  
-**Fase actual:** **TypeScript Engine Restart — Marco 1 concluído**
+**Fase actual:** **TypeScript — Marco 2 Desktop**
 
-Documento vivo do roadmap. Design: [`docs/superpowers/specs/2026-07-20-typescript-engine-restart-design.md`](superpowers/specs/2026-07-20-typescript-engine-restart-design.md). Plano de implementação: [`docs/superpowers/plans/2026-07-20-typescript-engine-restart.md`](superpowers/plans/2026-07-20-typescript-engine-restart.md).
+Design Marco 1: [`docs/superpowers/specs/2026-07-20-typescript-engine-restart-design.md`](superpowers/specs/2026-07-20-typescript-engine-restart-design.md)  
+Design Marco 2: [`docs/superpowers/specs/2026-07-20-marco-2-desktop-design.md`](superpowers/specs/2026-07-20-marco-2-desktop-design.md)
 
 ---
 
 ## Visão
 
-**Engine First** — o coração é um Simulation Engine TypeScript puro. A UI (Electron + React) chega depois e nunca invertida.
+**Engine First** — UI Electron fala com `GameSession` via IPC; a engine nunca importa React.
 
 ```
-UI → Application → Simulation Engine → Database (JSON shards)
+React UI → IPC → packages/application → simulation → database
 ```
 
 ## Stack activa
 
 | Camada | Tecnologia |
 |--------|------------|
-| Linguagem | TypeScript (strict) |
-| Monorepo | pnpm workspaces + Turborepo |
-| Validação | Zod (`@phoenix/contracts`) |
-| Testes | Vitest |
-| Dados | JSON shards + índices + data packs |
-| CLI | `pnpm season` |
+| Desktop | Electron + electron-vite |
+| UI | React + Tailwind + Zustand |
+| Application | `@phoenix/application` (GameSession) |
+| Engine | TypeScript packages (calendar, match L3, …) |
+| Dados | JSON shards |
 
 ## Marcos
 
 | Marco | Conteúdo | Estado |
 |-------|----------|--------|
-| **1** | Archive Flutter + monorepo TS + database + calendar + match L3 + season CLI | ✅ |
-| **2** | Electron + UI mínima “avançar dia” | ⏳ |
+| **1** | Monorepo TS + database + season CLI | ✅ |
+| **2** | Electron + avançar jornada + tabela + resultados | ✅ |
 | **3** | Saves/patches + mods | ⏳ |
 | **4** | Match camada 1 + competition-engine | ⏳ |
 | **5+** | Transfer, finance, club-ai, editor | ⏳ |
-
-## Marco 1 — checklist
-
-| Item | Estado |
-|------|--------|
-| Flutter em `legacy/flutter/` | ✅ |
-| Branch `legacy/flutter-v0.8` | ✅ |
-| Packages engine (`contracts`…`simulation`) | ✅ |
-| Seed 20 clubes / 400 jogadores | ✅ |
-| `pnpm test` / `pnpm typecheck` / `pnpm season` | ✅ |
-| Época 380 jogos &lt; 2s | ✅ (~5 ms no seed 42) |
-
-## Legacy Flutter
-
-O jogo Flutter/Dart PSE v0.8 (Fase E lançamento) está arquivado:
-
-- Código: [`legacy/flutter/`](../legacy/flutter/)
-- Docs de loja/roadmap antigos: [`docs/legacy/`](legacy/)
-- Snapshot git: branch `legacy/flutter-v0.8`
 
 ## Comandos
 
@@ -63,4 +44,5 @@ pnpm install
 pnpm test
 pnpm typecheck
 pnpm season -- --seed 42
+pnpm dev:desktop
 ```

@@ -51,3 +51,8 @@ legacy/flutter/build/
 
 # Turbo
 .turbo/
+
+# Electron / Vite build outputs
+apps/desktop/out/
+apps/*/out/
+apps/*/dist/

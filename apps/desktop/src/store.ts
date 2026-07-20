@@ -9,7 +9,12 @@ type SessionStore = {
   saves: SaveMeta[];
   mods: ModInfo[];
   selectedMods: string[];
-  start: (seed?: number, modIds?: string[]) => Promise<void>;
+  selectedManagedClubId: string | undefined;
+  start: (
+    seed?: number,
+    modIds?: string[],
+    managedClubId?: string,
+  ) => Promise<void>;
   advanceDay: () => Promise<void>;
   save: (label?: string) => Promise<void>;
   load: (slotId: string) => Promise<void>;
@@ -32,6 +37,7 @@ export const useSessionStore = create<SessionStore>((set, get) => ({
   saves: [],
   mods: [],
   selectedMods: [],
+  selectedManagedClubId: undefined,
 
   refreshLists: async () => {
     try {
@@ -54,12 +60,21 @@ export const useSessionStore = create<SessionStore>((set, get) => ({
     });
   },
 
-  start: async (seed = 42, modIds) => {
+  start: async (seed = 42, modIds, managedClubId) => {
     set({ busy: true, error: null });
     try {
       const mods = modIds ?? get().selectedMods;
-      const snapshot = await window.phoenix.session.start({ seed, modIds: mods });
-      set({ snapshot, busy: false });
+      const selectedClubId = managedClubId ?? get().selectedManagedClubId;
+      const snapshot = await window.phoenix.session.start({
+        seed,
+        modIds: mods,
+        managedClubId: selectedClubId,
+      });
+      set({
+        snapshot,
+        busy: false,
+        selectedManagedClubId: snapshot.managedClubId,
+      });
       await get().refreshLists();
     } catch (err) {
       set({
@@ -109,6 +124,7 @@ export const useSessionStore = create<SessionStore>((set, get) => ({
         snapshot,
         busy: false,
         selectedMods: snapshot.modIds,
+        selectedManagedClubId: snapshot.managedClubId,
       });
       await get().refreshLists();
     } catch (err) {

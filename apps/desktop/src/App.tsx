@@ -1,6 +1,17 @@
 import { useEffect } from 'react';
 import { useSessionStore } from './store';
 
+function cupRoundLabel(round: 'qf' | 'sf' | 'final'): string {
+  switch (round) {
+    case 'qf':
+      return 'Quartos de final';
+    case 'sf':
+      return 'Meias-finais';
+    case 'final':
+      return 'Final';
+  }
+}
+
 export default function App() {
   const {
     snapshot,
@@ -9,6 +20,7 @@ export default function App() {
     saves,
     mods,
     selectedMods,
+    selectedManagedClubId,
     start,
     advanceDay,
     save,
@@ -120,6 +132,23 @@ export default function App() {
           >
             Aplicar mods / reiniciar
           </button>
+          <label className="mt-4 block text-sm">
+            <span className="mb-1 block font-medium">Clube gerido</span>
+            <select
+              value={selectedManagedClubId ?? snapshot.managedClubId}
+              disabled={busy}
+              onChange={(event) =>
+                void start(42, selectedMods, event.target.value)
+              }
+              className="w-full rounded-md border border-[var(--border)] bg-black/20 px-3 py-2 text-sm disabled:opacity-50"
+            >
+              {snapshot.clubs.map((club) => (
+                <option key={club.id} value={club.id}>
+                  {club.name}
+                </option>
+              ))}
+            </select>
+          </label>
         </section>
 
         <section className="rounded-lg border border-[var(--border)] bg-[var(--surface)]/80 p-4">
@@ -178,6 +207,81 @@ export default function App() {
           </ul>
         )}
       </section>
+
+      <div className="grid gap-4 md:grid-cols-2">
+        <section className="rounded-lg border border-[var(--border)] bg-[var(--surface)]/80 p-4">
+          <h2 className="mb-3 text-sm font-medium uppercase tracking-wider text-[var(--muted)]">
+            O teu jogo
+          </h2>
+          {!snapshot.highlight ? (
+            <p className="text-sm text-[var(--muted)]">
+              Ainda não há um jogo do teu clube nesta jornada.
+            </p>
+          ) : (
+            <>
+              <p className="text-lg font-semibold tabular-nums">
+                {snapshot.highlight.homeName} {snapshot.highlight.homeGoals}–{snapshot.highlight.awayGoals}{' '}
+                {snapshot.highlight.awayName}
+              </p>
+              {snapshot.highlight.events.length === 0 ? (
+                <p className="mt-3 text-sm text-[var(--muted)]">Sem eventos registados.</p>
+              ) : (
+                <ol className="mt-3 space-y-2">
+                  {snapshot.highlight.events.map((event, index) => (
+                    <li
+                      key={`${event.minute}-${event.clubId}-${index}`}
+                      className="rounded-md bg-black/20 px-3 py-2 text-sm"
+                    >
+                      <span className="mr-2 font-mono text-[var(--muted)]">
+                        {event.minute}&apos;
+                      </span>
+                      {event.text}
+                    </li>
+                  ))}
+                </ol>
+              )}
+            </>
+          )}
+        </section>
+
+        <section className="rounded-lg border border-[var(--border)] bg-[var(--surface)]/80 p-4">
+          <h2 className="mb-3 text-sm font-medium uppercase tracking-wider text-[var(--muted)]">
+            Taça
+          </h2>
+          {!snapshot.cup ? (
+            <p className="text-sm text-[var(--muted)]">Taça indisponível.</p>
+          ) : (
+            <>
+              <p className="text-sm font-medium">
+                {cupRoundLabel(snapshot.cup.round)}
+                {snapshot.cup.completed ? ' · concluída' : ''}
+              </p>
+              <ul className="mt-3 space-y-2">
+                {snapshot.cup.ties.map((tie) => (
+                  <li
+                    key={`${tie.homeClubId}-${tie.awayClubId}`}
+                    className="flex items-center justify-between gap-2 rounded-md bg-black/20 px-3 py-2 text-sm"
+                  >
+                    <span className="truncate">
+                      {tie.homeName} <span className="text-[var(--muted)]">vs</span> {tie.awayName}
+                    </span>
+                    {tie.result ? (
+                      <span className="shrink-0 font-mono tabular-nums">
+                        {tie.result.homeGoals}–{tie.result.awayGoals}
+                      </span>
+                    ) : null}
+                  </li>
+                ))}
+              </ul>
+              {!snapshot.cup.completed && snapshot.cup.nextRoundAfterMatchday ? (
+                <p className="mt-3 text-sm text-[var(--muted)]">
+                  Próxima ronda após jornada {snapshot.cup.nextRoundAfterMatchday}.
+                </p>
+              ) : null}
+            </>
+          )}
+        </section>
+      </div>
 
       <section className="overflow-hidden rounded-lg border border-[var(--border)] bg-[var(--surface)]/80">
         <h2 className="border-b border-[var(--border)] px-4 py-3 text-sm font-medium uppercase tracking-wider text-[var(--muted)]">

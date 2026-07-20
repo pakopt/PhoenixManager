@@ -2,7 +2,11 @@ import { contextBridge, ipcRenderer } from 'electron';
 import type { SessionSnapshot } from '@phoenix/application';
 import type { ModInfo, SaveMeta } from '@phoenix/contracts';
 
-export type StartOpts = { seed: number; modIds?: string[] };
+export type StartOpts = {
+  seed: number;
+  modIds?: string[];
+  managedClubId?: string;
+};
 
 const phoenix = {
   session: {

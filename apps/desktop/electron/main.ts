@@ -55,12 +55,16 @@ function createWindow(): void {
 app.whenReady().then(() => {
   ipcMain.handle(
     'session:start',
-    async (_evt, opts: { seed: number; modIds?: string[] }) => {
+    async (
+      _evt,
+      opts: { seed: number; modIds?: string[]; managedClubId?: string },
+    ) => {
       return session.start({
         databaseRoot: databaseRoot(),
         savesRoot: savesRoot(),
         seed: opts.seed,
         modIds: opts.modIds,
+        managedClubId: opts.managedClubId as Slug | undefined,
       });
     },
   );

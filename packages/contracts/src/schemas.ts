@@ -135,6 +135,7 @@ export const saveGameSchema = z.object({
   table: z.array(tableRowSchema),
   lastResults: z.array(matchResultSchema),
   patches: savePatchesSchema.optional(),
+  balance: z.number().finite().optional(),
   managedClubId: slugSchema.optional(),
   cup: cupStateSchema.optional(),
 });

@@ -107,4 +107,21 @@ describe('saveGameSchema', () => {
     expect(save.managedClubId).toBeUndefined();
     expect(save.cup).toBeUndefined();
   });
+
+  it('accepts v2 save with optional balance', () => {
+    const save = saveGameSchema.parse({
+      version: 2,
+      savedAt: 1,
+      slotId: 'slot-1',
+      label: 'Career',
+      seed: 42,
+      modIds: [],
+      competitionId: 'premier-league-en',
+      matchday: 5,
+      table: [],
+      lastResults: [],
+      balance: 5_000_000,
+    });
+    expect(save.balance).toBe(5_000_000);
+  });
 });

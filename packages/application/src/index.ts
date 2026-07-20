@@ -16,7 +16,15 @@ export { listMods, listSaves, readSave, writeSave } from './persistence.js';
 export type { SaveFs } from './persistence.js';
 export {
   applyClubPatches,
+  applyPlayerPatches,
   bumpClubReputation,
   cloneClubs,
+  clonePlayers,
   diffClubs,
+  diffPlayers,
 } from './entity-patches.js';
+export {
+  INITIAL_BALANCE,
+  pickSellDestinationClub,
+  transferFee,
+} from './transfer.js';

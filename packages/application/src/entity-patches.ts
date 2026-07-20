@@ -1,4 +1,4 @@
-import type { Club, EntityPatch, Slug } from '@phoenix/contracts';
+import type { Club, EntityPatch, Player, Slug } from '@phoenix/contracts';
 
 function clampReputation(value: number): number {
   return Math.min(100, Math.max(1, value));
@@ -56,4 +56,43 @@ export function bumpClubReputation(clubs: Map<Slug, Club>, clubId: Slug, delta =
     ...club,
     reputation: clampReputation(club.reputation + delta),
   });
+}
+
+export function clonePlayers(players: Map<Slug, Player>): Map<Slug, Player> {
+  return new Map([...players.entries()].map(([id, player]) => [id, { ...player }]));
+}
+
+export function diffPlayers(
+  baseline: Map<Slug, Player>,
+  current: Map<Slug, Player>,
+): EntityPatch[] {
+  const patches: EntityPatch[] = [];
+  for (const [id, player] of current) {
+    const base = baseline.get(id);
+    if (!base) continue;
+    const changes: Record<string, unknown> = {};
+    if (player.clubId !== base.clubId) {
+      changes.clubId = player.clubId;
+    }
+    if (Object.keys(changes).length > 0) {
+      patches.push({ id, changes });
+    }
+  }
+  return patches;
+}
+
+export function applyPlayerPatches(
+  players: Map<Slug, Player>,
+  patches: readonly EntityPatch[],
+): void {
+  for (const patch of patches) {
+    const player = players.get(patch.id);
+    if (!player) continue;
+    const next = { ...player };
+    const { clubId } = patch.changes;
+    if (typeof clubId === 'string' && clubId.length > 0) {
+      next.clubId = clubId;
+    }
+    players.set(patch.id, next);
+  }
 }

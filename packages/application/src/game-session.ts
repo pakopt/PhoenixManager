@@ -1,9 +1,29 @@
 import { mkdir, readFile, readdir, writeFile } from 'node:fs/promises';
 import { join } from 'node:path';
-import type { Club, Fixture, MatchResult, SaveMeta, Slug, TableRow } from '@phoenix/contracts';
+import type {
+  Club,
+  CupState,
+  Fixture,
+  MatchResult,
+  SaveMeta,
+  Slug,
+  TableRow,
+} from '@phoenix/contracts';
 import { generateLeagueFixtures, totalMatchdays } from '@phoenix/calendar';
+import {
+  advanceKnockout,
+  createKnockoutCup,
+  cupRoundAfterMatchday,
+} from '@phoenix/competition';
 import { loadWorld, type WorldDatabase } from '@phoenix/database';
 import {
+  simulateMatch,
+  simulateMatchDetailed,
+  type DetailedMatch,
+} from '@phoenix/match-engine';
+import { createRng, type Rng } from '@phoenix/shared';
+import {
+  clubStrength,
   createEmptyTable,
   simulateMatchday,
   sortTable,
@@ -18,6 +38,8 @@ import { listMods, listSaves, readSave, writeSave, type SaveFs } from './persist
 import {
   toSnapshotResults,
   type SessionSnapshot,
+  type SnapshotCup,
+  type SnapshotHighlight,
   type SnapshotTableRow,
 } from './snapshot.js';
 
@@ -27,7 +49,12 @@ export type StartSessionOptions = {
   competitionId?: Slug;
   modIds?: string[];
   savesRoot?: string;
+  managedClubId?: Slug;
 };
+
+const DEFAULT_MANAGED_CLUB_ID: Slug = 'london-fc-en';
+const CUP_ID: Slug = 'phoenix-cup-en';
+const CUP_MATCHDAYS = [5, 10, 15] as const;
 
 const defaultFs: SaveFs = {
   readFile: (p) => readFile(p, 'utf8'),
@@ -50,6 +77,9 @@ export class GameSession {
   private competitionId: Slug = 'phoenix-premier-en';
   private competitionName = '';
   private lastMatchResults: MatchResult[] = [];
+  private managedClubId: Slug = DEFAULT_MANAGED_CLUB_ID;
+  private cup!: CupState;
+  private lastHighlight: SnapshotHighlight | undefined;
   private modIds: string[] = [];
   private databaseRoot = '';
   private savesRoot = '';
@@ -87,6 +117,13 @@ export class GameSession {
     this.table = createEmptyTable(competition.clubIds);
     this.matchday = 0;
     this.lastMatchResults = [];
+    this.managedClubId = options.managedClubId ?? DEFAULT_MANAGED_CLUB_ID;
+    this.cup = createKnockoutCup({
+      competitionId: CUP_ID,
+      clubIds: competition.clubIds,
+      seed: this.seed,
+    });
+    this.lastHighlight = undefined;
     this.started = true;
 
     return this.getSnapshot();
@@ -99,24 +136,33 @@ export class GameSession {
     }
 
     const next = this.matchday + 1;
-    const { results } = simulateMatchday({
+    const { results, highlight: leagueHighlight } = simulateMatchday({
       world: this.world,
       fixtures: this.fixtures,
       matchday: next,
       seed: this.seed,
       table: this.table,
+      highlightClubId: this.managedClubId,
     });
 
-    for (const result of results) {
-      if (result.homeGoals > result.awayGoals) {
-        bumpClubReputation(this.world.clubs, result.homeClubId, 1);
-      } else if (result.awayGoals > result.homeGoals) {
-        bumpClubReputation(this.world.clubs, result.awayClubId, 1);
-      }
-    }
+    this.bumpWinningReputations(results);
 
     this.matchday = next;
     this.lastMatchResults = results;
+    this.lastHighlight = leagueHighlight
+      ? this.toSnapshotHighlight(leagueHighlight)
+      : undefined;
+
+    if (
+      cupRoundAfterMatchday(next) === this.cup.round &&
+      !this.cup.completed
+    ) {
+      const cupHighlight = this.simulateCupRound(next);
+      if (cupHighlight) {
+        this.lastHighlight = this.toSnapshotHighlight(cupHighlight);
+      }
+    }
+
     return this.getSnapshot();
   }
 
@@ -132,6 +178,13 @@ export class GameSession {
       table: this.decorateTable(sortTable([...this.table.values()])),
       lastResults: toSnapshotResults(this.lastMatchResults, (id) => this.clubName(id)),
       modIds: [...this.modIds],
+      managedClubId: this.managedClubId,
+      clubs: [...this.world.clubs.values()].map((club) => ({
+        id: club.id,
+        name: club.name,
+      })),
+      highlight: this.lastHighlight,
+      cup: this.toSnapshotCup(),
     };
   }
 
@@ -155,6 +208,8 @@ export class GameSession {
         clubs: diffClubs(this.baselineClubs, this.world.clubs),
         players: [],
       },
+      managedClubId: this.managedClubId,
+      cup: this.cup,
     });
   }
 
@@ -184,6 +239,15 @@ export class GameSession {
     this.matchday = save.matchday;
     this.table = new Map(save.table.map((row) => [row.clubId, { ...row }]));
     this.lastMatchResults = save.lastResults.map((r) => ({ ...r }));
+    this.managedClubId = save.managedClubId ?? DEFAULT_MANAGED_CLUB_ID;
+    this.cup =
+      save.cup ??
+      createKnockoutCup({
+        competitionId: CUP_ID,
+        clubIds: [...this.world.clubs.keys()],
+        seed: this.seed,
+      });
+    this.lastHighlight = undefined;
     return this.getSnapshot();
   }
 
@@ -207,6 +271,95 @@ export class GameSession {
 
   private clubName(id: Slug): string {
     return this.world.clubs.get(id)?.name ?? id;
+  }
+
+  private bumpWinningReputations(results: readonly MatchResult[]): void {
+    for (const result of results) {
+      if (result.homeGoals > result.awayGoals) {
+        bumpClubReputation(this.world.clubs, result.homeClubId, 1);
+      } else if (result.awayGoals > result.homeGoals) {
+        bumpClubReputation(this.world.clubs, result.awayClubId, 1);
+      }
+    }
+  }
+
+  private simulateCupRound(matchday: number): DetailedMatch | undefined {
+    const rootRng = createRng(this.seed).fork(matchday * 1_000_003);
+    const results: MatchResult[] = [];
+    let highlight: DetailedMatch | undefined;
+
+    for (const [index, tie] of this.cup.ties.entries()) {
+      const simulated = this.simulateDecisiveCupTie(
+        tie.homeClubId,
+        tie.awayClubId,
+        rootRng.fork(index),
+      );
+      results.push(simulated.result);
+      if (simulated.detailed) {
+        highlight = simulated.detailed;
+      }
+    }
+
+    this.bumpWinningReputations(results);
+    this.cup = advanceKnockout(this.cup, results);
+    return highlight;
+  }
+
+  private simulateDecisiveCupTie(
+    homeClubId: Slug,
+    awayClubId: Slug,
+    rng: Rng,
+  ): { result: MatchResult; detailed?: DetailedMatch } {
+    const matchInput = {
+      homeClubId,
+      awayClubId,
+      homeStrength: clubStrength(this.world, homeClubId),
+      awayStrength: clubStrength(this.world, awayClubId),
+    };
+    const managesTie =
+      homeClubId === this.managedClubId || awayClubId === this.managedClubId;
+    const detailed = managesTie
+      ? simulateMatchDetailed({ ...matchInput, rng: rng.fork(0) })
+      : undefined;
+    let result = detailed?.result ?? simulateMatch({ ...matchInput, rng: rng.fork(0) });
+    let retry = 1;
+
+    while (result.homeGoals === result.awayGoals) {
+      result = simulateMatch({ ...matchInput, rng: rng.fork(retry) });
+      retry += 1;
+    }
+
+    return { result, detailed: result === detailed?.result ? detailed : undefined };
+  }
+
+  private toSnapshotHighlight(detailed: DetailedMatch): SnapshotHighlight {
+    return {
+      ...toSnapshotResults([detailed.result], (id) => this.clubName(id))[0]!,
+      events: detailed.events,
+    };
+  }
+
+  private toSnapshotCup(): SnapshotCup {
+    return {
+      competitionId: this.cup.competitionId,
+      round: this.cup.round,
+      ties: this.cup.ties.map((tie) => ({
+        homeClubId: tie.homeClubId,
+        awayClubId: tie.awayClubId,
+        homeName: this.clubName(tie.homeClubId),
+        awayName: this.clubName(tie.awayClubId),
+        result: tie.result
+          ? toSnapshotResults([tie.result], (id) => this.clubName(id))[0]
+          : undefined,
+      })),
+      completed: this.cup.completed,
+      nextRoundAfterMatchday: this.nextCupRoundAfterMatchday(),
+    };
+  }
+
+  private nextCupRoundAfterMatchday(): number | undefined {
+    if (this.cup.completed) return undefined;
+    return CUP_MATCHDAYS.find((matchday) => matchday > this.matchday);
   }
 
   private assertStarted(): void {

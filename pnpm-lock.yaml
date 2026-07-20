@@ -106,12 +106,21 @@ importers:
       '@phoenix/calendar':
         specifier: workspace:*
         version: link:../calendar
+      '@phoenix/competition':
+        specifier: workspace:*
+        version: link:../competition
       '@phoenix/contracts':
         specifier: workspace:*
         version: link:../contracts
       '@phoenix/database':
         specifier: workspace:*
         version: link:../database
+      '@phoenix/match-engine':
+        specifier: workspace:*
+        version: link:../match-engine
+      '@phoenix/shared':
+        specifier: workspace:*
+        version: link:../shared
       '@phoenix/simulation':
         specifier: workspace:*
         version: link:../simulation

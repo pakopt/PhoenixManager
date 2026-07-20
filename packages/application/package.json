@@ -19,8 +19,11 @@
   },
   "dependencies": {
     "@phoenix/calendar": "workspace:*",
+    "@phoenix/competition": "workspace:*",
     "@phoenix/contracts": "workspace:*",
     "@phoenix/database": "workspace:*",
+    "@phoenix/match-engine": "workspace:*",
+    "@phoenix/shared": "workspace:*",
     "@phoenix/simulation": "workspace:*"
   },
   "devDependencies": {

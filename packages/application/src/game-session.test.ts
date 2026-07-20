@@ -97,4 +97,56 @@ describe('GameSession', () => {
         .sort((a, b) => a.id.localeCompare(b.id)),
     );
   });
+
+  it('exposes a highlight for the managed club league fixture', async () => {
+    const session = new GameSession(nodeFs);
+    await session.start({ databaseRoot, seed: 42, managedClubId: 'london-fc-en' });
+
+    let day = session.getSnapshot();
+    while (!day.highlight && day.matchday < day.totalMatchdays) {
+      day = session.advanceDay();
+    }
+
+    expect(day.highlight).toBeDefined();
+    expect(day.matchday).toBe(1);
+    expect([day.highlight?.homeClubId, day.highlight?.awayClubId]).toContain(
+      'london-fc-en',
+    );
+    expect(day.highlight?.events).toBeDefined();
+  });
+
+  it('runs the cup quarter-finals after matchday five', async () => {
+    const session = new GameSession(nodeFs);
+    await session.start({ databaseRoot, seed: 42 });
+
+    for (let i = 0; i < 5; i += 1) {
+      session.advanceDay();
+    }
+
+    const snapshot = session.getSnapshot();
+    expect(snapshot.cup?.round).toBe('sf');
+    expect(snapshot.cup?.ties).toHaveLength(2);
+  });
+
+  it('persists managed club and cup through save/load', async () => {
+    const savesRoot = await mkdtemp(join(tmpdir(), 'phoenix-saves-'));
+    const session = new GameSession(nodeFs);
+    await session.start({
+      databaseRoot,
+      savesRoot,
+      seed: 42,
+      managedClubId: 'manchester-rovers-en',
+    });
+    for (let i = 0; i < 5; i += 1) {
+      session.advanceDay();
+    }
+    const before = session.getSnapshot();
+    await session.save('cup-test');
+
+    const loaded = new GameSession(nodeFs);
+    const after = await loaded.loadWithRoots('cup-test', databaseRoot, savesRoot);
+
+    expect(after.managedClubId).toBe(before.managedClubId);
+    expect(after.cup).toEqual(before.cup);
+  });
 });

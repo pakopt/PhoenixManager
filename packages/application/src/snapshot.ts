@@ -1,6 +1,8 @@
-import type { MatchResult, Slug, TableRow } from '@phoenix/contracts';
+import type { CupState, MatchResult, Slug, TableRow } from '@phoenix/contracts';
+import type { MatchEvent } from '@phoenix/match-engine';
 
 export type SnapshotTableRow = TableRow & { clubName: string; reputation: number };
+export type SnapshotClub = { id: Slug; name: string };
 
 export type SnapshotResult = {
   homeClubId: Slug;
@@ -9,6 +11,24 @@ export type SnapshotResult = {
   awayName: string;
   homeGoals: number;
   awayGoals: number;
+};
+
+export type SnapshotHighlight = SnapshotResult & { events: MatchEvent[] };
+
+export type SnapshotCupTie = {
+  homeClubId: Slug;
+  awayClubId: Slug;
+  homeName: string;
+  awayName: string;
+  result?: SnapshotResult;
+};
+
+export type SnapshotCup = {
+  competitionId: Slug;
+  round: CupState['round'];
+  ties: SnapshotCupTie[];
+  completed: boolean;
+  nextRoundAfterMatchday?: number;
 };
 
 export type SessionSnapshot = {
@@ -21,6 +41,10 @@ export type SessionSnapshot = {
   table: SnapshotTableRow[];
   lastResults: SnapshotResult[];
   modIds: string[];
+  managedClubId: Slug;
+  clubs: SnapshotClub[];
+  highlight?: SnapshotHighlight;
+  cup?: SnapshotCup;
 };
 
 export function toSnapshotResults(

@@ -1,5 +1,7 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useSessionStore } from './store';
+
+type MarketPositionFilter = 'ALL' | 'GK' | 'DF' | 'MF' | 'FW';
 
 function cupRoundLabel(round: 'qf' | 'sf' | 'final'): string {
   switch (round) {
@@ -32,6 +34,7 @@ export default function App() {
     refreshLists,
     toggleMod,
   } = useSessionStore();
+  const [marketPositionFilter, setMarketPositionFilter] = useState<MarketPositionFilter>('ALL');
 
   useEffect(() => {
     void (async () => {
@@ -62,6 +65,10 @@ export default function App() {
       </div>
     );
   }
+
+  const filteredMarket = snapshot.market.filter(
+    (player) => marketPositionFilter === 'ALL' || player.position === marketPositionFilter,
+  );
 
   return (
     <div className="mx-auto flex min-h-screen max-w-5xl flex-col gap-6 p-6 md:p-8">
@@ -284,6 +291,100 @@ export default function App() {
               ) : null}
             </>
           )}
+        </section>
+      </div>
+
+      <div className="grid gap-4 md:grid-cols-2">
+        <section className="overflow-hidden rounded-lg border border-[var(--border)] bg-[var(--surface)]/80">
+          <h2 className="border-b border-[var(--border)] px-4 py-3 text-sm font-medium uppercase tracking-wider text-[var(--muted)]">
+            Plantel
+          </h2>
+          <div className="overflow-x-auto">
+            <table className="w-full min-w-[320px] text-left text-sm">
+              <thead className="bg-black/25 text-[var(--muted)]">
+                <tr>
+                  <th className="px-3 py-2 font-medium">Nome</th>
+                  <th className="px-3 py-2 font-medium">Pos</th>
+                  <th className="px-3 py-2 font-medium">Rating</th>
+                  <th className="px-3 py-2 font-medium">Idade</th>
+                </tr>
+              </thead>
+              <tbody>
+                {snapshot.squad.length === 0 ? (
+                  <tr>
+                    <td colSpan={4} className="px-3 py-4 text-[var(--muted)]">
+                      Sem jogadores no plantel.
+                    </td>
+                  </tr>
+                ) : (
+                  snapshot.squad.map((player) => (
+                    <tr key={player.id} className="border-t border-[var(--border)]/70">
+                      <td className="px-3 py-2 font-medium">{player.name}</td>
+                      <td className="px-3 py-2 tabular-nums">{player.position}</td>
+                      <td className="px-3 py-2 tabular-nums">{player.rating}</td>
+                      <td className="px-3 py-2 tabular-nums">{player.age}</td>
+                    </tr>
+                  ))
+                )}
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <section className="overflow-hidden rounded-lg border border-[var(--border)] bg-[var(--surface)]/80">
+          <div className="flex flex-wrap items-center justify-between gap-3 border-b border-[var(--border)] px-4 py-3">
+            <h2 className="text-sm font-medium uppercase tracking-wider text-[var(--muted)]">
+              Mercado
+            </h2>
+            <label className="flex items-center gap-2 text-xs text-[var(--muted)]">
+              <span>Filtro</span>
+              <select
+                value={marketPositionFilter}
+                onChange={(event) =>
+                  setMarketPositionFilter(event.target.value as MarketPositionFilter)
+                }
+                className="rounded-md border border-[var(--border)] bg-black/20 px-2 py-1 text-sm text-[var(--foreground)]"
+              >
+                <option value="ALL">Todas</option>
+                <option value="GK">GK</option>
+                <option value="DF">DF</option>
+                <option value="MF">MF</option>
+                <option value="FW">FW</option>
+              </select>
+            </label>
+          </div>
+          <div className="overflow-x-auto">
+            <table className="w-full min-w-[480px] text-left text-sm">
+              <thead className="bg-black/25 text-[var(--muted)]">
+                <tr>
+                  <th className="px-3 py-2 font-medium">Nome</th>
+                  <th className="px-3 py-2 font-medium">Clube</th>
+                  <th className="px-3 py-2 font-medium">Pos</th>
+                  <th className="px-3 py-2 font-medium">Rating</th>
+                  <th className="px-3 py-2 font-medium">Idade</th>
+                </tr>
+              </thead>
+              <tbody>
+                {filteredMarket.length === 0 ? (
+                  <tr>
+                    <td colSpan={5} className="px-3 py-4 text-[var(--muted)]">
+                      Sem jogadores disponíveis para este filtro.
+                    </td>
+                  </tr>
+                ) : (
+                  filteredMarket.map((player) => (
+                    <tr key={player.id} className="border-t border-[var(--border)]/70">
+                      <td className="px-3 py-2 font-medium">{player.name}</td>
+                      <td className="px-3 py-2">{player.clubName}</td>
+                      <td className="px-3 py-2 tabular-nums">{player.position}</td>
+                      <td className="px-3 py-2 tabular-nums">{player.rating}</td>
+                      <td className="px-3 py-2 tabular-nums">{player.age}</td>
+                    </tr>
+                  ))
+                )}
+              </tbody>
+            </table>
+          </div>
         </section>
       </div>
 

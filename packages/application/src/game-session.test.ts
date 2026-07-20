@@ -102,6 +102,20 @@ describe('GameSession', () => {
     );
   });
 
+  it('exposes managed squad and market excluding managed club', async () => {
+    const session = new GameSession(nodeFs);
+    const snap = await session.start({
+      databaseRoot,
+      seed: 42,
+      managedClubId: 'london-fc-en',
+    });
+    expect(snap.squad.length).toBeGreaterThan(0);
+    const squadIds = new Set(snap.squad.map((p) => p.id));
+    expect(snap.market.every((p) => !squadIds.has(p.id))).toBe(true);
+    expect(snap.market.every((p) => p.clubId !== 'london-fc-en')).toBe(true);
+    expect(snap.market[0]?.clubName).toBeTruthy();
+  });
+
   it('exposes a highlight for the managed club league fixture', async () => {
     const session = new GameSession(nodeFs);
     await session.start({ databaseRoot, seed: 42, managedClubId: 'london-fc-en' });

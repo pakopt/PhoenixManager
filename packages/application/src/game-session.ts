@@ -36,6 +36,7 @@ import {
   diffClubs,
 } from './entity-patches.js';
 import { listMods, listSaves, readSave, writeSave, type SaveFs } from './persistence.js';
+import { buildMarket, buildSquad } from './player-lists.js';
 import {
   toSnapshotResults,
   type SessionSnapshot,
@@ -186,8 +187,12 @@ export class GameSession {
       })),
       highlight: this.lastHighlight,
       cup: this.toSnapshotCup(),
-      squad: [],
-      market: [],
+      squad: buildSquad(this.world.players.values(), this.managedClubId),
+      market: buildMarket(
+        this.world.players.values(),
+        this.world.clubs,
+        this.managedClubId,
+      ),
     };
   }
 

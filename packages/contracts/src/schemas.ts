@@ -57,6 +57,22 @@ export const matchResultSchema = z.object({
 
 export type MatchResult = z.infer<typeof matchResultSchema>;
 
+export const cupRoundSchema = z.enum(['qf', 'sf', 'final']);
+export const cupTieSchema = z.object({
+  homeClubId: slugSchema,
+  awayClubId: slugSchema,
+  result: matchResultSchema.optional(),
+});
+export const cupStateSchema = z.object({
+  competitionId: slugSchema,
+  round: cupRoundSchema,
+  ties: z.array(cupTieSchema),
+  completed: z.boolean(),
+});
+export type CupRound = z.infer<typeof cupRoundSchema>;
+export type CupTie = z.infer<typeof cupTieSchema>;
+export type CupState = z.infer<typeof cupStateSchema>;
+
 export const fixtureSchema = z.object({
   id: slugSchema,
   competitionId: slugSchema,
@@ -119,6 +135,8 @@ export const saveGameSchema = z.object({
   table: z.array(tableRowSchema),
   lastResults: z.array(matchResultSchema),
   patches: savePatchesSchema.optional(),
+  managedClubId: slugSchema.optional(),
+  cup: cupStateSchema.optional(),
 });
 
 export type SaveGame = z.infer<typeof saveGameSchema>;

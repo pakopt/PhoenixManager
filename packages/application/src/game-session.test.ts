@@ -109,8 +109,12 @@ describe('GameSession', () => {
       seed: 42,
       managedClubId: 'london-fc-en',
     });
+    const world = (session as unknown as { world: WorldDatabase }).world;
     expect(snap.squad.length).toBeGreaterThan(0);
+    expect(snap.squad.length + snap.market.length).toBe(world.players.size);
     const squadIds = new Set(snap.squad.map((p) => p.id));
+    const marketIds = new Set(snap.market.map((p) => p.id));
+    expect(snap.squad.every((p) => !marketIds.has(p.id))).toBe(true);
     expect(snap.market.every((p) => !squadIds.has(p.id))).toBe(true);
     expect(snap.market.every((p) => p.clubId !== 'london-fc-en')).toBe(true);
     expect(snap.market[0]?.clubName).toBeTruthy();

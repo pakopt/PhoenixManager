@@ -9,6 +9,15 @@ const clubs = new Map<string, Club>([
 
 const players: Player[] = [
   {
+    id: 'p-mf-high',
+    name: 'Mid High',
+    clubId: 'london-fc-en',
+    nationId: 'england',
+    position: 'MF',
+    rating: 80,
+    age: 26,
+  },
+  {
     id: 'p-mf',
     name: 'Mid',
     clubId: 'london-fc-en',
@@ -40,7 +49,9 @@ const players: Player[] = [
 describe('buildSquad', () => {
   it('filters managed club and sorts by position then rating', () => {
     const squad = buildSquad(players, 'london-fc-en');
-    expect(squad.map((p) => p.id)).toEqual(['p-gk', 'p-mf']);
+    expect(squad.map((p) => p.id)).toEqual(['p-gk', 'p-mf-high', 'p-mf']);
+    const mids = squad.filter((p) => p.position === 'MF');
+    expect(mids.map((p) => p.rating)).toEqual([80, 70]);
   });
 });
 

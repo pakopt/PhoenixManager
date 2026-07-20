@@ -4,6 +4,19 @@ import type { MatchEvent } from '@phoenix/match-engine';
 export type SnapshotTableRow = TableRow & { clubName: string; reputation: number };
 export type SnapshotClub = { id: Slug; name: string };
 
+export type SnapshotPlayer = {
+  id: Slug;
+  name: string;
+  position: 'GK' | 'DF' | 'MF' | 'FW';
+  rating: number;
+  age: number;
+};
+
+export type SnapshotMarketPlayer = SnapshotPlayer & {
+  clubId: Slug;
+  clubName: string;
+};
+
 export type SnapshotResult = {
   homeClubId: Slug;
   awayClubId: Slug;
@@ -45,6 +58,8 @@ export type SessionSnapshot = {
   clubs: SnapshotClub[];
   highlight?: SnapshotHighlight;
   cup?: SnapshotCup;
+  squad: SnapshotPlayer[];
+  market: SnapshotMarketPlayer[];
 };
 
 export function toSnapshotResults(

@@ -6,9 +6,12 @@ export type {
   SnapshotCup,
   SnapshotCupTie,
   SnapshotHighlight,
+  SnapshotMarketPlayer,
+  SnapshotPlayer,
   SnapshotResult,
   SnapshotTableRow,
 } from './snapshot.js';
+export { buildMarket, buildSquad } from './player-lists.js';
 export { listMods, listSaves, readSave, writeSave } from './persistence.js';
 export type { SaveFs } from './persistence.js';
 export {

@@ -186,6 +186,8 @@ export class GameSession {
       })),
       highlight: this.lastHighlight,
       cup: this.toSnapshotCup(),
+      squad: [],
+      market: [],
     };
   }
 

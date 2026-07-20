@@ -1,0 +1,22 @@
+{
+  "entities": [
+    {
+      "id": "london-fc-en",
+      "name": "Real London",
+      "nationId": "england",
+      "reputation": 90
+    },
+    {
+      "id": "capital-blues-en",
+      "name": "Capital City Blues",
+      "nationId": "england",
+      "reputation": 85
+    },
+    {
+      "id": "phoenix-athletic-en",
+      "name": "Phoenix Fire Athletic",
+      "nationId": "england",
+      "reputation": 80
+    }
+  ]
+}

@@ -1,25 +1,66 @@
 import type { SessionSnapshot } from '@phoenix/application';
+import type { ModInfo, SaveMeta } from '@phoenix/contracts';
 import { create } from 'zustand';
 
 type SessionStore = {
   snapshot: SessionSnapshot | null;
   busy: boolean;
   error: string | null;
-  start: (seed?: number) => Promise<void>;
+  saves: SaveMeta[];
+  mods: ModInfo[];
+  selectedMods: string[];
+  start: (seed?: number, modIds?: string[]) => Promise<void>;
   advanceDay: () => Promise<void>;
-  reset: () => Promise<void>;
+  save: (label?: string) => Promise<void>;
+  load: (slotId: string) => Promise<void>;
+  refreshLists: () => Promise<void>;
+  toggleMod: (id: string) => void;
 };
+
+function slugifyLabel(label: string): string {
+  return label
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/^-|-$/g, '')
+    .slice(0, 40) || 'career';
+}
 
 export const useSessionStore = create<SessionStore>((set, get) => ({
   snapshot: null,
   busy: false,
   error: null,
+  saves: [],
+  mods: [],
+  selectedMods: [],
 
-  start: async (seed = 42) => {
+  refreshLists: async () => {
+    try {
+      const [saves, mods] = await Promise.all([
+        window.phoenix.session.listSaves(),
+        window.phoenix.session.listMods(),
+      ]);
+      set({ saves, mods });
+    } catch {
+      // lists optional at boot
+    }
+  },
+
+  toggleMod: (id) => {
+    const selected = get().selectedMods;
+    set({
+      selectedMods: selected.includes(id)
+        ? selected.filter((m) => m !== id)
+        : [...selected, id],
+    });
+  },
+
+  start: async (seed = 42, modIds) => {
     set({ busy: true, error: null });
     try {
-      const snapshot = await window.phoenix.session.start(seed);
+      const mods = modIds ?? get().selectedMods;
+      const snapshot = await window.phoenix.session.start({ seed, modIds: mods });
       set({ snapshot, busy: false });
+      await get().refreshLists();
     } catch (err) {
       set({
         busy: false,
@@ -42,8 +83,39 @@ export const useSessionStore = create<SessionStore>((set, get) => ({
     }
   },
 
-  reset: async () => {
-    const seed = get().snapshot?.seed ?? 42;
-    await get().start(seed);
+  save: async (label) => {
+    const snap = get().snapshot;
+    if (!snap || get().busy) return;
+    set({ busy: true, error: null });
+    try {
+      const name = label ?? `Jornada ${snap.matchday}`;
+      const slotId = slugifyLabel(`${name}-${snap.seed}`);
+      await window.phoenix.session.save(slotId, name);
+      set({ busy: false });
+      await get().refreshLists();
+    } catch (err) {
+      set({
+        busy: false,
+        error: err instanceof Error ? err.message : 'Failed to save',
+      });
+    }
+  },
+
+  load: async (slotId) => {
+    set({ busy: true, error: null });
+    try {
+      const snapshot = await window.phoenix.session.load(slotId);
+      set({
+        snapshot,
+        busy: false,
+        selectedMods: snapshot.modIds,
+      });
+      await get().refreshLists();
+    } catch (err) {
+      set({
+        busy: false,
+        error: err instanceof Error ? err.message : 'Failed to load',
+      });
+    }
   },
 }));

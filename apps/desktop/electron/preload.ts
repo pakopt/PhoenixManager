@@ -1,12 +1,21 @@
 import { contextBridge, ipcRenderer } from 'electron';
 import type { SessionSnapshot } from '@phoenix/application';
+import type { ModInfo, SaveMeta } from '@phoenix/contracts';
+
+export type StartOpts = { seed: number; modIds?: string[] };
 
 const phoenix = {
   session: {
-    start: (seed: number): Promise<SessionSnapshot> =>
-      ipcRenderer.invoke('session:start', seed),
+    start: (opts: StartOpts): Promise<SessionSnapshot> =>
+      ipcRenderer.invoke('session:start', opts),
     advanceDay: (): Promise<SessionSnapshot> => ipcRenderer.invoke('session:advanceDay'),
     getSnapshot: (): Promise<SessionSnapshot> => ipcRenderer.invoke('session:getSnapshot'),
+    save: (slotId: string, label?: string): Promise<SaveMeta> =>
+      ipcRenderer.invoke('session:save', slotId, label),
+    load: (slotId: string): Promise<SessionSnapshot> =>
+      ipcRenderer.invoke('session:load', slotId),
+    listSaves: (): Promise<SaveMeta[]> => ipcRenderer.invoke('session:listSaves'),
+    listMods: (): Promise<ModInfo[]> => ipcRenderer.invoke('session:listMods'),
   },
 };
 

@@ -20,6 +20,7 @@ export type SessionSnapshot = {
   finished: boolean;
   table: SnapshotTableRow[];
   lastResults: SnapshotResult[];
+  modIds: string[];
 };
 
 export function toSnapshotResults(

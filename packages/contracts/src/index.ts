@@ -9,6 +9,9 @@ export {
   tableRowSchema,
   seasonReportSchema,
   entityPatchSchema,
+  saveGameSchema,
+  saveMetaSchema,
+  modInfoSchema,
 } from './schemas.js';
 
 export type {
@@ -22,4 +25,7 @@ export type {
   TableRow,
   SeasonReport,
   EntityPatch,
+  SaveGame,
+  SaveMeta,
+  ModInfo,
 } from './schemas.js';

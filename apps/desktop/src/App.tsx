@@ -2,11 +2,27 @@ import { useEffect } from 'react';
 import { useSessionStore } from './store';
 
 export default function App() {
-  const { snapshot, busy, error, start, advanceDay, reset } = useSessionStore();
+  const {
+    snapshot,
+    busy,
+    error,
+    saves,
+    mods,
+    selectedMods,
+    start,
+    advanceDay,
+    save,
+    load,
+    refreshLists,
+    toggleMod,
+  } = useSessionStore();
 
   useEffect(() => {
-    void start(42);
-  }, [start]);
+    void (async () => {
+      await refreshLists();
+      await start(42, []);
+    })();
+  }, [start, refreshLists]);
 
   if (!snapshot && busy) {
     return (
@@ -39,14 +55,23 @@ export default function App() {
           <h1 className="mt-1 text-3xl font-semibold tracking-tight">{snapshot.competitionName}</h1>
           <p className="mt-1 text-[var(--muted)]">
             Jornada {snapshot.matchday} / {snapshot.totalMatchdays} · seed {snapshot.seed}
+            {snapshot.modIds.length > 0 ? ` · mods: ${snapshot.modIds.join(', ')}` : ''}
             {snapshot.finished ? ' · Época terminada' : ''}
           </p>
         </div>
-        <div className="flex gap-2">
+        <div className="flex flex-wrap gap-2">
           <button
             type="button"
             disabled={busy}
-            onClick={() => void reset()}
+            onClick={() => void save()}
+            className="rounded-md border border-[var(--border)] bg-[var(--surface)] px-4 py-2 text-sm hover:bg-[#243040] disabled:opacity-50"
+          >
+            Guardar
+          </button>
+          <button
+            type="button"
+            disabled={busy}
+            onClick={() => void start(42)}
             className="rounded-md border border-[var(--border)] bg-[var(--surface)] px-4 py-2 text-sm hover:bg-[#243040] disabled:opacity-50"
           >
             Nova sessão
@@ -63,6 +88,71 @@ export default function App() {
       </header>
 
       {error ? <p className="rounded-md bg-red-950/50 px-3 py-2 text-sm text-red-200">{error}</p> : null}
+
+      <div className="grid gap-4 md:grid-cols-2">
+        <section className="rounded-lg border border-[var(--border)] bg-[var(--surface)]/80 p-4">
+          <h2 className="mb-3 text-sm font-medium uppercase tracking-wider text-[var(--muted)]">
+            Mods (nova sessão)
+          </h2>
+          {mods.length === 0 ? (
+            <p className="text-sm text-[var(--muted)]">Nenhum mod em database/mods.</p>
+          ) : (
+            <ul className="space-y-2">
+              {mods.map((m) => (
+                <li key={m.id}>
+                  <label className="flex cursor-pointer items-center gap-2 text-sm">
+                    <input
+                      type="checkbox"
+                      checked={selectedMods.includes(m.id)}
+                      onChange={() => toggleMod(m.id)}
+                    />
+                    <span>{m.name}</span>
+                  </label>
+                </li>
+              ))}
+            </ul>
+          )}
+          <button
+            type="button"
+            disabled={busy}
+            className="mt-3 rounded-md border border-[var(--border)] px-3 py-1.5 text-xs hover:bg-[#243040] disabled:opacity-50"
+            onClick={() => void start(42, selectedMods)}
+          >
+            Aplicar mods / reiniciar
+          </button>
+        </section>
+
+        <section className="rounded-lg border border-[var(--border)] bg-[var(--surface)]/80 p-4">
+          <h2 className="mb-3 text-sm font-medium uppercase tracking-wider text-[var(--muted)]">
+            Saves
+          </h2>
+          {saves.length === 0 ? (
+            <p className="text-sm text-[var(--muted)]">Ainda sem saves. Avança e guarda.</p>
+          ) : (
+            <ul className="space-y-2">
+              {saves.map((s) => (
+                <li key={s.slotId} className="flex items-center justify-between gap-2 text-sm">
+                  <span className="truncate">
+                    {s.label}{' '}
+                    <span className="text-[var(--muted)]">
+                      · J{s.matchday}
+                      {s.modIds.length ? ` · ${s.modIds.join(',')}` : ''}
+                    </span>
+                  </span>
+                  <button
+                    type="button"
+                    disabled={busy}
+                    className="shrink-0 rounded border border-[var(--border)] px-2 py-1 text-xs hover:bg-[#243040] disabled:opacity-50"
+                    onClick={() => void load(s.slotId)}
+                  >
+                    Carregar
+                  </button>
+                </li>
+              ))}
+            </ul>
+          )}
+        </section>
+      </div>
 
       <section className="rounded-lg border border-[var(--border)] bg-[var(--surface)]/80 p-4">
         <h2 className="mb-3 text-sm font-medium uppercase tracking-wider text-[var(--muted)]">

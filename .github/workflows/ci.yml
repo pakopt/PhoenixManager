@@ -1,8 +1,8 @@
-name: Phoenix Headless CI
+name: Phoenix CI
 
 on:
   push:
-    branches: [main, develop]
+    branches: [main, develop, feat/typescript-restart]
   pull_request:
 
 jobs:
@@ -11,71 +11,26 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - uses: dart-lang/setup-dart@v1
+      - uses: pnpm/action-setup@v4
         with:
-          sdk: stable
+          version: 9
 
-      - name: Resolve dependencies
-        run: dart pub get
-
-      - name: Analyze
-        run: dart analyze
-
-      - name: Test all packages
-        run: |
-          dart test packages/phoenix_core
-          dart test packages/phoenix_data
-          dart test packages/phoenix_engine
-          dart test packages/phoenix_tools
-
-      - name: Headless 100 seasons benchmark
-        run: dart test packages/phoenix_tools/test/phoenix_tools_test.dart --name "100 seasons"
-
-  flutter-analyze:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-
-      - uses: subosito/flutter-action@v2
+      - uses: actions/setup-node@v4
         with:
-          channel: stable
+          node-version: 22
+          cache: pnpm
 
-      - name: Bootstrap Flutter app
-        working-directory: apps/phoenix_manager
-        run: |
-          flutter create . --project-name phoenix_manager
-          flutter pub get
+      - name: Install
+        run: pnpm install --frozen-lockfile
 
-      - name: Analyze UI package
-        run: flutter analyze packages/phoenix_ui apps/phoenix_manager
+      - name: Build
+        run: pnpm build
 
-      - name: UI widget tests
-        run: flutter test packages/phoenix_ui/test
+      - name: Typecheck
+        run: pnpm typecheck
 
-  android-build:
-    runs-on: ubuntu-latest
-    needs: [test, flutter-analyze]
-    steps:
-      - uses: actions/checkout@v4
+      - name: Test
+        run: pnpm test
 
-      - uses: actions/setup-java@v4
-        with:
-          distribution: temurin
-          java-version: 17
-
-      - uses: subosito/flutter-action@v2
-        with:
-          channel: stable
-
-      - name: Bootstrap and build APK
-        working-directory: apps/phoenix_manager
-        run: |
-          flutter pub get
-          flutter build apk --release
-
-      - name: Upload APK artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: phoenix-manager-apk
-          path: apps/phoenix_manager/build/app/outputs/flutter-apk/app-release.apk
-          retention-days: 14
+      - name: Season smoke
+        run: pnpm season -- --seed 42

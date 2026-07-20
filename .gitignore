@@ -1,8 +1,18 @@
-# Dart
+# Dependencies
+node_modules/
+.pnpm-store/
+dist/
+*.tsbuildinfo
+
+# Dart / Flutter (legacy tree + accidental root leftovers)
 .dart_tool/
+.dart-tool/
+.pub-cache/
 .packages
 build/
 pubspec.lock
+.flutter-plugins
+.flutter-plugins-dependencies
 
 # IDE
 .idea/
@@ -15,16 +25,14 @@ pubspec.lock
 # Phoenix saves (local dev)
 .saves/
 *.phoenixsave
+saves/**
+!saves/.gitkeep
 
-# Flutter (Fase C)
-.flutter-plugins
-.flutter-plugins-dependencies
-
-# Steam (local secrets + generated VDFs)
-steam/steam.env
-steam/generated/
-build/steam/
-steam/sdk/
+# Steam (legacy secrets)
+legacy/flutter/steam/steam.env
+legacy/flutter/steam/generated/
+legacy/flutter/steam/sdk/
+legacy/flutter/build/
 
 # Android signing (nunca publicar)
 **/key.properties
@@ -38,5 +46,8 @@ steam/sdk/
 .env.*
 !.env.example
 
-# Play Console — progresso 12×14 (local)
+# Play Console tracker (legacy)
 .play_tracker.env
+
+# Turbo
+.turbo/

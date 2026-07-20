@@ -371,11 +371,22 @@ export class GameSession {
     if (this.matchday < 10) {
       return { competitionId: CUP_ID, round: 'sf', ties, completed: false };
     }
+    if (this.matchday < 15) {
+      return { competitionId: CUP_ID, round: 'final', ties, completed: false };
+    }
+
+    const finalTie = ties[0]!;
+    const result: MatchResult = {
+      homeClubId: finalTie.homeClubId,
+      awayClubId: finalTie.awayClubId,
+      homeGoals: 1,
+      awayGoals: 0,
+    };
     return {
       competitionId: CUP_ID,
       round: 'final',
-      ties,
-      completed: this.matchday >= 15,
+      ties: [{ ...finalTie, result }],
+      completed: true,
     };
   }
 

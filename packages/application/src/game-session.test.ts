@@ -191,6 +191,34 @@ describe('GameSession', () => {
     );
   });
 
+  it('regenerates a completed cup with a decisive final at matchday 15', async () => {
+    const savesRoot = await mkdtemp(join(tmpdir(), 'phoenix-saves-'));
+    const session = new GameSession(nodeFs);
+    await session.start({ databaseRoot, savesRoot, seed: 42 });
+    for (let i = 0; i < 15; i += 1) {
+      session.advanceDay();
+    }
+    await session.save('legacy-cup-final');
+
+    const savePath = join(savesRoot, 'legacy-cup-final', 'save.json');
+    const saved = JSON.parse(await readFile(savePath, 'utf8')) as Record<string, unknown>;
+    delete saved.cup;
+    await writeFile(savePath, `${JSON.stringify(saved)}\n`);
+
+    const loaded = new GameSession(nodeFs);
+    const snapshot = await loaded.loadWithRoots(
+      'legacy-cup-final',
+      databaseRoot,
+      savesRoot,
+    );
+    expect(snapshot.matchday).toBe(15);
+    expect(snapshot.cup?.completed).toBe(true);
+    expect(snapshot.cup?.round).toBe('final');
+    const finalTie = snapshot.cup?.ties[0];
+    expect(finalTie?.result).toBeDefined();
+    expect(finalTie?.result?.homeGoals).not.toBe(finalTie?.result?.awayGoals);
+  });
+
   it('reconciles a missing legacy cup with the saved matchday', async () => {
     const savesRoot = await mkdtemp(join(tmpdir(), 'phoenix-saves-'));
     const session = new GameSession(nodeFs);

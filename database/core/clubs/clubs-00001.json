@@ -1,0 +1,124 @@
+{
+  "entities": [
+    {
+      "id": "northern-stars-en",
+      "name": "Northern Stars",
+      "nationId": "england",
+      "reputation": 78
+    },
+    {
+      "id": "london-fc-en",
+      "name": "London FC",
+      "nationId": "england",
+      "reputation": 82
+    },
+    {
+      "id": "river-united-en",
+      "name": "River United",
+      "nationId": "england",
+      "reputation": 74
+    },
+    {
+      "id": "castle-rovers-en",
+      "name": "Castle Rovers",
+      "nationId": "england",
+      "reputation": 70
+    },
+    {
+      "id": "harbour-city-en",
+      "name": "Harbour City",
+      "nationId": "england",
+      "reputation": 76
+    },
+    {
+      "id": "midlands-athletic-en",
+      "name": "Midlands Athletic",
+      "nationId": "england",
+      "reputation": 68
+    },
+    {
+      "id": "royal-oaks-en",
+      "name": "Royal Oaks",
+      "nationId": "england",
+      "reputation": 72
+    },
+    {
+      "id": "steelworks-fc-en",
+      "name": "Steelworks FC",
+      "nationId": "england",
+      "reputation": 65
+    },
+    {
+      "id": "coastal-wanderers-en",
+      "name": "Coastal Wanderers",
+      "nationId": "england",
+      "reputation": 67
+    },
+    {
+      "id": "capital-blues-en",
+      "name": "Capital Blues",
+      "nationId": "england",
+      "reputation": 80
+    },
+    {
+      "id": "greenfield-town-en",
+      "name": "Greenfield Town",
+      "nationId": "england",
+      "reputation": 63
+    },
+    {
+      "id": "ironbridge-united-en",
+      "name": "Ironbridge United",
+      "nationId": "england",
+      "reputation": 69
+    },
+    {
+      "id": "sunset-borough-en",
+      "name": "Sunset Borough",
+      "nationId": "england",
+      "reputation": 66
+    },
+    {
+      "id": "phoenix-athletic-en",
+      "name": "Phoenix Athletic",
+      "nationId": "england",
+      "reputation": 75
+    },
+    {
+      "id": "westgate-fc-en",
+      "name": "Westgate FC",
+      "nationId": "england",
+      "reputation": 71
+    },
+    {
+      "id": "eastern-lightning-en",
+      "name": "Eastern Lightning",
+      "nationId": "england",
+      "reputation": 73
+    },
+    {
+      "id": "valley-rangers-en",
+      "name": "Valley Rangers",
+      "nationId": "england",
+      "reputation": 64
+    },
+    {
+      "id": "crown-park-en",
+      "name": "Crown Park",
+      "nationId": "england",
+      "reputation": 77
+    },
+    {
+      "id": "dockside-mariners-en",
+      "name": "Dockside Mariners",
+      "nationId": "england",
+      "reputation": 62
+    },
+    {
+      "id": "highland-foxes-en",
+      "name": "Highland Foxes",
+      "nationId": "england",
+      "reputation": 61
+    }
+  ]
+}

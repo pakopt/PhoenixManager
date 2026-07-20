@@ -19,7 +19,8 @@
   },
   "dependencies": {
     "@phoenix/contracts": "workspace:*",
-    "@phoenix/shared": "workspace:*"
+    "@phoenix/shared": "workspace:*",
+    "zod": "^3.24.1"
   },
   "devDependencies": {
     "typescript": "^5.7.2",

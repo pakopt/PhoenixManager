@@ -1,0 +1,32 @@
+{
+  "entities": [
+    {
+      "id": "phoenix-premier-en",
+      "name": "Phoenix Premier",
+      "nationId": "england",
+      "type": "league",
+      "clubIds": [
+        "northern-stars-en",
+        "london-fc-en",
+        "river-united-en",
+        "castle-rovers-en",
+        "harbour-city-en",
+        "midlands-athletic-en",
+        "royal-oaks-en",
+        "steelworks-fc-en",
+        "coastal-wanderers-en",
+        "capital-blues-en",
+        "greenfield-town-en",
+        "ironbridge-united-en",
+        "sunset-borough-en",
+        "phoenix-athletic-en",
+        "westgate-fc-en",
+        "eastern-lightning-en",
+        "valley-rangers-en",
+        "crown-park-en",
+        "dockside-mariners-en",
+        "highland-foxes-en"
+      ]
+    }
+  ]
+}

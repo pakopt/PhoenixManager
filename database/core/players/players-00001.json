@@ -1,0 +1,3604 @@
+{
+  "entities": [
+    {
+      "id": "gk-01-northern-stars-en",
+      "name": "Alex Hayes",
+      "clubId": "northern-stars-en",
+      "nationId": "england",
+      "position": "GK",
+      "rating": 55,
+      "age": 18
+    },
+    {
+      "id": "df-02-northern-stars-en",
+      "name": "Jordan Brooks",
+      "clubId": "northern-stars-en",
+      "nationId": "england",
+      "position": "DF",
+      "rating": 62,
+      "age": 19
+    },
+    {
+      "id": "df-03-northern-stars-en",
+      "name": "Sam Cole",
+      "clubId": "northern-stars-en",
+      "nationId": "england",
+      "position": "DF",
+      "rating": 69,
+      "age": 20
+    },
+    {
+      "id": "df-04-northern-stars-en",
+      "name": "Casey Reed",
+      "clubId": "northern-stars-en",
+      "nationId": "england",
+      "position": "DF",
+      "rating": 76,
+      "age": 21
+    },
+    {
+      "id": "df-05-northern-stars-en",
+      "name": "Riley Stone",
+      "clubId": "northern-stars-en",
+      "nationId": "england",
+      "position": "DF",
+      "rating": 83,
+      "age": 22
+    },
+    {
+      "id": "mf-06-northern-stars-en",
+      "name": "Morgan Fox",
+      "clubId": "northern-stars-en",
+      "nationId": "england",
+      "position": "MF",
+      "rating": 60,
+      "age": 23
+    },
+    {
+      "id": "mf-07-northern-stars-en",
+      "name": "Taylor West",
+      "clubId": "northern-stars-en",
+      "nationId": "england",
+      "position": "MF",
+      "rating": 67,
+      "age": 24
+    },
+    {
+      "id": "mf-08-northern-stars-en",
+      "name": "Quinn Lane",
+      "clubId": "northern-stars-en",
+      "nationId": "england",
+      "position": "MF",
+      "rating": 74,
+      "age": 25
+    },
+    {
+      "id": "mf-09-northern-stars-en",
+      "name": "Avery Blake",
+      "clubId": "northern-stars-en",
+      "nationId": "england",
+      "position": "MF",
+      "rating": 81,
+      "age": 26
+    },
+    {
+      "id": "mf-10-northern-stars-en",
+      "name": "Jamie Frost",
+      "clubId": "northern-stars-en",
+      "nationId": "england",
+      "position": "MF",
+      "rating": 58,
+      "age": 27
+    },
+    {
+      "id": "fw-11-northern-stars-en",
+      "name": "Drew Shaw",
+      "clubId": "northern-stars-en",
+      "nationId": "england",
+      "position": "FW",
+      "rating": 65,
+      "age": 28
+    },
+    {
+      "id": "fw-12-northern-stars-en",
+      "name": "Cameron Wells",
+      "clubId": "northern-stars-en",
+      "nationId": "england",
+      "position": "FW",
+      "rating": 72,
+      "age": 29
+    },
+    {
+      "id": "fw-13-northern-stars-en",
+      "name": "Reese Grant",
+      "clubId": "northern-stars-en",
+      "nationId": "england",
+      "position": "FW",
+      "rating": 79,
+      "age": 30
+    },
+    {
+      "id": "fw-14-northern-stars-en",
+      "name": "Parker Page",
+      "clubId": "northern-stars-en",
+      "nationId": "england",
+      "position": "FW",
+      "rating": 56,
+      "age": 31
+    },
+    {
+      "id": "df-15-northern-stars-en",
+      "name": "Hayden Hart",
+      "clubId": "northern-stars-en",
+      "nationId": "england",
+      "position": "DF",
+      "rating": 63,
+      "age": 32
+    },
+    {
+      "id": "mf-16-northern-stars-en",
+      "name": "Rowan Cross",
+      "clubId": "northern-stars-en",
+      "nationId": "england",
+      "position": "MF",
+      "rating": 70,
+      "age": 33
+    },
+    {
+      "id": "fw-17-northern-stars-en",
+      "name": "Skyler Duke",
+      "clubId": "northern-stars-en",
+      "nationId": "england",
+      "position": "FW",
+      "rating": 77,
+      "age": 18
+    },
+    {
+      "id": "mf-18-northern-stars-en",
+      "name": "Blake Snow",
+      "clubId": "northern-stars-en",
+      "nationId": "england",
+      "position": "MF",
+      "rating": 84,
+      "age": 19
+    },
+    {
+      "id": "df-19-northern-stars-en",
+      "name": "Finley Wade",
+      "clubId": "northern-stars-en",
+      "nationId": "england",
+      "position": "DF",
+      "rating": 61,
+      "age": 20
+    },
+    {
+      "id": "gk-20-northern-stars-en",
+      "name": "Charlie York",
+      "clubId": "northern-stars-en",
+      "nationId": "england",
+      "position": "GK",
+      "rating": 68,
+      "age": 21
+    },
+    {
+      "id": "gk-01-london-fc-en",
+      "name": "Jordan Reed",
+      "clubId": "london-fc-en",
+      "nationId": "england",
+      "position": "GK",
+      "rating": 56,
+      "age": 19
+    },
+    {
+      "id": "df-02-london-fc-en",
+      "name": "Sam Stone",
+      "clubId": "london-fc-en",
+      "nationId": "england",
+      "position": "DF",
+      "rating": 63,
+      "age": 20
+    },
+    {
+      "id": "df-03-london-fc-en",
+      "name": "Casey Fox",
+      "clubId": "london-fc-en",
+      "nationId": "england",
+      "position": "DF",
+      "rating": 70,
+      "age": 21
+    },
+    {
+      "id": "df-04-london-fc-en",
+      "name": "Riley West",
+      "clubId": "london-fc-en",
+      "nationId": "england",
+      "position": "DF",
+      "rating": 77,
+      "age": 22
+    },
+    {
+      "id": "df-05-london-fc-en",
+      "name": "Morgan Lane",
+      "clubId": "london-fc-en",
+      "nationId": "england",
+      "position": "DF",
+      "rating": 84,
+      "age": 23
+    },
+    {
+      "id": "mf-06-london-fc-en",
+      "name": "Taylor Blake",
+      "clubId": "london-fc-en",
+      "nationId": "england",
+      "position": "MF",
+      "rating": 61,
+      "age": 24
+    },
+    {
+      "id": "mf-07-london-fc-en",
+      "name": "Quinn Frost",
+      "clubId": "london-fc-en",
+      "nationId": "england",
+      "position": "MF",
+      "rating": 68,
+      "age": 25
+    },
+    {
+      "id": "mf-08-london-fc-en",
+      "name": "Avery Shaw",
+      "clubId": "london-fc-en",
+      "nationId": "england",
+      "position": "MF",
+      "rating": 75,
+      "age": 26
+    },
+    {
+      "id": "mf-09-london-fc-en",
+      "name": "Jamie Wells",
+      "clubId": "london-fc-en",
+      "nationId": "england",
+      "position": "MF",
+      "rating": 82,
+      "age": 27
+    },
+    {
+      "id": "mf-10-london-fc-en",
+      "name": "Drew Grant",
+      "clubId": "london-fc-en",
+      "nationId": "england",
+      "position": "MF",
+      "rating": 59,
+      "age": 28
+    },
+    {
+      "id": "fw-11-london-fc-en",
+      "name": "Cameron Page",
+      "clubId": "london-fc-en",
+      "nationId": "england",
+      "position": "FW",
+      "rating": 66,
+      "age": 29
+    },
+    {
+      "id": "fw-12-london-fc-en",
+      "name": "Reese Hart",
+      "clubId": "london-fc-en",
+      "nationId": "england",
+      "position": "FW",
+      "rating": 73,
+      "age": 30
+    },
+    {
+      "id": "fw-13-london-fc-en",
+      "name": "Parker Cross",
+      "clubId": "london-fc-en",
+      "nationId": "england",
+      "position": "FW",
+      "rating": 80,
+      "age": 31
+    },
+    {
+      "id": "fw-14-london-fc-en",
+      "name": "Hayden Duke",
+      "clubId": "london-fc-en",
+      "nationId": "england",
+      "position": "FW",
+      "rating": 57,
+      "age": 32
+    },
+    {
+      "id": "df-15-london-fc-en",
+      "name": "Rowan Snow",
+      "clubId": "london-fc-en",
+      "nationId": "england",
+      "position": "DF",
+      "rating": 64,
+      "age": 33
+    },
+    {
+      "id": "mf-16-london-fc-en",
+      "name": "Skyler Wade",
+      "clubId": "london-fc-en",
+      "nationId": "england",
+      "position": "MF",
+      "rating": 71,
+      "age": 18
+    },
+    {
+      "id": "fw-17-london-fc-en",
+      "name": "Blake York",
+      "clubId": "london-fc-en",
+      "nationId": "england",
+      "position": "FW",
+      "rating": 78,
+      "age": 19
+    },
+    {
+      "id": "mf-18-london-fc-en",
+      "name": "Finley Hayes",
+      "clubId": "london-fc-en",
+      "nationId": "england",
+      "position": "MF",
+      "rating": 55,
+      "age": 20
+    },
+    {
+      "id": "df-19-london-fc-en",
+      "name": "Charlie Brooks",
+      "clubId": "london-fc-en",
+      "nationId": "england",
+      "position": "DF",
+      "rating": 62,
+      "age": 21
+    },
+    {
+      "id": "gk-20-london-fc-en",
+      "name": "Alex Cole",
+      "clubId": "london-fc-en",
+      "nationId": "england",
+      "position": "GK",
+      "rating": 69,
+      "age": 22
+    },
+    {
+      "id": "gk-01-river-united-en",
+      "name": "Sam West",
+      "clubId": "river-united-en",
+      "nationId": "england",
+      "position": "GK",
+      "rating": 57,
+      "age": 20
+    },
+    {
+      "id": "df-02-river-united-en",
+      "name": "Casey Lane",
+      "clubId": "river-united-en",
+      "nationId": "england",
+      "position": "DF",
+      "rating": 64,
+      "age": 21
+    },
+    {
+      "id": "df-03-river-united-en",
+      "name": "Riley Blake",
+      "clubId": "river-united-en",
+      "nationId": "england",
+      "position": "DF",
+      "rating": 71,
+      "age": 22
+    },
+    {
+      "id": "df-04-river-united-en",
+      "name": "Morgan Frost",
+      "clubId": "river-united-en",
+      "nationId": "england",
+      "position": "DF",
+      "rating": 78,
+      "age": 23
+    },
+    {
+      "id": "df-05-river-united-en",
+      "name": "Taylor Shaw",
+      "clubId": "river-united-en",
+      "nationId": "england",
+      "position": "DF",
+      "rating": 55,
+      "age": 24
+    },
+    {
+      "id": "mf-06-river-united-en",
+      "name": "Quinn Wells",
+      "clubId": "river-united-en",
+      "nationId": "england",
+      "position": "MF",
+      "rating": 62,
+      "age": 25
+    },
+    {
+      "id": "mf-07-river-united-en",
+      "name": "Avery Grant",
+      "clubId": "river-united-en",
+      "nationId": "england",
+      "position": "MF",
+      "rating": 69,
+      "age": 26
+    },
+    {
+      "id": "mf-08-river-united-en",
+      "name": "Jamie Page",
+      "clubId": "river-united-en",
+      "nationId": "england",
+      "position": "MF",
+      "rating": 76,
+      "age": 27
+    },
+    {
+      "id": "mf-09-river-united-en",
+      "name": "Drew Hart",
+      "clubId": "river-united-en",
+      "nationId": "england",
+      "position": "MF",
+      "rating": 83,
+      "age": 28
+    },
+    {
+      "id": "mf-10-river-united-en",
+      "name": "Cameron Cross",
+      "clubId": "river-united-en",
+      "nationId": "england",
+      "position": "MF",
+      "rating": 60,
+      "age": 29
+    },
+    {
+      "id": "fw-11-river-united-en",
+      "name": "Reese Duke",
+      "clubId": "river-united-en",
+      "nationId": "england",
+      "position": "FW",
+      "rating": 67,
+      "age": 30
+    },
+    {
+      "id": "fw-12-river-united-en",
+      "name": "Parker Snow",
+      "clubId": "river-united-en",
+      "nationId": "england",
+      "position": "FW",
+      "rating": 74,
+      "age": 31
+    },
+    {
+      "id": "fw-13-river-united-en",
+      "name": "Hayden Wade",
+      "clubId": "river-united-en",
+      "nationId": "england",
+      "position": "FW",
+      "rating": 81,
+      "age": 32
+    },
+    {
+      "id": "fw-14-river-united-en",
+      "name": "Rowan York",
+      "clubId": "river-united-en",
+      "nationId": "england",
+      "position": "FW",
+      "rating": 58,
+      "age": 33
+    },
+    {
+      "id": "df-15-river-united-en",
+      "name": "Skyler Hayes",
+      "clubId": "river-united-en",
+      "nationId": "england",
+      "position": "DF",
+      "rating": 65,
+      "age": 18
+    },
+    {
+      "id": "mf-16-river-united-en",
+      "name": "Blake Brooks",
+      "clubId": "river-united-en",
+      "nationId": "england",
+      "position": "MF",
+      "rating": 72,
+      "age": 19
+    },
+    {
+      "id": "fw-17-river-united-en",
+      "name": "Finley Cole",
+      "clubId": "river-united-en",
+      "nationId": "england",
+      "position": "FW",
+      "rating": 79,
+      "age": 20
+    },
+    {
+      "id": "mf-18-river-united-en",
+      "name": "Charlie Reed",
+      "clubId": "river-united-en",
+      "nationId": "england",
+      "position": "MF",
+      "rating": 56,
+      "age": 21
+    },
+    {
+      "id": "df-19-river-united-en",
+      "name": "Alex Stone",
+      "clubId": "river-united-en",
+      "nationId": "england",
+      "position": "DF",
+      "rating": 63,
+      "age": 22
+    },
+    {
+      "id": "gk-20-river-united-en",
+      "name": "Jordan Fox",
+      "clubId": "river-united-en",
+      "nationId": "england",
+      "position": "GK",
+      "rating": 70,
+      "age": 23
+    },
+    {
+      "id": "gk-01-castle-rovers-en",
+      "name": "Casey Frost",
+      "clubId": "castle-rovers-en",
+      "nationId": "england",
+      "position": "GK",
+      "rating": 58,
+      "age": 21
+    },
+    {
+      "id": "df-02-castle-rovers-en",
+      "name": "Riley Shaw",
+      "clubId": "castle-rovers-en",
+      "nationId": "england",
+      "position": "DF",
+      "rating": 65,
+      "age": 22
+    },
+    {
+      "id": "df-03-castle-rovers-en",
+      "name": "Morgan Wells",
+      "clubId": "castle-rovers-en",
+      "nationId": "england",
+      "position": "DF",
+      "rating": 72,
+      "age": 23
+    },
+    {
+      "id": "df-04-castle-rovers-en",
+      "name": "Taylor Grant",
+      "clubId": "castle-rovers-en",
+      "nationId": "england",
+      "position": "DF",
+      "rating": 79,
+      "age": 24
+    },
+    {
+      "id": "df-05-castle-rovers-en",
+      "name": "Quinn Page",
+      "clubId": "castle-rovers-en",
+      "nationId": "england",
+      "position": "DF",
+      "rating": 56,
+      "age": 25
+    },
+    {
+      "id": "mf-06-castle-rovers-en",
+      "name": "Avery Hart",
+      "clubId": "castle-rovers-en",
+      "nationId": "england",
+      "position": "MF",
+      "rating": 63,
+      "age": 26
+    },
+    {
+      "id": "mf-07-castle-rovers-en",
+      "name": "Jamie Cross",
+      "clubId": "castle-rovers-en",
+      "nationId": "england",
+      "position": "MF",
+      "rating": 70,
+      "age": 27
+    },
+    {
+      "id": "mf-08-castle-rovers-en",
+      "name": "Drew Duke",
+      "clubId": "castle-rovers-en",
+      "nationId": "england",
+      "position": "MF",
+      "rating": 77,
+      "age": 28
+    },
+    {
+      "id": "mf-09-castle-rovers-en",
+      "name": "Cameron Snow",
+      "clubId": "castle-rovers-en",
+      "nationId": "england",
+      "position": "MF",
+      "rating": 84,
+      "age": 29
+    },
+    {
+      "id": "mf-10-castle-rovers-en",
+      "name": "Reese Wade",
+      "clubId": "castle-rovers-en",
+      "nationId": "england",
+      "position": "MF",
+      "rating": 61,
+      "age": 30
+    },
+    {
+      "id": "fw-11-castle-rovers-en",
+      "name": "Parker York",
+      "clubId": "castle-rovers-en",
+      "nationId": "england",
+      "position": "FW",
+      "rating": 68,
+      "age": 31
+    },
+    {
+      "id": "fw-12-castle-rovers-en",
+      "name": "Hayden Hayes",
+      "clubId": "castle-rovers-en",
+      "nationId": "england",
+      "position": "FW",
+      "rating": 75,
+      "age": 32
+    },
+    {
+      "id": "fw-13-castle-rovers-en",
+      "name": "Rowan Brooks",
+      "clubId": "castle-rovers-en",
+      "nationId": "england",
+      "position": "FW",
+      "rating": 82,
+      "age": 33
+    },
+    {
+      "id": "fw-14-castle-rovers-en",
+      "name": "Skyler Cole",
+      "clubId": "castle-rovers-en",
+      "nationId": "england",
+      "position": "FW",
+      "rating": 59,
+      "age": 18
+    },
+    {
+      "id": "df-15-castle-rovers-en",
+      "name": "Blake Reed",
+      "clubId": "castle-rovers-en",
+      "nationId": "england",
+      "position": "DF",
+      "rating": 66,
+      "age": 19
+    },
+    {
+      "id": "mf-16-castle-rovers-en",
+      "name": "Finley Stone",
+      "clubId": "castle-rovers-en",
+      "nationId": "england",
+      "position": "MF",
+      "rating": 73,
+      "age": 20
+    },
+    {
+      "id": "fw-17-castle-rovers-en",
+      "name": "Charlie Fox",
+      "clubId": "castle-rovers-en",
+      "nationId": "england",
+      "position": "FW",
+      "rating": 80,
+      "age": 21
+    },
+    {
+      "id": "mf-18-castle-rovers-en",
+      "name": "Alex West",
+      "clubId": "castle-rovers-en",
+      "nationId": "england",
+      "position": "MF",
+      "rating": 57,
+      "age": 22
+    },
+    {
+      "id": "df-19-castle-rovers-en",
+      "name": "Jordan Lane",
+      "clubId": "castle-rovers-en",
+      "nationId": "england",
+      "position": "DF",
+      "rating": 64,
+      "age": 23
+    },
+    {
+      "id": "gk-20-castle-rovers-en",
+      "name": "Sam Blake",
+      "clubId": "castle-rovers-en",
+      "nationId": "england",
+      "position": "GK",
+      "rating": 71,
+      "age": 24
+    },
+    {
+      "id": "gk-01-harbour-city-en",
+      "name": "Riley Grant",
+      "clubId": "harbour-city-en",
+      "nationId": "england",
+      "position": "GK",
+      "rating": 59,
+      "age": 22
+    },
+    {
+      "id": "df-02-harbour-city-en",
+      "name": "Morgan Page",
+      "clubId": "harbour-city-en",
+      "nationId": "england",
+      "position": "DF",
+      "rating": 66,
+      "age": 23
+    },
+    {
+      "id": "df-03-harbour-city-en",
+      "name": "Taylor Hart",
+      "clubId": "harbour-city-en",
+      "nationId": "england",
+      "position": "DF",
+      "rating": 73,
+      "age": 24
+    },
+    {
+      "id": "df-04-harbour-city-en",
+      "name": "Quinn Cross",
+      "clubId": "harbour-city-en",
+      "nationId": "england",
+      "position": "DF",
+      "rating": 80,
+      "age": 25
+    },
+    {
+      "id": "df-05-harbour-city-en",
+      "name": "Avery Duke",
+      "clubId": "harbour-city-en",
+      "nationId": "england",
+      "position": "DF",
+      "rating": 57,
+      "age": 26
+    },
+    {
+      "id": "mf-06-harbour-city-en",
+      "name": "Jamie Snow",
+      "clubId": "harbour-city-en",
+      "nationId": "england",
+      "position": "MF",
+      "rating": 64,
+      "age": 27
+    },
+    {
+      "id": "mf-07-harbour-city-en",
+      "name": "Drew Wade",
+      "clubId": "harbour-city-en",
+      "nationId": "england",
+      "position": "MF",
+      "rating": 71,
+      "age": 28
+    },
+    {
+      "id": "mf-08-harbour-city-en",
+      "name": "Cameron York",
+      "clubId": "harbour-city-en",
+      "nationId": "england",
+      "position": "MF",
+      "rating": 78,
+      "age": 29
+    },
+    {
+      "id": "mf-09-harbour-city-en",
+      "name": "Reese Hayes",
+      "clubId": "harbour-city-en",
+      "nationId": "england",
+      "position": "MF",
+      "rating": 55,
+      "age": 30
+    },
+    {
+      "id": "mf-10-harbour-city-en",
+      "name": "Parker Brooks",
+      "clubId": "harbour-city-en",
+      "nationId": "england",
+      "position": "MF",
+      "rating": 62,
+      "age": 31
+    },
+    {
+      "id": "fw-11-harbour-city-en",
+      "name": "Hayden Cole",
+      "clubId": "harbour-city-en",
+      "nationId": "england",
+      "position": "FW",
+      "rating": 69,
+      "age": 32
+    },
+    {
+      "id": "fw-12-harbour-city-en",
+      "name": "Rowan Reed",
+      "clubId": "harbour-city-en",
+      "nationId": "england",
+      "position": "FW",
+      "rating": 76,
+      "age": 33
+    },
+    {
+      "id": "fw-13-harbour-city-en",
+      "name": "Skyler Stone",
+      "clubId": "harbour-city-en",
+      "nationId": "england",
+      "position": "FW",
+      "rating": 83,
+      "age": 18
+    },
+    {
+      "id": "fw-14-harbour-city-en",
+      "name": "Blake Fox",
+      "clubId": "harbour-city-en",
+      "nationId": "england",
+      "position": "FW",
+      "rating": 60,
+      "age": 19
+    },
+    {
+      "id": "df-15-harbour-city-en",
+      "name": "Finley West",
+      "clubId": "harbour-city-en",
+      "nationId": "england",
+      "position": "DF",
+      "rating": 67,
+      "age": 20
+    },
+    {
+      "id": "mf-16-harbour-city-en",
+      "name": "Charlie Lane",
+      "clubId": "harbour-city-en",
+      "nationId": "england",
+      "position": "MF",
+      "rating": 74,
+      "age": 21
+    },
+    {
+      "id": "fw-17-harbour-city-en",
+      "name": "Alex Blake",
+      "clubId": "harbour-city-en",
+      "nationId": "england",
+      "position": "FW",
+      "rating": 81,
+      "age": 22
+    },
+    {
+      "id": "mf-18-harbour-city-en",
+      "name": "Jordan Frost",
+      "clubId": "harbour-city-en",
+      "nationId": "england",
+      "position": "MF",
+      "rating": 58,
+      "age": 23
+    },
+    {
+      "id": "df-19-harbour-city-en",
+      "name": "Sam Shaw",
+      "clubId": "harbour-city-en",
+      "nationId": "england",
+      "position": "DF",
+      "rating": 65,
+      "age": 24
+    },
+    {
+      "id": "gk-20-harbour-city-en",
+      "name": "Casey Wells",
+      "clubId": "harbour-city-en",
+      "nationId": "england",
+      "position": "GK",
+      "rating": 72,
+      "age": 25
+    },
+    {
+      "id": "gk-01-midlands-athletic-en",
+      "name": "Morgan Cross",
+      "clubId": "midlands-athletic-en",
+      "nationId": "england",
+      "position": "GK",
+      "rating": 60,
+      "age": 23
+    },
+    {
+      "id": "df-02-midlands-athletic-en",
+      "name": "Taylor Duke",
+      "clubId": "midlands-athletic-en",
+      "nationId": "england",
+      "position": "DF",
+      "rating": 67,
+      "age": 24
+    },
+    {
+      "id": "df-03-midlands-athletic-en",
+      "name": "Quinn Snow",
+      "clubId": "midlands-athletic-en",
+      "nationId": "england",
+      "position": "DF",
+      "rating": 74,
+      "age": 25
+    },
+    {
+      "id": "df-04-midlands-athletic-en",
+      "name": "Avery Wade",
+      "clubId": "midlands-athletic-en",
+      "nationId": "england",
+      "position": "DF",
+      "rating": 81,
+      "age": 26
+    },
+    {
+      "id": "df-05-midlands-athletic-en",
+      "name": "Jamie York",
+      "clubId": "midlands-athletic-en",
+      "nationId": "england",
+      "position": "DF",
+      "rating": 58,
+      "age": 27
+    },
+    {
+      "id": "mf-06-midlands-athletic-en",
+      "name": "Drew Hayes",
+      "clubId": "midlands-athletic-en",
+      "nationId": "england",
+      "position": "MF",
+      "rating": 65,
+      "age": 28
+    },
+    {
+      "id": "mf-07-midlands-athletic-en",
+      "name": "Cameron Brooks",
+      "clubId": "midlands-athletic-en",
+      "nationId": "england",
+      "position": "MF",
+      "rating": 72,
+      "age": 29
+    },
+    {
+      "id": "mf-08-midlands-athletic-en",
+      "name": "Reese Cole",
+      "clubId": "midlands-athletic-en",
+      "nationId": "england",
+      "position": "MF",
+      "rating": 79,
+      "age": 30
+    },
+    {
+      "id": "mf-09-midlands-athletic-en",
+      "name": "Parker Reed",
+      "clubId": "midlands-athletic-en",
+      "nationId": "england",
+      "position": "MF",
+      "rating": 56,
+      "age": 31
+    },
+    {
+      "id": "mf-10-midlands-athletic-en",
+      "name": "Hayden Stone",
+      "clubId": "midlands-athletic-en",
+      "nationId": "england",
+      "position": "MF",
+      "rating": 63,
+      "age": 32
+    },
+    {
+      "id": "fw-11-midlands-athletic-en",
+      "name": "Rowan Fox",
+      "clubId": "midlands-athletic-en",
+      "nationId": "england",
+      "position": "FW",
+      "rating": 70,
+      "age": 33
+    },
+    {
+      "id": "fw-12-midlands-athletic-en",
+      "name": "Skyler West",
+      "clubId": "midlands-athletic-en",
+      "nationId": "england",
+      "position": "FW",
+      "rating": 77,
+      "age": 18
+    },
+    {
+      "id": "fw-13-midlands-athletic-en",
+      "name": "Blake Lane",
+      "clubId": "midlands-athletic-en",
+      "nationId": "england",
+      "position": "FW",
+      "rating": 84,
+      "age": 19
+    },
+    {
+      "id": "fw-14-midlands-athletic-en",
+      "name": "Finley Blake",
+      "clubId": "midlands-athletic-en",
+      "nationId": "england",
+      "position": "FW",
+      "rating": 61,
+      "age": 20
+    },
+    {
+      "id": "df-15-midlands-athletic-en",
+      "name": "Charlie Frost",
+      "clubId": "midlands-athletic-en",
+      "nationId": "england",
+      "position": "DF",
+      "rating": 68,
+      "age": 21
+    },
+    {
+      "id": "mf-16-midlands-athletic-en",
+      "name": "Alex Shaw",
+      "clubId": "midlands-athletic-en",
+      "nationId": "england",
+      "position": "MF",
+      "rating": 75,
+      "age": 22
+    },
+    {
+      "id": "fw-17-midlands-athletic-en",
+      "name": "Jordan Wells",
+      "clubId": "midlands-athletic-en",
+      "nationId": "england",
+      "position": "FW",
+      "rating": 82,
+      "age": 23
+    },
+    {
+      "id": "mf-18-midlands-athletic-en",
+      "name": "Sam Grant",
+      "clubId": "midlands-athletic-en",
+      "nationId": "england",
+      "position": "MF",
+      "rating": 59,
+      "age": 24
+    },
+    {
+      "id": "df-19-midlands-athletic-en",
+      "name": "Casey Page",
+      "clubId": "midlands-athletic-en",
+      "nationId": "england",
+      "position": "DF",
+      "rating": 66,
+      "age": 25
+    },
+    {
+      "id": "gk-20-midlands-athletic-en",
+      "name": "Riley Hart",
+      "clubId": "midlands-athletic-en",
+      "nationId": "england",
+      "position": "GK",
+      "rating": 73,
+      "age": 26
+    },
+    {
+      "id": "gk-01-royal-oaks-en",
+      "name": "Taylor Wade",
+      "clubId": "royal-oaks-en",
+      "nationId": "england",
+      "position": "GK",
+      "rating": 61,
+      "age": 24
+    },
+    {
+      "id": "df-02-royal-oaks-en",
+      "name": "Quinn York",
+      "clubId": "royal-oaks-en",
+      "nationId": "england",
+      "position": "DF",
+      "rating": 68,
+      "age": 25
+    },
+    {
+      "id": "df-03-royal-oaks-en",
+      "name": "Avery Hayes",
+      "clubId": "royal-oaks-en",
+      "nationId": "england",
+      "position": "DF",
+      "rating": 75,
+      "age": 26
+    },
+    {
+      "id": "df-04-royal-oaks-en",
+      "name": "Jamie Brooks",
+      "clubId": "royal-oaks-en",
+      "nationId": "england",
+      "position": "DF",
+      "rating": 82,
+      "age": 27
+    },
+    {
+      "id": "df-05-royal-oaks-en",
+      "name": "Drew Cole",
+      "clubId": "royal-oaks-en",
+      "nationId": "england",
+      "position": "DF",
+      "rating": 59,
+      "age": 28
+    },
+    {
+      "id": "mf-06-royal-oaks-en",
+      "name": "Cameron Reed",
+      "clubId": "royal-oaks-en",
+      "nationId": "england",
+      "position": "MF",
+      "rating": 66,
+      "age": 29
+    },
+    {
+      "id": "mf-07-royal-oaks-en",
+      "name": "Reese Stone",
+      "clubId": "royal-oaks-en",
+      "nationId": "england",
+      "position": "MF",
+      "rating": 73,
+      "age": 30
+    },
+    {
+      "id": "mf-08-royal-oaks-en",
+      "name": "Parker Fox",
+      "clubId": "royal-oaks-en",
+      "nationId": "england",
+      "position": "MF",
+      "rating": 80,
+      "age": 31
+    },
+    {
+      "id": "mf-09-royal-oaks-en",
+      "name": "Hayden West",
+      "clubId": "royal-oaks-en",
+      "nationId": "england",
+      "position": "MF",
+      "rating": 57,
+      "age": 32
+    },
+    {
+      "id": "mf-10-royal-oaks-en",
+      "name": "Rowan Lane",
+      "clubId": "royal-oaks-en",
+      "nationId": "england",
+      "position": "MF",
+      "rating": 64,
+      "age": 33
+    },
+    {
+      "id": "fw-11-royal-oaks-en",
+      "name": "Skyler Blake",
+      "clubId": "royal-oaks-en",
+      "nationId": "england",
+      "position": "FW",
+      "rating": 71,
+      "age": 18
+    },
+    {
+      "id": "fw-12-royal-oaks-en",
+      "name": "Blake Frost",
+      "clubId": "royal-oaks-en",
+      "nationId": "england",
+      "position": "FW",
+      "rating": 78,
+      "age": 19
+    },
+    {
+      "id": "fw-13-royal-oaks-en",
+      "name": "Finley Shaw",
+      "clubId": "royal-oaks-en",
+      "nationId": "england",
+      "position": "FW",
+      "rating": 55,
+      "age": 20
+    },
+    {
+      "id": "fw-14-royal-oaks-en",
+      "name": "Charlie Wells",
+      "clubId": "royal-oaks-en",
+      "nationId": "england",
+      "position": "FW",
+      "rating": 62,
+      "age": 21
+    },
+    {
+      "id": "df-15-royal-oaks-en",
+      "name": "Alex Grant",
+      "clubId": "royal-oaks-en",
+      "nationId": "england",
+      "position": "DF",
+      "rating": 69,
+      "age": 22
+    },
+    {
+      "id": "mf-16-royal-oaks-en",
+      "name": "Jordan Page",
+      "clubId": "royal-oaks-en",
+      "nationId": "england",
+      "position": "MF",
+      "rating": 76,
+      "age": 23
+    },
+    {
+      "id": "fw-17-royal-oaks-en",
+      "name": "Sam Hart",
+      "clubId": "royal-oaks-en",
+      "nationId": "england",
+      "position": "FW",
+      "rating": 83,
+      "age": 24
+    },
+    {
+      "id": "mf-18-royal-oaks-en",
+      "name": "Casey Cross",
+      "clubId": "royal-oaks-en",
+      "nationId": "england",
+      "position": "MF",
+      "rating": 60,
+      "age": 25
+    },
+    {
+      "id": "df-19-royal-oaks-en",
+      "name": "Riley Duke",
+      "clubId": "royal-oaks-en",
+      "nationId": "england",
+      "position": "DF",
+      "rating": 67,
+      "age": 26
+    },
+    {
+      "id": "gk-20-royal-oaks-en",
+      "name": "Morgan Snow",
+      "clubId": "royal-oaks-en",
+      "nationId": "england",
+      "position": "GK",
+      "rating": 74,
+      "age": 27
+    },
+    {
+      "id": "gk-01-steelworks-fc-en",
+      "name": "Quinn Brooks",
+      "clubId": "steelworks-fc-en",
+      "nationId": "england",
+      "position": "GK",
+      "rating": 62,
+      "age": 25
+    },
+    {
+      "id": "df-02-steelworks-fc-en",
+      "name": "Avery Cole",
+      "clubId": "steelworks-fc-en",
+      "nationId": "england",
+      "position": "DF",
+      "rating": 69,
+      "age": 26
+    },
+    {
+      "id": "df-03-steelworks-fc-en",
+      "name": "Jamie Reed",
+      "clubId": "steelworks-fc-en",
+      "nationId": "england",
+      "position": "DF",
+      "rating": 76,
+      "age": 27
+    },
+    {
+      "id": "df-04-steelworks-fc-en",
+      "name": "Drew Stone",
+      "clubId": "steelworks-fc-en",
+      "nationId": "england",
+      "position": "DF",
+      "rating": 83,
+      "age": 28
+    },
+    {
+      "id": "df-05-steelworks-fc-en",
+      "name": "Cameron Fox",
+      "clubId": "steelworks-fc-en",
+      "nationId": "england",
+      "position": "DF",
+      "rating": 60,
+      "age": 29
+    },
+    {
+      "id": "mf-06-steelworks-fc-en",
+      "name": "Reese West",
+      "clubId": "steelworks-fc-en",
+      "nationId": "england",
+      "position": "MF",
+      "rating": 67,
+      "age": 30
+    },
+    {
+      "id": "mf-07-steelworks-fc-en",
+      "name": "Parker Lane",
+      "clubId": "steelworks-fc-en",
+      "nationId": "england",
+      "position": "MF",
+      "rating": 74,
+      "age": 31
+    },
+    {
+      "id": "mf-08-steelworks-fc-en",
+      "name": "Hayden Blake",
+      "clubId": "steelworks-fc-en",
+      "nationId": "england",
+      "position": "MF",
+      "rating": 81,
+      "age": 32
+    },
+    {
+      "id": "mf-09-steelworks-fc-en",
+      "name": "Rowan Frost",
+      "clubId": "steelworks-fc-en",
+      "nationId": "england",
+      "position": "MF",
+      "rating": 58,
+      "age": 33
+    },
+    {
+      "id": "mf-10-steelworks-fc-en",
+      "name": "Skyler Shaw",
+      "clubId": "steelworks-fc-en",
+      "nationId": "england",
+      "position": "MF",
+      "rating": 65,
+      "age": 18
+    },
+    {
+      "id": "fw-11-steelworks-fc-en",
+      "name": "Blake Wells",
+      "clubId": "steelworks-fc-en",
+      "nationId": "england",
+      "position": "FW",
+      "rating": 72,
+      "age": 19
+    },
+    {
+      "id": "fw-12-steelworks-fc-en",
+      "name": "Finley Grant",
+      "clubId": "steelworks-fc-en",
+      "nationId": "england",
+      "position": "FW",
+      "rating": 79,
+      "age": 20
+    },
+    {
+      "id": "fw-13-steelworks-fc-en",
+      "name": "Charlie Page",
+      "clubId": "steelworks-fc-en",
+      "nationId": "england",
+      "position": "FW",
+      "rating": 56,
+      "age": 21
+    },
+    {
+      "id": "fw-14-steelworks-fc-en",
+      "name": "Alex Hart",
+      "clubId": "steelworks-fc-en",
+      "nationId": "england",
+      "position": "FW",
+      "rating": 63,
+      "age": 22
+    },
+    {
+      "id": "df-15-steelworks-fc-en",
+      "name": "Jordan Cross",
+      "clubId": "steelworks-fc-en",
+      "nationId": "england",
+      "position": "DF",
+      "rating": 70,
+      "age": 23
+    },
+    {
+      "id": "mf-16-steelworks-fc-en",
+      "name": "Sam Duke",
+      "clubId": "steelworks-fc-en",
+      "nationId": "england",
+      "position": "MF",
+      "rating": 77,
+      "age": 24
+    },
+    {
+      "id": "fw-17-steelworks-fc-en",
+      "name": "Casey Snow",
+      "clubId": "steelworks-fc-en",
+      "nationId": "england",
+      "position": "FW",
+      "rating": 84,
+      "age": 25
+    },
+    {
+      "id": "mf-18-steelworks-fc-en",
+      "name": "Riley Wade",
+      "clubId": "steelworks-fc-en",
+      "nationId": "england",
+      "position": "MF",
+      "rating": 61,
+      "age": 26
+    },
+    {
+      "id": "df-19-steelworks-fc-en",
+      "name": "Morgan York",
+      "clubId": "steelworks-fc-en",
+      "nationId": "england",
+      "position": "DF",
+      "rating": 68,
+      "age": 27
+    },
+    {
+      "id": "gk-20-steelworks-fc-en",
+      "name": "Taylor Hayes",
+      "clubId": "steelworks-fc-en",
+      "nationId": "england",
+      "position": "GK",
+      "rating": 75,
+      "age": 28
+    },
+    {
+      "id": "gk-01-coastal-wanderers-en",
+      "name": "Avery Stone",
+      "clubId": "coastal-wanderers-en",
+      "nationId": "england",
+      "position": "GK",
+      "rating": 63,
+      "age": 26
+    },
+    {
+      "id": "df-02-coastal-wanderers-en",
+      "name": "Jamie Fox",
+      "clubId": "coastal-wanderers-en",
+      "nationId": "england",
+      "position": "DF",
+      "rating": 70,
+      "age": 27
+    },
+    {
+      "id": "df-03-coastal-wanderers-en",
+      "name": "Drew West",
+      "clubId": "coastal-wanderers-en",
+      "nationId": "england",
+      "position": "DF",
+      "rating": 77,
+      "age": 28
+    },
+    {
+      "id": "df-04-coastal-wanderers-en",
+      "name": "Cameron Lane",
+      "clubId": "coastal-wanderers-en",
+      "nationId": "england",
+      "position": "DF",
+      "rating": 84,
+      "age": 29
+    },
+    {
+      "id": "df-05-coastal-wanderers-en",
+      "name": "Reese Blake",
+      "clubId": "coastal-wanderers-en",
+      "nationId": "england",
+      "position": "DF",
+      "rating": 61,
+      "age": 30
+    },
+    {
+      "id": "mf-06-coastal-wanderers-en",
+      "name": "Parker Frost",
+      "clubId": "coastal-wanderers-en",
+      "nationId": "england",
+      "position": "MF",
+      "rating": 68,
+      "age": 31
+    },
+    {
+      "id": "mf-07-coastal-wanderers-en",
+      "name": "Hayden Shaw",
+      "clubId": "coastal-wanderers-en",
+      "nationId": "england",
+      "position": "MF",
+      "rating": 75,
+      "age": 32
+    },
+    {
+      "id": "mf-08-coastal-wanderers-en",
+      "name": "Rowan Wells",
+      "clubId": "coastal-wanderers-en",
+      "nationId": "england",
+      "position": "MF",
+      "rating": 82,
+      "age": 33
+    },
+    {
+      "id": "mf-09-coastal-wanderers-en",
+      "name": "Skyler Grant",
+      "clubId": "coastal-wanderers-en",
+      "nationId": "england",
+      "position": "MF",
+      "rating": 59,
+      "age": 18
+    },
+    {
+      "id": "mf-10-coastal-wanderers-en",
+      "name": "Blake Page",
+      "clubId": "coastal-wanderers-en",
+      "nationId": "england",
+      "position": "MF",
+      "rating": 66,
+      "age": 19
+    },
+    {
+      "id": "fw-11-coastal-wanderers-en",
+      "name": "Finley Hart",
+      "clubId": "coastal-wanderers-en",
+      "nationId": "england",
+      "position": "FW",
+      "rating": 73,
+      "age": 20
+    },
+    {
+      "id": "fw-12-coastal-wanderers-en",
+      "name": "Charlie Cross",
+      "clubId": "coastal-wanderers-en",
+      "nationId": "england",
+      "position": "FW",
+      "rating": 80,
+      "age": 21
+    },
+    {
+      "id": "fw-13-coastal-wanderers-en",
+      "name": "Alex Duke",
+      "clubId": "coastal-wanderers-en",
+      "nationId": "england",
+      "position": "FW",
+      "rating": 57,
+      "age": 22
+    },
+    {
+      "id": "fw-14-coastal-wanderers-en",
+      "name": "Jordan Snow",
+      "clubId": "coastal-wanderers-en",
+      "nationId": "england",
+      "position": "FW",
+      "rating": 64,
+      "age": 23
+    },
+    {
+      "id": "df-15-coastal-wanderers-en",
+      "name": "Sam Wade",
+      "clubId": "coastal-wanderers-en",
+      "nationId": "england",
+      "position": "DF",
+      "rating": 71,
+      "age": 24
+    },
+    {
+      "id": "mf-16-coastal-wanderers-en",
+      "name": "Casey York",
+      "clubId": "coastal-wanderers-en",
+      "nationId": "england",
+      "position": "MF",
+      "rating": 78,
+      "age": 25
+    },
+    {
+      "id": "fw-17-coastal-wanderers-en",
+      "name": "Riley Hayes",
+      "clubId": "coastal-wanderers-en",
+      "nationId": "england",
+      "position": "FW",
+      "rating": 55,
+      "age": 26
+    },
+    {
+      "id": "mf-18-coastal-wanderers-en",
+      "name": "Morgan Brooks",
+      "clubId": "coastal-wanderers-en",
+      "nationId": "england",
+      "position": "MF",
+      "rating": 62,
+      "age": 27
+    },
+    {
+      "id": "df-19-coastal-wanderers-en",
+      "name": "Taylor Cole",
+      "clubId": "coastal-wanderers-en",
+      "nationId": "england",
+      "position": "DF",
+      "rating": 69,
+      "age": 28
+    },
+    {
+      "id": "gk-20-coastal-wanderers-en",
+      "name": "Quinn Reed",
+      "clubId": "coastal-wanderers-en",
+      "nationId": "england",
+      "position": "GK",
+      "rating": 76,
+      "age": 29
+    },
+    {
+      "id": "gk-01-capital-blues-en",
+      "name": "Jamie Lane",
+      "clubId": "capital-blues-en",
+      "nationId": "england",
+      "position": "GK",
+      "rating": 64,
+      "age": 27
+    },
+    {
+      "id": "df-02-capital-blues-en",
+      "name": "Drew Blake",
+      "clubId": "capital-blues-en",
+      "nationId": "england",
+      "position": "DF",
+      "rating": 71,
+      "age": 28
+    },
+    {
+      "id": "df-03-capital-blues-en",
+      "name": "Cameron Frost",
+      "clubId": "capital-blues-en",
+      "nationId": "england",
+      "position": "DF",
+      "rating": 78,
+      "age": 29
+    },
+    {
+      "id": "df-04-capital-blues-en",
+      "name": "Reese Shaw",
+      "clubId": "capital-blues-en",
+      "nationId": "england",
+      "position": "DF",
+      "rating": 55,
+      "age": 30
+    },
+    {
+      "id": "df-05-capital-blues-en",
+      "name": "Parker Wells",
+      "clubId": "capital-blues-en",
+      "nationId": "england",
+      "position": "DF",
+      "rating": 62,
+      "age": 31
+    },
+    {
+      "id": "mf-06-capital-blues-en",
+      "name": "Hayden Grant",
+      "clubId": "capital-blues-en",
+      "nationId": "england",
+      "position": "MF",
+      "rating": 69,
+      "age": 32
+    },
+    {
+      "id": "mf-07-capital-blues-en",
+      "name": "Rowan Page",
+      "clubId": "capital-blues-en",
+      "nationId": "england",
+      "position": "MF",
+      "rating": 76,
+      "age": 33
+    },
+    {
+      "id": "mf-08-capital-blues-en",
+      "name": "Skyler Hart",
+      "clubId": "capital-blues-en",
+      "nationId": "england",
+      "position": "MF",
+      "rating": 83,
+      "age": 18
+    },
+    {
+      "id": "mf-09-capital-blues-en",
+      "name": "Blake Cross",
+      "clubId": "capital-blues-en",
+      "nationId": "england",
+      "position": "MF",
+      "rating": 60,
+      "age": 19
+    },
+    {
+      "id": "mf-10-capital-blues-en",
+      "name": "Finley Duke",
+      "clubId": "capital-blues-en",
+      "nationId": "england",
+      "position": "MF",
+      "rating": 67,
+      "age": 20
+    },
+    {
+      "id": "fw-11-capital-blues-en",
+      "name": "Charlie Snow",
+      "clubId": "capital-blues-en",
+      "nationId": "england",
+      "position": "FW",
+      "rating": 74,
+      "age": 21
+    },
+    {
+      "id": "fw-12-capital-blues-en",
+      "name": "Alex Wade",
+      "clubId": "capital-blues-en",
+      "nationId": "england",
+      "position": "FW",
+      "rating": 81,
+      "age": 22
+    },
+    {
+      "id": "fw-13-capital-blues-en",
+      "name": "Jordan York",
+      "clubId": "capital-blues-en",
+      "nationId": "england",
+      "position": "FW",
+      "rating": 58,
+      "age": 23
+    },
+    {
+      "id": "fw-14-capital-blues-en",
+      "name": "Sam Hayes",
+      "clubId": "capital-blues-en",
+      "nationId": "england",
+      "position": "FW",
+      "rating": 65,
+      "age": 24
+    },
+    {
+      "id": "df-15-capital-blues-en",
+      "name": "Casey Brooks",
+      "clubId": "capital-blues-en",
+      "nationId": "england",
+      "position": "DF",
+      "rating": 72,
+      "age": 25
+    },
+    {
+      "id": "mf-16-capital-blues-en",
+      "name": "Riley Cole",
+      "clubId": "capital-blues-en",
+      "nationId": "england",
+      "position": "MF",
+      "rating": 79,
+      "age": 26
+    },
+    {
+      "id": "fw-17-capital-blues-en",
+      "name": "Morgan Reed",
+      "clubId": "capital-blues-en",
+      "nationId": "england",
+      "position": "FW",
+      "rating": 56,
+      "age": 27
+    },
+    {
+      "id": "mf-18-capital-blues-en",
+      "name": "Taylor Stone",
+      "clubId": "capital-blues-en",
+      "nationId": "england",
+      "position": "MF",
+      "rating": 63,
+      "age": 28
+    },
+    {
+      "id": "df-19-capital-blues-en",
+      "name": "Quinn Fox",
+      "clubId": "capital-blues-en",
+      "nationId": "england",
+      "position": "DF",
+      "rating": 70,
+      "age": 29
+    },
+    {
+      "id": "gk-20-capital-blues-en",
+      "name": "Avery West",
+      "clubId": "capital-blues-en",
+      "nationId": "england",
+      "position": "GK",
+      "rating": 77,
+      "age": 30
+    },
+    {
+      "id": "gk-01-greenfield-town-en",
+      "name": "Drew Shaw",
+      "clubId": "greenfield-town-en",
+      "nationId": "england",
+      "position": "GK",
+      "rating": 65,
+      "age": 28
+    },
+    {
+      "id": "df-02-greenfield-town-en",
+      "name": "Cameron Wells",
+      "clubId": "greenfield-town-en",
+      "nationId": "england",
+      "position": "DF",
+      "rating": 72,
+      "age": 29
+    },
+    {
+      "id": "df-03-greenfield-town-en",
+      "name": "Reese Grant",
+      "clubId": "greenfield-town-en",
+      "nationId": "england",
+      "position": "DF",
+      "rating": 79,
+      "age": 30
+    },
+    {
+      "id": "df-04-greenfield-town-en",
+      "name": "Parker Page",
+      "clubId": "greenfield-town-en",
+      "nationId": "england",
+      "position": "DF",
+      "rating": 56,
+      "age": 31
+    },
+    {
+      "id": "df-05-greenfield-town-en",
+      "name": "Hayden Hart",
+      "clubId": "greenfield-town-en",
+      "nationId": "england",
+      "position": "DF",
+      "rating": 63,
+      "age": 32
+    },
+    {
+      "id": "mf-06-greenfield-town-en",
+      "name": "Rowan Cross",
+      "clubId": "greenfield-town-en",
+      "nationId": "england",
+      "position": "MF",
+      "rating": 70,
+      "age": 33
+    },
+    {
+      "id": "mf-07-greenfield-town-en",
+      "name": "Skyler Duke",
+      "clubId": "greenfield-town-en",
+      "nationId": "england",
+      "position": "MF",
+      "rating": 77,
+      "age": 18
+    },
+    {
+      "id": "mf-08-greenfield-town-en",
+      "name": "Blake Snow",
+      "clubId": "greenfield-town-en",
+      "nationId": "england",
+      "position": "MF",
+      "rating": 84,
+      "age": 19
+    },
+    {
+      "id": "mf-09-greenfield-town-en",
+      "name": "Finley Wade",
+      "clubId": "greenfield-town-en",
+      "nationId": "england",
+      "position": "MF",
+      "rating": 61,
+      "age": 20
+    },
+    {
+      "id": "mf-10-greenfield-town-en",
+      "name": "Charlie York",
+      "clubId": "greenfield-town-en",
+      "nationId": "england",
+      "position": "MF",
+      "rating": 68,
+      "age": 21
+    },
+    {
+      "id": "fw-11-greenfield-town-en",
+      "name": "Alex Hayes",
+      "clubId": "greenfield-town-en",
+      "nationId": "england",
+      "position": "FW",
+      "rating": 75,
+      "age": 22
+    },
+    {
+      "id": "fw-12-greenfield-town-en",
+      "name": "Jordan Brooks",
+      "clubId": "greenfield-town-en",
+      "nationId": "england",
+      "position": "FW",
+      "rating": 82,
+      "age": 23
+    },
+    {
+      "id": "fw-13-greenfield-town-en",
+      "name": "Sam Cole",
+      "clubId": "greenfield-town-en",
+      "nationId": "england",
+      "position": "FW",
+      "rating": 59,
+      "age": 24
+    },
+    {
+      "id": "fw-14-greenfield-town-en",
+      "name": "Casey Reed",
+      "clubId": "greenfield-town-en",
+      "nationId": "england",
+      "position": "FW",
+      "rating": 66,
+      "age": 25
+    },
+    {
+      "id": "df-15-greenfield-town-en",
+      "name": "Riley Stone",
+      "clubId": "greenfield-town-en",
+      "nationId": "england",
+      "position": "DF",
+      "rating": 73,
+      "age": 26
+    },
+    {
+      "id": "mf-16-greenfield-town-en",
+      "name": "Morgan Fox",
+      "clubId": "greenfield-town-en",
+      "nationId": "england",
+      "position": "MF",
+      "rating": 80,
+      "age": 27
+    },
+    {
+      "id": "fw-17-greenfield-town-en",
+      "name": "Taylor West",
+      "clubId": "greenfield-town-en",
+      "nationId": "england",
+      "position": "FW",
+      "rating": 57,
+      "age": 28
+    },
+    {
+      "id": "mf-18-greenfield-town-en",
+      "name": "Quinn Lane",
+      "clubId": "greenfield-town-en",
+      "nationId": "england",
+      "position": "MF",
+      "rating": 64,
+      "age": 29
+    },
+    {
+      "id": "df-19-greenfield-town-en",
+      "name": "Avery Blake",
+      "clubId": "greenfield-town-en",
+      "nationId": "england",
+      "position": "DF",
+      "rating": 71,
+      "age": 30
+    },
+    {
+      "id": "gk-20-greenfield-town-en",
+      "name": "Jamie Frost",
+      "clubId": "greenfield-town-en",
+      "nationId": "england",
+      "position": "GK",
+      "rating": 78,
+      "age": 31
+    },
+    {
+      "id": "gk-01-ironbridge-united-en",
+      "name": "Cameron Page",
+      "clubId": "ironbridge-united-en",
+      "nationId": "england",
+      "position": "GK",
+      "rating": 66,
+      "age": 29
+    },
+    {
+      "id": "df-02-ironbridge-united-en",
+      "name": "Reese Hart",
+      "clubId": "ironbridge-united-en",
+      "nationId": "england",
+      "position": "DF",
+      "rating": 73,
+      "age": 30
+    },
+    {
+      "id": "df-03-ironbridge-united-en",
+      "name": "Parker Cross",
+      "clubId": "ironbridge-united-en",
+      "nationId": "england",
+      "position": "DF",
+      "rating": 80,
+      "age": 31
+    },
+    {
+      "id": "df-04-ironbridge-united-en",
+      "name": "Hayden Duke",
+      "clubId": "ironbridge-united-en",
+      "nationId": "england",
+      "position": "DF",
+      "rating": 57,
+      "age": 32
+    },
+    {
+      "id": "df-05-ironbridge-united-en",
+      "name": "Rowan Snow",
+      "clubId": "ironbridge-united-en",
+      "nationId": "england",
+      "position": "DF",
+      "rating": 64,
+      "age": 33
+    },
+    {
+      "id": "mf-06-ironbridge-united-en",
+      "name": "Skyler Wade",
+      "clubId": "ironbridge-united-en",
+      "nationId": "england",
+      "position": "MF",
+      "rating": 71,
+      "age": 18
+    },
+    {
+      "id": "mf-07-ironbridge-united-en",
+      "name": "Blake York",
+      "clubId": "ironbridge-united-en",
+      "nationId": "england",
+      "position": "MF",
+      "rating": 78,
+      "age": 19
+    },
+    {
+      "id": "mf-08-ironbridge-united-en",
+      "name": "Finley Hayes",
+      "clubId": "ironbridge-united-en",
+      "nationId": "england",
+      "position": "MF",
+      "rating": 55,
+      "age": 20
+    },
+    {
+      "id": "mf-09-ironbridge-united-en",
+      "name": "Charlie Brooks",
+      "clubId": "ironbridge-united-en",
+      "nationId": "england",
+      "position": "MF",
+      "rating": 62,
+      "age": 21
+    },
+    {
+      "id": "mf-10-ironbridge-united-en",
+      "name": "Alex Cole",
+      "clubId": "ironbridge-united-en",
+      "nationId": "england",
+      "position": "MF",
+      "rating": 69,
+      "age": 22
+    },
+    {
+      "id": "fw-11-ironbridge-united-en",
+      "name": "Jordan Reed",
+      "clubId": "ironbridge-united-en",
+      "nationId": "england",
+      "position": "FW",
+      "rating": 76,
+      "age": 23
+    },
+    {
+      "id": "fw-12-ironbridge-united-en",
+      "name": "Sam Stone",
+      "clubId": "ironbridge-united-en",
+      "nationId": "england",
+      "position": "FW",
+      "rating": 83,
+      "age": 24
+    },
+    {
+      "id": "fw-13-ironbridge-united-en",
+      "name": "Casey Fox",
+      "clubId": "ironbridge-united-en",
+      "nationId": "england",
+      "position": "FW",
+      "rating": 60,
+      "age": 25
+    },
+    {
+      "id": "fw-14-ironbridge-united-en",
+      "name": "Riley West",
+      "clubId": "ironbridge-united-en",
+      "nationId": "england",
+      "position": "FW",
+      "rating": 67,
+      "age": 26
+    },
+    {
+      "id": "df-15-ironbridge-united-en",
+      "name": "Morgan Lane",
+      "clubId": "ironbridge-united-en",
+      "nationId": "england",
+      "position": "DF",
+      "rating": 74,
+      "age": 27
+    },
+    {
+      "id": "mf-16-ironbridge-united-en",
+      "name": "Taylor Blake",
+      "clubId": "ironbridge-united-en",
+      "nationId": "england",
+      "position": "MF",
+      "rating": 81,
+      "age": 28
+    },
+    {
+      "id": "fw-17-ironbridge-united-en",
+      "name": "Quinn Frost",
+      "clubId": "ironbridge-united-en",
+      "nationId": "england",
+      "position": "FW",
+      "rating": 58,
+      "age": 29
+    },
+    {
+      "id": "mf-18-ironbridge-united-en",
+      "name": "Avery Shaw",
+      "clubId": "ironbridge-united-en",
+      "nationId": "england",
+      "position": "MF",
+      "rating": 65,
+      "age": 30
+    },
+    {
+      "id": "df-19-ironbridge-united-en",
+      "name": "Jamie Wells",
+      "clubId": "ironbridge-united-en",
+      "nationId": "england",
+      "position": "DF",
+      "rating": 72,
+      "age": 31
+    },
+    {
+      "id": "gk-20-ironbridge-united-en",
+      "name": "Drew Grant",
+      "clubId": "ironbridge-united-en",
+      "nationId": "england",
+      "position": "GK",
+      "rating": 79,
+      "age": 32
+    },
+    {
+      "id": "gk-01-sunset-borough-en",
+      "name": "Reese Duke",
+      "clubId": "sunset-borough-en",
+      "nationId": "england",
+      "position": "GK",
+      "rating": 67,
+      "age": 30
+    },
+    {
+      "id": "df-02-sunset-borough-en",
+      "name": "Parker Snow",
+      "clubId": "sunset-borough-en",
+      "nationId": "england",
+      "position": "DF",
+      "rating": 74,
+      "age": 31
+    },
+    {
+      "id": "df-03-sunset-borough-en",
+      "name": "Hayden Wade",
+      "clubId": "sunset-borough-en",
+      "nationId": "england",
+      "position": "DF",
+      "rating": 81,
+      "age": 32
+    },
+    {
+      "id": "df-04-sunset-borough-en",
+      "name": "Rowan York",
+      "clubId": "sunset-borough-en",
+      "nationId": "england",
+      "position": "DF",
+      "rating": 58,
+      "age": 33
+    },
+    {
+      "id": "df-05-sunset-borough-en",
+      "name": "Skyler Hayes",
+      "clubId": "sunset-borough-en",
+      "nationId": "england",
+      "position": "DF",
+      "rating": 65,
+      "age": 18
+    },
+    {
+      "id": "mf-06-sunset-borough-en",
+      "name": "Blake Brooks",
+      "clubId": "sunset-borough-en",
+      "nationId": "england",
+      "position": "MF",
+      "rating": 72,
+      "age": 19
+    },
+    {
+      "id": "mf-07-sunset-borough-en",
+      "name": "Finley Cole",
+      "clubId": "sunset-borough-en",
+      "nationId": "england",
+      "position": "MF",
+      "rating": 79,
+      "age": 20
+    },
+    {
+      "id": "mf-08-sunset-borough-en",
+      "name": "Charlie Reed",
+      "clubId": "sunset-borough-en",
+      "nationId": "england",
+      "position": "MF",
+      "rating": 56,
+      "age": 21
+    },
+    {
+      "id": "mf-09-sunset-borough-en",
+      "name": "Alex Stone",
+      "clubId": "sunset-borough-en",
+      "nationId": "england",
+      "position": "MF",
+      "rating": 63,
+      "age": 22
+    },
+    {
+      "id": "mf-10-sunset-borough-en",
+      "name": "Jordan Fox",
+      "clubId": "sunset-borough-en",
+      "nationId": "england",
+      "position": "MF",
+      "rating": 70,
+      "age": 23
+    },
+    {
+      "id": "fw-11-sunset-borough-en",
+      "name": "Sam West",
+      "clubId": "sunset-borough-en",
+      "nationId": "england",
+      "position": "FW",
+      "rating": 77,
+      "age": 24
+    },
+    {
+      "id": "fw-12-sunset-borough-en",
+      "name": "Casey Lane",
+      "clubId": "sunset-borough-en",
+      "nationId": "england",
+      "position": "FW",
+      "rating": 84,
+      "age": 25
+    },
+    {
+      "id": "fw-13-sunset-borough-en",
+      "name": "Riley Blake",
+      "clubId": "sunset-borough-en",
+      "nationId": "england",
+      "position": "FW",
+      "rating": 61,
+      "age": 26
+    },
+    {
+      "id": "fw-14-sunset-borough-en",
+      "name": "Morgan Frost",
+      "clubId": "sunset-borough-en",
+      "nationId": "england",
+      "position": "FW",
+      "rating": 68,
+      "age": 27
+    },
+    {
+      "id": "df-15-sunset-borough-en",
+      "name": "Taylor Shaw",
+      "clubId": "sunset-borough-en",
+      "nationId": "england",
+      "position": "DF",
+      "rating": 75,
+      "age": 28
+    },
+    {
+      "id": "mf-16-sunset-borough-en",
+      "name": "Quinn Wells",
+      "clubId": "sunset-borough-en",
+      "nationId": "england",
+      "position": "MF",
+      "rating": 82,
+      "age": 29
+    },
+    {
+      "id": "fw-17-sunset-borough-en",
+      "name": "Avery Grant",
+      "clubId": "sunset-borough-en",
+      "nationId": "england",
+      "position": "FW",
+      "rating": 59,
+      "age": 30
+    },
+    {
+      "id": "mf-18-sunset-borough-en",
+      "name": "Jamie Page",
+      "clubId": "sunset-borough-en",
+      "nationId": "england",
+      "position": "MF",
+      "rating": 66,
+      "age": 31
+    },
+    {
+      "id": "df-19-sunset-borough-en",
+      "name": "Drew Hart",
+      "clubId": "sunset-borough-en",
+      "nationId": "england",
+      "position": "DF",
+      "rating": 73,
+      "age": 32
+    },
+    {
+      "id": "gk-20-sunset-borough-en",
+      "name": "Cameron Cross",
+      "clubId": "sunset-borough-en",
+      "nationId": "england",
+      "position": "GK",
+      "rating": 80,
+      "age": 33
+    },
+    {
+      "id": "gk-01-phoenix-athletic-en",
+      "name": "Parker York",
+      "clubId": "phoenix-athletic-en",
+      "nationId": "england",
+      "position": "GK",
+      "rating": 68,
+      "age": 31
+    },
+    {
+      "id": "df-02-phoenix-athletic-en",
+      "name": "Hayden Hayes",
+      "clubId": "phoenix-athletic-en",
+      "nationId": "england",
+      "position": "DF",
+      "rating": 75,
+      "age": 32
+    },
+    {
+      "id": "df-03-phoenix-athletic-en",
+      "name": "Rowan Brooks",
+      "clubId": "phoenix-athletic-en",
+      "nationId": "england",
+      "position": "DF",
+      "rating": 82,
+      "age": 33
+    },
+    {
+      "id": "df-04-phoenix-athletic-en",
+      "name": "Skyler Cole",
+      "clubId": "phoenix-athletic-en",
+      "nationId": "england",
+      "position": "DF",
+      "rating": 59,
+      "age": 18
+    },
+    {
+      "id": "df-05-phoenix-athletic-en",
+      "name": "Blake Reed",
+      "clubId": "phoenix-athletic-en",
+      "nationId": "england",
+      "position": "DF",
+      "rating": 66,
+      "age": 19
+    },
+    {
+      "id": "mf-06-phoenix-athletic-en",
+      "name": "Finley Stone",
+      "clubId": "phoenix-athletic-en",
+      "nationId": "england",
+      "position": "MF",
+      "rating": 73,
+      "age": 20
+    },
+    {
+      "id": "mf-07-phoenix-athletic-en",
+      "name": "Charlie Fox",
+      "clubId": "phoenix-athletic-en",
+      "nationId": "england",
+      "position": "MF",
+      "rating": 80,
+      "age": 21
+    },
+    {
+      "id": "mf-08-phoenix-athletic-en",
+      "name": "Alex West",
+      "clubId": "phoenix-athletic-en",
+      "nationId": "england",
+      "position": "MF",
+      "rating": 57,
+      "age": 22
+    },
+    {
+      "id": "mf-09-phoenix-athletic-en",
+      "name": "Jordan Lane",
+      "clubId": "phoenix-athletic-en",
+      "nationId": "england",
+      "position": "MF",
+      "rating": 64,
+      "age": 23
+    },
+    {
+      "id": "mf-10-phoenix-athletic-en",
+      "name": "Sam Blake",
+      "clubId": "phoenix-athletic-en",
+      "nationId": "england",
+      "position": "MF",
+      "rating": 71,
+      "age": 24
+    },
+    {
+      "id": "fw-11-phoenix-athletic-en",
+      "name": "Casey Frost",
+      "clubId": "phoenix-athletic-en",
+      "nationId": "england",
+      "position": "FW",
+      "rating": 78,
+      "age": 25
+    },
+    {
+      "id": "fw-12-phoenix-athletic-en",
+      "name": "Riley Shaw",
+      "clubId": "phoenix-athletic-en",
+      "nationId": "england",
+      "position": "FW",
+      "rating": 55,
+      "age": 26
+    },
+    {
+      "id": "fw-13-phoenix-athletic-en",
+      "name": "Morgan Wells",
+      "clubId": "phoenix-athletic-en",
+      "nationId": "england",
+      "position": "FW",
+      "rating": 62,
+      "age": 27
+    },
+    {
+      "id": "fw-14-phoenix-athletic-en",
+      "name": "Taylor Grant",
+      "clubId": "phoenix-athletic-en",
+      "nationId": "england",
+      "position": "FW",
+      "rating": 69,
+      "age": 28
+    },
+    {
+      "id": "df-15-phoenix-athletic-en",
+      "name": "Quinn Page",
+      "clubId": "phoenix-athletic-en",
+      "nationId": "england",
+      "position": "DF",
+      "rating": 76,
+      "age": 29
+    },
+    {
+      "id": "mf-16-phoenix-athletic-en",
+      "name": "Avery Hart",
+      "clubId": "phoenix-athletic-en",
+      "nationId": "england",
+      "position": "MF",
+      "rating": 83,
+      "age": 30
+    },
+    {
+      "id": "fw-17-phoenix-athletic-en",
+      "name": "Jamie Cross",
+      "clubId": "phoenix-athletic-en",
+      "nationId": "england",
+      "position": "FW",
+      "rating": 60,
+      "age": 31
+    },
+    {
+      "id": "mf-18-phoenix-athletic-en",
+      "name": "Drew Duke",
+      "clubId": "phoenix-athletic-en",
+      "nationId": "england",
+      "position": "MF",
+      "rating": 67,
+      "age": 32
+    },
+    {
+      "id": "df-19-phoenix-athletic-en",
+      "name": "Cameron Snow",
+      "clubId": "phoenix-athletic-en",
+      "nationId": "england",
+      "position": "DF",
+      "rating": 74,
+      "age": 33
+    },
+    {
+      "id": "gk-20-phoenix-athletic-en",
+      "name": "Reese Wade",
+      "clubId": "phoenix-athletic-en",
+      "nationId": "england",
+      "position": "GK",
+      "rating": 81,
+      "age": 18
+    },
+    {
+      "id": "gk-01-westgate-fc-en",
+      "name": "Hayden Cole",
+      "clubId": "westgate-fc-en",
+      "nationId": "england",
+      "position": "GK",
+      "rating": 69,
+      "age": 32
+    },
+    {
+      "id": "df-02-westgate-fc-en",
+      "name": "Rowan Reed",
+      "clubId": "westgate-fc-en",
+      "nationId": "england",
+      "position": "DF",
+      "rating": 76,
+      "age": 33
+    },
+    {
+      "id": "df-03-westgate-fc-en",
+      "name": "Skyler Stone",
+      "clubId": "westgate-fc-en",
+      "nationId": "england",
+      "position": "DF",
+      "rating": 83,
+      "age": 18
+    },
+    {
+      "id": "df-04-westgate-fc-en",
+      "name": "Blake Fox",
+      "clubId": "westgate-fc-en",
+      "nationId": "england",
+      "position": "DF",
+      "rating": 60,
+      "age": 19
+    },
+    {
+      "id": "df-05-westgate-fc-en",
+      "name": "Finley West",
+      "clubId": "westgate-fc-en",
+      "nationId": "england",
+      "position": "DF",
+      "rating": 67,
+      "age": 20
+    },
+    {
+      "id": "mf-06-westgate-fc-en",
+      "name": "Charlie Lane",
+      "clubId": "westgate-fc-en",
+      "nationId": "england",
+      "position": "MF",
+      "rating": 74,
+      "age": 21
+    },
+    {
+      "id": "mf-07-westgate-fc-en",
+      "name": "Alex Blake",
+      "clubId": "westgate-fc-en",
+      "nationId": "england",
+      "position": "MF",
+      "rating": 81,
+      "age": 22
+    },
+    {
+      "id": "mf-08-westgate-fc-en",
+      "name": "Jordan Frost",
+      "clubId": "westgate-fc-en",
+      "nationId": "england",
+      "position": "MF",
+      "rating": 58,
+      "age": 23
+    },
+    {
+      "id": "mf-09-westgate-fc-en",
+      "name": "Sam Shaw",
+      "clubId": "westgate-fc-en",
+      "nationId": "england",
+      "position": "MF",
+      "rating": 65,
+      "age": 24
+    },
+    {
+      "id": "mf-10-westgate-fc-en",
+      "name": "Casey Wells",
+      "clubId": "westgate-fc-en",
+      "nationId": "england",
+      "position": "MF",
+      "rating": 72,
+      "age": 25
+    },
+    {
+      "id": "fw-11-westgate-fc-en",
+      "name": "Riley Grant",
+      "clubId": "westgate-fc-en",
+      "nationId": "england",
+      "position": "FW",
+      "rating": 79,
+      "age": 26
+    },
+    {
+      "id": "fw-12-westgate-fc-en",
+      "name": "Morgan Page",
+      "clubId": "westgate-fc-en",
+      "nationId": "england",
+      "position": "FW",
+      "rating": 56,
+      "age": 27
+    },
+    {
+      "id": "fw-13-westgate-fc-en",
+      "name": "Taylor Hart",
+      "clubId": "westgate-fc-en",
+      "nationId": "england",
+      "position": "FW",
+      "rating": 63,
+      "age": 28
+    },
+    {
+      "id": "fw-14-westgate-fc-en",
+      "name": "Quinn Cross",
+      "clubId": "westgate-fc-en",
+      "nationId": "england",
+      "position": "FW",
+      "rating": 70,
+      "age": 29
+    },
+    {
+      "id": "df-15-westgate-fc-en",
+      "name": "Avery Duke",
+      "clubId": "westgate-fc-en",
+      "nationId": "england",
+      "position": "DF",
+      "rating": 77,
+      "age": 30
+    },
+    {
+      "id": "mf-16-westgate-fc-en",
+      "name": "Jamie Snow",
+      "clubId": "westgate-fc-en",
+      "nationId": "england",
+      "position": "MF",
+      "rating": 84,
+      "age": 31
+    },
+    {
+      "id": "fw-17-westgate-fc-en",
+      "name": "Drew Wade",
+      "clubId": "westgate-fc-en",
+      "nationId": "england",
+      "position": "FW",
+      "rating": 61,
+      "age": 32
+    },
+    {
+      "id": "mf-18-westgate-fc-en",
+      "name": "Cameron York",
+      "clubId": "westgate-fc-en",
+      "nationId": "england",
+      "position": "MF",
+      "rating": 68,
+      "age": 33
+    },
+    {
+      "id": "df-19-westgate-fc-en",
+      "name": "Reese Hayes",
+      "clubId": "westgate-fc-en",
+      "nationId": "england",
+      "position": "DF",
+      "rating": 75,
+      "age": 18
+    },
+    {
+      "id": "gk-20-westgate-fc-en",
+      "name": "Parker Brooks",
+      "clubId": "westgate-fc-en",
+      "nationId": "england",
+      "position": "GK",
+      "rating": 82,
+      "age": 19
+    },
+    {
+      "id": "gk-01-eastern-lightning-en",
+      "name": "Rowan Fox",
+      "clubId": "eastern-lightning-en",
+      "nationId": "england",
+      "position": "GK",
+      "rating": 70,
+      "age": 33
+    },
+    {
+      "id": "df-02-eastern-lightning-en",
+      "name": "Skyler West",
+      "clubId": "eastern-lightning-en",
+      "nationId": "england",
+      "position": "DF",
+      "rating": 77,
+      "age": 18
+    },
+    {
+      "id": "df-03-eastern-lightning-en",
+      "name": "Blake Lane",
+      "clubId": "eastern-lightning-en",
+      "nationId": "england",
+      "position": "DF",
+      "rating": 84,
+      "age": 19
+    },
+    {
+      "id": "df-04-eastern-lightning-en",
+      "name": "Finley Blake",
+      "clubId": "eastern-lightning-en",
+      "nationId": "england",
+      "position": "DF",
+      "rating": 61,
+      "age": 20
+    },
+    {
+      "id": "df-05-eastern-lightning-en",
+      "name": "Charlie Frost",
+      "clubId": "eastern-lightning-en",
+      "nationId": "england",
+      "position": "DF",
+      "rating": 68,
+      "age": 21
+    },
+    {
+      "id": "mf-06-eastern-lightning-en",
+      "name": "Alex Shaw",
+      "clubId": "eastern-lightning-en",
+      "nationId": "england",
+      "position": "MF",
+      "rating": 75,
+      "age": 22
+    },
+    {
+      "id": "mf-07-eastern-lightning-en",
+      "name": "Jordan Wells",
+      "clubId": "eastern-lightning-en",
+      "nationId": "england",
+      "position": "MF",
+      "rating": 82,
+      "age": 23
+    },
+    {
+      "id": "mf-08-eastern-lightning-en",
+      "name": "Sam Grant",
+      "clubId": "eastern-lightning-en",
+      "nationId": "england",
+      "position": "MF",
+      "rating": 59,
+      "age": 24
+    },
+    {
+      "id": "mf-09-eastern-lightning-en",
+      "name": "Casey Page",
+      "clubId": "eastern-lightning-en",
+      "nationId": "england",
+      "position": "MF",
+      "rating": 66,
+      "age": 25
+    },
+    {
+      "id": "mf-10-eastern-lightning-en",
+      "name": "Riley Hart",
+      "clubId": "eastern-lightning-en",
+      "nationId": "england",
+      "position": "MF",
+      "rating": 73,
+      "age": 26
+    },
+    {
+      "id": "fw-11-eastern-lightning-en",
+      "name": "Morgan Cross",
+      "clubId": "eastern-lightning-en",
+      "nationId": "england",
+      "position": "FW",
+      "rating": 80,
+      "age": 27
+    },
+    {
+      "id": "fw-12-eastern-lightning-en",
+      "name": "Taylor Duke",
+      "clubId": "eastern-lightning-en",
+      "nationId": "england",
+      "position": "FW",
+      "rating": 57,
+      "age": 28
+    },
+    {
+      "id": "fw-13-eastern-lightning-en",
+      "name": "Quinn Snow",
+      "clubId": "eastern-lightning-en",
+      "nationId": "england",
+      "position": "FW",
+      "rating": 64,
+      "age": 29
+    },
+    {
+      "id": "fw-14-eastern-lightning-en",
+      "name": "Avery Wade",
+      "clubId": "eastern-lightning-en",
+      "nationId": "england",
+      "position": "FW",
+      "rating": 71,
+      "age": 30
+    },
+    {
+      "id": "df-15-eastern-lightning-en",
+      "name": "Jamie York",
+      "clubId": "eastern-lightning-en",
+      "nationId": "england",
+      "position": "DF",
+      "rating": 78,
+      "age": 31
+    },
+    {
+      "id": "mf-16-eastern-lightning-en",
+      "name": "Drew Hayes",
+      "clubId": "eastern-lightning-en",
+      "nationId": "england",
+      "position": "MF",
+      "rating": 55,
+      "age": 32
+    },
+    {
+      "id": "fw-17-eastern-lightning-en",
+      "name": "Cameron Brooks",
+      "clubId": "eastern-lightning-en",
+      "nationId": "england",
+      "position": "FW",
+      "rating": 62,
+      "age": 33
+    },
+    {
+      "id": "mf-18-eastern-lightning-en",
+      "name": "Reese Cole",
+      "clubId": "eastern-lightning-en",
+      "nationId": "england",
+      "position": "MF",
+      "rating": 69,
+      "age": 18
+    },
+    {
+      "id": "df-19-eastern-lightning-en",
+      "name": "Parker Reed",
+      "clubId": "eastern-lightning-en",
+      "nationId": "england",
+      "position": "DF",
+      "rating": 76,
+      "age": 19
+    },
+    {
+      "id": "gk-20-eastern-lightning-en",
+      "name": "Hayden Stone",
+      "clubId": "eastern-lightning-en",
+      "nationId": "england",
+      "position": "GK",
+      "rating": 83,
+      "age": 20
+    },
+    {
+      "id": "gk-01-valley-rangers-en",
+      "name": "Skyler Blake",
+      "clubId": "valley-rangers-en",
+      "nationId": "england",
+      "position": "GK",
+      "rating": 71,
+      "age": 18
+    },
+    {
+      "id": "df-02-valley-rangers-en",
+      "name": "Blake Frost",
+      "clubId": "valley-rangers-en",
+      "nationId": "england",
+      "position": "DF",
+      "rating": 78,
+      "age": 19
+    },
+    {
+      "id": "df-03-valley-rangers-en",
+      "name": "Finley Shaw",
+      "clubId": "valley-rangers-en",
+      "nationId": "england",
+      "position": "DF",
+      "rating": 55,
+      "age": 20
+    },
+    {
+      "id": "df-04-valley-rangers-en",
+      "name": "Charlie Wells",
+      "clubId": "valley-rangers-en",
+      "nationId": "england",
+      "position": "DF",
+      "rating": 62,
+      "age": 21
+    },
+    {
+      "id": "df-05-valley-rangers-en",
+      "name": "Alex Grant",
+      "clubId": "valley-rangers-en",
+      "nationId": "england",
+      "position": "DF",
+      "rating": 69,
+      "age": 22
+    },
+    {
+      "id": "mf-06-valley-rangers-en",
+      "name": "Jordan Page",
+      "clubId": "valley-rangers-en",
+      "nationId": "england",
+      "position": "MF",
+      "rating": 76,
+      "age": 23
+    },
+    {
+      "id": "mf-07-valley-rangers-en",
+      "name": "Sam Hart",
+      "clubId": "valley-rangers-en",
+      "nationId": "england",
+      "position": "MF",
+      "rating": 83,
+      "age": 24
+    },
+    {
+      "id": "mf-08-valley-rangers-en",
+      "name": "Casey Cross",
+      "clubId": "valley-rangers-en",
+      "nationId": "england",
+      "position": "MF",
+      "rating": 60,
+      "age": 25
+    },
+    {
+      "id": "mf-09-valley-rangers-en",
+      "name": "Riley Duke",
+      "clubId": "valley-rangers-en",
+      "nationId": "england",
+      "position": "MF",
+      "rating": 67,
+      "age": 26
+    },
+    {
+      "id": "mf-10-valley-rangers-en",
+      "name": "Morgan Snow",
+      "clubId": "valley-rangers-en",
+      "nationId": "england",
+      "position": "MF",
+      "rating": 74,
+      "age": 27
+    },
+    {
+      "id": "fw-11-valley-rangers-en",
+      "name": "Taylor Wade",
+      "clubId": "valley-rangers-en",
+      "nationId": "england",
+      "position": "FW",
+      "rating": 81,
+      "age": 28
+    },
+    {
+      "id": "fw-12-valley-rangers-en",
+      "name": "Quinn York",
+      "clubId": "valley-rangers-en",
+      "nationId": "england",
+      "position": "FW",
+      "rating": 58,
+      "age": 29
+    },
+    {
+      "id": "fw-13-valley-rangers-en",
+      "name": "Avery Hayes",
+      "clubId": "valley-rangers-en",
+      "nationId": "england",
+      "position": "FW",
+      "rating": 65,
+      "age": 30
+    },
+    {
+      "id": "fw-14-valley-rangers-en",
+      "name": "Jamie Brooks",
+      "clubId": "valley-rangers-en",
+      "nationId": "england",
+      "position": "FW",
+      "rating": 72,
+      "age": 31
+    },
+    {
+      "id": "df-15-valley-rangers-en",
+      "name": "Drew Cole",
+      "clubId": "valley-rangers-en",
+      "nationId": "england",
+      "position": "DF",
+      "rating": 79,
+      "age": 32
+    },
+    {
+      "id": "mf-16-valley-rangers-en",
+      "name": "Cameron Reed",
+      "clubId": "valley-rangers-en",
+      "nationId": "england",
+      "position": "MF",
+      "rating": 56,
+      "age": 33
+    },
+    {
+      "id": "fw-17-valley-rangers-en",
+      "name": "Reese Stone",
+      "clubId": "valley-rangers-en",
+      "nationId": "england",
+      "position": "FW",
+      "rating": 63,
+      "age": 18
+    },
+    {
+      "id": "mf-18-valley-rangers-en",
+      "name": "Parker Fox",
+      "clubId": "valley-rangers-en",
+      "nationId": "england",
+      "position": "MF",
+      "rating": 70,
+      "age": 19
+    },
+    {
+      "id": "df-19-valley-rangers-en",
+      "name": "Hayden West",
+      "clubId": "valley-rangers-en",
+      "nationId": "england",
+      "position": "DF",
+      "rating": 77,
+      "age": 20
+    },
+    {
+      "id": "gk-20-valley-rangers-en",
+      "name": "Rowan Lane",
+      "clubId": "valley-rangers-en",
+      "nationId": "england",
+      "position": "GK",
+      "rating": 84,
+      "age": 21
+    },
+    {
+      "id": "gk-01-crown-park-en",
+      "name": "Blake Wells",
+      "clubId": "crown-park-en",
+      "nationId": "england",
+      "position": "GK",
+      "rating": 72,
+      "age": 19
+    },
+    {
+      "id": "df-02-crown-park-en",
+      "name": "Finley Grant",
+      "clubId": "crown-park-en",
+      "nationId": "england",
+      "position": "DF",
+      "rating": 79,
+      "age": 20
+    },
+    {
+      "id": "df-03-crown-park-en",
+      "name": "Charlie Page",
+      "clubId": "crown-park-en",
+      "nationId": "england",
+      "position": "DF",
+      "rating": 56,
+      "age": 21
+    },
+    {
+      "id": "df-04-crown-park-en",
+      "name": "Alex Hart",
+      "clubId": "crown-park-en",
+      "nationId": "england",
+      "position": "DF",
+      "rating": 63,
+      "age": 22
+    },
+    {
+      "id": "df-05-crown-park-en",
+      "name": "Jordan Cross",
+      "clubId": "crown-park-en",
+      "nationId": "england",
+      "position": "DF",
+      "rating": 70,
+      "age": 23
+    },
+    {
+      "id": "mf-06-crown-park-en",
+      "name": "Sam Duke",
+      "clubId": "crown-park-en",
+      "nationId": "england",
+      "position": "MF",
+      "rating": 77,
+      "age": 24
+    },
+    {
+      "id": "mf-07-crown-park-en",
+      "name": "Casey Snow",
+      "clubId": "crown-park-en",
+      "nationId": "england",
+      "position": "MF",
+      "rating": 84,
+      "age": 25
+    },
+    {
+      "id": "mf-08-crown-park-en",
+      "name": "Riley Wade",
+      "clubId": "crown-park-en",
+      "nationId": "england",
+      "position": "MF",
+      "rating": 61,
+      "age": 26
+    },
+    {
+      "id": "mf-09-crown-park-en",
+      "name": "Morgan York",
+      "clubId": "crown-park-en",
+      "nationId": "england",
+      "position": "MF",
+      "rating": 68,
+      "age": 27
+    },
+    {
+      "id": "mf-10-crown-park-en",
+      "name": "Taylor Hayes",
+      "clubId": "crown-park-en",
+      "nationId": "england",
+      "position": "MF",
+      "rating": 75,
+      "age": 28
+    },
+    {
+      "id": "fw-11-crown-park-en",
+      "name": "Quinn Brooks",
+      "clubId": "crown-park-en",
+      "nationId": "england",
+      "position": "FW",
+      "rating": 82,
+      "age": 29
+    },
+    {
+      "id": "fw-12-crown-park-en",
+      "name": "Avery Cole",
+      "clubId": "crown-park-en",
+      "nationId": "england",
+      "position": "FW",
+      "rating": 59,
+      "age": 30
+    },
+    {
+      "id": "fw-13-crown-park-en",
+      "name": "Jamie Reed",
+      "clubId": "crown-park-en",
+      "nationId": "england",
+      "position": "FW",
+      "rating": 66,
+      "age": 31
+    },
+    {
+      "id": "fw-14-crown-park-en",
+      "name": "Drew Stone",
+      "clubId": "crown-park-en",
+      "nationId": "england",
+      "position": "FW",
+      "rating": 73,
+      "age": 32
+    },
+    {
+      "id": "df-15-crown-park-en",
+      "name": "Cameron Fox",
+      "clubId": "crown-park-en",
+      "nationId": "england",
+      "position": "DF",
+      "rating": 80,
+      "age": 33
+    },
+    {
+      "id": "mf-16-crown-park-en",
+      "name": "Reese West",
+      "clubId": "crown-park-en",
+      "nationId": "england",
+      "position": "MF",
+      "rating": 57,
+      "age": 18
+    },
+    {
+      "id": "fw-17-crown-park-en",
+      "name": "Parker Lane",
+      "clubId": "crown-park-en",
+      "nationId": "england",
+      "position": "FW",
+      "rating": 64,
+      "age": 19
+    },
+    {
+      "id": "mf-18-crown-park-en",
+      "name": "Hayden Blake",
+      "clubId": "crown-park-en",
+      "nationId": "england",
+      "position": "MF",
+      "rating": 71,
+      "age": 20
+    },
+    {
+      "id": "df-19-crown-park-en",
+      "name": "Rowan Frost",
+      "clubId": "crown-park-en",
+      "nationId": "england",
+      "position": "DF",
+      "rating": 78,
+      "age": 21
+    },
+    {
+      "id": "gk-20-crown-park-en",
+      "name": "Skyler Shaw",
+      "clubId": "crown-park-en",
+      "nationId": "england",
+      "position": "GK",
+      "rating": 55,
+      "age": 22
+    },
+    {
+      "id": "gk-01-dockside-mariners-en",
+      "name": "Finley Hart",
+      "clubId": "dockside-mariners-en",
+      "nationId": "england",
+      "position": "GK",
+      "rating": 73,
+      "age": 20
+    },
+    {
+      "id": "df-02-dockside-mariners-en",
+      "name": "Charlie Cross",
+      "clubId": "dockside-mariners-en",
+      "nationId": "england",
+      "position": "DF",
+      "rating": 80,
+      "age": 21
+    },
+    {
+      "id": "df-03-dockside-mariners-en",
+      "name": "Alex Duke",
+      "clubId": "dockside-mariners-en",
+      "nationId": "england",
+      "position": "DF",
+      "rating": 57,
+      "age": 22
+    },
+    {
+      "id": "df-04-dockside-mariners-en",
+      "name": "Jordan Snow",
+      "clubId": "dockside-mariners-en",
+      "nationId": "england",
+      "position": "DF",
+      "rating": 64,
+      "age": 23
+    },
+    {
+      "id": "df-05-dockside-mariners-en",
+      "name": "Sam Wade",
+      "clubId": "dockside-mariners-en",
+      "nationId": "england",
+      "position": "DF",
+      "rating": 71,
+      "age": 24
+    },
+    {
+      "id": "mf-06-dockside-mariners-en",
+      "name": "Casey York",
+      "clubId": "dockside-mariners-en",
+      "nationId": "england",
+      "position": "MF",
+      "rating": 78,
+      "age": 25
+    },
+    {
+      "id": "mf-07-dockside-mariners-en",
+      "name": "Riley Hayes",
+      "clubId": "dockside-mariners-en",
+      "nationId": "england",
+      "position": "MF",
+      "rating": 55,
+      "age": 26
+    },
+    {
+      "id": "mf-08-dockside-mariners-en",
+      "name": "Morgan Brooks",
+      "clubId": "dockside-mariners-en",
+      "nationId": "england",
+      "position": "MF",
+      "rating": 62,
+      "age": 27
+    },
+    {
+      "id": "mf-09-dockside-mariners-en",
+      "name": "Taylor Cole",
+      "clubId": "dockside-mariners-en",
+      "nationId": "england",
+      "position": "MF",
+      "rating": 69,
+      "age": 28
+    },
+    {
+      "id": "mf-10-dockside-mariners-en",
+      "name": "Quinn Reed",
+      "clubId": "dockside-mariners-en",
+      "nationId": "england",
+      "position": "MF",
+      "rating": 76,
+      "age": 29
+    },
+    {
+      "id": "fw-11-dockside-mariners-en",
+      "name": "Avery Stone",
+      "clubId": "dockside-mariners-en",
+      "nationId": "england",
+      "position": "FW",
+      "rating": 83,
+      "age": 30
+    },
+    {
+      "id": "fw-12-dockside-mariners-en",
+      "name": "Jamie Fox",
+      "clubId": "dockside-mariners-en",
+      "nationId": "england",
+      "position": "FW",
+      "rating": 60,
+      "age": 31
+    },
+    {
+      "id": "fw-13-dockside-mariners-en",
+      "name": "Drew West",
+      "clubId": "dockside-mariners-en",
+      "nationId": "england",
+      "position": "FW",
+      "rating": 67,
+      "age": 32
+    },
+    {
+      "id": "fw-14-dockside-mariners-en",
+      "name": "Cameron Lane",
+      "clubId": "dockside-mariners-en",
+      "nationId": "england",
+      "position": "FW",
+      "rating": 74,
+      "age": 33
+    },
+    {
+      "id": "df-15-dockside-mariners-en",
+      "name": "Reese Blake",
+      "clubId": "dockside-mariners-en",
+      "nationId": "england",
+      "position": "DF",
+      "rating": 81,
+      "age": 18
+    },
+    {
+      "id": "mf-16-dockside-mariners-en",
+      "name": "Parker Frost",
+      "clubId": "dockside-mariners-en",
+      "nationId": "england",
+      "position": "MF",
+      "rating": 58,
+      "age": 19
+    },
+    {
+      "id": "fw-17-dockside-mariners-en",
+      "name": "Hayden Shaw",
+      "clubId": "dockside-mariners-en",
+      "nationId": "england",
+      "position": "FW",
+      "rating": 65,
+      "age": 20
+    },
+    {
+      "id": "mf-18-dockside-mariners-en",
+      "name": "Rowan Wells",
+      "clubId": "dockside-mariners-en",
+      "nationId": "england",
+      "position": "MF",
+      "rating": 72,
+      "age": 21
+    },
+    {
+      "id": "df-19-dockside-mariners-en",
+      "name": "Skyler Grant",
+      "clubId": "dockside-mariners-en",
+      "nationId": "england",
+      "position": "DF",
+      "rating": 79,
+      "age": 22
+    },
+    {
+      "id": "gk-20-dockside-mariners-en",
+      "name": "Blake Page",
+      "clubId": "dockside-mariners-en",
+      "nationId": "england",
+      "position": "GK",
+      "rating": 56,
+      "age": 23
+    },
+    {
+      "id": "gk-01-highland-foxes-en",
+      "name": "Charlie Snow",
+      "clubId": "highland-foxes-en",
+      "nationId": "england",
+      "position": "GK",
+      "rating": 74,
+      "age": 21
+    },
+    {
+      "id": "df-02-highland-foxes-en",
+      "name": "Alex Wade",
+      "clubId": "highland-foxes-en",
+      "nationId": "england",
+      "position": "DF",
+      "rating": 81,
+      "age": 22
+    },
+    {
+      "id": "df-03-highland-foxes-en",
+      "name": "Jordan York",
+      "clubId": "highland-foxes-en",
+      "nationId": "england",
+      "position": "DF",
+      "rating": 58,
+      "age": 23
+    },
+    {
+      "id": "df-04-highland-foxes-en",
+      "name": "Sam Hayes",
+      "clubId": "highland-foxes-en",
+      "nationId": "england",
+      "position": "DF",
+      "rating": 65,
+      "age": 24
+    },
+    {
+      "id": "df-05-highland-foxes-en",
+      "name": "Casey Brooks",
+      "clubId": "highland-foxes-en",
+      "nationId": "england",
+      "position": "DF",
+      "rating": 72,
+      "age": 25
+    },
+    {
+      "id": "mf-06-highland-foxes-en",
+      "name": "Riley Cole",
+      "clubId": "highland-foxes-en",
+      "nationId": "england",
+      "position": "MF",
+      "rating": 79,
+      "age": 26
+    },
+    {
+      "id": "mf-07-highland-foxes-en",
+      "name": "Morgan Reed",
+      "clubId": "highland-foxes-en",
+      "nationId": "england",
+      "position": "MF",
+      "rating": 56,
+      "age": 27
+    },
+    {
+      "id": "mf-08-highland-foxes-en",
+      "name": "Taylor Stone",
+      "clubId": "highland-foxes-en",
+      "nationId": "england",
+      "position": "MF",
+      "rating": 63,
+      "age": 28
+    },
+    {
+      "id": "mf-09-highland-foxes-en",
+      "name": "Quinn Fox",
+      "clubId": "highland-foxes-en",
+      "nationId": "england",
+      "position": "MF",
+      "rating": 70,
+      "age": 29
+    },
+    {
+      "id": "mf-10-highland-foxes-en",
+      "name": "Avery West",
+      "clubId": "highland-foxes-en",
+      "nationId": "england",
+      "position": "MF",
+      "rating": 77,
+      "age": 30
+    },
+    {
+      "id": "fw-11-highland-foxes-en",
+      "name": "Jamie Lane",
+      "clubId": "highland-foxes-en",
+      "nationId": "england",
+      "position": "FW",
+      "rating": 84,
+      "age": 31
+    },
+    {
+      "id": "fw-12-highland-foxes-en",
+      "name": "Drew Blake",
+      "clubId": "highland-foxes-en",
+      "nationId": "england",
+      "position": "FW",
+      "rating": 61,
+      "age": 32
+    },
+    {
+      "id": "fw-13-highland-foxes-en",
+      "name": "Cameron Frost",
+      "clubId": "highland-foxes-en",
+      "nationId": "england",
+      "position": "FW",
+      "rating": 68,
+      "age": 33
+    },
+    {
+      "id": "fw-14-highland-foxes-en",
+      "name": "Reese Shaw",
+      "clubId": "highland-foxes-en",
+      "nationId": "england",
+      "position": "FW",
+      "rating": 75,
+      "age": 18
+    },
+    {
+      "id": "df-15-highland-foxes-en",
+      "name": "Parker Wells",
+      "clubId": "highland-foxes-en",
+      "nationId": "england",
+      "position": "DF",
+      "rating": 82,
+      "age": 19
+    },
+    {
+      "id": "mf-16-highland-foxes-en",
+      "name": "Hayden Grant",
+      "clubId": "highland-foxes-en",
+      "nationId": "england",
+      "position": "MF",
+      "rating": 59,
+      "age": 20
+    },
+    {
+      "id": "fw-17-highland-foxes-en",
+      "name": "Rowan Page",
+      "clubId": "highland-foxes-en",
+      "nationId": "england",
+      "position": "FW",
+      "rating": 66,
+      "age": 21
+    },
+    {
+      "id": "mf-18-highland-foxes-en",
+      "name": "Skyler Hart",
+      "clubId": "highland-foxes-en",
+      "nationId": "england",
+      "position": "MF",
+      "rating": 73,
+      "age": 22
+    },
+    {
+      "id": "df-19-highland-foxes-en",
+      "name": "Blake Cross",
+      "clubId": "highland-foxes-en",
+      "nationId": "england",
+      "position": "DF",
+      "rating": 80,
+      "age": 23
+    },
+    {
+      "id": "gk-20-highland-foxes-en",
+      "name": "Finley Duke",
+      "clubId": "highland-foxes-en",
+      "nationId": "england",
+      "position": "GK",
+      "rating": 57,
+      "age": 24
+    }
+  ]
+}

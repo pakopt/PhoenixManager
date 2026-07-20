@@ -1,0 +1,10 @@
+{
+  "version": "0.1.0",
+  "name": "Phoenix Core Alpha",
+  "packs": [
+    {
+      "id": "core",
+      "path": "core"
+    }
+  ]
+}

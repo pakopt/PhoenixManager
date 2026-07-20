@@ -14,6 +14,7 @@ import {
   advanceKnockout,
   createKnockoutCup,
   cupRoundAfterMatchday,
+  pickEntrants,
 } from '@phoenix/competition';
 import { loadWorld, type WorldDatabase } from '@phoenix/database';
 import {
@@ -240,13 +241,13 @@ export class GameSession {
     this.table = new Map(save.table.map((row) => [row.clubId, { ...row }]));
     this.lastMatchResults = save.lastResults.map((r) => ({ ...r }));
     this.managedClubId = save.managedClubId ?? DEFAULT_MANAGED_CLUB_ID;
+    const competition = this.world.competitions.get(this.competitionId);
+    if (!competition) {
+      throw new Error(`Competition not found: ${this.competitionId}`);
+    }
     this.cup =
       save.cup ??
-      createKnockoutCup({
-        competitionId: CUP_ID,
-        clubIds: [...this.world.clubs.keys()],
-        seed: this.seed,
-      });
+      this.regenerateCupForMatchday(competition.clubIds);
     this.lastHighlight = undefined;
     return this.getSnapshot();
   }
@@ -318,18 +319,64 @@ export class GameSession {
     };
     const managesTie =
       homeClubId === this.managedClubId || awayClubId === this.managedClubId;
-    const detailed = managesTie
-      ? simulateMatchDetailed({ ...matchInput, rng: rng.fork(0) })
-      : undefined;
-    let result = detailed?.result ?? simulateMatch({ ...matchInput, rng: rng.fork(0) });
-    let retry = 1;
 
-    while (result.homeGoals === result.awayGoals) {
-      result = simulateMatch({ ...matchInput, rng: rng.fork(retry) });
-      retry += 1;
+    if (managesTie) {
+      let retry = 0;
+      while (true) {
+        const detailed = simulateMatchDetailed({
+          ...matchInput,
+          rng: rng.fork(retry),
+        });
+        if (detailed.result.homeGoals !== detailed.result.awayGoals) {
+          return { result: detailed.result, detailed };
+        }
+        retry += 1;
+      }
     }
 
-    return { result, detailed: result === detailed?.result ? detailed : undefined };
+    let retry = 0;
+    while (true) {
+      const result = simulateMatch({ ...matchInput, rng: rng.fork(retry) });
+      if (result.homeGoals !== result.awayGoals) {
+        return { result };
+      }
+      retry += 1;
+    }
+  }
+
+  private regenerateCupForMatchday(clubIds: readonly Slug[]): CupState {
+    const cup = createKnockoutCup({
+      competitionId: CUP_ID,
+      clubIds,
+      seed: this.seed,
+    });
+    if (this.matchday < 5) return cup;
+
+    // Legacy saves lack prior cup outcomes, so deterministically select the
+    // remaining entrants for the round scheduled after the saved matchday.
+    const entrants = cup.ties.flatMap((tie) => [tie.homeClubId, tie.awayClubId]);
+    const remaining = pickEntrants(
+      entrants,
+      this.seed + this.matchday,
+      this.matchday < 10 ? 4 : 2,
+    );
+    const ties =
+      this.matchday < 10
+        ? [
+            { homeClubId: remaining[0]!, awayClubId: remaining[1]! },
+            { homeClubId: remaining[2]!, awayClubId: remaining[3]! },
+          ]
+        : [{ homeClubId: remaining[0]!, awayClubId: remaining[1]! }];
+
+    if (this.matchday < 10) {
+      return { competitionId: CUP_ID, round: 'sf', ties, completed: false };
+    }
+    return {
+      competitionId: CUP_ID,
+      round: 'final',
+      ties,
+      completed: this.matchday >= 15,
+    };
   }
 
   private toSnapshotHighlight(detailed: DetailedMatch): SnapshotHighlight {

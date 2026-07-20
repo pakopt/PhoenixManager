@@ -5,6 +5,7 @@ import type {
   CupState,
   Fixture,
   MatchResult,
+  Player,
   SaveMeta,
   Slug,
   TableRow,
@@ -31,9 +32,12 @@ import {
 } from '@phoenix/simulation';
 import {
   applyClubPatches,
+  applyPlayerPatches,
   bumpClubReputation,
   cloneClubs,
+  clonePlayers,
   diffClubs,
+  diffPlayers,
 } from './entity-patches.js';
 import { listMods, listSaves, readSave, writeSave, type SaveFs } from './persistence.js';
 import { buildMarket, buildSquad } from './player-lists.js';
@@ -44,6 +48,11 @@ import {
   type SnapshotHighlight,
   type SnapshotTableRow,
 } from './snapshot.js';
+import {
+  INITIAL_BALANCE,
+  pickSellDestinationClub,
+  transferFee,
+} from './transfer.js';
 
 export type StartSessionOptions = {
   databaseRoot: string;
@@ -71,6 +80,7 @@ const defaultFs: SaveFs = {
 export class GameSession {
   private world!: WorldDatabase;
   private baselineClubs!: Map<Slug, Club>;
+  private baselinePlayers!: Map<Slug, Player>;
   private fixtures: Fixture[] = [];
   private table!: Map<Slug, TableRow>;
   private matchday = 0;
@@ -80,6 +90,7 @@ export class GameSession {
   private competitionName = '';
   private lastMatchResults: MatchResult[] = [];
   private managedClubId: Slug = DEFAULT_MANAGED_CLUB_ID;
+  private balance = INITIAL_BALANCE;
   private cup!: CupState;
   private lastHighlight: SnapshotHighlight | undefined;
   private modIds: string[] = [];
@@ -105,6 +116,7 @@ export class GameSession {
       joinPath: this.fs.joinPath,
     });
     this.baselineClubs = cloneClubs(this.world.clubs);
+    this.baselinePlayers = clonePlayers(this.world.players);
 
     this.seed = options.seed;
     this.competitionId = options.competitionId ?? 'phoenix-premier-en';
@@ -120,6 +132,7 @@ export class GameSession {
     this.matchday = 0;
     this.lastMatchResults = [];
     this.managedClubId = options.managedClubId ?? DEFAULT_MANAGED_CLUB_ID;
+    this.balance = INITIAL_BALANCE;
     this.cup = createKnockoutCup({
       competitionId: CUP_ID,
       clubIds: competition.clubIds,
@@ -168,6 +181,41 @@ export class GameSession {
     return this.getSnapshot();
   }
 
+  buyPlayer(playerId: Slug): SessionSnapshot {
+    this.assertStarted();
+    const player = this.world.players.get(playerId);
+    if (!player || player.clubId === this.managedClubId) {
+      throw new Error('Jogador indisponível para compra');
+    }
+
+    const fee = transferFee(player.rating);
+    if (this.balance < fee) {
+      throw new Error('Saldo insuficiente');
+    }
+
+    this.world.players.set(playerId, { ...player, clubId: this.managedClubId });
+    this.balance -= fee;
+    return this.getSnapshot();
+  }
+
+  sellPlayer(playerId: Slug): SessionSnapshot {
+    this.assertStarted();
+    const player = this.world.players.get(playerId);
+    if (!player || player.clubId !== this.managedClubId) {
+      throw new Error('Jogador não pertence ao plantel gerido');
+    }
+
+    if (this.managedSquadSize() <= 11) {
+      throw new Error('Plantel mínimo de 11 jogadores');
+    }
+
+    const fee = transferFee(player.rating);
+    const clubId = pickSellDestinationClub(this.world.clubs, this.managedClubId);
+    this.world.players.set(playerId, { ...player, clubId });
+    this.balance += fee;
+    return this.getSnapshot();
+  }
+
   getSnapshot(): SessionSnapshot {
     this.assertStarted();
     return {
@@ -181,6 +229,7 @@ export class GameSession {
       lastResults: toSnapshotResults(this.lastMatchResults, (id) => this.clubName(id)),
       modIds: [...this.modIds],
       managedClubId: this.managedClubId,
+      balance: this.balance,
       clubs: [...this.world.clubs.values()].map((club) => ({
         id: club.id,
         name: club.name,
@@ -214,8 +263,9 @@ export class GameSession {
       lastResults: this.lastMatchResults,
       patches: {
         clubs: diffClubs(this.baselineClubs, this.world.clubs),
-        players: [],
+        players: diffPlayers(this.baselinePlayers, this.world.players),
       },
+      balance: this.balance,
       managedClubId: this.managedClubId,
       cup: this.cup,
     });
@@ -243,11 +293,13 @@ export class GameSession {
     });
 
     applyClubPatches(this.world.clubs, save.patches?.clubs ?? []);
+    applyPlayerPatches(this.world.players, save.patches?.players ?? []);
 
     this.matchday = save.matchday;
     this.table = new Map(save.table.map((row) => [row.clubId, { ...row }]));
     this.lastMatchResults = save.lastResults.map((r) => ({ ...r }));
     this.managedClubId = save.managedClubId ?? DEFAULT_MANAGED_CLUB_ID;
+    this.balance = save.balance ?? INITIAL_BALANCE;
     const competition = this.world.competitions.get(this.competitionId);
     if (!competition) {
       throw new Error(`Competition not found: ${this.competitionId}`);
@@ -279,6 +331,12 @@ export class GameSession {
 
   private clubName(id: Slug): string {
     return this.world.clubs.get(id)?.name ?? id;
+  }
+
+  private managedSquadSize(): number {
+    return [...this.world.players.values()].filter(
+      (player) => player.clubId === this.managedClubId,
+    ).length;
   }
 
   private bumpWinningReputations(results: readonly MatchResult[]): void {

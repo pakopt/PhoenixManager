@@ -9,6 +9,7 @@ import { createRng } from '@phoenix/shared';
 import { clubStrength } from '@phoenix/simulation';
 import { GameSession } from './game-session.js';
 import type { SaveFs } from './persistence.js';
+import { INITIAL_BALANCE, transferFee } from './transfer.js';
 
 const databaseRoot = fileURLToPath(new URL('../../../database', import.meta.url));
 
@@ -276,5 +277,80 @@ describe('GameSession', () => {
 
     expect(after.managedClubId).toBe(before.managedClubId);
     expect(after.cup).toEqual(before.cup);
+  });
+
+  it('buys a market player when balance allows', async () => {
+    const session = new GameSession(nodeFs);
+    const start = await session.start({
+      databaseRoot,
+      seed: 42,
+      managedClubId: 'london-fc-en',
+    });
+    const original = start.market[0]!;
+    const world = (session as unknown as { world: WorldDatabase }).world;
+    world.players.set(original.id, { ...world.players.get(original.id)!, rating: 40 });
+
+    const after = session.buyPlayer(original.id);
+
+    expect(after.balance).toBe(INITIAL_BALANCE - transferFee(40));
+    expect(after.squad.some((candidate) => candidate.id === original.id)).toBe(true);
+    expect(after.market.some((candidate) => candidate.id === original.id)).toBe(false);
+  });
+
+  it('rejects a buy when the balance is insufficient', async () => {
+    const session = new GameSession(nodeFs);
+    const start = await session.start({ databaseRoot, seed: 42 });
+    const player = start.market.find(
+      (candidate) => transferFee(candidate.rating) > INITIAL_BALANCE,
+    );
+    expect(player).toBeDefined();
+
+    expect(() => session.buyPlayer(player!.id)).toThrow('Saldo insuficiente');
+  });
+
+  it('sells when the squad is larger than 11 and credits balance', async () => {
+    const session = new GameSession(nodeFs);
+    const start = await session.start({ databaseRoot, seed: 42 });
+    expect(start.squad.length).toBeGreaterThan(11);
+    const player = start.squad[0]!;
+
+    const after = session.sellPlayer(player.id);
+
+    expect(after.balance).toBe(start.balance + transferFee(player.rating));
+    expect(after.squad.some((candidate) => candidate.id === player.id)).toBe(false);
+    expect(after.market.some((candidate) => candidate.id === player.id)).toBe(true);
+  });
+
+  it('rejects a sale when the squad has 11 players or fewer', async () => {
+    const session = new GameSession(nodeFs);
+    const start = await session.start({ databaseRoot, seed: 42 });
+    const world = (session as unknown as { world: WorldDatabase }).world;
+    const managedPlayers = [...world.players.values()].filter(
+      (player) => player.clubId === start.managedClubId,
+    );
+    for (const player of managedPlayers.slice(11)) {
+      world.players.set(player.id, { ...player, clubId: 'manchester-rovers-en' });
+    }
+
+    expect(() => session.sellPlayer(managedPlayers[0]!.id)).toThrow(
+      'Plantel mínimo de 11 jogadores',
+    );
+  });
+
+  it('persists balance and player club patches across save/load', async () => {
+    const savesRoot = await mkdtemp(join(tmpdir(), 'phoenix-saves-'));
+    const session = new GameSession(nodeFs);
+    const start = await session.start({ databaseRoot, savesRoot, seed: 42 });
+    const player = start.market[0]!;
+    const world = (session as unknown as { world: WorldDatabase }).world;
+    world.players.set(player.id, { ...world.players.get(player.id)!, rating: 40 });
+    const beforeSave = session.buyPlayer(player.id);
+
+    await session.save('transfer-test');
+
+    const loaded = new GameSession(nodeFs);
+    const afterLoad = await loaded.loadWithRoots('transfer-test', databaseRoot, savesRoot);
+    expect(afterLoad.balance).toBe(beforeSave.balance);
+    expect(afterLoad.squad.some((candidate) => candidate.id === player.id)).toBe(true);
   });
 });

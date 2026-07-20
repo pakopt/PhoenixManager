@@ -55,6 +55,7 @@ export type SessionSnapshot = {
   lastResults: SnapshotResult[];
   modIds: string[];
   managedClubId: Slug;
+  balance: number;
   clubs: SnapshotClub[];
   highlight?: SnapshotHighlight;
   cup?: SnapshotCup;

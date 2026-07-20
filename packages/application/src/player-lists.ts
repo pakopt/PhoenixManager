@@ -1,5 +1,6 @@
 import type { Club, Player, Slug } from '@phoenix/contracts';
 import type { SnapshotMarketPlayer, SnapshotPlayer } from './snapshot.js';
+import { transferFee } from './transfer.js';
 
 const POSITION_ORDER: Record<SnapshotPlayer['position'], number> = {
   GK: 0,
@@ -21,6 +22,7 @@ function toSnapshotPlayer(p: Player): SnapshotPlayer {
     position: p.position,
     rating: p.rating,
     age: p.age,
+    fee: transferFee(p.rating),
   };
 }
 

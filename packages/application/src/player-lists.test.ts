@@ -1,6 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import type { Club, Player } from '@phoenix/contracts';
 import { buildMarket, buildSquad } from './player-lists.js';
+import { transferFee } from './transfer.js';
 
 const clubs = new Map<string, Club>([
   ['london-fc-en', { id: 'london-fc-en', name: 'London FC', nationId: 'england', reputation: 80 }],
@@ -52,6 +53,11 @@ describe('buildSquad', () => {
     expect(squad.map((p) => p.id)).toEqual(['p-gk', 'p-mf-high', 'p-mf']);
     const mids = squad.filter((p) => p.position === 'MF');
     expect(mids.map((p) => p.rating)).toEqual([80, 70]);
+    expect(squad.map((p) => p.fee)).toEqual([
+      transferFee(60),
+      transferFee(80),
+      transferFee(70),
+    ]);
   });
 });
 
@@ -63,6 +69,7 @@ describe('buildMarket', () => {
       id: 'p-out',
       clubId: 'rivals-en',
       clubName: 'Rivals',
+      fee: transferFee(75),
     });
   });
 });

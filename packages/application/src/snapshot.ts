@@ -10,6 +10,7 @@ export type SnapshotPlayer = {
   position: 'GK' | 'DF' | 'MF' | 'FW';
   rating: number;
   age: number;
+  fee: number;
 };
 
 export type SnapshotMarketPlayer = SnapshotPlayer & {

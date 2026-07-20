@@ -7,7 +7,7 @@
     "build": "tsc -p tsconfig.json",
     "typecheck": "tsc -p tsconfig.json --noEmit",
     "test": "vitest run --passWithNoTests",
-    "season": "tsx src/main.ts",
+    "season": "pnpm run build && node dist/main.js",
     "lint": "eslint src"
   },
   "dependencies": {
@@ -15,7 +15,6 @@
     "@phoenix/contracts": "workspace:*"
   },
   "devDependencies": {
-    "tsx": "^4.19.2",
     "typescript": "^5.7.2",
     "vitest": "^2.1.8"
   }

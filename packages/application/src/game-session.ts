@@ -1,6 +1,6 @@
 import { mkdir, readFile, readdir, writeFile } from 'node:fs/promises';
 import { join } from 'node:path';
-import type { Fixture, MatchResult, SaveMeta, Slug, TableRow } from '@phoenix/contracts';
+import type { Club, Fixture, MatchResult, SaveMeta, Slug, TableRow } from '@phoenix/contracts';
 import { generateLeagueFixtures, totalMatchdays } from '@phoenix/calendar';
 import { loadWorld, type WorldDatabase } from '@phoenix/database';
 import {
@@ -8,6 +8,12 @@ import {
   simulateMatchday,
   sortTable,
 } from '@phoenix/simulation';
+import {
+  applyClubPatches,
+  bumpClubReputation,
+  cloneClubs,
+  diffClubs,
+} from './entity-patches.js';
 import { listMods, listSaves, readSave, writeSave, type SaveFs } from './persistence.js';
 import {
   toSnapshotResults,
@@ -35,6 +41,7 @@ const defaultFs: SaveFs = {
 
 export class GameSession {
   private world!: WorldDatabase;
+  private baselineClubs!: Map<Slug, Club>;
   private fixtures: Fixture[] = [];
   private table!: Map<Slug, TableRow>;
   private matchday = 0;
@@ -65,6 +72,7 @@ export class GameSession {
       readDir: this.fs.readdir,
       joinPath: this.fs.joinPath,
     });
+    this.baselineClubs = cloneClubs(this.world.clubs);
 
     this.seed = options.seed;
     this.competitionId = options.competitionId ?? 'phoenix-premier-en';
@@ -99,6 +107,14 @@ export class GameSession {
       table: this.table,
     });
 
+    for (const result of results) {
+      if (result.homeGoals > result.awayGoals) {
+        bumpClubReputation(this.world.clubs, result.homeClubId, 1);
+      } else if (result.awayGoals > result.homeGoals) {
+        bumpClubReputation(this.world.clubs, result.awayClubId, 1);
+      }
+    }
+
     this.matchday = next;
     this.lastMatchResults = results;
     return this.getSnapshot();
@@ -125,7 +141,7 @@ export class GameSession {
       throw new Error('savesRoot not configured');
     }
     return writeSave(this.fs, this.savesRoot, {
-      version: 1,
+      version: 2,
       savedAt: Date.now(),
       slotId,
       label: label ?? slotId,
@@ -135,6 +151,10 @@ export class GameSession {
       matchday: this.matchday,
       table: [...this.table.values()],
       lastResults: this.lastMatchResults,
+      patches: {
+        clubs: diffClubs(this.baselineClubs, this.world.clubs),
+        players: [],
+      },
     });
   }
 
@@ -159,6 +179,8 @@ export class GameSession {
       competitionId: save.competitionId,
     });
 
+    applyClubPatches(this.world.clubs, save.patches?.clubs ?? []);
+
     this.matchday = save.matchday;
     this.table = new Map(save.table.map((row) => [row.clubId, { ...row }]));
     this.lastMatchResults = save.lastResults.map((r) => ({ ...r }));
@@ -179,6 +201,7 @@ export class GameSession {
     return rows.map((row) => ({
       ...row,
       clubName: this.clubName(row.clubId),
+      reputation: this.world.clubs.get(row.clubId)?.reputation ?? 50,
     }));
   }
 

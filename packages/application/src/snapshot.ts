@@ -1,6 +1,6 @@
 import type { MatchResult, Slug, TableRow } from '@phoenix/contracts';
 
-export type SnapshotTableRow = TableRow & { clubName: string };
+export type SnapshotTableRow = TableRow & { clubName: string; reputation: number };
 
 export type SnapshotResult = {
   homeClubId: Slug;

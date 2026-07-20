@@ -68,4 +68,33 @@ describe('GameSession', () => {
     const mods = await session.listMods();
     expect(mods.some((m) => m.id === 'rename-pack')).toBe(true);
   });
+
+  it('persists club reputation patches across save/load', async () => {
+    const savesRoot = await mkdtemp(join(tmpdir(), 'phoenix-saves-'));
+    const session = new GameSession(nodeFs);
+    await session.start({ databaseRoot, savesRoot, seed: 42 });
+    const beforeRep = new Map(
+      session.getSnapshot().table.map((r) => [r.clubId, r.reputation]),
+    );
+    session.advanceDay();
+    session.advanceDay();
+    const mid = session.getSnapshot();
+    const changed = mid.table.some(
+      (r) => (beforeRep.get(r.clubId) ?? 0) !== r.reputation,
+    );
+    expect(changed).toBe(true);
+
+    await session.save('patch-test', 'Patch Test');
+    const loaded = new GameSession(nodeFs);
+    const after = await loaded.loadWithRoots('patch-test', databaseRoot, savesRoot);
+    expect(
+      after.table.map((r) => ({ id: r.clubId, rep: r.reputation })).sort((a, b) =>
+        a.id.localeCompare(b.id),
+      ),
+    ).toEqual(
+      mid.table
+        .map((r) => ({ id: r.clubId, rep: r.reputation }))
+        .sort((a, b) => a.id.localeCompare(b.id)),
+    );
+  });
 });

@@ -189,6 +189,7 @@ export default function App() {
               <tr>
                 <th className="px-3 py-2 font-medium">#</th>
                 <th className="px-3 py-2 font-medium">Clube</th>
+                <th className="px-3 py-2 font-medium">Rep</th>
                 <th className="px-3 py-2 font-medium">J</th>
                 <th className="px-3 py-2 font-medium">V</th>
                 <th className="px-3 py-2 font-medium">E</th>
@@ -203,6 +204,7 @@ export default function App() {
                 <tr key={row.clubId} className="border-t border-[var(--border)]/70">
                   <td className="px-3 py-2 tabular-nums text-[var(--muted)]">{i + 1}</td>
                   <td className="px-3 py-2 font-medium">{row.clubName}</td>
+                  <td className="px-3 py-2 tabular-nums text-[var(--muted)]">{row.reputation}</td>
                   <td className="px-3 py-2 tabular-nums">{row.played}</td>
                   <td className="px-3 py-2 tabular-nums">{row.won}</td>
                   <td className="px-3 py-2 tabular-nums">{row.drawn}</td>

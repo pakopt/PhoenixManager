@@ -91,7 +91,7 @@ export const seasonReportSchema = z.object({
 
 export type SeasonReport = z.infer<typeof seasonReportSchema>;
 
-/** Stub shape for future entity-level patches (post Marco 3). */
+/** Entity-level patch: only changed fields vs baseline (core+mods). */
 export const entityPatchSchema = z.object({
   id: slugSchema,
   changes: z.record(z.unknown()),
@@ -99,9 +99,16 @@ export const entityPatchSchema = z.object({
 
 export type EntityPatch = z.infer<typeof entityPatchSchema>;
 
-/** Marco 3 career save: runtime deltas over core + mods. */
+export const savePatchesSchema = z.object({
+  clubs: z.array(entityPatchSchema).default([]),
+  players: z.array(entityPatchSchema).default([]),
+});
+
+export type SavePatches = z.infer<typeof savePatchesSchema>;
+
+/** Career save: runtime deltas + optional entity patches (v2). */
 export const saveGameSchema = z.object({
-  version: z.literal(1),
+  version: z.union([z.literal(1), z.literal(2)]),
   savedAt: z.number().int().nonnegative(),
   slotId: slugSchema,
   label: z.string().min(1),
@@ -111,6 +118,7 @@ export const saveGameSchema = z.object({
   matchday: z.number().int().min(0),
   table: z.array(tableRowSchema),
   lastResults: z.array(matchResultSchema),
+  patches: savePatchesSchema.optional(),
 });
 
 export type SaveGame = z.infer<typeof saveGameSchema>;

@@ -9,6 +9,10 @@ function cupRoundLabel(round: 'qf' | 'sf' | 'final'): string {
       return 'Meias-finais';
     case 'final':
       return 'Final';
+    default: {
+      const exhaustive: never = round;
+      return exhaustive;
+    }
   }
 }
 

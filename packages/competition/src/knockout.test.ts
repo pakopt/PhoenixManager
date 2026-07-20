@@ -50,4 +50,26 @@ describe('knockout', () => {
     expect(next.round).toBe('sf');
     expect(next.ties).toHaveLength(2);
   });
+
+  it('advanceKnockout completes the final', () => {
+    const final = {
+      competitionId: 'phoenix-cup-en',
+      round: 'final' as const,
+      ties: [{ homeClubId: 'c1', awayClubId: 'c2' }],
+      completed: false,
+    };
+    const completed = advanceKnockout(final, [
+      { homeClubId: 'c1', awayClubId: 'c2', homeGoals: 2, awayGoals: 1 },
+    ]);
+    const [completedTie] = completed.ties;
+
+    expect(completed.completed).toBe(true);
+    expect(completed.round).toBe('final');
+    expect(completedTie?.result).toEqual({
+      homeClubId: 'c1',
+      awayClubId: 'c2',
+      homeGoals: 2,
+      awayGoals: 1,
+    });
+  });
 });

@@ -22,6 +22,7 @@ export type DetailedMatch = {
 };
 
 function lambdas(homeStrength: number, awayStrength: number): { home: number; away: number } {
+  // Keep these expected-goal formulas in sync with layer3's statistical model.
   const homeAttack = homeStrength / 70;
   const awayAttack = awayStrength / 70;
   return {

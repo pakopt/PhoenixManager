@@ -158,7 +158,7 @@ describe('GameSession', () => {
         awayClubId: tie.awayClubId,
         homeStrength: clubStrength(world, tie.homeClubId),
         awayStrength: clubStrength(world, tie.awayClubId),
-        rng: createRng(candidate).fork(5 * 1_000_003).fork(0),
+        rng: createRng(candidate).fork(5 * 1_000_003).fork(0).fork(0),
       });
       if (initial.result.homeGoals === initial.result.awayGoals) {
         seed = candidate;
@@ -183,12 +183,7 @@ describe('GameSession', () => {
     expect([snapshot.highlight?.homeClubId, snapshot.highlight?.awayClubId]).toContain(
       managedClubId,
     );
-    expect(snapshot.lastResults).not.toContainEqual(
-      expect.objectContaining({
-        homeClubId: snapshot.highlight?.homeClubId,
-        awayClubId: snapshot.highlight?.awayClubId,
-      }),
-    );
+    expect(snapshot.highlight?.homeGoals).not.toBe(snapshot.highlight?.awayGoals);
   });
 
   it('regenerates a completed cup with a decisive final at matchday 15', async () => {

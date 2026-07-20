@@ -29,6 +29,8 @@ export default function App() {
     selectedManagedClubId,
     start,
     advanceDay,
+    buyPlayer,
+    sellPlayer,
     save,
     load,
     refreshLists,
@@ -81,6 +83,7 @@ export default function App() {
             {snapshot.modIds.length > 0 ? ` · mods: ${snapshot.modIds.join(', ')}` : ''}
             {snapshot.finished ? ' · Época terminada' : ''}
           </p>
+          <p className="mt-1 font-medium tabular-nums">Caixa: €{snapshot.balance.toLocaleString('pt-PT')}</p>
         </div>
         <div className="flex flex-wrap gap-2">
           <button
@@ -300,19 +303,23 @@ export default function App() {
             Plantel
           </h2>
           <div className="overflow-x-auto">
-            <table className="w-full min-w-[320px] text-left text-sm">
+            <table className="w-full min-w-[440px] text-left text-sm">
               <thead className="bg-black/25 text-[var(--muted)]">
                 <tr>
                   <th className="px-3 py-2 font-medium">Nome</th>
                   <th className="px-3 py-2 font-medium">Pos</th>
                   <th className="px-3 py-2 font-medium">Rating</th>
                   <th className="px-3 py-2 font-medium">Idade</th>
+                  <th className="px-3 py-2 font-medium">Fee</th>
+                  <th className="px-3 py-2 font-medium">
+                    <span className="sr-only">Ação</span>
+                  </th>
                 </tr>
               </thead>
               <tbody>
                 {snapshot.squad.length === 0 ? (
                   <tr>
-                    <td colSpan={4} className="px-3 py-4 text-[var(--muted)]">
+                    <td colSpan={6} className="px-3 py-4 text-[var(--muted)]">
                       Sem jogadores no plantel.
                     </td>
                   </tr>
@@ -323,6 +330,19 @@ export default function App() {
                       <td className="px-3 py-2 tabular-nums">{player.position}</td>
                       <td className="px-3 py-2 tabular-nums">{player.rating}</td>
                       <td className="px-3 py-2 tabular-nums">{player.age}</td>
+                      <td className="px-3 py-2 tabular-nums">
+                        €{player.fee.toLocaleString('pt-PT')}
+                      </td>
+                      <td className="px-3 py-2">
+                        <button
+                          type="button"
+                          disabled={busy || snapshot.squad.length <= 11}
+                          className="rounded border border-[var(--border)] px-2 py-1 text-xs hover:bg-[#243040] disabled:opacity-50"
+                          onClick={() => void sellPlayer(player.id)}
+                        >
+                          Vender
+                        </button>
+                      </td>
                     </tr>
                   ))
                 )}
@@ -354,7 +374,7 @@ export default function App() {
             </label>
           </div>
           <div className="overflow-x-auto">
-            <table className="w-full min-w-[480px] text-left text-sm">
+            <table className="w-full min-w-[600px] text-left text-sm">
               <thead className="bg-black/25 text-[var(--muted)]">
                 <tr>
                   <th className="px-3 py-2 font-medium">Nome</th>
@@ -362,12 +382,16 @@ export default function App() {
                   <th className="px-3 py-2 font-medium">Pos</th>
                   <th className="px-3 py-2 font-medium">Rating</th>
                   <th className="px-3 py-2 font-medium">Idade</th>
+                  <th className="px-3 py-2 font-medium">Fee</th>
+                  <th className="px-3 py-2 font-medium">
+                    <span className="sr-only">Ação</span>
+                  </th>
                 </tr>
               </thead>
               <tbody>
                 {filteredMarket.length === 0 ? (
                   <tr>
-                    <td colSpan={5} className="px-3 py-4 text-[var(--muted)]">
+                    <td colSpan={7} className="px-3 py-4 text-[var(--muted)]">
                       Sem jogadores disponíveis para este filtro.
                     </td>
                   </tr>
@@ -379,6 +403,19 @@ export default function App() {
                       <td className="px-3 py-2 tabular-nums">{player.position}</td>
                       <td className="px-3 py-2 tabular-nums">{player.rating}</td>
                       <td className="px-3 py-2 tabular-nums">{player.age}</td>
+                      <td className="px-3 py-2 tabular-nums">
+                        €{player.fee.toLocaleString('pt-PT')}
+                      </td>
+                      <td className="px-3 py-2">
+                        <button
+                          type="button"
+                          disabled={busy || player.fee > snapshot.balance}
+                          className="rounded bg-[var(--accent)] px-2 py-1 text-xs font-medium text-[var(--accent-fg)] disabled:opacity-50"
+                          onClick={() => void buyPlayer(player.id)}
+                        >
+                          Comprar
+                        </button>
+                      </td>
                     </tr>
                   ))
                 )}

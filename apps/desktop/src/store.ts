@@ -16,6 +16,8 @@ type SessionStore = {
     managedClubId?: string,
   ) => Promise<void>;
   advanceDay: () => Promise<void>;
+  buyPlayer: (playerId: string) => Promise<void>;
+  sellPlayer: (playerId: string) => Promise<void>;
   save: (label?: string) => Promise<void>;
   load: (slotId: string) => Promise<void>;
   refreshLists: () => Promise<void>;
@@ -94,6 +96,34 @@ export const useSessionStore = create<SessionStore>((set, get) => ({
       set({
         busy: false,
         error: err instanceof Error ? err.message : 'Failed to advance',
+      });
+    }
+  },
+
+  buyPlayer: async (playerId) => {
+    if (get().busy) return;
+    set({ busy: true, error: null });
+    try {
+      const snapshot = await window.phoenix.session.buyPlayer(playerId);
+      set({ snapshot, busy: false });
+    } catch (err) {
+      set({
+        busy: false,
+        error: err instanceof Error ? err.message : 'Failed to buy player',
+      });
+    }
+  },
+
+  sellPlayer: async (playerId) => {
+    if (get().busy) return;
+    set({ busy: true, error: null });
+    try {
+      const snapshot = await window.phoenix.session.sellPlayer(playerId);
+      set({ snapshot, busy: false });
+    } catch (err) {
+      set({
+        busy: false,
+        error: err instanceof Error ? err.message : 'Failed to sell player',
       });
     }
   },

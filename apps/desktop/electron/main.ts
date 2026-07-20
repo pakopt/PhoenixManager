@@ -70,6 +70,12 @@ app.whenReady().then(() => {
   );
 
   ipcMain.handle('session:advanceDay', () => session.advanceDay());
+  ipcMain.handle('session:buyPlayer', (_evt, playerId: string) => {
+    return session.buyPlayer(playerId as Slug);
+  });
+  ipcMain.handle('session:sellPlayer', (_evt, playerId: string) => {
+    return session.sellPlayer(playerId as Slug);
+  });
   ipcMain.handle('session:getSnapshot', () => session.getSnapshot());
   ipcMain.handle('session:save', async (_evt, slotId: string, label?: string) => {
     return session.save(slotId as Slug, label);

@@ -13,6 +13,10 @@ const phoenix = {
     start: (opts: StartOpts): Promise<SessionSnapshot> =>
       ipcRenderer.invoke('session:start', opts),
     advanceDay: (): Promise<SessionSnapshot> => ipcRenderer.invoke('session:advanceDay'),
+    buyPlayer: (playerId: string): Promise<SessionSnapshot> =>
+      ipcRenderer.invoke('session:buyPlayer', playerId),
+    sellPlayer: (playerId: string): Promise<SessionSnapshot> =>
+      ipcRenderer.invoke('session:sellPlayer', playerId),
     getSnapshot: (): Promise<SessionSnapshot> => ipcRenderer.invoke('session:getSnapshot'),
     save: (slotId: string, label?: string): Promise<SaveMeta> =>
       ipcRenderer.invoke('session:save', slotId, label),

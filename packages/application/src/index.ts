@@ -16,6 +16,21 @@ export { buildMarket, buildSquad } from './player-lists.js';
 export { listMods, listSaves, readSave, writeSave } from './persistence.js';
 export type { SaveFs } from './persistence.js';
 export {
+  createMod,
+  loadEditorWorld,
+  removeModClub,
+  removeModPlayer,
+  updateModManifest,
+  upsertModClub,
+  upsertModPlayer,
+} from './mod-editor.js';
+export type {
+  EditorClub,
+  EditorPlayer,
+  EditorSource,
+  EditorWorld,
+} from './mod-editor.js';
+export {
   applyClubPatches,
   applyPlayerPatches,
   bumpClubReputation,

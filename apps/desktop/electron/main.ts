@@ -1,8 +1,20 @@
 import { app, BrowserWindow, ipcMain } from 'electron';
 import { mkdir, readFile, readdir, writeFile } from 'node:fs/promises';
 import { join } from 'node:path';
-import { GameSession, listMods, listSaves, type SaveFs } from '@phoenix/application';
-import type { Slug } from '@phoenix/contracts';
+import {
+  createMod,
+  GameSession,
+  listMods,
+  listSaves,
+  loadEditorWorld,
+  removeModClub,
+  removeModPlayer,
+  updateModManifest,
+  upsertModClub,
+  upsertModPlayer,
+  type SaveFs,
+} from '@phoenix/application';
+import type { Club, Player, Slug } from '@phoenix/contracts';
 
 let mainWindow: BrowserWindow | null = null;
 const session = new GameSession();
@@ -110,6 +122,30 @@ app.whenReady().then(() => {
   });
   ipcMain.handle('session:listSaves', async () => listSaves(nodeFs, savesRoot()));
   ipcMain.handle('session:listMods', async () => listMods(nodeFs, databaseRoot()));
+
+  ipcMain.handle('modEditor:create', (_evt, input: { id: string; name: string }) =>
+    createMod(nodeFs, databaseRoot(), input),
+  );
+  ipcMain.handle('modEditor:loadWorld', (_evt, modId: string) =>
+    loadEditorWorld(nodeFs, databaseRoot(), modId),
+  );
+  ipcMain.handle('modEditor:upsertClub', (_evt, modId: string, club: Club) =>
+    upsertModClub(nodeFs, databaseRoot(), modId, club),
+  );
+  ipcMain.handle('modEditor:upsertPlayer', (_evt, modId: string, player: Player) =>
+    upsertModPlayer(nodeFs, databaseRoot(), modId, player),
+  );
+  ipcMain.handle('modEditor:removeClub', (_evt, modId: string, clubId: string) =>
+    removeModClub(nodeFs, databaseRoot(), modId, clubId as Slug),
+  );
+  ipcMain.handle('modEditor:removePlayer', (_evt, modId: string, playerId: string) =>
+    removeModPlayer(nodeFs, databaseRoot(), modId, playerId as Slug),
+  );
+  ipcMain.handle(
+    'modEditor:updateManifest',
+    (_evt, modId: string, patch: { name: string; version?: string }) =>
+      updateModManifest(nodeFs, databaseRoot(), modId, patch),
+  );
 
   createWindow();
 

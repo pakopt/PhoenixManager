@@ -1,5 +1,5 @@
-import type { ProposeResult, SessionSnapshot } from '@phoenix/application';
-import type { ModInfo, SaveMeta } from '@phoenix/contracts';
+import type { EditorWorld, ProposeResult, SessionSnapshot } from '@phoenix/application';
+import type { Club, ModInfo, Player, SaveMeta } from '@phoenix/contracts';
 import { create } from 'zustand';
 
 type SessionStore = {
@@ -12,6 +12,10 @@ type SessionStore = {
   mods: ModInfo[];
   selectedMods: string[];
   selectedManagedClubId: string | undefined;
+  editingModId: string | null;
+  editorWorld: EditorWorld | null;
+  editorTab: 'clubs' | 'players';
+  editorError: string | null;
   start: (
     seed?: number,
     modIds?: string[],
@@ -33,6 +37,15 @@ type SessionStore = {
   load: (slotId: string) => Promise<void>;
   refreshLists: () => Promise<void>;
   toggleMod: (id: string) => void;
+  openEditor: (modId: string) => Promise<void>;
+  closeEditor: () => void;
+  createModPack: (input: { id: string; name: string }) => Promise<void>;
+  saveClub: (club: Club) => Promise<void>;
+  savePlayer: (player: Player) => Promise<void>;
+  removeClub: (clubId: string) => Promise<void>;
+  removePlayer: (playerId: string) => Promise<void>;
+  refreshEditor: () => Promise<void>;
+  setEditorTab: (tab: 'clubs' | 'players') => void;
 };
 
 function slugifyLabel(label: string): string {
@@ -61,6 +74,8 @@ function offerMessage(result: ProposeResult): string {
   }
 }
 
+let editorRequestGeneration = 0;
+
 export const useSessionStore = create<SessionStore>((set, get) => ({
   snapshot: null,
   busy: false,
@@ -71,6 +86,10 @@ export const useSessionStore = create<SessionStore>((set, get) => ({
   mods: [],
   selectedMods: [],
   selectedManagedClubId: undefined,
+  editingModId: null,
+  editorWorld: null,
+  editorTab: 'clubs',
+  editorError: null,
 
   refreshLists: async () => {
     try {
@@ -92,6 +111,167 @@ export const useSessionStore = create<SessionStore>((set, get) => ({
         : [...selected, id],
     });
   },
+
+  openEditor: async (modId) => {
+    editorRequestGeneration += 1;
+    set({ editingModId: modId, editorWorld: null, editorError: null, editorTab: 'clubs' });
+    try {
+      const editorWorld = await window.phoenix.modEditor.loadWorld(modId);
+      if (get().editingModId === modId) {
+        set({ editorWorld });
+      }
+    } catch (err) {
+      if (get().editingModId === modId) {
+        set({
+          editorError: err instanceof Error ? err.message : 'Falha ao abrir editor',
+        });
+      }
+    }
+  },
+
+  closeEditor: () => {
+    editorRequestGeneration += 1;
+    set({ editingModId: null, editorWorld: null, editorError: null });
+  },
+
+  createModPack: async (input) => {
+    if (get().busy) return;
+    const requestGeneration = ++editorRequestGeneration;
+    const editingModIdAtStart = get().editingModId;
+    set({ busy: true, editorError: null });
+    try {
+      const mod = await window.phoenix.modEditor.create(input);
+      const editorWorld = await window.phoenix.modEditor.loadWorld(mod.id);
+      if (editorRequestGeneration === requestGeneration) {
+        set({
+          editingModId: mod.id,
+          editorWorld,
+          editorError: null,
+          editorTab: 'clubs',
+        });
+      }
+      await get().refreshLists();
+    } catch (err) {
+      const message = err instanceof Error ? err.message : 'Falha ao criar mod';
+      if (
+        editorRequestGeneration === requestGeneration
+        && get().editingModId === editingModIdAtStart
+      ) {
+        set({
+          editorError: message,
+          error: message,
+        });
+      }
+    } finally {
+      if (editorRequestGeneration === requestGeneration) {
+        set({ busy: false });
+      }
+    }
+  },
+
+  saveClub: async (club) => {
+    const modId = get().editingModId;
+    if (!modId || get().busy) return;
+    set({ busy: true, editorError: null });
+    try {
+      const editorWorld = await window.phoenix.modEditor.upsertClub(modId, club);
+      if (get().editingModId === modId) {
+        set({ editorWorld });
+      }
+      await get().refreshLists();
+    } catch (err) {
+      if (get().editingModId === modId) {
+        set({
+          editorError: err instanceof Error ? err.message : 'Falha ao guardar clube',
+        });
+      }
+    } finally {
+      set({ busy: false });
+    }
+  },
+
+  savePlayer: async (player) => {
+    const modId = get().editingModId;
+    if (!modId || get().busy) return;
+    set({ busy: true, editorError: null });
+    try {
+      const editorWorld = await window.phoenix.modEditor.upsertPlayer(modId, player);
+      if (get().editingModId === modId) {
+        set({ editorWorld });
+      }
+      await get().refreshLists();
+    } catch (err) {
+      if (get().editingModId === modId) {
+        set({
+          editorError: err instanceof Error ? err.message : 'Falha ao guardar jogador',
+        });
+      }
+    } finally {
+      set({ busy: false });
+    }
+  },
+
+  removeClub: async (clubId) => {
+    const modId = get().editingModId;
+    if (!modId || get().busy) return;
+    set({ busy: true, editorError: null });
+    try {
+      const editorWorld = await window.phoenix.modEditor.removeClub(modId, clubId);
+      if (get().editingModId === modId) {
+        set({ editorWorld });
+      }
+      await get().refreshLists();
+    } catch (err) {
+      if (get().editingModId === modId) {
+        set({
+          editorError: err instanceof Error ? err.message : 'Falha ao remover clube',
+        });
+      }
+    } finally {
+      set({ busy: false });
+    }
+  },
+
+  removePlayer: async (playerId) => {
+    const modId = get().editingModId;
+    if (!modId || get().busy) return;
+    set({ busy: true, editorError: null });
+    try {
+      const editorWorld = await window.phoenix.modEditor.removePlayer(modId, playerId);
+      if (get().editingModId === modId) {
+        set({ editorWorld });
+      }
+      await get().refreshLists();
+    } catch (err) {
+      if (get().editingModId === modId) {
+        set({
+          editorError: err instanceof Error ? err.message : 'Falha ao remover jogador',
+        });
+      }
+    } finally {
+      set({ busy: false });
+    }
+  },
+
+  refreshEditor: async () => {
+    const modId = get().editingModId;
+    if (!modId) return;
+    set({ editorError: null });
+    try {
+      const editorWorld = await window.phoenix.modEditor.loadWorld(modId);
+      if (get().editingModId === modId) {
+        set({ editorWorld });
+      }
+    } catch (err) {
+      if (get().editingModId === modId) {
+        set({
+          editorError: err instanceof Error ? err.message : 'Falha ao atualizar editor',
+        });
+      }
+    }
+  },
+
+  setEditorTab: (editorTab) => set({ editorTab }),
 
   start: async (seed = 42, modIds, managedClubId) => {
     set({ busy: true, error: null });

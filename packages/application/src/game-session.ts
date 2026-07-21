@@ -183,10 +183,10 @@ export class GameSession {
 
   advanceDay(): SessionSnapshot {
     this.assertStarted();
-    this.pendingOffers = [];
     if (this.matchday >= this.totalMatchdays) {
       return this.getSnapshot();
     }
+    this.pendingOffers = [];
 
     const next = this.matchday + 1;
     const { results, highlight: leagueHighlight } = simulateMatchday({

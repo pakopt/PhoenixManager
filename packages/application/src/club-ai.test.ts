@@ -53,12 +53,56 @@ describe('decideNpcResponse', () => {
     ).toBe('counter');
   });
 
-  it('rejects below 0.85', () => {
+  it('rejects a player buy below 0.85', () => {
+    const fair = transferFee(50);
+    expect(
+      decideNpcResponse({
+        kind: 'player_buy',
+        amount: fair * 0.8,
+        fair,
+        sellerSquadSize: 15,
+      }),
+    ).toBe('reject');
+  });
+
+  it('accepts a player sell at or below fair', () => {
     const fair = transferFee(50);
     expect(
       decideNpcResponse({
         kind: 'player_sell',
+        amount: fair,
+        fair,
+        sellerSquadSize: 15,
+      }),
+    ).toBe('accept');
+    expect(
+      decideNpcResponse({
+        kind: 'player_sell',
         amount: fair * 0.8,
+        fair,
+        sellerSquadSize: 15,
+      }),
+    ).toBe('accept');
+  });
+
+  it('counters a player sell above fair through 1.15', () => {
+    const fair = transferFee(50);
+    expect(
+      decideNpcResponse({
+        kind: 'player_sell',
+        amount: fair * 1.15,
+        fair,
+        sellerSquadSize: 15,
+      }),
+    ).toBe('counter');
+  });
+
+  it('rejects a player sell above 1.15', () => {
+    const fair = transferFee(50);
+    expect(
+      decideNpcResponse({
+        kind: 'player_sell',
+        amount: fair * 1.16,
         fair,
         sellerSquadSize: 15,
       }),
@@ -89,9 +133,14 @@ describe('counterAmountFor', () => {
 });
 
 describe('decideNpcReplyToPlayerCounter', () => {
-  it('accepts counter-band as accept (no second counter)', () => {
+  it('accepts sell-side counter band without a second counter', () => {
     const fair = 1_000_000;
-    expect(decideNpcReplyToPlayerCounter({ amount: fair * 0.9, fair })).toBe('accept');
+    expect(decideNpcReplyToPlayerCounter({ amount: fair * 1.15, fair })).toBe('accept');
+  });
+
+  it('rejects a sell-side counter above 1.15', () => {
+    const fair = 1_000_000;
+    expect(decideNpcReplyToPlayerCounter({ amount: fair * 1.16, fair })).toBe('reject');
   });
 });
 

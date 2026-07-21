@@ -12,6 +12,13 @@ export function decideNpcResponse(args: {
 }): AiDecision {
   if (args.kind === 'player_buy' && args.sellerSquadSize <= 11) return 'reject';
   const ratio = args.amount / args.fair;
+
+  if (args.kind === 'player_sell') {
+    if (ratio <= 1) return 'accept';
+    if (ratio <= 1.15) return 'counter';
+    return 'reject';
+  }
+
   if (ratio >= 1) return 'accept';
   if (ratio >= 0.85) return 'counter';
   return 'reject';

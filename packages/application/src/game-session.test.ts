@@ -381,6 +381,21 @@ describe('GameSession', () => {
     expect(advanced.pendingOffers.length).toBeLessThanOrEqual(2);
   });
 
+  it('advanceDay preserves pending offers when the season is already finished', async () => {
+    const session = new GameSession(nodeFs);
+    const start = await session.start({ databaseRoot, seed: 42 });
+    const player = start.market[0]!;
+    const world = (session as unknown as { world: WorldDatabase }).world;
+    world.players.set(player.id, { ...world.players.get(player.id)!, rating: 40 });
+    const proposed = session.proposeBuy(player.id, transferFee(40) * 0.9);
+    (session as unknown as { matchday: number }).matchday = start.totalMatchdays;
+
+    const finished = session.advanceDay();
+
+    expect(finished.pendingOffers).toHaveLength(1);
+    expect(finished.pendingOffers[0]?.id).toBe(proposed.offerId);
+  });
+
   it('accepts an npc_bid, credits balance, and moves the player', async () => {
     const session = new GameSession(nodeFs);
     const start = await session.start({ databaseRoot, seed: 42 });
@@ -463,6 +478,33 @@ describe('GameSession', () => {
     expect(after.balance).toBe(start.balance + transferFee(player.rating));
     expect(after.squad.some((candidate) => candidate.id === player.id)).toBe(false);
     expect(after.market.some((candidate) => candidate.id === player.id)).toBe(true);
+  });
+
+  it('counters a sale ask up to 1.15 at fair value', async () => {
+    const session = new GameSession(nodeFs);
+    const start = await session.start({ databaseRoot, seed: 42 });
+    const player = start.squad[0]!;
+    const fair = transferFee(player.rating);
+
+    const result = session.proposeSell(player.id, fair * 1.15);
+
+    expect(result.outcome).toBe('countered');
+    expect(result.counterAmount).toBe(fair);
+    expect(result.snapshot.balance).toBe(start.balance);
+    expect(result.snapshot.squad.some((candidate) => candidate.id === player.id)).toBe(true);
+  });
+
+  it('rejects a sale ask above 1.15 without crediting balance', async () => {
+    const session = new GameSession(nodeFs);
+    const start = await session.start({ databaseRoot, seed: 42 });
+    const player = start.squad[0]!;
+    const fair = transferFee(player.rating);
+
+    const result = session.proposeSell(player.id, fair * 1.16);
+
+    expect(result.outcome).toBe('rejected');
+    expect(result.snapshot.balance).toBe(start.balance);
+    expect(result.snapshot.squad.some((candidate) => candidate.id === player.id)).toBe(true);
   });
 
   it('rejects a sale when the squad has 11 players or fewer', async () => {

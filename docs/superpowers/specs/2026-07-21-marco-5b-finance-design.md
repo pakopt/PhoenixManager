@@ -35,7 +35,7 @@ Save: balance + ledger[] (+ existing patches)
 - Pure helpers: `playerWage`, `squadWages`, `gateReceipt`, helpers to build ledger entries.
 - `GameSession` owns `private ledger: LedgerEntry[]` (append-only).
 - Buy/sell already mutate `balance`; also append `transfer_out` / `transfer_in`.
-- Snapshot exposes `balance`, `ledger`, and derived season totals (or UI derives from ledger).
+- Snapshot exposes `balance` + `ledger`. Season totals (Receitas / Despesas / Resultado) are derived in the UI from the ledger.
 
 ## Ledger entry
 
@@ -66,19 +66,30 @@ gateReceipt(reputation) = reputation * 10_000
 
 advanceDay (after simulating matchday `next`):
   append wages: amount = -squadWages(...), matchday = next
-  if managed is home in any league fixture for `next`
-     OR home in any cup tie simulated on `next`:
-    append gate: amount = +gateReceipt(managedClub.reputation), matchday = next
-  // balance may go negative
+  homeThisDay =
+    managed is homeClubId in any league fixture for `next`
+    OR managed is homeClubId in any cup tie simulated on this advanceDay
+  if homeThisDay:
+    append at most one gate entry:
+      amount = +gateReceipt(managedClub.reputation), matchday = next
+  // balance may go negative; at most one wages + one gate per matchday
 
 buyPlayer (existing + ledger):
   if balance < fee → throw "Saldo insuficiente"
   balance -= fee
-  append transfer_out { amount: -fee, note: player.name, matchday: current }
+  append transfer_out {
+    amount: -fee,
+    note: player.name,
+    matchday: current matchday (0 before any advance)
+  }
 
 sellPlayer (existing + ledger):
   balance += fee
-  append transfer_in { amount: +fee, note: player.name, matchday: current }
+  append transfer_in {
+    amount: +fee,
+    note: player.name,
+    matchday: current matchday (0 before any advance)
+  }
 ```
 
 ## Save v2 (additive)

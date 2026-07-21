@@ -142,6 +142,32 @@ export const ledgerEntrySchema = z.object({
 
 export type LedgerEntry = z.infer<typeof ledgerEntrySchema>;
 
+export const offerKindSchema = z.union([
+  z.literal('player_buy'),
+  z.literal('player_sell'),
+  z.literal('npc_bid'),
+]);
+export type OfferKind = z.infer<typeof offerKindSchema>;
+
+export const offerStatusSchema = z.union([
+  z.literal('pending'),
+  z.literal('countered'),
+]);
+export type OfferStatus = z.infer<typeof offerStatusSchema>;
+
+export const pendingOfferSchema = z.object({
+  id: z.string().min(1),
+  kind: offerKindSchema,
+  playerId: slugSchema,
+  fromClubId: slugSchema,
+  toClubId: slugSchema,
+  amount: z.number().finite(),
+  status: offerStatusSchema,
+  counterAmount: z.number().finite().optional(),
+  createdMatchday: z.number().int().min(0),
+});
+export type PendingOffer = z.infer<typeof pendingOfferSchema>;
+
 /** Career save: runtime deltas + optional entity patches (v2). */
 export const saveGameSchema = z.object({
   version: z.union([z.literal(1), z.literal(2)]),
@@ -159,6 +185,7 @@ export const saveGameSchema = z.object({
   managedClubId: slugSchema.optional(),
   cup: cupStateSchema.optional(),
   ledger: z.array(ledgerEntrySchema).optional(),
+  pendingOffers: z.array(pendingOfferSchema).optional(),
 });
 
 export type SaveGame = z.infer<typeof saveGameSchema>;

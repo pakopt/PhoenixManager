@@ -1,10 +1,10 @@
 # Plano — Project Phoenix Manager
 
-**Versão:** TS Marco 5c  
+**Versão:** TS Marco 5d  
 **Actualizado:** 21 de Julho de 2026  
-**Fase actual:** **TypeScript — Marco 5c Club AI**
+**Fase actual:** **TypeScript — Marco 5d Mod Editor**
 
-Desktop: painéis **Plantel**, **Mercado**, **Finanças** e **Ofertas**; **Caixa** no cabeçalho. Fee = `rating × 100 000`; saldo inicial `5 000 000`. Ledger persistido: salários por jornada (`rating × 1 000`), bilheteira em casa (`reputation × 10 000`, ≤1 por jornada), transferências in/out. Mercado NPC: até 3 transferências entre clubes por jornada; propostas do jogador com resposta imediata (aceitar/rejeitar/contra única); 0–2 bids NPC sobre o plantel gerido — inbox **Ofertas**.
+Desktop: painéis **Plantel**, **Mercado**, **Finanças** e **Ofertas**; **Caixa** no cabeçalho. Fee = `rating × 100 000`; saldo inicial `5 000 000`. Ledger persistido: salários por jornada (`rating × 1 000`), bilheteira em casa (`reputation × 10 000`, ≤1 por jornada), transferências in/out. Mercado NPC: até 3 transferências entre clubes por jornada; propostas do jogador com resposta imediata (aceitar/rejeitar/contra única); 0–2 bids NPC sobre o plantel gerido — inbox **Ofertas**. **Mods:** editor de clubes e jogadores (criar pack, override/remover, badges core/mod/new); carreira via **Aplicar mods / reiniciar** (sem hot-reload).
 
 ## Marcos
 
@@ -19,7 +19,7 @@ Desktop: painéis **Plantel**, **Mercado**, **Finanças** e **Ofertas**; **Caixa
 | **5a.2** | Buy/sell (fee, caixa, save balance/patches) | ✅ |
 | **5b** | Finance ledger (wages, gate ≤1/jornada, transfer rows, Finanças UI) | ✅ |
 | **5c** | Club AI (NPC↔NPC ≤3/jornada, propostas/contras, npc_bid, Ofertas UI) | ✅ |
-| **5d** | Editor | ⏳ |
+| **5d** | Mod editor (createMod, loadEditorWorld, upsert/remove club & player, Zod + refs, UI Mods) | ✅ |
 
 ## Comandos
 
@@ -33,4 +33,5 @@ pnpm dev:desktop
 
 Saves v2: `saves/<slot>/save.json` inclui `patches.clubs`, `patches.players`, `balance`, `ledger` (opcional), `pendingOffers` (opcional) e estado da taça.  
 Vitória numa jornada: `reputation +1` (máx. 100).  
-Clube gerido: timeline L1 (~12 eventos); resto L3. Taça após J5/J10/J15 — highlight preferido se houver jogo de taça.
+Clube gerido: timeline L1 (~12 eventos); resto L3. Taça após J5/J10/J15 — highlight preferido se houver jogo de taça.  
+Mod editor 5d: só clubes/jogadores em `database/mods/`; **5d.2** (nações, competições, lobby sem auto-start) fora de âmbito.

@@ -4,7 +4,7 @@ export type DesktopPhoenixApi = PhoenixApi;
 
 declare global {
   interface Window {
-    phoenix: DesktopPhoenixApi;
+    readonly phoenix: DesktopPhoenixApi;
   }
 }
 

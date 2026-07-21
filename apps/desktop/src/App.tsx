@@ -1,5 +1,11 @@
 import { useEffect, useState } from 'react';
-import type { LedgerEntry, OfferKind, OfferStatus } from '@phoenix/contracts';
+import type {
+  EditorClub,
+  EditorPlayer,
+  EditorSource,
+  EditorWorld,
+} from '@phoenix/application';
+import type { Club, LedgerEntry, OfferKind, OfferStatus, Player } from '@phoenix/contracts';
 import { useSessionStore } from './store';
 
 type MarketPositionFilter = 'ALL' | 'GK' | 'DF' | 'MF' | 'FW';
@@ -75,6 +81,220 @@ function promptOfferAmount(label: string, defaultAmount: number): number | null 
   return amount;
 }
 
+function sourceBadgeLabel(source: EditorSource): string {
+  switch (source) {
+    case 'core':
+      return 'Core';
+    case 'mod':
+      return 'Mod';
+    case 'new':
+      return 'Novo';
+    default: {
+      const exhaustive: never = source;
+      return exhaustive;
+    }
+  }
+}
+
+const fieldClass =
+  'w-full rounded-md border border-[var(--border)] bg-black/20 px-3 py-2 text-sm';
+
+function ClubEditor({
+  world,
+  saveClub,
+  removeClub,
+}: {
+  world: EditorWorld;
+  saveClub: (club: Club) => Promise<void>;
+  removeClub: (clubId: string) => Promise<void>;
+}) {
+  const makeNew = (): EditorClub => ({
+    id: '',
+    name: '',
+    nationId: world.nationIds[0] ?? '',
+    reputation: 50,
+    source: 'new',
+  });
+  const [draft, setDraft] = useState<EditorClub>(makeNew);
+
+  return (
+    <div className="grid gap-4 md:grid-cols-[minmax(0,1fr)_minmax(0,1.4fr)]">
+      <div>
+        <button
+          type="button"
+          className="mb-2 rounded border border-[var(--border)] px-2 py-1 text-xs"
+          onClick={() => setDraft(makeNew())}
+        >
+          Novo
+        </button>
+        <ul className="max-h-72 space-y-1 overflow-y-auto">
+          {world.clubs.map((club) => (
+            <li key={club.id}>
+              <button
+                type="button"
+                className="flex w-full items-center justify-between rounded px-2 py-1.5 text-left text-sm hover:bg-black/20"
+                onClick={() => setDraft(club)}
+              >
+                <span className="truncate">{club.name}</span>
+                <span className="ml-2 rounded bg-black/30 px-1.5 py-0.5 text-[10px]">
+                  {sourceBadgeLabel(club.source)}
+                </span>
+              </button>
+            </li>
+          ))}
+        </ul>
+      </div>
+      <form
+        className="grid gap-2"
+        onSubmit={(event) => {
+          event.preventDefault();
+          void saveClub({
+            id: draft.id,
+            name: draft.name,
+            nationId: draft.nationId,
+            reputation: draft.reputation,
+          });
+        }}
+      >
+        <input
+          required
+          className={fieldClass}
+          placeholder="ID (slug)"
+          value={draft.id}
+          onChange={(event) => setDraft({ ...draft, id: event.target.value })}
+        />
+        <input
+          required
+          className={fieldClass}
+          placeholder="Nome"
+          value={draft.name}
+          onChange={(event) => setDraft({ ...draft, name: event.target.value })}
+        />
+        <select
+          required
+          className={fieldClass}
+          value={draft.nationId}
+          onChange={(event) => setDraft({ ...draft, nationId: event.target.value })}
+        >
+          {world.nationIds.map((nationId) => (
+            <option key={nationId} value={nationId}>
+              {nationId}
+            </option>
+          ))}
+        </select>
+        <input
+          required
+          type="number"
+          min={1}
+          max={100}
+          className={fieldClass}
+          placeholder="Reputação"
+          value={draft.reputation}
+          onChange={(event) => setDraft({ ...draft, reputation: Number(event.target.value) })}
+        />
+        <div className="flex gap-2">
+          <button type="submit" className="rounded bg-[var(--accent)] px-3 py-1.5 text-xs font-medium text-[var(--accent-fg)]">
+            Guardar
+          </button>
+          <button
+            type="button"
+            disabled={draft.source === 'core' || !draft.id}
+            className="rounded border border-red-800 px-3 py-1.5 text-xs text-red-200 disabled:opacity-40"
+            onClick={() => void removeClub(draft.id)}
+          >
+            Remover
+          </button>
+        </div>
+      </form>
+    </div>
+  );
+}
+
+function PlayerEditor({
+  world,
+  savePlayer,
+  removePlayer,
+}: {
+  world: EditorWorld;
+  savePlayer: (player: Player) => Promise<void>;
+  removePlayer: (playerId: string) => Promise<void>;
+}) {
+  const makeNew = (): EditorPlayer => ({
+    id: '',
+    name: '',
+    clubId: world.clubs[0]?.id ?? '',
+    nationId: world.nationIds[0] ?? '',
+    position: 'MF',
+    rating: 50,
+    age: 20,
+    source: 'new',
+  });
+  const [draft, setDraft] = useState<EditorPlayer>(makeNew);
+
+  return (
+    <div className="grid gap-4 md:grid-cols-[minmax(0,1fr)_minmax(0,1.4fr)]">
+      <div>
+        <button
+          type="button"
+          className="mb-2 rounded border border-[var(--border)] px-2 py-1 text-xs"
+          onClick={() => setDraft(makeNew())}
+        >
+          Novo
+        </button>
+        <ul className="max-h-72 space-y-1 overflow-y-auto">
+          {world.players.map((player) => (
+            <li key={player.id}>
+              <button
+                type="button"
+                className="flex w-full items-center justify-between rounded px-2 py-1.5 text-left text-sm hover:bg-black/20"
+                onClick={() => setDraft(player)}
+              >
+                <span className="truncate">{player.name}</span>
+                <span className="ml-2 rounded bg-black/30 px-1.5 py-0.5 text-[10px]">
+                  {sourceBadgeLabel(player.source)}
+                </span>
+              </button>
+            </li>
+          ))}
+        </ul>
+      </div>
+      <form
+        className="grid gap-2 sm:grid-cols-2"
+        onSubmit={(event) => {
+          event.preventDefault();
+          void savePlayer({
+            id: draft.id,
+            name: draft.name,
+            clubId: draft.clubId,
+            nationId: draft.nationId,
+            position: draft.position,
+            rating: draft.rating,
+            age: draft.age,
+          });
+        }}
+      >
+        <input required className={fieldClass} placeholder="ID (slug)" value={draft.id} onChange={(event) => setDraft({ ...draft, id: event.target.value })} />
+        <input required className={fieldClass} placeholder="Nome" value={draft.name} onChange={(event) => setDraft({ ...draft, name: event.target.value })} />
+        <select required className={fieldClass} value={draft.clubId} onChange={(event) => setDraft({ ...draft, clubId: event.target.value })}>
+          {world.clubs.map((club) => <option key={club.id} value={club.id}>{club.name}</option>)}
+        </select>
+        <select required className={fieldClass} value={draft.nationId} onChange={(event) => setDraft({ ...draft, nationId: event.target.value })}>
+          {world.nationIds.map((nationId) => <option key={nationId} value={nationId}>{nationId}</option>)}
+        </select>
+        <select className={fieldClass} value={draft.position} onChange={(event) => setDraft({ ...draft, position: event.target.value as Player['position'] })}>
+          <option value="GK">GK</option><option value="DF">DF</option><option value="MF">MF</option><option value="FW">FW</option>
+        </select>
+        <input required type="number" min={1} max={100} className={fieldClass} placeholder="Rating" value={draft.rating} onChange={(event) => setDraft({ ...draft, rating: Number(event.target.value) })} />
+        <input required type="number" min={15} max={45} className={fieldClass} placeholder="Idade" value={draft.age} onChange={(event) => setDraft({ ...draft, age: Number(event.target.value) })} />
+        <div className="flex gap-2">
+          <button type="submit" className="rounded bg-[var(--accent)] px-3 py-1.5 text-xs font-medium text-[var(--accent-fg)]">Guardar</button>
+          <button type="button" disabled={draft.source === 'core' || !draft.id} className="rounded border border-red-800 px-3 py-1.5 text-xs text-red-200 disabled:opacity-40" onClick={() => void removePlayer(draft.id)}>Remover</button>
+        </div>
+      </form>
+    </div>
+  );
+}
+
 export default function App() {
   const {
     snapshot,
@@ -86,6 +306,10 @@ export default function App() {
     mods,
     selectedMods,
     selectedManagedClubId,
+    editingModId,
+    editorWorld,
+    editorTab,
+    editorError,
     start,
     advanceDay,
     proposeBuy,
@@ -97,8 +321,18 @@ export default function App() {
     load,
     refreshLists,
     toggleMod,
+    openEditor,
+    closeEditor,
+    createModPack,
+    saveClub,
+    savePlayer,
+    removeClub,
+    removePlayer,
+    setEditorTab,
   } = useSessionStore();
   const [marketPositionFilter, setMarketPositionFilter] = useState<MarketPositionFilter>('ALL');
+  const [newModId, setNewModId] = useState('');
+  const [newModName, setNewModName] = useState('');
 
   useEffect(() => {
     void (async () => {
@@ -217,12 +451,40 @@ export default function App() {
           <h2 className="mb-3 text-sm font-medium uppercase tracking-wider text-[var(--muted)]">
             Mods (nova sessão)
           </h2>
+          <form
+            className="mb-4 grid gap-2 sm:grid-cols-[1fr_1fr_auto]"
+            onSubmit={(event) => {
+              event.preventDefault();
+              void createModPack({ id: newModId, name: newModName });
+            }}
+          >
+            <input
+              required
+              className={fieldClass}
+              placeholder="ID do mod"
+              value={newModId}
+              onChange={(event) => setNewModId(event.target.value)}
+            />
+            <input
+              required
+              className={fieldClass}
+              placeholder="Nome do mod"
+              value={newModName}
+              onChange={(event) => setNewModName(event.target.value)}
+            />
+            <button
+              type="submit"
+              className="rounded-md bg-[var(--accent)] px-3 py-2 text-xs font-medium text-[var(--accent-fg)]"
+            >
+              Criar mod
+            </button>
+          </form>
           {mods.length === 0 ? (
             <p className="text-sm text-[var(--muted)]">Nenhum mod em database/mods.</p>
           ) : (
             <ul className="space-y-2">
               {mods.map((m) => (
-                <li key={m.id}>
+                <li key={m.id} className="flex items-center justify-between gap-2">
                   <label className="flex cursor-pointer items-center gap-2 text-sm">
                     <input
                       type="checkbox"
@@ -231,6 +493,13 @@ export default function App() {
                     />
                     <span>{m.name}</span>
                   </label>
+                  <button
+                    type="button"
+                    className="rounded border border-[var(--border)] px-2 py-1 text-xs"
+                    onClick={() => void openEditor(m.id)}
+                  >
+                    Editar
+                  </button>
                 </li>
               ))}
             </ul>
@@ -293,6 +562,62 @@ export default function App() {
           )}
         </section>
       </div>
+
+      {editingModId ? (
+        <section className="rounded-lg border border-[var(--border)] bg-[var(--surface)]/80 p-4">
+          <div className="mb-4 flex flex-wrap items-center justify-between gap-2">
+            <div>
+              <h2 className="text-sm font-medium uppercase tracking-wider text-[var(--muted)]">
+                Editor de mod
+              </h2>
+              <p className="mt-1 font-mono text-xs">{editingModId}</p>
+            </div>
+            <button
+              type="button"
+              className="rounded border border-[var(--border)] px-2 py-1 text-xs"
+              onClick={closeEditor}
+            >
+              Fechar
+            </button>
+          </div>
+          {editorError ? (
+            <p className="mb-3 rounded bg-red-950/50 px-3 py-2 text-sm text-red-200">
+              {editorError}
+            </p>
+          ) : null}
+          {editorWorld ? (
+            <>
+              <div className="mb-4 flex gap-2 border-b border-[var(--border)] pb-2">
+                <button
+                  type="button"
+                  className={`rounded px-3 py-1.5 text-xs ${editorTab === 'clubs' ? 'bg-[var(--accent)] text-[var(--accent-fg)]' : 'bg-black/20'}`}
+                  onClick={() => setEditorTab('clubs')}
+                >
+                  Clubes
+                </button>
+                <button
+                  type="button"
+                  className={`rounded px-3 py-1.5 text-xs ${editorTab === 'players' ? 'bg-[var(--accent)] text-[var(--accent-fg)]' : 'bg-black/20'}`}
+                  onClick={() => setEditorTab('players')}
+                >
+                  Jogadores
+                </button>
+              </div>
+              {editorTab === 'clubs' ? (
+                <ClubEditor world={editorWorld} saveClub={saveClub} removeClub={removeClub} />
+              ) : (
+                <PlayerEditor
+                  world={editorWorld}
+                  savePlayer={savePlayer}
+                  removePlayer={removePlayer}
+                />
+              )}
+            </>
+          ) : (
+            <p className="text-sm text-[var(--muted)]">A carregar editor…</p>
+          )}
+        </section>
+      ) : null}
 
       <section className="rounded-lg border border-[var(--border)] bg-[var(--surface)]/80 p-4">
         <h2 className="mb-3 text-sm font-medium uppercase tracking-wider text-[var(--muted)]">

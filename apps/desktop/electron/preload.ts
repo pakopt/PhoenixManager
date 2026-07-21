@@ -1,6 +1,6 @@
 import { contextBridge, ipcRenderer } from 'electron';
-import type { ProposeResult, SessionSnapshot } from '@phoenix/application';
-import type { ModInfo, SaveMeta } from '@phoenix/contracts';
+import type { EditorWorld, ProposeResult, SessionSnapshot } from '@phoenix/application';
+import type { Club, ModInfo, Player, SaveMeta } from '@phoenix/contracts';
 
 export type StartOpts = {
   seed: number;
@@ -38,6 +38,24 @@ const phoenix = {
       ipcRenderer.invoke('session:load', slotId),
     listSaves: (): Promise<SaveMeta[]> => ipcRenderer.invoke('session:listSaves'),
     listMods: (): Promise<ModInfo[]> => ipcRenderer.invoke('session:listMods'),
+  },
+  modEditor: {
+    create: (input: { id: string; name: string }): Promise<ModInfo> =>
+      ipcRenderer.invoke('modEditor:create', input),
+    loadWorld: (modId: string): Promise<EditorWorld> =>
+      ipcRenderer.invoke('modEditor:loadWorld', modId),
+    upsertClub: (modId: string, club: Club): Promise<EditorWorld> =>
+      ipcRenderer.invoke('modEditor:upsertClub', modId, club),
+    upsertPlayer: (modId: string, player: Player): Promise<EditorWorld> =>
+      ipcRenderer.invoke('modEditor:upsertPlayer', modId, player),
+    removeClub: (modId: string, clubId: string): Promise<EditorWorld> =>
+      ipcRenderer.invoke('modEditor:removeClub', modId, clubId),
+    removePlayer: (modId: string, playerId: string): Promise<EditorWorld> =>
+      ipcRenderer.invoke('modEditor:removePlayer', modId, playerId),
+    updateManifest: (
+      modId: string,
+      patch: { name: string; version?: string },
+    ): Promise<ModInfo> => ipcRenderer.invoke('modEditor:updateManifest', modId, patch),
   },
 };
 

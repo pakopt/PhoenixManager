@@ -480,11 +480,17 @@ export default function App() {
             />
             <button
               type="submit"
-              className="rounded-md bg-[var(--accent)] px-3 py-2 text-xs font-medium text-[var(--accent-fg)]"
+              disabled={busy}
+              className="rounded-md bg-[var(--accent)] px-3 py-2 text-xs font-medium text-[var(--accent-fg)] disabled:opacity-50"
             >
               Criar mod
             </button>
           </form>
+          {editorError && !editingModId ? (
+            <p className="mb-3 rounded bg-red-950/50 px-3 py-2 text-sm text-red-200">
+              {editorError}
+            </p>
+          ) : null}
           {mods.length === 0 ? (
             <p className="text-sm text-[var(--muted)]">Nenhum mod em database/mods.</p>
           ) : (

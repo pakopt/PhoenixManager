@@ -135,9 +135,10 @@ export const useSessionStore = create<SessionStore>((set, get) => ({
   },
 
   createModPack: async (input) => {
+    if (get().busy) return;
     const requestGeneration = ++editorRequestGeneration;
     const editingModIdAtStart = get().editingModId;
-    set({ editorError: null });
+    set({ busy: true, editorError: null });
     try {
       const mod = await window.phoenix.modEditor.create(input);
       const editorWorld = await window.phoenix.modEditor.loadWorld(mod.id);
@@ -151,13 +152,19 @@ export const useSessionStore = create<SessionStore>((set, get) => ({
       }
       await get().refreshLists();
     } catch (err) {
+      const message = err instanceof Error ? err.message : 'Falha ao criar mod';
       if (
         editorRequestGeneration === requestGeneration
         && get().editingModId === editingModIdAtStart
       ) {
         set({
-          editorError: err instanceof Error ? err.message : 'Falha ao criar mod',
+          editorError: message,
+          error: message,
         });
+      }
+    } finally {
+      if (editorRequestGeneration === requestGeneration) {
+        set({ busy: false });
       }
     }
   },

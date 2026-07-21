@@ -272,6 +272,25 @@ describe('mod editor', () => {
     });
   });
 
+  it('upsertModClub throws on malformed shard without wiping file', async () => {
+    await createMod(fs, databaseRoot, { id: 'my-mod', name: 'My Mod' });
+    const shardPath = join(databaseRoot, 'mods', 'my-mod', 'clubs', 'clubs-00001.json');
+    const malformed = '{ "entities": [ { "id": "broken" } ]';
+    await mkdir(join(databaseRoot, 'mods', 'my-mod', 'clubs'), { recursive: true });
+    await writeFile(shardPath, malformed);
+
+    await expect(
+      upsertModClub(fs, databaseRoot, 'my-mod', {
+        id: 'london-fc',
+        name: 'Real London',
+        nationId: 'england',
+        reputation: 90,
+      }),
+    ).rejects.toThrow('Shard inválido');
+
+    expect(await readFile(shardPath, 'utf8')).toBe(malformed);
+  });
+
   it('removeModPlayer removes mod player and restores core source', async () => {
     await createMod(fs, databaseRoot, { id: 'my-mod', name: 'My Mod' });
     await upsertModPlayer(fs, databaseRoot, 'my-mod', {

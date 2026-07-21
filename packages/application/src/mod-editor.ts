@@ -48,13 +48,29 @@ async function readShardEntities<T>(
   filePath: string,
   parseOne: (raw: unknown) => T,
 ): Promise<T[]> {
+  let contents: string;
   try {
-    const raw = JSON.parse(await fs.readFile(filePath)) as unknown;
-    const entities = (raw as { entities?: unknown }).entities;
-    if (!Array.isArray(entities)) return [];
-    return entities.map(parseOne);
+    contents = await fs.readFile(filePath);
   } catch {
     return [];
+  }
+
+  let raw: unknown;
+  try {
+    raw = JSON.parse(contents);
+  } catch {
+    throw new Error('Shard inválido');
+  }
+
+  const entities = (raw as { entities?: unknown }).entities;
+  if (!Array.isArray(entities)) {
+    throw new Error('Shard inválido');
+  }
+
+  try {
+    return entities.map(parseOne);
+  } catch {
+    throw new Error('Shard inválido');
   }
 }
 

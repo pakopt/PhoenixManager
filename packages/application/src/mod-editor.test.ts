@@ -7,6 +7,8 @@ import {
   createMod,
   loadEditorWorld,
   removeModClub,
+  removeModPlayer,
+  updateModManifest,
   upsertModClub,
   upsertModPlayer,
 } from './mod-editor.js';
@@ -90,6 +92,69 @@ describe('mod editor', () => {
 
     await expect(createMod(fs, databaseRoot, { id: 'my-mod', name: 'Again' })).rejects.toThrow(
       'Mod já existe',
+    );
+  });
+
+  it('createMod rejects invalid slug', async () => {
+    await expect(createMod(fs, databaseRoot, { id: 'Bad_Slug', name: 'Bad' })).rejects.toThrow(
+      'Slug inválido',
+    );
+    await expect(createMod(fs, databaseRoot, { id: 'INVALID', name: 'Bad' })).rejects.toThrow(
+      'Slug inválido',
+    );
+  });
+
+  it('upsertModClub rejects invalid modId slug', async () => {
+    await expect(
+      upsertModClub(fs, databaseRoot, 'Bad_Slug', {
+        id: 'london-fc',
+        name: 'Real London',
+        nationId: 'england',
+        reputation: 90,
+      }),
+    ).rejects.toThrow('Slug inválido');
+  });
+
+  it('loadEditorWorld rejects missing mod', async () => {
+    await expect(loadEditorWorld(fs, databaseRoot, 'missing-mod')).rejects.toThrow(
+      'Mod não encontrado',
+    );
+  });
+
+  it('upsertModClub rejects missing mod', async () => {
+    await expect(
+      upsertModClub(fs, databaseRoot, 'missing-mod', {
+        id: 'london-fc',
+        name: 'Real London',
+        nationId: 'england',
+        reputation: 90,
+      }),
+    ).rejects.toThrow('Mod não encontrado');
+  });
+
+  it('upsertModPlayer rejects missing mod', async () => {
+    await expect(
+      upsertModPlayer(fs, databaseRoot, 'missing-mod', {
+        id: 'new-player',
+        name: 'New Player',
+        clubId: 'london-fc',
+        nationId: 'england',
+        position: 'FW',
+        rating: 65,
+        age: 20,
+      }),
+    ).rejects.toThrow('Mod não encontrado');
+  });
+
+  it('updateModManifest rejects missing mod', async () => {
+    await expect(
+      updateModManifest(fs, databaseRoot, 'missing-mod', { name: 'Renamed' }),
+    ).rejects.toThrow('Mod não encontrado');
+  });
+
+  it('removeModPlayer rejects missing mod', async () => {
+    await expect(removeModPlayer(fs, databaseRoot, 'missing-mod', 'john-smith')).rejects.toThrow(
+      'Mod não encontrado',
     );
   });
 
@@ -186,5 +251,44 @@ describe('mod editor', () => {
     expect(world.nationIds).toEqual(['england']);
     expect(world.clubs[0]?.source).toBe('core');
     expect(world.players[0]?.source).toBe('core');
+  });
+
+  it('updateModManifest updates name on disk', async () => {
+    await createMod(fs, databaseRoot, { id: 'my-mod', name: 'My Mod' });
+
+    const info = await updateModManifest(fs, databaseRoot, 'my-mod', {
+      name: 'Renamed Mod',
+      version: '0.2.0',
+    });
+
+    expect(info).toEqual({ id: 'my-mod', name: 'Renamed Mod' });
+    const manifest = JSON.parse(
+      await readFile(join(databaseRoot, 'mods', 'my-mod', 'manifest.json'), 'utf8'),
+    ) as unknown;
+    expect(manifest).toMatchObject({
+      id: 'my-mod',
+      name: 'Renamed Mod',
+      version: '0.2.0',
+    });
+  });
+
+  it('removeModPlayer removes mod player and restores core source', async () => {
+    await createMod(fs, databaseRoot, { id: 'my-mod', name: 'My Mod' });
+    await upsertModPlayer(fs, databaseRoot, 'my-mod', {
+      id: 'john-smith',
+      name: 'John Smith Jr',
+      clubId: 'london-fc',
+      nationId: 'england',
+      position: 'MF',
+      rating: 75,
+      age: 24,
+    });
+
+    const world = await removeModPlayer(fs, databaseRoot, 'my-mod', 'john-smith');
+
+    expect(world.players.find(({ id }) => id === 'john-smith')).toMatchObject({
+      name: 'John Smith',
+      source: 'core',
+    });
   });
 });

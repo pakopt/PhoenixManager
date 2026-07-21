@@ -4,13 +4,18 @@ import type {
   Club,
   CupState,
   Fixture,
+  LedgerEntry,
   MatchResult,
   Player,
   SaveMeta,
   Slug,
   TableRow,
 } from '@phoenix/contracts';
-import { generateLeagueFixtures, totalMatchdays } from '@phoenix/calendar';
+import {
+  fixturesForMatchday,
+  generateLeagueFixtures,
+  totalMatchdays,
+} from '@phoenix/calendar';
 import {
   advanceKnockout,
   createKnockoutCup,
@@ -48,6 +53,13 @@ import {
   type SnapshotHighlight,
   type SnapshotTableRow,
 } from './snapshot.js';
+import {
+  gateReceipt,
+  makeGateEntry,
+  makeTransferEntry,
+  makeWagesEntry,
+  squadWages,
+} from './finance.js';
 import {
   INITIAL_BALANCE,
   pickSellDestinationClub,
@@ -91,6 +103,8 @@ export class GameSession {
   private lastMatchResults: MatchResult[] = [];
   private managedClubId: Slug = DEFAULT_MANAGED_CLUB_ID;
   private balance = INITIAL_BALANCE;
+  private ledger: LedgerEntry[] = [];
+  private transferSeq = 0;
   private cup!: CupState;
   private lastHighlight: SnapshotHighlight | undefined;
   private modIds: string[] = [];
@@ -133,6 +147,8 @@ export class GameSession {
     this.lastMatchResults = [];
     this.managedClubId = options.managedClubId ?? DEFAULT_MANAGED_CLUB_ID;
     this.balance = INITIAL_BALANCE;
+    this.ledger = [];
+    this.transferSeq = 0;
     this.cup = createKnockoutCup({
       competitionId: CUP_ID,
       clubIds: competition.clubIds,
@@ -168,14 +184,41 @@ export class GameSession {
       ? this.toSnapshotHighlight(leagueHighlight)
       : undefined;
 
-    if (
+    const cupPlayedThisDay =
       cupRoundAfterMatchday(next) === this.cup.round &&
-      !this.cup.completed
-    ) {
+      !this.cup.completed;
+    let cupHome = false;
+    if (cupPlayedThisDay) {
+      cupHome = this.cup.ties.some(
+        (tie) => tie.homeClubId === this.managedClubId,
+      );
       const cupHighlight = this.simulateCupRound(next);
       if (cupHighlight) {
         this.lastHighlight = this.toSnapshotHighlight(cupHighlight);
       }
+    }
+
+    const managedPlayers = [...this.world.players.values()].filter(
+      (player) => player.clubId === this.managedClubId,
+    );
+    const wageAmount = -squadWages(managedPlayers);
+    this.balance += wageAmount;
+    this.ledger = [
+      ...this.ledger,
+      makeWagesEntry(next, wageAmount, this.balance),
+    ];
+
+    const leagueHome = fixturesForMatchday(this.fixtures, next).some(
+      (fixture) => fixture.homeClubId === this.managedClubId,
+    );
+    if (leagueHome || cupHome) {
+      const club = this.world.clubs.get(this.managedClubId);
+      const gateAmount = gateReceipt(club?.reputation ?? 50);
+      this.balance += gateAmount;
+      this.ledger = [
+        ...this.ledger,
+        makeGateEntry(next, gateAmount, this.balance),
+      ];
     }
 
     return this.getSnapshot();
@@ -195,6 +238,19 @@ export class GameSession {
 
     this.world.players.set(playerId, { ...player, clubId: this.managedClubId });
     this.balance -= fee;
+    this.transferSeq += 1;
+    this.ledger = [
+      ...this.ledger,
+      makeTransferEntry(
+        'transfer_out',
+        player.id,
+        this.transferSeq,
+        this.matchday,
+        -fee,
+        this.balance,
+        player.name,
+      ),
+    ];
     return this.getSnapshot();
   }
 
@@ -213,6 +269,19 @@ export class GameSession {
     const clubId = pickSellDestinationClub(this.world.clubs, this.managedClubId);
     this.world.players.set(playerId, { ...player, clubId });
     this.balance += fee;
+    this.transferSeq += 1;
+    this.ledger = [
+      ...this.ledger,
+      makeTransferEntry(
+        'transfer_in',
+        player.id,
+        this.transferSeq,
+        this.matchday,
+        fee,
+        this.balance,
+        player.name,
+      ),
+    ];
     return this.getSnapshot();
   }
 
@@ -230,6 +299,7 @@ export class GameSession {
       modIds: [...this.modIds],
       managedClubId: this.managedClubId,
       balance: this.balance,
+      ledger: [...this.ledger],
       clubs: [...this.world.clubs.values()].map((club) => ({
         id: club.id,
         name: club.name,
@@ -268,6 +338,7 @@ export class GameSession {
       balance: this.balance,
       managedClubId: this.managedClubId,
       cup: this.cup,
+      ledger: this.ledger,
     });
   }
 
@@ -300,6 +371,8 @@ export class GameSession {
     this.lastMatchResults = save.lastResults.map((r) => ({ ...r }));
     this.managedClubId = save.managedClubId ?? DEFAULT_MANAGED_CLUB_ID;
     this.balance = save.balance ?? INITIAL_BALANCE;
+    this.ledger = save.ledger ?? [];
+    this.transferSeq = this.nextTransferSequence(this.ledger);
     const competition = this.world.competitions.get(this.competitionId);
     if (!competition) {
       throw new Error(`Competition not found: ${this.competitionId}`);
@@ -337,6 +410,16 @@ export class GameSession {
     return [...this.world.players.values()].filter(
       (player) => player.clubId === this.managedClubId,
     ).length;
+  }
+
+  private nextTransferSequence(ledger: readonly LedgerEntry[]): number {
+    const transferSequences = ledger.flatMap((entry) => {
+      const match = /^xfer-.+-(\d+)$/.exec(entry.id);
+      return match ? [Number(match[1])] : [];
+    });
+    return transferSequences.length > 0
+      ? Math.max(...transferSequences)
+      : ledger.length;
   }
 
   private bumpWinningReputations(results: readonly MatchResult[]): void {

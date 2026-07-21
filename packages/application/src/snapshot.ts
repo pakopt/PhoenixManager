@@ -1,4 +1,10 @@
-import type { CupState, MatchResult, Slug, TableRow } from '@phoenix/contracts';
+import type {
+  CupState,
+  LedgerEntry,
+  MatchResult,
+  Slug,
+  TableRow,
+} from '@phoenix/contracts';
 import type { MatchEvent } from '@phoenix/match-engine';
 
 export type SnapshotTableRow = TableRow & { clubName: string; reputation: number };
@@ -57,6 +63,7 @@ export type SessionSnapshot = {
   modIds: string[];
   managedClubId: Slug;
   balance: number;
+  ledger: LedgerEntry[];
   clubs: SnapshotClub[];
   highlight?: SnapshotHighlight;
   cup?: SnapshotCup;

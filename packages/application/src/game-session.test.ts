@@ -9,6 +9,7 @@ import { createRng } from '@phoenix/shared';
 import { clubStrength } from '@phoenix/simulation';
 import { GameSession } from './game-session.js';
 import type { SaveFs } from './persistence.js';
+import { gateReceipt, squadWages } from './finance.js';
 import { INITIAL_BALANCE, transferFee } from './transfer.js';
 
 const databaseRoot = fileURLToPath(new URL('../../../database', import.meta.url));
@@ -335,6 +336,156 @@ describe('GameSession', () => {
     expect(() => session.sellPlayer(managedPlayers[0]!.id)).toThrow(
       'Plantel mínimo de 11 jogadores',
     );
+  });
+
+  it('appends wages on advanceDay', async () => {
+    const session = new GameSession(nodeFs);
+    const start = await session.start({
+      databaseRoot,
+      seed: 42,
+      managedClubId: 'london-fc-en',
+    });
+
+    const after = session.advanceDay();
+    const wages = after.ledger.find((entry) => entry.type === 'wages');
+
+    expect(wages).toMatchObject({
+      id: 'md-1-wages',
+      matchday: 1,
+      amount: -squadWages(start.squad),
+      balanceAfter: INITIAL_BALANCE - squadWages(start.squad),
+    });
+  });
+
+  it('appends gate when managed is league home', async () => {
+    const probe = new GameSession(nodeFs);
+    await probe.start({ databaseRoot, seed: 42 });
+    const homeClubId = (
+      probe as unknown as {
+        fixtures: Array<{ matchday: number; homeClubId: string }>;
+      }
+    ).fixtures.find((fixture) => fixture.matchday === 1)!.homeClubId;
+
+    const session = new GameSession(nodeFs);
+    await session.start({
+      databaseRoot,
+      seed: 42,
+      managedClubId: homeClubId,
+    });
+
+    const after = session.advanceDay();
+    const reputation = after.table.find((club) => club.clubId === homeClubId)!.reputation;
+
+    expect(after.ledger).toContainEqual(
+      expect.objectContaining({
+        id: 'md-1-gate',
+        matchday: 1,
+        type: 'gate',
+        amount: gateReceipt(reputation),
+      }),
+    );
+  });
+
+  it('does not append gate when managed is away only', async () => {
+    const probe = new GameSession(nodeFs);
+    await probe.start({ databaseRoot, seed: 42 });
+    const awayClubId = (
+      probe as unknown as {
+        fixtures: Array<{ matchday: number; awayClubId: string }>;
+      }
+    ).fixtures.find((fixture) => fixture.matchday === 1)!.awayClubId;
+
+    const session = new GameSession(nodeFs);
+    await session.start({
+      databaseRoot,
+      seed: 42,
+      managedClubId: awayClubId,
+    });
+
+    const after = session.advanceDay();
+
+    expect(after.ledger.some((entry) => entry.type === 'gate')).toBe(false);
+  });
+
+  it('appends at most one gate when home in league and cup on the same day', async () => {
+    const session = new GameSession(nodeFs);
+    const start = await session.start({ databaseRoot, seed: 42 });
+    const cupHomeClubId = start.cup!.ties[0]!.homeClubId;
+    const internals = session as unknown as {
+      fixtures: Array<{ matchday: number; homeClubId: string }>;
+      managedClubId: string;
+    };
+    internals.managedClubId = cupHomeClubId;
+    const leagueFixture = internals.fixtures.find((fixture) => fixture.matchday === 5)!;
+    leagueFixture.homeClubId = cupHomeClubId;
+
+    for (let index = 0; index < 5; index += 1) {
+      session.advanceDay();
+    }
+    const gates = session
+      .getSnapshot()
+      .ledger.filter((entry) => entry.matchday === 5 && entry.type === 'gate');
+
+    expect(gates).toHaveLength(1);
+  });
+
+  it('records transfer_out on buy and transfer_in on sell', async () => {
+    const session = new GameSession(nodeFs);
+    const start = await session.start({ databaseRoot, seed: 42 });
+    const marketPlayer = start.market[0]!;
+    const world = (session as unknown as { world: WorldDatabase }).world;
+    world.players.set(marketPlayer.id, {
+      ...world.players.get(marketPlayer.id)!,
+      rating: 40,
+    });
+
+    const bought = session.buyPlayer(marketPlayer.id);
+    const boughtEntry = bought.ledger.at(-1);
+    expect(boughtEntry).toMatchObject({
+      id: `xfer-${marketPlayer.id}-1`,
+      matchday: 0,
+      type: 'transfer_out',
+      amount: -transferFee(40),
+      note: marketPlayer.name,
+    });
+
+    const sold = session.sellPlayer(start.squad[0]!.id);
+    expect(sold.ledger.at(-1)).toMatchObject({
+      id: `xfer-${start.squad[0]!.id}-2`,
+      matchday: 0,
+      type: 'transfer_in',
+      amount: transferFee(start.squad[0]!.rating),
+      note: start.squad[0]!.name,
+    });
+  });
+
+  it('allows negative balance after wages', async () => {
+    const session = new GameSession(nodeFs);
+    await session.start({
+      databaseRoot,
+      seed: 42,
+      managedClubId: 'london-fc-en',
+    });
+    (session as unknown as { balance: number }).balance = 0;
+
+    const after = session.advanceDay();
+
+    expect(after.balance).toBeLessThan(0);
+    expect(after.ledger.find((entry) => entry.type === 'wages')?.balanceAfter).toBeLessThan(0);
+  });
+
+  it('persists ledger across save/load', async () => {
+    const savesRoot = await mkdtemp(join(tmpdir(), 'phoenix-saves-'));
+    const session = new GameSession(nodeFs);
+    await session.start({ databaseRoot, savesRoot, seed: 42 });
+    session.advanceDay();
+    const before = session.getSnapshot();
+    await session.save('ledger-test');
+
+    const loaded = new GameSession(nodeFs);
+    const after = await loaded.loadWithRoots('ledger-test', databaseRoot, savesRoot);
+
+    expect(after.ledger).toEqual(before.ledger);
   });
 
   it('persists balance and player club patches across save/load', async () => {

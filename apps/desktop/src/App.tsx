@@ -101,10 +101,12 @@ const fieldClass =
 
 function ClubEditor({
   world,
+  busy,
   saveClub,
   removeClub,
 }: {
   world: EditorWorld;
+  busy: boolean;
   saveClub: (club: Club) => Promise<void>;
   removeClub: (clubId: string) => Promise<void>;
 }) {
@@ -122,6 +124,7 @@ function ClubEditor({
       <div>
         <button
           type="button"
+          disabled={busy}
           className="mb-2 rounded border border-[var(--border)] px-2 py-1 text-xs"
           onClick={() => setDraft(makeNew())}
         >
@@ -193,12 +196,12 @@ function ClubEditor({
           onChange={(event) => setDraft({ ...draft, reputation: Number(event.target.value) })}
         />
         <div className="flex gap-2">
-          <button type="submit" className="rounded bg-[var(--accent)] px-3 py-1.5 text-xs font-medium text-[var(--accent-fg)]">
+          <button disabled={busy} type="submit" className="rounded bg-[var(--accent)] px-3 py-1.5 text-xs font-medium text-[var(--accent-fg)] disabled:opacity-40">
             Guardar
           </button>
           <button
             type="button"
-            disabled={draft.source === 'core' || !draft.id}
+            disabled={busy || draft.source === 'core' || !draft.id}
             className="rounded border border-red-800 px-3 py-1.5 text-xs text-red-200 disabled:opacity-40"
             onClick={() => void removeClub(draft.id)}
           >
@@ -212,10 +215,12 @@ function ClubEditor({
 
 function PlayerEditor({
   world,
+  busy,
   savePlayer,
   removePlayer,
 }: {
   world: EditorWorld;
+  busy: boolean;
   savePlayer: (player: Player) => Promise<void>;
   removePlayer: (playerId: string) => Promise<void>;
 }) {
@@ -236,6 +241,7 @@ function PlayerEditor({
       <div>
         <button
           type="button"
+          disabled={busy}
           className="mb-2 rounded border border-[var(--border)] px-2 py-1 text-xs"
           onClick={() => setDraft(makeNew())}
         >
@@ -287,8 +293,8 @@ function PlayerEditor({
         <input required type="number" min={1} max={100} className={fieldClass} placeholder="Rating" value={draft.rating} onChange={(event) => setDraft({ ...draft, rating: Number(event.target.value) })} />
         <input required type="number" min={15} max={45} className={fieldClass} placeholder="Idade" value={draft.age} onChange={(event) => setDraft({ ...draft, age: Number(event.target.value) })} />
         <div className="flex gap-2">
-          <button type="submit" className="rounded bg-[var(--accent)] px-3 py-1.5 text-xs font-medium text-[var(--accent-fg)]">Guardar</button>
-          <button type="button" disabled={draft.source === 'core' || !draft.id} className="rounded border border-red-800 px-3 py-1.5 text-xs text-red-200 disabled:opacity-40" onClick={() => void removePlayer(draft.id)}>Remover</button>
+          <button disabled={busy} type="submit" className="rounded bg-[var(--accent)] px-3 py-1.5 text-xs font-medium text-[var(--accent-fg)] disabled:opacity-40">Guardar</button>
+          <button type="button" disabled={busy || draft.source === 'core' || !draft.id} className="rounded border border-red-800 px-3 py-1.5 text-xs text-red-200 disabled:opacity-40" onClick={() => void removePlayer(draft.id)}>Remover</button>
         </div>
       </form>
     </div>
@@ -604,10 +610,16 @@ export default function App() {
                 </button>
               </div>
               {editorTab === 'clubs' ? (
-                <ClubEditor world={editorWorld} saveClub={saveClub} removeClub={removeClub} />
+                <ClubEditor
+                  world={editorWorld}
+                  busy={busy}
+                  saveClub={saveClub}
+                  removeClub={removeClub}
+                />
               ) : (
                 <PlayerEditor
                   world={editorWorld}
+                  busy={busy}
                   savePlayer={savePlayer}
                   removePlayer={removePlayer}
                 />

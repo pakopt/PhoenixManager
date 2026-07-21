@@ -6,6 +6,7 @@ import type {
   Fixture,
   LedgerEntry,
   MatchResult,
+  PendingOffer,
   Player,
   SaveMeta,
   Slug,
@@ -65,6 +66,14 @@ import {
   pickSellDestinationClub,
   transferFee,
 } from './transfer.js';
+import {
+  aiBidCount,
+  counterAmountFor,
+  decideNpcReplyToPlayerCounter,
+  decideNpcResponse,
+  pickNpcBids,
+  pickNpcNpcTransfers,
+} from './club-ai.js';
 
 export type StartSessionOptions = {
   databaseRoot: string;
@@ -73,6 +82,14 @@ export type StartSessionOptions = {
   modIds?: string[];
   savesRoot?: string;
   managedClubId?: Slug;
+};
+
+export type ProposeResult = {
+  outcome: 'accepted' | 'rejected' | 'countered';
+  snapshot: SessionSnapshot;
+  offerId?: string;
+  counterAmount?: number;
+  message?: string;
 };
 
 const DEFAULT_MANAGED_CLUB_ID: Slug = 'london-fc-en';
@@ -105,6 +122,8 @@ export class GameSession {
   private balance = INITIAL_BALANCE;
   private ledger: LedgerEntry[] = [];
   private transferSeq = 0;
+  private pendingOffers: PendingOffer[] = [];
+  private offerSeq = 0;
   private cup!: CupState;
   private lastHighlight: SnapshotHighlight | undefined;
   private modIds: string[] = [];
@@ -149,6 +168,8 @@ export class GameSession {
     this.balance = INITIAL_BALANCE;
     this.ledger = [];
     this.transferSeq = 0;
+    this.pendingOffers = [];
+    this.offerSeq = 0;
     this.cup = createKnockoutCup({
       competitionId: CUP_ID,
       clubIds: competition.clubIds,
@@ -162,6 +183,7 @@ export class GameSession {
 
   advanceDay(): SessionSnapshot {
     this.assertStarted();
+    this.pendingOffers = [];
     if (this.matchday >= this.totalMatchdays) {
       return this.getSnapshot();
     }
@@ -221,68 +243,268 @@ export class GameSession {
       ];
     }
 
+    const aiRng = createRng(this.seed).fork(0x0c1b_a100 ^ next);
+    const npcMoves = pickNpcNpcTransfers(
+      this.world.clubs,
+      this.world.players,
+      this.managedClubId,
+      aiRng,
+      3,
+    );
+    for (const move of npcMoves) {
+      const player = this.world.players.get(move.playerId);
+      if (!player) continue;
+      this.world.players.set(move.playerId, { ...player, clubId: move.toClubId });
+    }
+
+    const bids = pickNpcBids(
+      this.world.clubs,
+      this.world.players,
+      this.managedClubId,
+      aiRng,
+      aiBidCount(aiRng),
+    );
+    for (const bid of bids) {
+      this.offerSeq += 1;
+      this.pendingOffers.push({
+        id: `offer-${this.offerSeq}`,
+        kind: 'npc_bid',
+        playerId: bid.playerId,
+        fromClubId: bid.fromClubId,
+        toClubId: this.managedClubId,
+        amount: bid.amount,
+        status: 'pending',
+        createdMatchday: next,
+      });
+    }
+
     return this.getSnapshot();
   }
 
   buyPlayer(playerId: Slug): SessionSnapshot {
+    const result = this.proposeBuy(playerId);
+    if (result.outcome !== 'accepted') {
+      throw new Error('Transferência recusada');
+    }
+    return result.snapshot;
+  }
+
+  sellPlayer(playerId: Slug): SessionSnapshot {
+    const result = this.proposeSell(playerId);
+    if (result.outcome !== 'accepted') {
+      throw new Error('Transferência recusada');
+    }
+    return result.snapshot;
+  }
+
+  proposeBuy(playerId: Slug, amount?: number): ProposeResult {
     this.assertStarted();
     const player = this.world.players.get(playerId);
     if (!player || player.clubId === this.managedClubId) {
       throw new Error('Jogador indisponível para compra');
     }
 
-    const fee = transferFee(player.rating);
-    if (this.balance < fee) {
+    const fair = transferFee(player.rating);
+    const offerAmount = amount ?? fair;
+    this.assertValidOfferAmount(offerAmount);
+    if (this.balance < offerAmount) {
       throw new Error('Saldo insuficiente');
     }
 
-    this.world.players.set(playerId, { ...player, clubId: this.managedClubId });
-    this.balance -= fee;
-    this.transferSeq += 1;
-    this.ledger = [
-      ...this.ledger,
-      makeTransferEntry(
-        'transfer_out',
-        player.id,
-        this.transferSeq,
-        this.matchday,
-        -fee,
-        this.balance,
-        player.name,
-      ),
-    ];
-    return this.getSnapshot();
+    const sellerSquadSize = [...this.world.players.values()].filter(
+      (candidate) => candidate.clubId === player.clubId,
+    ).length;
+    const decision = decideNpcResponse({
+      kind: 'player_buy',
+      amount: offerAmount,
+      fair,
+      sellerSquadSize,
+    });
+    if (decision === 'accept') {
+      this.executeBuy(player, offerAmount);
+      return { outcome: 'accepted', snapshot: this.getSnapshot() };
+    }
+    if (decision === 'reject') {
+      return { outcome: 'rejected', snapshot: this.getSnapshot() };
+    }
+
+    const counterAmount = counterAmountFor(
+      'player_buy',
+      fair,
+      this.world.clubs.get(player.clubId)?.reputation ?? 50,
+    );
+    const offer = this.createOffer({
+      kind: 'player_buy',
+      playerId,
+      fromClubId: this.managedClubId,
+      toClubId: player.clubId,
+      amount: offerAmount,
+      status: 'countered',
+      counterAmount,
+      createdMatchday: this.matchday,
+    });
+    return {
+      outcome: 'countered',
+      snapshot: this.getSnapshot(),
+      offerId: offer.id,
+      counterAmount,
+    };
   }
 
-  sellPlayer(playerId: Slug): SessionSnapshot {
+  proposeSell(playerId: Slug, amount?: number): ProposeResult {
     this.assertStarted();
     const player = this.world.players.get(playerId);
     if (!player || player.clubId !== this.managedClubId) {
       throw new Error('Jogador não pertence ao plantel gerido');
     }
-
     if (this.managedSquadSize() <= 11) {
       throw new Error('Plantel mínimo de 11 jogadores');
     }
 
-    const fee = transferFee(player.rating);
-    const clubId = pickSellDestinationClub(this.world.clubs, this.managedClubId);
-    this.world.players.set(playerId, { ...player, clubId });
-    this.balance += fee;
-    this.transferSeq += 1;
-    this.ledger = [
-      ...this.ledger,
-      makeTransferEntry(
-        'transfer_in',
-        player.id,
-        this.transferSeq,
-        this.matchday,
-        fee,
-        this.balance,
-        player.name,
-      ),
-    ];
-    return this.getSnapshot();
+    const fair = transferFee(player.rating);
+    const offerAmount = amount ?? fair;
+    this.assertValidOfferAmount(offerAmount);
+    const decision = decideNpcResponse({
+      kind: 'player_sell',
+      amount: offerAmount,
+      fair,
+      sellerSquadSize: this.managedSquadSize(),
+    });
+    if (decision === 'reject') {
+      return { outcome: 'rejected', snapshot: this.getSnapshot() };
+    }
+
+    const destinationClubId = pickSellDestinationClub(
+      this.world.clubs,
+      this.managedClubId,
+    );
+    if (decision === 'accept') {
+      this.executeSell(player, destinationClubId, offerAmount);
+      return { outcome: 'accepted', snapshot: this.getSnapshot() };
+    }
+
+    const counterAmount = counterAmountFor(
+      'player_sell',
+      fair,
+      this.world.clubs.get(destinationClubId)?.reputation ?? 50,
+    );
+    const offer = this.createOffer({
+      kind: 'player_sell',
+      playerId,
+      fromClubId: this.managedClubId,
+      toClubId: destinationClubId,
+      amount: offerAmount,
+      status: 'countered',
+      counterAmount,
+      createdMatchday: this.matchday,
+    });
+    return {
+      outcome: 'countered',
+      snapshot: this.getSnapshot(),
+      offerId: offer.id,
+      counterAmount,
+    };
+  }
+
+  respondOffer(
+    offerId: string,
+    action: 'accept' | 'reject' | 'counter',
+    counterAmount?: number,
+  ): ProposeResult {
+    this.assertStarted();
+    const offer = this.pendingOffers.find((candidate) => candidate.id === offerId);
+    if (!offer) {
+      throw new Error('Oferta não encontrada');
+    }
+    if (offer.kind !== 'npc_bid') {
+      if (action === 'accept') return this.acceptCounter(offerId);
+      if (action === 'reject') return this.declineOffer(offerId);
+      throw new Error('Oferta não permite nova contraproposta');
+    }
+
+    if (action === 'reject') {
+      this.removeOffer(offerId);
+      return { outcome: 'rejected', snapshot: this.getSnapshot() };
+    }
+
+    const player = this.world.players.get(offer.playerId);
+    if (!player || player.clubId !== this.managedClubId) {
+      this.removeOffer(offerId);
+      throw new Error('Jogador não pertence ao plantel gerido');
+    }
+    if (this.managedSquadSize() <= 11) {
+      throw new Error('Plantel mínimo de 11 jogadores');
+    }
+
+    if (action === 'counter') {
+      if (counterAmount === undefined) {
+        throw new Error('Valor da contraproposta obrigatório');
+      }
+      this.assertValidOfferAmount(counterAmount);
+      const reply = decideNpcReplyToPlayerCounter({
+        amount: counterAmount,
+        fair: transferFee(player.rating),
+      });
+      if (reply === 'reject') {
+        this.removeOffer(offerId);
+        return { outcome: 'rejected', snapshot: this.getSnapshot() };
+      }
+      this.executeSell(player, offer.fromClubId, counterAmount);
+      this.removeOffer(offerId);
+      return { outcome: 'accepted', snapshot: this.getSnapshot() };
+    }
+
+    this.executeSell(player, offer.fromClubId, offer.amount);
+    this.removeOffer(offerId);
+    return { outcome: 'accepted', snapshot: this.getSnapshot() };
+  }
+
+  acceptCounter(offerId: string): ProposeResult {
+    this.assertStarted();
+    const offer = this.pendingOffers.find((candidate) => candidate.id === offerId);
+    if (!offer || offer.status !== 'countered' || offer.counterAmount === undefined) {
+      throw new Error('Contraproposta não encontrada');
+    }
+
+    const player = this.world.players.get(offer.playerId);
+    if (!player) {
+      this.removeOffer(offerId);
+      throw new Error('Jogador não encontrado');
+    }
+    if (offer.kind === 'player_buy') {
+      if (player.clubId !== offer.toClubId) {
+        this.removeOffer(offerId);
+        throw new Error('Jogador indisponível para compra');
+      }
+      if (this.balance < offer.counterAmount) {
+        throw new Error('Saldo insuficiente');
+      }
+      this.executeBuy(player, offer.counterAmount);
+    } else if (offer.kind === 'player_sell') {
+      if (player.clubId !== this.managedClubId) {
+        this.removeOffer(offerId);
+        throw new Error('Jogador não pertence ao plantel gerido');
+      }
+      if (this.managedSquadSize() <= 11) {
+        throw new Error('Plantel mínimo de 11 jogadores');
+      }
+      this.executeSell(player, offer.toClubId, offer.counterAmount);
+    } else {
+      throw new Error('Oferta não é uma contraproposta');
+    }
+
+    this.removeOffer(offerId);
+    return { outcome: 'accepted', snapshot: this.getSnapshot() };
+  }
+
+  declineOffer(offerId: string): ProposeResult {
+    this.assertStarted();
+    const offer = this.pendingOffers.find((candidate) => candidate.id === offerId);
+    if (!offer || offer.status !== 'countered') {
+      throw new Error('Contraproposta não encontrada');
+    }
+    this.removeOffer(offerId);
+    return { outcome: 'rejected', snapshot: this.getSnapshot() };
   }
 
   getSnapshot(): SessionSnapshot {
@@ -312,6 +534,16 @@ export class GameSession {
         this.world.clubs,
         this.managedClubId,
       ),
+      pendingOffers: this.pendingOffers.map((offer) => {
+        const player = this.world.players.get(offer.playerId);
+        return {
+          ...offer,
+          playerName: player?.name ?? offer.playerId,
+          fromClubName: this.clubName(offer.fromClubId),
+          toClubName: this.clubName(offer.toClubId),
+          fairFee: transferFee(player?.rating ?? 0),
+        };
+      }),
     };
   }
 
@@ -339,6 +571,7 @@ export class GameSession {
       managedClubId: this.managedClubId,
       cup: this.cup,
       ledger: this.ledger,
+      pendingOffers: this.pendingOffers,
     });
   }
 
@@ -373,6 +606,8 @@ export class GameSession {
     this.balance = save.balance ?? INITIAL_BALANCE;
     this.ledger = save.ledger ?? [];
     this.transferSeq = this.nextTransferSequence(this.ledger);
+    this.pendingOffers = save.pendingOffers ?? [];
+    this.offerSeq = this.nextOfferSequence(this.pendingOffers);
     const competition = this.world.competitions.get(this.competitionId);
     if (!competition) {
       throw new Error(`Competition not found: ${this.competitionId}`);
@@ -412,6 +647,65 @@ export class GameSession {
     ).length;
   }
 
+  private assertValidOfferAmount(amount: number): void {
+    if (!Number.isFinite(amount) || amount <= 0) {
+      throw new Error('Valor de oferta inválido');
+    }
+  }
+
+  private createOffer(offer: Omit<PendingOffer, 'id'>): PendingOffer {
+    this.offerSeq += 1;
+    const created = { ...offer, id: `offer-${this.offerSeq}` };
+    this.pendingOffers = [...this.pendingOffers, created];
+    return created;
+  }
+
+  private removeOffer(offerId: string): void {
+    this.pendingOffers = this.pendingOffers.filter((offer) => offer.id !== offerId);
+  }
+
+  private executeBuy(player: Player, amount: number): void {
+    this.world.players.set(player.id, {
+      ...player,
+      clubId: this.managedClubId,
+    });
+    this.balance -= amount;
+    this.transferSeq += 1;
+    this.ledger = [
+      ...this.ledger,
+      makeTransferEntry(
+        'transfer_out',
+        player.id,
+        this.transferSeq,
+        this.matchday,
+        -amount,
+        this.balance,
+        player.name,
+      ),
+    ];
+  }
+
+  private executeSell(player: Player, destinationClubId: Slug, amount: number): void {
+    this.world.players.set(player.id, {
+      ...player,
+      clubId: destinationClubId,
+    });
+    this.balance += amount;
+    this.transferSeq += 1;
+    this.ledger = [
+      ...this.ledger,
+      makeTransferEntry(
+        'transfer_in',
+        player.id,
+        this.transferSeq,
+        this.matchday,
+        amount,
+        this.balance,
+        player.name,
+      ),
+    ];
+  }
+
   private nextTransferSequence(ledger: readonly LedgerEntry[]): number {
     const transferSequences = ledger.flatMap((entry) => {
       const match = /^xfer-.+-(\d+)$/.exec(entry.id);
@@ -420,6 +714,14 @@ export class GameSession {
     return transferSequences.length > 0
       ? Math.max(...transferSequences)
       : ledger.length;
+  }
+
+  private nextOfferSequence(offers: readonly PendingOffer[]): number {
+    const sequences = offers.flatMap((offer) => {
+      const match = /^offer-(\d+)$/.exec(offer.id);
+      return match ? [Number(match[1])] : [];
+    });
+    return sequences.length > 0 ? Math.max(...sequences) : offers.length;
   }
 
   private bumpWinningReputations(results: readonly MatchResult[]): void {

@@ -114,11 +114,15 @@ export const useSessionStore = create<SessionStore>((set, get) => ({
     set({ editingModId: modId, editorWorld: null, editorError: null, editorTab: 'clubs' });
     try {
       const editorWorld = await window.phoenix.modEditor.loadWorld(modId);
-      set({ editorWorld });
+      if (get().editingModId === modId) {
+        set({ editorWorld });
+      }
     } catch (err) {
-      set({
-        editorError: err instanceof Error ? err.message : 'Falha ao abrir editor',
-      });
+      if (get().editingModId === modId) {
+        set({
+          editorError: err instanceof Error ? err.message : 'Falha ao abrir editor',
+        });
+      }
     }
   },
 
@@ -128,15 +132,22 @@ export const useSessionStore = create<SessionStore>((set, get) => ({
 
   createModPack: async (input) => {
     set({ editorError: null });
+    let modId: string | undefined;
     try {
       const mod = await window.phoenix.modEditor.create(input);
+      modId = mod.id;
+      set({ editingModId: mod.id, editorWorld: null, editorTab: 'clubs' });
       const editorWorld = await window.phoenix.modEditor.loadWorld(mod.id);
-      set({ editingModId: mod.id, editorWorld, editorTab: 'clubs' });
+      if (get().editingModId === mod.id) {
+        set({ editorWorld });
+      }
       await get().refreshLists();
     } catch (err) {
-      set({
-        editorError: err instanceof Error ? err.message : 'Falha ao criar mod',
-      });
+      if (modId === undefined || get().editingModId === modId) {
+        set({
+          editorError: err instanceof Error ? err.message : 'Falha ao criar mod',
+        });
+      }
     }
   },
 
@@ -146,12 +157,16 @@ export const useSessionStore = create<SessionStore>((set, get) => ({
     set({ editorError: null });
     try {
       const editorWorld = await window.phoenix.modEditor.upsertClub(modId, club);
-      set({ editorWorld });
+      if (get().editingModId === modId) {
+        set({ editorWorld });
+      }
       await get().refreshLists();
     } catch (err) {
-      set({
-        editorError: err instanceof Error ? err.message : 'Falha ao guardar clube',
-      });
+      if (get().editingModId === modId) {
+        set({
+          editorError: err instanceof Error ? err.message : 'Falha ao guardar clube',
+        });
+      }
     }
   },
 
@@ -161,12 +176,16 @@ export const useSessionStore = create<SessionStore>((set, get) => ({
     set({ editorError: null });
     try {
       const editorWorld = await window.phoenix.modEditor.upsertPlayer(modId, player);
-      set({ editorWorld });
+      if (get().editingModId === modId) {
+        set({ editorWorld });
+      }
       await get().refreshLists();
     } catch (err) {
-      set({
-        editorError: err instanceof Error ? err.message : 'Falha ao guardar jogador',
-      });
+      if (get().editingModId === modId) {
+        set({
+          editorError: err instanceof Error ? err.message : 'Falha ao guardar jogador',
+        });
+      }
     }
   },
 
@@ -176,12 +195,16 @@ export const useSessionStore = create<SessionStore>((set, get) => ({
     set({ editorError: null });
     try {
       const editorWorld = await window.phoenix.modEditor.removeClub(modId, clubId);
-      set({ editorWorld });
+      if (get().editingModId === modId) {
+        set({ editorWorld });
+      }
       await get().refreshLists();
     } catch (err) {
-      set({
-        editorError: err instanceof Error ? err.message : 'Falha ao remover clube',
-      });
+      if (get().editingModId === modId) {
+        set({
+          editorError: err instanceof Error ? err.message : 'Falha ao remover clube',
+        });
+      }
     }
   },
 
@@ -191,12 +214,16 @@ export const useSessionStore = create<SessionStore>((set, get) => ({
     set({ editorError: null });
     try {
       const editorWorld = await window.phoenix.modEditor.removePlayer(modId, playerId);
-      set({ editorWorld });
+      if (get().editingModId === modId) {
+        set({ editorWorld });
+      }
       await get().refreshLists();
     } catch (err) {
-      set({
-        editorError: err instanceof Error ? err.message : 'Falha ao remover jogador',
-      });
+      if (get().editingModId === modId) {
+        set({
+          editorError: err instanceof Error ? err.message : 'Falha ao remover jogador',
+        });
+      }
     }
   },
 
@@ -206,11 +233,15 @@ export const useSessionStore = create<SessionStore>((set, get) => ({
     set({ editorError: null });
     try {
       const editorWorld = await window.phoenix.modEditor.loadWorld(modId);
-      set({ editorWorld });
+      if (get().editingModId === modId) {
+        set({ editorWorld });
+      }
     } catch (err) {
-      set({
-        editorError: err instanceof Error ? err.message : 'Falha ao atualizar editor',
-      });
+      if (get().editingModId === modId) {
+        set({
+          editorError: err instanceof Error ? err.message : 'Falha ao atualizar editor',
+        });
+      }
     }
   },
 

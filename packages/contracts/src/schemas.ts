@@ -122,6 +122,26 @@ export const savePatchesSchema = z.object({
 
 export type SavePatches = z.infer<typeof savePatchesSchema>;
 
+export const ledgerTypeSchema = z.union([
+  z.literal('wages'),
+  z.literal('gate'),
+  z.literal('transfer_in'),
+  z.literal('transfer_out'),
+]);
+
+export type LedgerType = z.infer<typeof ledgerTypeSchema>;
+
+export const ledgerEntrySchema = z.object({
+  id: z.string().min(1),
+  matchday: z.number().int().min(0),
+  type: ledgerTypeSchema,
+  amount: z.number().finite(),
+  balanceAfter: z.number().finite(),
+  note: z.string().optional(),
+});
+
+export type LedgerEntry = z.infer<typeof ledgerEntrySchema>;
+
 /** Career save: runtime deltas + optional entity patches (v2). */
 export const saveGameSchema = z.object({
   version: z.union([z.literal(1), z.literal(2)]),
@@ -138,6 +158,7 @@ export const saveGameSchema = z.object({
   balance: z.number().finite().optional(),
   managedClubId: slugSchema.optional(),
   cup: cupStateSchema.optional(),
+  ledger: z.array(ledgerEntrySchema).optional(),
 });
 
 export type SaveGame = z.infer<typeof saveGameSchema>;

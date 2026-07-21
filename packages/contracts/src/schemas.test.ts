@@ -124,4 +124,48 @@ describe('saveGameSchema', () => {
     });
     expect(save.balance).toBe(5_000_000);
   });
+
+  it('accepts v2 save with optional ledger', () => {
+    const save = saveGameSchema.parse({
+      version: 2,
+      savedAt: 1,
+      slotId: 'slot-1',
+      label: 'Career',
+      seed: 42,
+      modIds: [],
+      competitionId: 'premier-league-en',
+      matchday: 1,
+      table: [],
+      lastResults: [],
+      balance: 4_580_000,
+      ledger: [
+        {
+          id: 'md-1-wages',
+          matchday: 1,
+          type: 'wages',
+          amount: -420_000,
+          balanceAfter: 4_580_000,
+        },
+      ],
+    });
+    expect(save.ledger).toHaveLength(1);
+    expect(save.ledger?.[0]?.id).toBe('md-1-wages');
+  });
+
+  it('accepts v2 save without ledger', () => {
+    const save = saveGameSchema.parse({
+      version: 2,
+      savedAt: 1,
+      slotId: 'slot-1',
+      label: 'Career',
+      seed: 42,
+      modIds: [],
+      competitionId: 'premier-league-en',
+      matchday: 5,
+      table: [],
+      lastResults: [],
+      balance: 5_000_000,
+    });
+    expect(save.ledger).toBeUndefined();
+  });
 });

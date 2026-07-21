@@ -104,7 +104,7 @@ describe('aiBidCount', () => {
 describe('pickNpcNpcTransfers', () => {
   const managedClubId: Slug = 'london-fc-en';
 
-  function buildNpcTransferFixture(): {
+  function buildNpcTransferFixture(buyerSquadSize = 24): {
     clubs: Map<Slug, Club>;
     players: Map<Slug, Player>;
   } {
@@ -123,7 +123,7 @@ describe('pickNpcNpcTransfers', () => {
         rating: 40 + i,
       }));
     }
-    for (let i = 0; i < 24; i++) {
+    for (let i = 0; i < buyerSquadSize; i++) {
       players.set(`buyer-p${i}`, player({
         id: `buyer-p${i}`,
         name: `Buyer P${i}`,
@@ -135,7 +135,7 @@ describe('pickNpcNpcTransfers', () => {
   }
 
   it('never uses managed club as seller or buyer', () => {
-    const { clubs, players } = buildNpcTransferFixture();
+    const { clubs, players } = buildNpcTransferFixture(23);
     const transfers = pickNpcNpcTransfers(
       clubs,
       players,
@@ -150,8 +150,8 @@ describe('pickNpcNpcTransfers', () => {
     }
   });
 
-  it('respects seller 11 and buyer 25 squad caps', () => {
-    const { clubs, players } = buildNpcTransferFixture();
+  it('performs transfers with distinct players and respects squad caps when buyer has room', () => {
+    const { clubs, players } = buildNpcTransferFixture(23);
     const transfers = pickNpcNpcTransfers(
       clubs,
       players,
@@ -159,6 +159,16 @@ describe('pickNpcNpcTransfers', () => {
       createRng(7),
       3,
     );
+
+    expect(transfers.length).toBeGreaterThan(0);
+    expect(
+      transfers.some(
+        (t) => t.fromClubId === 'seller-fc-en' && t.toClubId === 'buyer-fc-en',
+      ),
+    ).toBe(true);
+
+    const playerIds = transfers.map((t) => t.playerId);
+    expect(new Set(playerIds).size).toBe(playerIds.length);
 
     const squadSizes = new Map<Slug, number>();
     for (const p of players.values()) {
@@ -173,8 +183,25 @@ describe('pickNpcNpcTransfers', () => {
     expect(squadSizes.get('buyer-fc-en')).toBeLessThan(25);
   });
 
+  it('does not transfer from seller to buyer when buyer is already at 24', () => {
+    const { clubs, players } = buildNpcTransferFixture(24);
+    const transfers = pickNpcNpcTransfers(
+      clubs,
+      players,
+      managedClubId,
+      createRng(7),
+      1,
+    );
+
+    expect(
+      transfers.filter(
+        (t) => t.fromClubId === 'seller-fc-en' && t.toClubId === 'buyer-fc-en',
+      ),
+    ).toHaveLength(0);
+  });
+
   it('returns at most maxTransfers', () => {
-    const { clubs, players } = buildNpcTransferFixture();
+    const { clubs, players } = buildNpcTransferFixture(23);
     const transfers = pickNpcNpcTransfers(
       clubs,
       players,

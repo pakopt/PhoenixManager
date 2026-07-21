@@ -54,10 +54,16 @@ function countSquads(players: ReadonlyMap<Slug, Player>): Map<Slug, number> {
 
 function midLowPlayersFromSeller(
   players: ReadonlyMap<Slug, Player>,
+  effectiveClubByPlayer: ReadonlyMap<Slug, Slug>,
   sellerId: Slug,
+  excludedPlayerIds: ReadonlySet<Slug>,
 ): Player[] {
   const sellerPlayers = [...players.values()]
-    .filter((p) => p.clubId === sellerId)
+    .filter(
+      (p) =>
+        effectiveClubByPlayer.get(p.id) === sellerId &&
+        !excludedPlayerIds.has(p.id),
+    )
     .sort((a, b) => a.rating - b.rating);
   const lowerThirdCount = Math.max(1, Math.ceil(sellerPlayers.length / 3));
   return sellerPlayers.slice(0, lowerThirdCount);
@@ -73,6 +79,11 @@ export function pickNpcNpcTransfers(
   if (maxTransfers <= 0) return [];
 
   const squadSizes = countSquads(players);
+  const effectiveClubByPlayer = new Map<Slug, Slug>();
+  for (const p of players.values()) {
+    effectiveClubByPlayer.set(p.id, p.clubId);
+  }
+  const selectedPlayerIds = new Set<Slug>();
   const results: Array<{ playerId: Slug; fromClubId: Slug; toClubId: Slug }> = [];
 
   for (let i = 0; i < maxTransfers; i++) {
@@ -90,7 +101,12 @@ export function pickNpcNpcTransfers(
       const sellerSize = squadSizes.get(seller.id) ?? 0;
       if (sellerSize <= 11) continue;
 
-      const transferable = midLowPlayersFromSeller(players, seller.id);
+      const transferable = midLowPlayersFromSeller(
+        players,
+        effectiveClubByPlayer,
+        seller.id,
+        selectedPlayerIds,
+      );
 
       for (const buyer of clubs.values()) {
         if (buyer.id === managedClubId || buyer.id === seller.id) continue;
@@ -122,6 +138,8 @@ export function pickNpcNpcTransfers(
       toClubId: chosen.toClubId,
     });
 
+    selectedPlayerIds.add(chosen.playerId);
+    effectiveClubByPlayer.set(chosen.playerId, chosen.toClubId);
     squadSizes.set(
       chosen.fromClubId,
       (squadSizes.get(chosen.fromClubId) ?? 0) - 1,

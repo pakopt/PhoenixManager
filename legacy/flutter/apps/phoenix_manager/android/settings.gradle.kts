@@ -23,4 +23,7 @@ plugins {
     id("org.jetbrains.kotlin.android") version "2.3.20" apply false
 }
 
+// Unique name — folder defaults to "android", which clashes with Java LS in monorepos.
+rootProject.name = "phoenix_manager"
+
 include(":app")

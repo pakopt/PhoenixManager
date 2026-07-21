@@ -34,4 +34,4 @@ pnpm dev:desktop
 Saves v2: `saves/<slot>/save.json` inclui `patches.clubs`, `patches.players`, `balance`, `ledger` (opcional), `pendingOffers` (opcional) e estado da taça.  
 Vitória numa jornada: `reputation +1` (máx. 100).  
 Clube gerido: timeline L1 (~12 eventos); resto L3. Taça após J5/J10/J15 — highlight preferido se houver jogo de taça.  
-Mod editor 5d: só clubes/jogadores em `database/mods/`; **5d.2** (nações, competições, lobby sem auto-start) fora de âmbito.
+Mod editor 5d: `database/core/` só leitura; edição só clubes/jogadores em `database/mods/`; **5d.2** (nações, competições, lobby sem auto-start) fora de âmbito.

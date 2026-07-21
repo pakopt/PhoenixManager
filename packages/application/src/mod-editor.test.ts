@@ -272,6 +272,27 @@ describe('mod editor', () => {
     });
   });
 
+  it('loadEditorWorld throws Shard inválido on non-ENOENT read errors', async () => {
+    await createMod(fs, databaseRoot, { id: 'my-mod', name: 'My Mod' });
+    const clubsPath = join(databaseRoot, 'core', 'clubs', 'clubs-00001.json');
+
+    const ioErrorFs: SaveFs = {
+      ...fs,
+      readFile: async (path) => {
+        if (path === clubsPath) {
+          const error = new Error('EACCES: permission denied, open') as NodeJS.ErrnoException;
+          error.code = 'EACCES';
+          throw error;
+        }
+        return fs.readFile(path);
+      },
+    };
+
+    await expect(loadEditorWorld(ioErrorFs, databaseRoot, 'my-mod')).rejects.toThrow(
+      'Shard inválido',
+    );
+  });
+
   it('upsertModClub throws on malformed shard without wiping file', async () => {
     await createMod(fs, databaseRoot, { id: 'my-mod', name: 'My Mod' });
     const shardPath = join(databaseRoot, 'mods', 'my-mod', 'clubs', 'clubs-00001.json');

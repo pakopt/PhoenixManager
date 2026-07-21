@@ -43,6 +43,24 @@ async function assertModExists(fs: SaveFs, modRoot: string): Promise<void> {
   }
 }
 
+function isMissingFileError(error: unknown): boolean {
+  if (typeof error !== 'object' || error === null) {
+    return false;
+  }
+
+  const err = error as { code?: string; message?: string };
+  if (err.code === 'ENOENT') {
+    return true;
+  }
+
+  const message = err.message?.toLowerCase() ?? '';
+  return (
+    message.includes('enoent') ||
+    message.includes('no such file') ||
+    message.includes('not found')
+  );
+}
+
 async function readShardEntities<T>(
   fs: SaveFs,
   filePath: string,
@@ -51,8 +69,11 @@ async function readShardEntities<T>(
   let contents: string;
   try {
     contents = await fs.readFile(filePath);
-  } catch {
-    return [];
+  } catch (error) {
+    if (isMissingFileError(error)) {
+      return [];
+    }
+    throw new Error('Shard inválido');
   }
 
   let raw: unknown;

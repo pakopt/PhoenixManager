@@ -1,7 +1,25 @@
 import { useEffect, useState } from 'react';
+import type { LedgerEntry } from '@phoenix/contracts';
 import { useSessionStore } from './store';
 
 type MarketPositionFilter = 'ALL' | 'GK' | 'DF' | 'MF' | 'FW';
+
+function ledgerTypeLabel(type: LedgerEntry['type']): string {
+  switch (type) {
+    case 'wages':
+      return 'Salários';
+    case 'gate':
+      return 'Bilheteira';
+    case 'transfer_out':
+      return 'Transferência (compra)';
+    case 'transfer_in':
+      return 'Transferência (venda)';
+    default: {
+      const exhaustive: never = type;
+      return exhaustive;
+    }
+  }
+}
 
 function cupRoundLabel(round: 'qf' | 'sf' | 'final'): string {
   switch (round) {
@@ -71,6 +89,16 @@ export default function App() {
   const filteredMarket = snapshot.market.filter(
     (player) => marketPositionFilter === 'ALL' || player.position === marketPositionFilter,
   );
+  const revenues = snapshot.ledger.reduce(
+    (total, entry) => total + (entry.amount > 0 ? entry.amount : 0),
+    0,
+  );
+  const expenses = snapshot.ledger.reduce(
+    (total, entry) => total + (entry.amount < 0 ? -entry.amount : 0),
+    0,
+  );
+  const result = snapshot.ledger.reduce((total, entry) => total + entry.amount, 0);
+  const ledgerEntries = [...snapshot.ledger].reverse();
 
   return (
     <div className="mx-auto flex min-h-screen max-w-5xl flex-col gap-6 p-6 md:p-8">
@@ -424,6 +452,76 @@ export default function App() {
           </div>
         </section>
       </div>
+
+      <section className="overflow-hidden rounded-lg border border-[var(--border)] bg-[var(--surface)]/80">
+        <h2 className="border-b border-[var(--border)] px-4 py-3 text-sm font-medium uppercase tracking-wider text-[var(--muted)]">
+          Finanças
+        </h2>
+        <dl className="grid grid-cols-3 divide-x divide-[var(--border)] border-b border-[var(--border)]">
+          <div className="px-4 py-3">
+            <dt className="text-xs uppercase tracking-wider text-[var(--muted)]">Receitas</dt>
+            <dd className="mt-1 font-medium tabular-nums text-emerald-300">
+              €{revenues.toLocaleString('pt-PT')}
+            </dd>
+          </div>
+          <div className="px-4 py-3">
+            <dt className="text-xs uppercase tracking-wider text-[var(--muted)]">Despesas</dt>
+            <dd className="mt-1 font-medium tabular-nums text-red-300">
+              €{expenses.toLocaleString('pt-PT')}
+            </dd>
+          </div>
+          <div className="px-4 py-3">
+            <dt className="text-xs uppercase tracking-wider text-[var(--muted)]">Resultado</dt>
+            <dd
+              className={`mt-1 font-medium tabular-nums ${
+                result < 0 ? 'text-red-300' : 'text-emerald-300'
+              }`}
+            >
+              €{result.toLocaleString('pt-PT')}
+            </dd>
+          </div>
+        </dl>
+        <div className="overflow-x-auto">
+          <table className="w-full min-w-[680px] text-left text-sm">
+            <thead className="bg-black/25 text-[var(--muted)]">
+              <tr>
+                <th className="px-3 py-2 font-medium">Jornada</th>
+                <th className="px-3 py-2 font-medium">Tipo</th>
+                <th className="px-3 py-2 font-medium">Valor</th>
+                <th className="px-3 py-2 font-medium">Saldo após</th>
+                <th className="px-3 py-2 font-medium">Nota</th>
+              </tr>
+            </thead>
+            <tbody>
+              {ledgerEntries.length === 0 ? (
+                <tr>
+                  <td colSpan={5} className="px-3 py-4 text-[var(--muted)]">
+                    Ainda não há movimentos financeiros nesta época.
+                  </td>
+                </tr>
+              ) : (
+                ledgerEntries.map((entry) => (
+                  <tr key={entry.id} className="border-t border-[var(--border)]/70">
+                    <td className="px-3 py-2 tabular-nums">{entry.matchday}</td>
+                    <td className="px-3 py-2">{ledgerTypeLabel(entry.type)}</td>
+                    <td
+                      className={`px-3 py-2 tabular-nums ${
+                        entry.amount < 0 ? 'text-red-300' : 'text-emerald-300'
+                      }`}
+                    >
+                      €{entry.amount.toLocaleString('pt-PT')}
+                    </td>
+                    <td className="px-3 py-2 tabular-nums">
+                      €{entry.balanceAfter.toLocaleString('pt-PT')}
+                    </td>
+                    <td className="px-3 py-2 text-[var(--muted)]">{entry.note ?? '—'}</td>
+                  </tr>
+                ))
+              )}
+            </tbody>
+          </table>
+        </div>
+      </section>
 
       <section className="overflow-hidden rounded-lg border border-[var(--border)] bg-[var(--surface)]/80">
         <h2 className="border-b border-[var(--border)] px-4 py-3 text-sm font-medium uppercase tracking-wider text-[var(--muted)]">

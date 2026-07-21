@@ -272,6 +272,47 @@ describe('mod editor', () => {
     });
   });
 
+  it('createMod throws on non-ENOENT manifest read errors', async () => {
+    const manifestPath = join(databaseRoot, 'mods', 'my-mod', 'manifest.json');
+
+    const ioErrorFs: SaveFs = {
+      ...fs,
+      readFile: async (path) => {
+        if (path === manifestPath) {
+          const error = new Error('EACCES: permission denied, open') as NodeJS.ErrnoException;
+          error.code = 'EACCES';
+          throw error;
+        }
+        return fs.readFile(path);
+      },
+    };
+
+    await expect(
+      createMod(ioErrorFs, databaseRoot, { id: 'my-mod', name: 'My Mod' }),
+    ).rejects.toMatchObject({ code: 'EACCES' });
+  });
+
+  it('loadEditorWorld rethrows non-ENOENT manifest read errors', async () => {
+    await createMod(fs, databaseRoot, { id: 'my-mod', name: 'My Mod' });
+    const manifestPath = join(databaseRoot, 'mods', 'my-mod', 'manifest.json');
+
+    const ioErrorFs: SaveFs = {
+      ...fs,
+      readFile: async (path) => {
+        if (path === manifestPath) {
+          const error = new Error('EACCES: permission denied, open') as NodeJS.ErrnoException;
+          error.code = 'EACCES';
+          throw error;
+        }
+        return fs.readFile(path);
+      },
+    };
+
+    await expect(loadEditorWorld(ioErrorFs, databaseRoot, 'my-mod')).rejects.toMatchObject({
+      code: 'EACCES',
+    });
+  });
+
   it('loadEditorWorld throws Shard inválido on non-ENOENT read errors', async () => {
     await createMod(fs, databaseRoot, { id: 'my-mod', name: 'My Mod' });
     const clubsPath = join(databaseRoot, 'core', 'clubs', 'clubs-00001.json');

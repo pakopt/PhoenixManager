@@ -38,8 +38,11 @@ function parseSlug(value: string): Slug {
 async function assertModExists(fs: SaveFs, modRoot: string): Promise<void> {
   try {
     await fs.readFile(fs.joinPath(modRoot, 'manifest.json'));
-  } catch {
-    throw new Error('Mod não encontrado');
+  } catch (error) {
+    if (isMissingFileError(error)) {
+      throw new Error('Mod não encontrado');
+    }
+    throw error;
   }
 }
 
@@ -144,6 +147,9 @@ export async function createMod(
     throw new Error('Mod já existe');
   } catch (error) {
     if (error instanceof Error && error.message === 'Mod já existe') {
+      throw error;
+    }
+    if (!isMissingFileError(error)) {
       throw error;
     }
   }

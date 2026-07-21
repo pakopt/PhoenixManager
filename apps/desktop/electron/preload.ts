@@ -1,5 +1,5 @@
 import { contextBridge, ipcRenderer } from 'electron';
-import type { SessionSnapshot } from '@phoenix/application';
+import type { ProposeResult, SessionSnapshot } from '@phoenix/application';
 import type { ModInfo, SaveMeta } from '@phoenix/contracts';
 
 export type StartOpts = {
@@ -17,6 +17,20 @@ const phoenix = {
       ipcRenderer.invoke('session:buyPlayer', playerId),
     sellPlayer: (playerId: string): Promise<SessionSnapshot> =>
       ipcRenderer.invoke('session:sellPlayer', playerId),
+    proposeBuy: (playerId: string, amount?: number): Promise<ProposeResult> =>
+      ipcRenderer.invoke('session:proposeBuy', playerId, amount),
+    proposeSell: (playerId: string, amount?: number): Promise<ProposeResult> =>
+      ipcRenderer.invoke('session:proposeSell', playerId, amount),
+    respondOffer: (
+      offerId: string,
+      action: 'accept' | 'reject' | 'counter',
+      counterAmount?: number,
+    ): Promise<ProposeResult> =>
+      ipcRenderer.invoke('session:respondOffer', offerId, action, counterAmount),
+    acceptCounter: (offerId: string): Promise<ProposeResult> =>
+      ipcRenderer.invoke('session:acceptCounter', offerId),
+    declineOffer: (offerId: string): Promise<ProposeResult> =>
+      ipcRenderer.invoke('session:declineOffer', offerId),
     getSnapshot: (): Promise<SessionSnapshot> => ipcRenderer.invoke('session:getSnapshot'),
     save: (slotId: string, label?: string): Promise<SaveMeta> =>
       ipcRenderer.invoke('session:save', slotId, label),

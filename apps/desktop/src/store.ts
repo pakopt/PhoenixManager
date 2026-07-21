@@ -1,4 +1,4 @@
-import type { SessionSnapshot } from '@phoenix/application';
+import type { ProposeResult, SessionSnapshot } from '@phoenix/application';
 import type { ModInfo, SaveMeta } from '@phoenix/contracts';
 import { create } from 'zustand';
 
@@ -6,6 +6,8 @@ type SessionStore = {
   snapshot: SessionSnapshot | null;
   busy: boolean;
   error: string | null;
+  lastOfferMessage: string | null;
+  lastCounterOfferId: string | null;
   saves: SaveMeta[];
   mods: ModInfo[];
   selectedMods: string[];
@@ -18,6 +20,15 @@ type SessionStore = {
   advanceDay: () => Promise<void>;
   buyPlayer: (playerId: string) => Promise<void>;
   sellPlayer: (playerId: string) => Promise<void>;
+  proposeBuy: (playerId: string, amount?: number) => Promise<void>;
+  proposeSell: (playerId: string, amount?: number) => Promise<void>;
+  respondOffer: (
+    offerId: string,
+    action: 'accept' | 'reject' | 'counter',
+    counterAmount?: number,
+  ) => Promise<void>;
+  acceptCounter: (offerId: string) => Promise<void>;
+  declineOffer: (offerId: string) => Promise<void>;
   save: (label?: string) => Promise<void>;
   load: (slotId: string) => Promise<void>;
   refreshLists: () => Promise<void>;
@@ -32,10 +43,30 @@ function slugifyLabel(label: string): string {
     .slice(0, 40) || 'career';
 }
 
+function offerMessage(result: ProposeResult): string {
+  if (result.message) return result.message;
+  switch (result.outcome) {
+    case 'accepted':
+      return 'Oferta aceite.';
+    case 'rejected':
+      return 'Oferta recusada.';
+    case 'countered':
+      return result.counterAmount === undefined
+        ? 'Foi recebida uma contraproposta.'
+        : `Contraproposta recebida: €${result.counterAmount.toLocaleString('pt-PT')}.`;
+    default: {
+      const exhaustive: never = result.outcome;
+      return exhaustive;
+    }
+  }
+}
+
 export const useSessionStore = create<SessionStore>((set, get) => ({
   snapshot: null,
   busy: false,
   error: null,
+  lastOfferMessage: null,
+  lastCounterOfferId: null,
   saves: [],
   mods: [],
   selectedMods: [],
@@ -75,6 +106,8 @@ export const useSessionStore = create<SessionStore>((set, get) => ({
       set({
         snapshot,
         busy: false,
+        lastOfferMessage: null,
+        lastCounterOfferId: null,
         selectedManagedClubId: snapshot.managedClubId,
       });
       await get().refreshLists();
@@ -91,7 +124,12 @@ export const useSessionStore = create<SessionStore>((set, get) => ({
     set({ busy: true, error: null });
     try {
       const snapshot = await window.phoenix.session.advanceDay();
-      set({ snapshot, busy: false });
+      set({
+        snapshot,
+        busy: false,
+        lastOfferMessage: null,
+        lastCounterOfferId: null,
+      });
     } catch (err) {
       set({
         busy: false,
@@ -128,6 +166,105 @@ export const useSessionStore = create<SessionStore>((set, get) => ({
     }
   },
 
+  proposeBuy: async (playerId, amount) => {
+    if (get().busy) return;
+    set({ busy: true, error: null });
+    try {
+      const result = await window.phoenix.session.proposeBuy(playerId, amount);
+      set({
+        snapshot: result.snapshot,
+        busy: false,
+        lastOfferMessage: offerMessage(result),
+        lastCounterOfferId: result.outcome === 'countered' ? (result.offerId ?? null) : null,
+      });
+    } catch (err) {
+      set({
+        busy: false,
+        error: err instanceof Error ? err.message : 'Falha ao propor compra',
+      });
+    }
+  },
+
+  proposeSell: async (playerId, amount) => {
+    if (get().busy) return;
+    set({ busy: true, error: null });
+    try {
+      const result = await window.phoenix.session.proposeSell(playerId, amount);
+      set({
+        snapshot: result.snapshot,
+        busy: false,
+        lastOfferMessage: offerMessage(result),
+        lastCounterOfferId: result.outcome === 'countered' ? (result.offerId ?? null) : null,
+      });
+    } catch (err) {
+      set({
+        busy: false,
+        error: err instanceof Error ? err.message : 'Falha ao propor venda',
+      });
+    }
+  },
+
+  respondOffer: async (offerId, action, counterAmount) => {
+    if (get().busy) return;
+    set({ busy: true, error: null });
+    try {
+      const result = await window.phoenix.session.respondOffer(
+        offerId,
+        action,
+        counterAmount,
+      );
+      set({
+        snapshot: result.snapshot,
+        busy: false,
+        lastOfferMessage: offerMessage(result),
+        lastCounterOfferId: null,
+      });
+    } catch (err) {
+      set({
+        busy: false,
+        error: err instanceof Error ? err.message : 'Falha ao responder à oferta',
+      });
+    }
+  },
+
+  acceptCounter: async (offerId) => {
+    if (get().busy) return;
+    set({ busy: true, error: null });
+    try {
+      const result = await window.phoenix.session.acceptCounter(offerId);
+      set({
+        snapshot: result.snapshot,
+        busy: false,
+        lastOfferMessage: offerMessage(result),
+        lastCounterOfferId: null,
+      });
+    } catch (err) {
+      set({
+        busy: false,
+        error: err instanceof Error ? err.message : 'Falha ao aceitar contraproposta',
+      });
+    }
+  },
+
+  declineOffer: async (offerId) => {
+    if (get().busy) return;
+    set({ busy: true, error: null });
+    try {
+      const result = await window.phoenix.session.declineOffer(offerId);
+      set({
+        snapshot: result.snapshot,
+        busy: false,
+        lastOfferMessage: offerMessage(result),
+        lastCounterOfferId: null,
+      });
+    } catch (err) {
+      set({
+        busy: false,
+        error: err instanceof Error ? err.message : 'Falha ao recusar contraproposta',
+      });
+    }
+  },
+
   save: async (label) => {
     const snap = get().snapshot;
     if (!snap || get().busy) return;
@@ -153,6 +290,8 @@ export const useSessionStore = create<SessionStore>((set, get) => ({
       set({
         snapshot,
         busy: false,
+        lastOfferMessage: null,
+        lastCounterOfferId: null,
         selectedMods: snapshot.modIds,
         selectedManagedClubId: snapshot.managedClubId,
       });

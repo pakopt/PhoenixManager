@@ -1,5 +1,5 @@
 export { GameSession } from './game-session.js';
-export type { StartSessionOptions } from './game-session.js';
+export type { ProposeResult, StartSessionOptions } from './game-session.js';
 export type {
   SessionSnapshot,
   SnapshotClub,
@@ -7,6 +7,7 @@ export type {
   SnapshotCupTie,
   SnapshotHighlight,
   SnapshotMarketPlayer,
+  SnapshotPendingOffer,
   SnapshotPlayer,
   SnapshotResult,
   SnapshotTableRow,
@@ -28,6 +29,15 @@ export {
   pickSellDestinationClub,
   transferFee,
 } from './transfer.js';
+export {
+  aiBidCount,
+  counterAmountFor,
+  decideNpcReplyToPlayerCounter,
+  decideNpcResponse,
+  pickNpcBids,
+  pickNpcNpcTransfers,
+} from './club-ai.js';
+export type { AiDecision } from './club-ai.js';
 export {
   gateReceipt,
   makeGateEntry,

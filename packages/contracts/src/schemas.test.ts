@@ -168,4 +168,50 @@ describe('saveGameSchema', () => {
     });
     expect(save.ledger).toBeUndefined();
   });
+
+  it('accepts v2 save with optional pendingOffers', () => {
+    const save = saveGameSchema.parse({
+      version: 2,
+      savedAt: 1,
+      slotId: 'slot-1',
+      label: 'Career',
+      seed: 42,
+      modIds: [],
+      competitionId: 'premier-league-en',
+      matchday: 1,
+      table: [],
+      lastResults: [],
+      balance: 4_580_000,
+      pendingOffers: [
+        {
+          id: 'offer-1',
+          kind: 'npc_bid',
+          playerId: 'p1',
+          fromClubId: 'c1',
+          toClubId: 'c2',
+          amount: 4_000_000,
+          status: 'pending',
+          createdMatchday: 3,
+        },
+      ],
+    });
+    expect(save.pendingOffers).toHaveLength(1);
+  });
+
+  it('accepts v2 save without pendingOffers', () => {
+    const save = saveGameSchema.parse({
+      version: 2,
+      savedAt: 1,
+      slotId: 'slot-1',
+      label: 'Career',
+      seed: 42,
+      modIds: [],
+      competitionId: 'premier-league-en',
+      matchday: 5,
+      table: [],
+      lastResults: [],
+      balance: 5_000_000,
+    });
+    expect(save.pendingOffers).toBeUndefined();
+  });
 });

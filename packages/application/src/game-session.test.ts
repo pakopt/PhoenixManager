@@ -298,6 +298,164 @@ describe('GameSession', () => {
     expect(after.market.some((candidate) => candidate.id === original.id)).toBe(false);
   });
 
+  it('proposeBuy at fair accepts and debits balance', async () => {
+    const session = new GameSession(nodeFs);
+    const start = await session.start({ databaseRoot, seed: 42 });
+    const player = start.market[0]!;
+    const world = (session as unknown as { world: WorldDatabase }).world;
+    world.players.set(player.id, { ...world.players.get(player.id)!, rating: 40 });
+
+    const result = session.proposeBuy(player.id);
+
+    expect(result.outcome).toBe('accepted');
+    expect(result.snapshot.balance).toBe(start.balance - transferFee(40));
+    expect(result.snapshot.squad.some((candidate) => candidate.id === player.id)).toBe(true);
+  });
+
+  it('proposeBuy below 0.85 rejects without balance change', async () => {
+    const session = new GameSession(nodeFs);
+    const start = await session.start({ databaseRoot, seed: 42 });
+    const player = start.market[0]!;
+    const world = (session as unknown as { world: WorldDatabase }).world;
+    world.players.set(player.id, { ...world.players.get(player.id)!, rating: 40 });
+
+    const result = session.proposeBuy(player.id, transferFee(40) * 0.8);
+
+    expect(result.outcome).toBe('rejected');
+    expect(result.snapshot.balance).toBe(start.balance);
+    expect(result.snapshot.market.some((candidate) => candidate.id === player.id)).toBe(true);
+  });
+
+  it('proposeBuy in counter band stores countered offer', async () => {
+    const session = new GameSession(nodeFs);
+    const start = await session.start({ databaseRoot, seed: 42 });
+    const player = start.market[0]!;
+    const world = (session as unknown as { world: WorldDatabase }).world;
+    world.players.set(player.id, { ...world.players.get(player.id)!, rating: 40 });
+    const fair = transferFee(40);
+
+    const result = session.proposeBuy(player.id, fair * 0.9);
+
+    expect(result).toMatchObject({
+      outcome: 'countered',
+      offerId: 'offer-1',
+    });
+    expect(result.snapshot.pendingOffers).toContainEqual(
+      expect.objectContaining({
+        id: 'offer-1',
+        kind: 'player_buy',
+        playerId: player.id,
+        status: 'countered',
+      }),
+    );
+  });
+
+  it('acceptCounter completes buy at counterAmount', async () => {
+    const session = new GameSession(nodeFs);
+    const start = await session.start({ databaseRoot, seed: 42 });
+    const player = start.market[0]!;
+    const world = (session as unknown as { world: WorldDatabase }).world;
+    world.players.set(player.id, { ...world.players.get(player.id)!, rating: 40 });
+    const proposed = session.proposeBuy(player.id, transferFee(40) * 0.9);
+
+    const accepted = session.acceptCounter(proposed.offerId!);
+
+    expect(accepted.outcome).toBe('accepted');
+    expect(accepted.snapshot.balance).toBe(start.balance - proposed.counterAmount!);
+    expect(accepted.snapshot.pendingOffers).toEqual([]);
+    expect(accepted.snapshot.squad.some((candidate) => candidate.id === player.id)).toBe(true);
+  });
+
+  it('advanceDay expires pending offers then may add npc_bid', async () => {
+    const session = new GameSession(nodeFs);
+    const start = await session.start({ databaseRoot, seed: 42 });
+    const player = start.market[0]!;
+    const world = (session as unknown as { world: WorldDatabase }).world;
+    world.players.set(player.id, { ...world.players.get(player.id)!, rating: 40 });
+    const proposed = session.proposeBuy(player.id, transferFee(40) * 0.9);
+    expect(proposed.snapshot.pendingOffers).toHaveLength(1);
+
+    const advanced = session.advanceDay();
+
+    expect(advanced.pendingOffers.every((offer) => offer.kind === 'npc_bid')).toBe(true);
+    expect(advanced.pendingOffers.length).toBeLessThanOrEqual(2);
+  });
+
+  it('advanceDay preserves pending offers when the season is already finished', async () => {
+    const session = new GameSession(nodeFs);
+    const start = await session.start({ databaseRoot, seed: 42 });
+    const player = start.market[0]!;
+    const world = (session as unknown as { world: WorldDatabase }).world;
+    world.players.set(player.id, { ...world.players.get(player.id)!, rating: 40 });
+    const proposed = session.proposeBuy(player.id, transferFee(40) * 0.9);
+    (session as unknown as { matchday: number }).matchday = start.totalMatchdays;
+
+    const finished = session.advanceDay();
+
+    expect(finished.pendingOffers).toHaveLength(1);
+    expect(finished.pendingOffers[0]?.id).toBe(proposed.offerId);
+  });
+
+  it('accepts an npc_bid, credits balance, and moves the player', async () => {
+    const session = new GameSession(nodeFs);
+    const start = await session.start({ databaseRoot, seed: 42 });
+    const player = start.squad[0]!;
+    const amount = transferFee(player.rating);
+    const internal = session as unknown as {
+      pendingOffers: Array<{
+        id: string;
+        kind: 'npc_bid';
+        playerId: string;
+        fromClubId: string;
+        toClubId: string;
+        amount: number;
+        status: 'pending';
+        createdMatchday: number;
+      }>;
+    };
+    internal.pendingOffers = [{
+      id: 'offer-7',
+      kind: 'npc_bid',
+      playerId: player.id,
+      fromClubId: 'manchester-rovers-en',
+      toClubId: start.managedClubId,
+      amount,
+      status: 'pending',
+      createdMatchday: 0,
+    }];
+
+    const accepted = session.respondOffer('offer-7', 'accept');
+
+    expect(accepted.outcome).toBe('accepted');
+    expect(accepted.snapshot.balance).toBe(start.balance + amount);
+    expect(accepted.snapshot.squad.some((candidate) => candidate.id === player.id)).toBe(false);
+    expect(accepted.snapshot.pendingOffers).toEqual([]);
+  });
+
+  it('save/load restores pendingOffers', async () => {
+    const savesRoot = await mkdtemp(join(tmpdir(), 'phoenix-saves-'));
+    const session = new GameSession(nodeFs);
+    const start = await session.start({ databaseRoot, savesRoot, seed: 42 });
+    const player = start.market[0]!;
+    const world = (session as unknown as { world: WorldDatabase }).world;
+    world.players.set(player.id, { ...world.players.get(player.id)!, rating: 40 });
+    const proposed = session.proposeBuy(player.id, transferFee(40) * 0.9);
+    await session.save('offer-test');
+
+    const loaded = new GameSession(nodeFs);
+    const snapshot = await loaded.loadWithRoots('offer-test', databaseRoot, savesRoot);
+
+    expect(snapshot.pendingOffers).toHaveLength(1);
+    expect(snapshot.pendingOffers[0]).toMatchObject({
+      id: proposed.offerId,
+      kind: 'player_buy',
+      playerId: player.id,
+      amount: transferFee(40) * 0.9,
+      counterAmount: transferFee(40),
+      status: 'countered',
+    });
+  });
+
   it('rejects a buy when the balance is insufficient', async () => {
     const session = new GameSession(nodeFs);
     const start = await session.start({ databaseRoot, seed: 42 });
@@ -320,6 +478,33 @@ describe('GameSession', () => {
     expect(after.balance).toBe(start.balance + transferFee(player.rating));
     expect(after.squad.some((candidate) => candidate.id === player.id)).toBe(false);
     expect(after.market.some((candidate) => candidate.id === player.id)).toBe(true);
+  });
+
+  it('counters a sale ask up to 1.15 at fair value', async () => {
+    const session = new GameSession(nodeFs);
+    const start = await session.start({ databaseRoot, seed: 42 });
+    const player = start.squad[0]!;
+    const fair = transferFee(player.rating);
+
+    const result = session.proposeSell(player.id, fair * 1.15);
+
+    expect(result.outcome).toBe('countered');
+    expect(result.counterAmount).toBe(fair);
+    expect(result.snapshot.balance).toBe(start.balance);
+    expect(result.snapshot.squad.some((candidate) => candidate.id === player.id)).toBe(true);
+  });
+
+  it('rejects a sale ask above 1.15 without crediting balance', async () => {
+    const session = new GameSession(nodeFs);
+    const start = await session.start({ databaseRoot, seed: 42 });
+    const player = start.squad[0]!;
+    const fair = transferFee(player.rating);
+
+    const result = session.proposeSell(player.id, fair * 1.16);
+
+    expect(result.outcome).toBe('rejected');
+    expect(result.snapshot.balance).toBe(start.balance);
+    expect(result.snapshot.squad.some((candidate) => candidate.id === player.id)).toBe(true);
   });
 
   it('rejects a sale when the squad has 11 players or fewer', async () => {

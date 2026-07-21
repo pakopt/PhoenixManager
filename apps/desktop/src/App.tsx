@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import type { LedgerEntry } from '@phoenix/contracts';
+import type { LedgerEntry, OfferKind, OfferStatus } from '@phoenix/contracts';
 import { useSessionStore } from './store';
 
 type MarketPositionFilter = 'ALL' | 'GK' | 'DF' | 'MF' | 'FW';
@@ -36,19 +36,63 @@ function cupRoundLabel(round: 'qf' | 'sf' | 'final'): string {
   }
 }
 
+function offerKindLabel(kind: OfferKind): string {
+  switch (kind) {
+    case 'player_buy':
+      return 'Compra';
+    case 'player_sell':
+      return 'Venda';
+    case 'npc_bid':
+      return 'Oferta recebida';
+    default: {
+      const exhaustive: never = kind;
+      return exhaustive;
+    }
+  }
+}
+
+function offerStatusLabel(status: OfferStatus): string {
+  switch (status) {
+    case 'pending':
+      return 'Pendente';
+    case 'countered':
+      return 'Contraproposta';
+    default: {
+      const exhaustive: never = status;
+      return exhaustive;
+    }
+  }
+}
+
+function promptOfferAmount(label: string, defaultAmount: number): number | null {
+  const input = window.prompt(label, String(defaultAmount));
+  if (input === null) return null;
+  const amount = Number(input);
+  if (!Number.isFinite(amount) || amount <= 0) {
+    window.alert('Introduz um valor válido superior a zero.');
+    return null;
+  }
+  return amount;
+}
+
 export default function App() {
   const {
     snapshot,
     busy,
     error,
+    lastOfferMessage,
+    lastCounterOfferId,
     saves,
     mods,
     selectedMods,
     selectedManagedClubId,
     start,
     advanceDay,
-    buyPlayer,
-    sellPlayer,
+    proposeBuy,
+    proposeSell,
+    respondOffer,
+    acceptCounter,
+    declineOffer,
     save,
     load,
     refreshLists,
@@ -142,6 +186,31 @@ export default function App() {
       </header>
 
       {error ? <p className="rounded-md bg-red-950/50 px-3 py-2 text-sm text-red-200">{error}</p> : null}
+      {lastOfferMessage ? (
+        <div className="flex flex-wrap items-center justify-between gap-2 rounded-md bg-sky-950/50 px-3 py-2 text-sm text-sky-100">
+          <span>{lastOfferMessage}</span>
+          {lastCounterOfferId ? (
+            <span className="flex gap-2">
+              <button
+                type="button"
+                disabled={busy}
+                className="rounded bg-[var(--accent)] px-2 py-1 text-xs font-medium text-[var(--accent-fg)] disabled:opacity-50"
+                onClick={() => void acceptCounter(lastCounterOfferId)}
+              >
+                Aceitar contra
+              </button>
+              <button
+                type="button"
+                disabled={busy}
+                className="rounded border border-[var(--border)] px-2 py-1 text-xs disabled:opacity-50"
+                onClick={() => void declineOffer(lastCounterOfferId)}
+              >
+                Recusar
+              </button>
+            </span>
+          ) : null}
+        </div>
+      ) : null}
 
       <div className="grid gap-4 md:grid-cols-2">
         <section className="rounded-lg border border-[var(--border)] bg-[var(--surface)]/80 p-4">
@@ -366,7 +435,13 @@ export default function App() {
                           type="button"
                           disabled={busy || snapshot.squad.length <= 11}
                           className="rounded border border-[var(--border)] px-2 py-1 text-xs hover:bg-[#243040] disabled:opacity-50"
-                          onClick={() => void sellPlayer(player.id)}
+                          onClick={() => {
+                            const amount = promptOfferAmount(
+                              `Valor pedido por ${player.name}`,
+                              player.fee,
+                            );
+                            if (amount !== null) void proposeSell(player.id, amount);
+                          }}
                         >
                           Vender
                         </button>
@@ -437,9 +512,15 @@ export default function App() {
                       <td className="px-3 py-2">
                         <button
                           type="button"
-                          disabled={busy || player.fee > snapshot.balance}
+                          disabled={busy}
                           className="rounded bg-[var(--accent)] px-2 py-1 text-xs font-medium text-[var(--accent-fg)] disabled:opacity-50"
-                          onClick={() => void buyPlayer(player.id)}
+                          onClick={() => {
+                            const amount = promptOfferAmount(
+                              `Oferta por ${player.name}`,
+                              player.fee,
+                            );
+                            if (amount !== null) void proposeBuy(player.id, amount);
+                          }}
                         >
                           Comprar
                         </button>
@@ -452,6 +533,119 @@ export default function App() {
           </div>
         </section>
       </div>
+
+      <section className="overflow-hidden rounded-lg border border-[var(--border)] bg-[var(--surface)]/80">
+        <h2 className="border-b border-[var(--border)] px-4 py-3 text-sm font-medium uppercase tracking-wider text-[var(--muted)]">
+          Ofertas{' '}
+          <span className="rounded-full bg-black/30 px-2 py-0.5 text-xs tabular-nums">
+            {snapshot.pendingOffers.length}
+          </span>
+        </h2>
+        <div className="overflow-x-auto">
+          <table className="w-full min-w-[780px] text-left text-sm">
+            <thead className="bg-black/25 text-[var(--muted)]">
+              <tr>
+                <th className="px-3 py-2 font-medium">Tipo</th>
+                <th className="px-3 py-2 font-medium">Jogador</th>
+                <th className="px-3 py-2 font-medium">Clubes</th>
+                <th className="px-3 py-2 font-medium">Valor</th>
+                <th className="px-3 py-2 font-medium">Estado</th>
+                <th className="px-3 py-2 font-medium">
+                  <span className="sr-only">Ações</span>
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              {snapshot.pendingOffers.length === 0 ? (
+                <tr>
+                  <td colSpan={6} className="px-3 py-4 text-[var(--muted)]">
+                    Sem ofertas pendentes.
+                  </td>
+                </tr>
+              ) : (
+                snapshot.pendingOffers.map((offer) => (
+                  <tr key={offer.id} className="border-t border-[var(--border)]/70">
+                    <td className="px-3 py-2">{offerKindLabel(offer.kind)}</td>
+                    <td className="px-3 py-2 font-medium">{offer.playerName}</td>
+                    <td className="px-3 py-2 text-[var(--muted)]">
+                      {offer.fromClubName} → {offer.toClubName}
+                    </td>
+                    <td className="px-3 py-2 tabular-nums">
+                      €{offer.amount.toLocaleString('pt-PT')}
+                      {offer.counterAmount === undefined ? null : (
+                        <span className="block text-xs text-amber-200">
+                          Contra: €{offer.counterAmount.toLocaleString('pt-PT')}
+                        </span>
+                      )}
+                    </td>
+                    <td className="px-3 py-2">{offerStatusLabel(offer.status)}</td>
+                    <td className="px-3 py-2">
+                      <div className="flex flex-wrap justify-end gap-2">
+                        {offer.kind === 'npc_bid' && offer.status === 'pending' ? (
+                          <>
+                            <button
+                              type="button"
+                              disabled={busy}
+                              className="rounded bg-[var(--accent)] px-2 py-1 text-xs font-medium text-[var(--accent-fg)] disabled:opacity-50"
+                              onClick={() => void respondOffer(offer.id, 'accept')}
+                            >
+                              Aceitar
+                            </button>
+                            <button
+                              type="button"
+                              disabled={busy}
+                              className="rounded border border-[var(--border)] px-2 py-1 text-xs disabled:opacity-50"
+                              onClick={() => void respondOffer(offer.id, 'reject')}
+                            >
+                              Recusar
+                            </button>
+                            <button
+                              type="button"
+                              disabled={busy}
+                              className="rounded border border-amber-700 px-2 py-1 text-xs text-amber-200 disabled:opacity-50"
+                              onClick={() => {
+                                const amount = promptOfferAmount(
+                                  `Contraproposta por ${offer.playerName}`,
+                                  offer.fairFee,
+                                );
+                                if (amount !== null) {
+                                  void respondOffer(offer.id, 'counter', amount);
+                                }
+                              }}
+                            >
+                              Contrapropor
+                            </button>
+                          </>
+                        ) : null}
+                        {offer.status === 'countered' ? (
+                          <>
+                            <button
+                              type="button"
+                              disabled={busy}
+                              className="rounded bg-[var(--accent)] px-2 py-1 text-xs font-medium text-[var(--accent-fg)] disabled:opacity-50"
+                              onClick={() => void acceptCounter(offer.id)}
+                            >
+                              Aceitar contra
+                            </button>
+                            <button
+                              type="button"
+                              disabled={busy}
+                              className="rounded border border-[var(--border)] px-2 py-1 text-xs disabled:opacity-50"
+                              onClick={() => void declineOffer(offer.id)}
+                            >
+                              Recusar
+                            </button>
+                          </>
+                        ) : null}
+                      </div>
+                    </td>
+                  </tr>
+                ))
+              )}
+            </tbody>
+          </table>
+        </div>
+      </section>
 
       <section className="overflow-hidden rounded-lg border border-[var(--border)] bg-[var(--surface)]/80">
         <h2 className="border-b border-[var(--border)] px-4 py-3 text-sm font-medium uppercase tracking-wider text-[var(--muted)]">

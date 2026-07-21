@@ -2,6 +2,7 @@ import type {
   CupState,
   LedgerEntry,
   MatchResult,
+  PendingOffer,
   Slug,
   TableRow,
 } from '@phoenix/contracts';
@@ -22,6 +23,13 @@ export type SnapshotPlayer = {
 export type SnapshotMarketPlayer = SnapshotPlayer & {
   clubId: Slug;
   clubName: string;
+};
+
+export type SnapshotPendingOffer = PendingOffer & {
+  playerName: string;
+  fromClubName: string;
+  toClubName: string;
+  fairFee: number;
 };
 
 export type SnapshotResult = {
@@ -69,6 +77,7 @@ export type SessionSnapshot = {
   cup?: SnapshotCup;
   squad: SnapshotPlayer[];
   market: SnapshotMarketPlayer[];
+  pendingOffers: SnapshotPendingOffer[];
 };
 
 export function toSnapshotResults(

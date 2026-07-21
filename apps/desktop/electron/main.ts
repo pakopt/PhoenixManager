@@ -76,6 +76,31 @@ app.whenReady().then(() => {
   ipcMain.handle('session:sellPlayer', (_evt, playerId: string) => {
     return session.sellPlayer(playerId as Slug);
   });
+  ipcMain.handle(
+    'session:proposeBuy',
+    (_evt, playerId: string, amount?: number) =>
+      session.proposeBuy(playerId as Slug, amount),
+  );
+  ipcMain.handle(
+    'session:proposeSell',
+    (_evt, playerId: string, amount?: number) =>
+      session.proposeSell(playerId as Slug, amount),
+  );
+  ipcMain.handle(
+    'session:respondOffer',
+    (
+      _evt,
+      offerId: string,
+      action: 'accept' | 'reject' | 'counter',
+      counterAmount?: number,
+    ) => session.respondOffer(offerId, action, counterAmount),
+  );
+  ipcMain.handle('session:acceptCounter', (_evt, offerId: string) => {
+    return session.acceptCounter(offerId);
+  });
+  ipcMain.handle('session:declineOffer', (_evt, offerId: string) => {
+    return session.declineOffer(offerId);
+  });
   ipcMain.handle('session:getSnapshot', () => session.getSnapshot());
   ipcMain.handle('session:save', async (_evt, slotId: string, label?: string) => {
     return session.save(slotId as Slug, label);

@@ -17,6 +17,32 @@ Cada entrada deve incluir:
 
 Decisão:
 
+Três **pilares de engenharia** na Architecture Bible — Simulation Runtime, Data Architecture, Domain Architecture — como camada acima dos volumes 1–20 (satélites). Índices em `docs/bible/pillars/`.
+
+Motivo:
+
+Evitar dezenas de documentos isolados que redefinem Tick, World State, IDs e Bounded Contexts; manter a Bible como manual de engenharia consistente.
+
+Alternativas:
+
+- Consolidar volumes existentes dentro dos pilares (fundir Vol. 5/3–4/9) nesta fase
+- Substituir a grelha 1–20 pelos três pilares sem satélites numerados
+- Um único ficheiro `00-engineering-pillars.md` com três secções
+
+Consequências futuras:
+
+Docs novos obrigam cabeçalho de pilares; fases B/C podem fundir prosa e limpar satélites. Spec: [2026-07-22-three-engineering-pillars-design.md](superpowers/specs/2026-07-22-three-engineering-pillars-design.md).
+
+Resultado:
+
+Camada de pilares + regra operacional adoptadas (estrutura nesta entrega).
+
+---
+
+## 2026-07-22
+
+Decisão:
+
 Três Event Buses físicos — **DomainEventBus**, **ApplicationEventBus**, **InfrastructureEventBus** — com regras estritas de publicação/consumo por camada. Transportes em Shared / Events; contratos em `docs/17-events/01|02|03-*.md`.
 
 Motivo:

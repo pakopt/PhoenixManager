@@ -1,7 +1,7 @@
 # Phoenix Platform — Three Engineering Pillars (Design)
 
 **Date:** 2026-07-22  
-**Status:** Approved (pending user review of this file)  
+**Status:** Approved — docs delivery planned in `docs/superpowers/plans/2026-07-22-three-engineering-pillars.md`
 **Scope of first delivery:** Documentation structure only (pillar indexes + Bible/agents rules; no content merge of volumes)
 
 ## Intent

@@ -1,7 +1,7 @@
 # Phoenix Platform — Three-Level Event Buses (Design)
 
 **Date:** 2026-07-22  
-**Status:** Approved (pending user review of this file)  
+**Status:** Approved — docs delivery planned in `docs/superpowers/plans/2026-07-22-three-level-event-buses.md`  
 **Scope of first delivery:** Documentation / contract only (no TypeScript, no Flutter migration)
 
 ## Intent

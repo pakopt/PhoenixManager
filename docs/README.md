@@ -8,6 +8,7 @@ A árvore abaixo é a **localização física** dos ficheiros; a Bible organiza 
 
 | Pasta | Conteúdo |
 |-------|----------|
+| [bible/pillars/](bible/pillars/README.md) | Três pilares de engenharia (Runtime · Data · Domain) |
 | [00-project/](00-project/01-vision.md) | Visão do produto (Volume 1 — 01–08) |
 | [10-architecture/](10-architecture/01-overview.md) | Platform + Software Architecture + tech (Volumes 2, 7–8) |
 | [15-domain/](15-domain/01-overview.md) | Domain Model + Entity Spec (Volumes 3–4) |

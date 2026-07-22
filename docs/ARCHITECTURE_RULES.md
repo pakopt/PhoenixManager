@@ -1,7 +1,9 @@
 Nunca usar any em TypeScript.
 Todos os IDs são string no formato **`{type}:{ulid}`** (ex.: `player:01HZX4YB8J7N…`); o nome de display pode mudar, o `id` não — ver `20-database/12-ids.md`.
 Nunca guardar referências diretas entre objetos; usar apenas IDs.
-Planta canónica = **10 macro-módulos** — ver `10-architecture/01-overview.md`. Inventário fino = `10-architecture/19-module-map.md` (8 categorias; 4 níveis Applications → … → Shared). Módulo novo numa categoria do mapa; categoria de topo nova → ADR em `DECISIONS.md`.
+Planta canónica = **10 macro-módulos** — ver `10-architecture/01-overview.md`. Inventário fino = `10-architecture/19-module-map.md` (8 categorias; 4 níveis Applications → … → Shared). Módulo novo numa categoria do mapa; categoria de topo nova → ADR em `DECISIONS.md` (`ADR-NNNN`).
+
+**Contratos de engenharia:** seguir [20-coding-standards.md](10-architecture/20-coding-standards.md), [21-adr-process.md](10-architecture/21-adr-process.md), [22-package-contracts.md](10-architecture/22-package-contracts.md), [23-error-handling.md](10-architecture/23-error-handling.md), [24-performance-guidelines.md](10-architecture/24-performance-guidelines.md), [00-testing-strategy.md](80-testing/00-testing-strategy.md), [07-integrity-security.md](60-save-system/07-integrity-security.md), [07-release-strategy.md](85-deployment/07-release-strategy.md). **Package novo exige Package Contract antes de código.** Layout alvo: [Vol. 21](bible/21-development-architecture.md). **Runtime não depende de Domain** — Application wires ambos ([05-dependencies.md](10-architecture/05-dependencies.md), ADR-0033). Ordem de construção: [00-platform-milestones.md](90-roadmap/00-platform-milestones.md) (Desktop = M4).
 
 **Pilares de engenharia:** [Simulation Runtime](bible/pillars/simulation-runtime.md) · [Data Architecture](bible/pillars/data-architecture.md) · [Domain Architecture](bible/pillars/domain-architecture.md) (`bible/pillars/README.md`). Documentação nova ou satélite **referencia** estes pilares; **proibido** redefinir Tick, World State, World Changes, Event Buses, formato de ID `{type}:{ulid}`, Aggregate de vínculo, ou a organização em Bounded Contexts — só link ao pilar e depois ao volume/pasta oficial.
 
@@ -26,7 +28,7 @@ Compatibilidade de bases e saves entre versões; migração automática quando a
 A comunidade cria bases, packs, mods e cenários sem alterar o código do jogo.
 A simulação é determinística e orientada por regras, não por scripts específicos.
 
-Dependências: ver `10-architecture/05-dependencies.md`. Só para baixo nos 4 níveis. Nunca UI→Database, Match→React, Finance→Electron.
+Dependências: ver `10-architecture/05-dependencies.md` (diamond: Application → Domain e Runtime; **Runtime ↛ Domain**). Nunca UI→Database, Match→React, Finance→Electron.
 Nunca aceder ao sistema de ficheiros fora da Infrastructure.
 Nunca criar dependências circulares entre Domain Systems.
 Um Domain System não conhece nem altera o estado interno de outro — só Event Bus e propostas de **World Changes** (Commit pelo Runtime). Proibido mutar World State directamente.

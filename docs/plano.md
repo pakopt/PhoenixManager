@@ -1,8 +1,10 @@
 # Plano — Project Phoenix Manager
 
 **Versão:** TS Marco 5d  
-**Actualizado:** 21 de Julho de 2026  
+**Actualizado:** 22 de Julho de 2026  
 **Fase actual:** **TypeScript — Marco 5d Mod Editor**
+
+**Plataforma (canónico):** ordem Foundation → … → Desktop no **M4** — [`90-roadmap/00-platform-milestones.md`](90-roadmap/00-platform-milestones.md). Este plano é o tracker do **protótipo TS** (já tem Desktop); não redefine essa ordem.
 
 Desktop: painéis **Plantel**, **Mercado**, **Finanças** e **Ofertas**; **Caixa** no cabeçalho. Fee = `rating × 100 000`; saldo inicial `5 000 000`. Ledger persistido: salários por jornada (`rating × 1 000`), bilheteira em casa (`reputation × 10 000`, ≤1 por jornada), transferências in/out. Mercado NPC: até 3 transferências entre clubes por jornada; propostas do jogador com resposta imediata (aceitar/rejeitar/contra única); 0–2 bids NPC sobre o plantel gerido — inbox **Ofertas**. **Mods:** editor de clubes e jogadores (criar pack, override/remover, badges core/mod/new); carreira via **Aplicar mods / reiniciar** (sem hot-reload).
 

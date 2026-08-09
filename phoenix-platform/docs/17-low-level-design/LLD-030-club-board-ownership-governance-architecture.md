@@ -39,7 +39,9 @@
 **Implementação F86 (2026-08-09):** `cashHistory` ring · Twin append · UI `CashHist:` · world **v29**.  
 **Implementação F87 (2026-08-09):** `ClubCash.adjust` · `adjustClubCash` · bridge `cash-adjust` · nav F87 · world permanece **v29**.  
 **Implementação F88 (2026-08-09):** Wages `−10k/dia` · Matchday `+50k` · nav F88 · world permanece **v29**. **Fora:** financialHealth.  
-**Implementação F89 (2026-08-09):** `ClubCash.financialHealth(cash)=(cash/100_000).coerceIn(0,100)` derivado · bridge `hof.financialHealth` · UI ` · FH{n}` · nav F89 · world permanece **v29**. **Fora:** campo persistido · bands · Health Index LLD-028 completo.
+**Implementação F89 (2026-08-09):** `ClubCash.financialHealth(cash)=(cash/100_000).coerceIn(0,100)` derivado · bridge `hof.financialHealth` · UI ` · FH{n}` · nav F89 · world permanece **v29**. **Fora:** campo persistido · bands · Health Index LLD-028 completo.  
+**Implementação F90 (2026-08-09):** `financialHealthBand` Crit/Weak/Ok/Strong · bridge · UI ` · FH{n} {band}` · nav F90 · world permanece **v29**. **Fora:** campo persistido · Health Index LLD-028 · `setClubCash`.  
+**Implementação F91 (2026-08-09):** `ClubCash.set` · `setClubCash` · bridge `cash-set` · nav F91 · world permanece **v29**. **Fora:** UI form · FH persistido · Health Index LLD-028.
 
 **Implementação F66 (2026-08-06):** Shareholders breakdown 4 buckets (40/25/20/15) · `majorityInfluence=majority` · UI `Sh: a/b/c/d` · world era v20 (agora v21 via F68). **Fora:** Twin F67 ✅ / Sat F68–F70 ✅ / dims (= F71+).
 

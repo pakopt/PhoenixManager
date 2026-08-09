@@ -44,7 +44,8 @@
 **Implementação F91 (2026-08-09):** `ClubCash.set` · `setClubCash` · bridge `cash-set` · nav F91 · world permanece **v29**. **Fora:** UI form · FH persistido · Health Index LLD-028.  
 **Implementação F92 (2026-08-09):** Crit band → `boardEffective −5` (`CRIT_BOARD_PENALTY`) · Twin herda · nav F92 · world permanece **v29**. **Fora:** Weak/Ok penalties · FH persistido · LLD-028.  
 **Implementação F93 (2026-08-09):** UI `CashForm` Adjust/Set · hooks bridge · Dashboard + SidePanel · nav F93 · world permanece **v29**. **Fora:** UI milhões · FH persistido · LLD-028.  
-**Implementação F94 (2026-08-09):** Weak band → `boardEffective −2` (`WEAK_BOARD_PENALTY`) · Crit continua `−5` · nav F94 · world permanece **v29**. **Fora:** Ok/Strong penalties · FH persistido · LLD-028.
+**Implementação F94 (2026-08-09):** Weak band → `boardEffective −2` (`WEAK_BOARD_PENALTY`) · Crit continua `−5` · nav F94 · world permanece **v29**. **Fora:** Ok/Strong penalties · FH persistido · LLD-028.  
+**Implementação F95 (2026-08-09):** Ok band → `boardEffective −1` (`OK_BOARD_PENALTY`) · escala Crit5/Weak2/Ok1/Strong0 · nav F95 · world permanece **v29**. **Fora:** Strong penalty · FH persistido · UI penalty · LLD-028.
 
 **Implementação F66 (2026-08-06):** Shareholders breakdown 4 buckets (40/25/20/15) · `majorityInfluence=majority` · UI `Sh: a/b/c/d` · world era v20 (agora v21 via F68). **Fora:** Twin F67 ✅ / Sat F68–F70 ✅ / dims (= F71+).
 

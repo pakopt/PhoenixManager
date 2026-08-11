@@ -50,7 +50,9 @@
 **Implementação F97 (2026-08-10):** `CareerRecord.financialHealth` + `financialHealthBand` write-through (`ClubCash.adjust` · Twin · fromSession) · save/load · world **v30** · nav F97. **Fora:** LLD-028 Health Index · UI milhões.  
 **Implementação F98 (2026-08-10):** CashForm input milhões (`0.25`→250k) · bridge intacto · nav F98 · world permanece **v30**. **Fora:** toggle M/raw · LLD-028.  
 **Implementação F99 (2026-08-11):** Sponsor stub diário `+5k` em `advanceDays` (`REASON_SPONSOR`) · CashHist · nav F99 · world permanece **v30**. **Fora:** Twin `CASH_CRISIS` · contratos · LLD-028.  
-**Implementação F100 (2026-08-11):** Twin `CASH_CRISIS` (espelho inverso BUDGET_UP: −1M · board−5 · P+5 · sat−5) · preview/commit · CashHist · world **v31** · nav F100. **Fora:** auto-trigger · Crisis Engine · LLD-028.
+**Implementação F100 (2026-08-11):** Twin `CASH_CRISIS` (espelho inverso BUDGET_UP: −1M · board−5 · P+5 · sat−5) · preview/commit · CashHist · world **v31** · nav F100. **Fora:** auto-trigger · Crisis Engine · LLD-028.  
+**Implementação F101 (2026-08-11):** Botão UI `Cash Crisis` · hook `govtwin-commit` · Dashboard + SidePanel · nav F101 · world permanece **v31**. **Fora:** row completa Twin · preview switch · LLD-028.  
+**Implementação F102 (2026-08-11):** `GovTwinActions` (Induct/Fire/Investor/Budget/Crisis) · substitui botão único · nav F102 · world permanece **v31**. **Fora:** STATUS_QUO · preview switch · LLD-028.
 
 **Implementação F66 (2026-08-06):** Shareholders breakdown 4 buckets (40/25/20/15) · `majorityInfluence=majority` · UI `Sh: a/b/c/d` · world era v20 (agora v21 via F68). **Fora:** Twin F67 ✅ / Sat F68–F70 ✅ / dims (= F71+).
 

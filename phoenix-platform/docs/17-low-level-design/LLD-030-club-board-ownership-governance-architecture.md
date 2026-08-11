@@ -52,7 +52,11 @@
 **Implementação F99 (2026-08-11):** Sponsor stub diário `+5k` em `advanceDays` (`REASON_SPONSOR`) · CashHist · nav F99 · world permanece **v30**. **Fora:** Twin `CASH_CRISIS` · contratos · LLD-028.  
 **Implementação F100 (2026-08-11):** Twin `CASH_CRISIS` (espelho inverso BUDGET_UP: −1M · board−5 · P+5 · sat−5) · preview/commit · CashHist · world **v31** · nav F100. **Fora:** auto-trigger · Crisis Engine · LLD-028.  
 **Implementação F101 (2026-08-11):** Botão UI `Cash Crisis` · hook `govtwin-commit` · Dashboard + SidePanel · nav F101 · world permanece **v31**. **Fora:** row completa Twin · preview switch · LLD-028.  
-**Implementação F102 (2026-08-11):** `GovTwinActions` (Induct/Fire/Investor/Budget/Crisis) · substitui botão único · nav F102 · world permanece **v31**. **Fora:** STATUS_QUO · preview switch · LLD-028.
+**Implementação F102 (2026-08-11):** `GovTwinActions` (Induct/Fire/Investor/Budget/Crisis) · substitui botão único · nav F102 · world permanece **v31**. **Fora:** STATUS_QUO · preview switch · LLD-028.  
+**Implementação F103 (2026-08-11):** Preview switch — bridge `govtwin-preview` · select choice + Commit · GovTwin mostra scenario selecionado · nav F103 · world permanece **v31**. **Fora:** STATUS_QUO · mapa 5-previews · LLD-028.  
+**Implementação F104 (2026-08-11):** Quo (`STATUS_QUO`) na row Twin · default select · Commit no-op · nav F104 · world permanece **v31**. **Fora:** Commit disabled · LLD-028.  
+**Implementação F105 (2026-08-11):** Commit disabled quando Quo selecionado · preview Quo intacto · nav F105 · world permanece **v31**. **Fora:** hide Commit · title hint · LLD-028.  
+**Implementação F106 (2026-08-11):** CashForm choice M/Raw · default M · trocar limpa valor · bridge intacto · nav F106 · world permanece **v31**. **Fora:** localStorage · LLD-028.
 
 **Implementação F66 (2026-08-06):** Shareholders breakdown 4 buckets (40/25/20/15) · `majorityInfluence=majority` · UI `Sh: a/b/c/d` · world era v20 (agora v21 via F68). **Fora:** Twin F67 ✅ / Sat F68–F70 ✅ / dims (= F71+).
 

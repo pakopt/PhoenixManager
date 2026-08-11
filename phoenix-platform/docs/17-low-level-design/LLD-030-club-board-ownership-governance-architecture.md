@@ -57,7 +57,9 @@
 **Implementação F104 (2026-08-11):** Quo (`STATUS_QUO`) na row Twin · default select · Commit no-op · nav F104 · world permanece **v31**. **Fora:** Commit disabled · LLD-028.  
 **Implementação F105 (2026-08-11):** Commit disabled quando Quo selecionado · preview Quo intacto · nav F105 · world permanece **v31**. **Fora:** hide Commit · title hint · LLD-028.  
 **Implementação F106 (2026-08-11):** CashForm choice M/Raw · default M · trocar limpa valor · bridge intacto · nav F106 · world permanece **v31**. **Fora:** localStorage · LLD-028.  
-**Implementação F107 (2026-08-11):** `ManagerPrefs.cashUnit` M/Raw persistido · CashForm init/write · nav F107 · world permanece **v31**. **Fora:** sync multi-painel · Twin select persist · LLD-028.
+**Implementação F107 (2026-08-11):** `ManagerPrefs.cashUnit` M/Raw persistido · CashForm init/write · nav F107 · world permanece **v31**. **Fora:** sync multi-painel · Twin select persist · LLD-028.  
+**Implementação F108 (2026-08-11):** `useCashUnit` + `CASH_UNIT_EVENT` · sync Dashboard/SidePanel · limpa valor no sync · nav F108 · world permanece **v31**. **Fora:** Twin select persist · LLD-028.  
+**Implementação F109 (2026-08-11):** `govTwinScenario` prefs + `useGovTwinScenario` sync · init prefs→last→Quo · nav F109 · world permanece **v31**. **Fora:** title hint Quo · LLD-028.
 
 **Implementação F66 (2026-08-06):** Shareholders breakdown 4 buckets (40/25/20/15) · `majorityInfluence=majority` · UI `Sh: a/b/c/d` · world era v20 (agora v21 via F68). **Fora:** Twin F67 ✅ / Sat F68–F70 ✅ / dims (= F71+).
 

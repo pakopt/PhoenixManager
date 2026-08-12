@@ -60,7 +60,8 @@
 **Implementação F107 (2026-08-11):** `ManagerPrefs.cashUnit` M/Raw persistido · CashForm init/write · nav F107 · world permanece **v31**. **Fora:** sync multi-painel · Twin select persist · LLD-028.  
 **Implementação F108 (2026-08-11):** `useCashUnit` + `CASH_UNIT_EVENT` · sync Dashboard/SidePanel · limpa valor no sync · nav F108 · world permanece **v31**. **Fora:** Twin select persist · LLD-028.  
 **Implementação F109 (2026-08-11):** `govTwinScenario` prefs + `useGovTwinScenario` sync · init prefs→last→Quo · nav F109 · world permanece **v31**. **Fora:** title hint Quo · LLD-028.  
-**Implementação F110 (2026-08-12):** Commit `title` busy/`Ocupado` · Quo/`Sem commit em Status Quo` · nav F110 · world permanece **v31**. **Fora:** tooltip custom · LLD-028.
+**Implementação F110 (2026-08-12):** Commit `title` busy/`Ocupado` · Quo/`Sem commit em Status Quo` · nav F110 · world permanece **v31**. **Fora:** tooltip custom · LLD-028.  
+**Implementação F111 (2026-08-12):** Twin `historyLabel` PT no GovHist · UI `label (scenario)` · Pers nomes PT · nav F111 · world permanece **v31**. **Fora:** auto-log President PT · LLD-028 · Crisis auto-trigger.
 
 **Implementação F66 (2026-08-06):** Shareholders breakdown 4 buckets (40/25/20/15) · `majorityInfluence=majority` · UI `Sh: a/b/c/d` · world era v20 (agora v21 via F68). **Fora:** Twin F67 ✅ / Sat F68–F70 ✅ / dims (= F71+).
 

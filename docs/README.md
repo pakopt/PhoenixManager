@@ -1,6 +1,6 @@
 # Docs — Phoenix Platform
 
-Documentação **conceptual-first** da **Phoenix Platform** (o jogo **Phoenix Manager** é um cliente). Sem schemas JSON nesta fase: uma pergunta por ficheiro — detalhe em [`STYLE_GUIDE.md`](STYLE_GUIDE.md). Índice lógico: [`bible/README.md`](bible/README.md) (Architecture Bible, 20 volumes). Tracker de marcos: [`plano.md`](plano.md). Regras: [`ARCHITECTURE_RULES.md`](ARCHITECTURE_RULES.md).
+Documentação **conceptual-first** da **Phoenix Platform** (o jogo **Phoenix Manager** é um cliente). Sem schemas JSON nesta fase: uma pergunta por ficheiro — detalhe em [`STYLE_GUIDE.md`](STYLE_GUIDE.md) · contrato completo [`10-architecture/20-coding-standards.md`](10-architecture/20-coding-standards.md). Índice lógico: [`bible/README.md`](bible/README.md) (Architecture Bible, volumes 1–21). Tracker de marcos do protótipo: [`plano.md`](plano.md). **Platform milestones** (Desktop = M4): [`90-roadmap/00-platform-milestones.md`](90-roadmap/00-platform-milestones.md). Regras: [`ARCHITECTURE_RULES.md`](ARCHITECTURE_RULES.md). ADRs: [`DECISIONS.md`](DECISIONS.md).
 
 A árvore abaixo é a **localização física** dos ficheiros; a Bible organiza o mesmo conteúdo por volume.
 
@@ -10,7 +10,7 @@ A árvore abaixo é a **localização física** dos ficheiros; a Bible organiza 
 |-------|----------|
 | [bible/pillars/](bible/pillars/README.md) | Três pilares de engenharia (Runtime · Data · Domain) |
 | [00-project/](00-project/01-vision.md) | Visão do produto (Volume 1 — 01–08) |
-| [10-architecture/](10-architecture/01-overview.md) | Platform + Software Architecture + tech (Volumes 2, 7–8) |
+| [10-architecture/](10-architecture/01-overview.md) | Platform + Software Architecture + tech + **engineering contracts** (Volumes 2, 7–8, 21) |
 | [15-domain/](15-domain/01-overview.md) | Domain Model + Entity Spec (Volumes 3–4) |
 | [16-processes/](16-processes/01-simulation-cycle.md) | Core Business Processes (Volume 5) |
 | [17-events/](17-events/01-domain-events.md) | Event-Driven Architecture (Volume 6) — Domain · Application · Infrastructure |
@@ -56,6 +56,11 @@ A árvore abaixo é a **localização física** dos ficheiros; a Bible organiza 
 - [16-build-system.md](10-architecture/16-build-system.md)
 - [17-ci.md](10-architecture/17-ci.md)
 - [18-testing.md](10-architecture/18-testing.md)
+- [20-coding-standards.md](10-architecture/20-coding-standards.md)
+- [21-adr-process.md](10-architecture/21-adr-process.md)
+- [22-package-contracts.md](10-architecture/22-package-contracts.md)
+- [23-error-handling.md](10-architecture/23-error-handling.md)
+- [24-performance-guidelines.md](10-architecture/24-performance-guidelines.md)
 
 ### 20-database
 
@@ -129,6 +134,7 @@ A árvore abaixo é a **localização física** dos ficheiros; a Bible organiza 
 - [04-migration.md](60-save-system/04-migration.md)
 - [05-versioning.md](60-save-system/05-versioning.md)
 - [06-cloud-saves.md](60-save-system/06-cloud-saves.md)
+- [07-integrity-security.md](60-save-system/07-integrity-security.md)
 
 ### 70-modding
 
@@ -141,6 +147,7 @@ A árvore abaixo é a **localização física** dos ficheiros; a Bible organiza 
 
 ### 80-testing
 
+- [00-testing-strategy.md](80-testing/00-testing-strategy.md)
 - [01-unit-tests.md](80-testing/01-unit-tests.md)
 - [02-performance.md](80-testing/02-performance.md)
 - [03-validation.md](80-testing/03-validation.md)
@@ -163,9 +170,11 @@ A árvore abaixo é a **localização física** dos ficheiros; a Bible organiza 
 - [04-auto-update.md](85-deployment/04-auto-update.md)
 - [05-crash-reports.md](85-deployment/05-crash-reports.md)
 - [06-telemetry.md](85-deployment/06-telemetry.md)
+- [07-release-strategy.md](85-deployment/07-release-strategy.md)
 
 ### 90-roadmap
 
+- [00-platform-milestones.md](90-roadmap/00-platform-milestones.md)
 - [v0.1.md](90-roadmap/v0.1.md)
 - [v0.2.md](90-roadmap/v0.2.md)
 - [v1.0.md](90-roadmap/v1.0.md)
@@ -175,9 +184,13 @@ A árvore abaixo é a **localização física** dos ficheiros; a Bible organiza 
 
 | Ficheiro / pasta | Conteúdo |
 |---|---|
-| [bible/](bible/README.md) | Architecture Bible — índice lógico (20 volumes) |
-| [plano.md](plano.md) | Plano vivo — marcos TS |
+| [bible/](bible/README.md) | Architecture Bible — pilares + volumes 1–21 |
+| [bible/21-development-architecture.md](bible/21-development-architecture.md) | Development Architecture (monorepo / packages) |
+| [90-roadmap/00-platform-milestones.md](90-roadmap/00-platform-milestones.md) | Platform milestones (Desktop = M4) |
+| [plano.md](plano.md) | Plano vivo — marcos TS (protótipo) |
 | [ARCHITECTURE_RULES.md](ARCHITECTURE_RULES.md) | Regras transversais |
+| [DECISIONS.md](DECISIONS.md) | ADR log (`ADR-NNNN`) |
+| [AGENTS.md](AGENTS.md) | Regras curtas para agentes |
 | [modelo-conceptual.md](modelo-conceptual.md) | Stub — redirecciona para esta árvore |
 | [PRIVACY.md](PRIVACY.md) | Política de privacidade |
 | [superpowers/](superpowers/) | Specs e planos por marco |

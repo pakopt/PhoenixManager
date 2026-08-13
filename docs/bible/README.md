@@ -52,5 +52,8 @@ Cada volume é um **satélite**: responde “que documentos cobrem este tema?”
 | 18 | Testing | [18-testing.md](18-testing.md) |
 | 19 | Deployment | [19-deployment.md](19-deployment.md) |
 | 20 | Roadmap | [20-roadmap.md](20-roadmap.md) |
+| 21 | Development Architecture | [21-development-architecture.md](21-development-architecture.md) |
 
-Ver também: [docs/README.md](../README.md) · [STYLE_GUIDE.md](../STYLE_GUIDE.md)
+**Contratos de engenharia:** [coding](../10-architecture/20-coding-standards.md) · [ADR](../10-architecture/21-adr-process.md) · [packages](../10-architecture/22-package-contracts.md) · [errors](../10-architecture/23-error-handling.md) · [perf](../10-architecture/24-performance-guidelines.md) · [testing](../80-testing/00-testing-strategy.md) · [save integrity](../60-save-system/07-integrity-security.md) · [release](../85-deployment/07-release-strategy.md). **Milestones:** [00-platform-milestones.md](../90-roadmap/00-platform-milestones.md).
+
+Ver também: [docs/README.md](../README.md) · [STYLE_GUIDE.md](../STYLE_GUIDE.md) · [DECISIONS.md](../DECISIONS.md)

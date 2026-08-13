@@ -30,6 +30,12 @@ Enums:
 
 PascalCase
 
+## Contrato completo
+
+**Fonte de verdade:** [10-architecture/20-coding-standards.md](10-architecture/20-coding-standards.md) (sempre / nunca, exemplos, failure modes).
+
+Este ficheiro é um **ponteiro curto** de naming + regras de documentação.
+
 ## Documentação
 
 Cada documento responde a **uma** pergunta (título/ficheiro = a pergunta).
@@ -46,7 +52,7 @@ Se um rascunho misturar duas perguntas, dividir em dois ficheiros.
 
 A árvore numerada actual (`01-`, `02-`, …) mantém-se; o princípio aplica-se a **conteúdo e intenção**, não exige rename imediato.
 
-Organização lógica: Architecture Bible — **3 pilares** (`bible/pillars/`) + satélites (20 volumes em `bible/`). Localização física: pastas numeradas (`00-project/` … `90-roadmap/`) e `specs/`.
+Organização lógica: Architecture Bible — **3 pilares** (`bible/pillars/`) + satélites (volumes em `bible/`, incl. [Vol. 21](bible/21-development-architecture.md)). Localização física: pastas numeradas (`00-project/` … `90-roadmap/`) e `specs/`.
 
 **Modelação:** relação entre duas entidades com duração, condições ou obrigações → **Aggregate próprio**, nunca campo embutido — ver `15-domain/01-overview.md` (Regra de Aggregate de vínculo) e `ARCHITECTURE_RULES.md`.
 

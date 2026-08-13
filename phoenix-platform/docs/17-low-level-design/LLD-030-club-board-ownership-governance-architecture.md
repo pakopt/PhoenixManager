@@ -64,7 +64,8 @@
 **Implementação F111 (2026-08-12):** Twin `historyLabel` PT no GovHist · UI `label (scenario)` · Pers nomes PT · nav F111 · world permanece **v31**. **Fora:** auto-log President PT · LLD-028 · Crisis auto-trigger.  
 **Implementação F112 (2026-08-12):** UI Health Index lite ` · HI{n}{band}` (= `financialHealth`) · nav F112 · world permanece **v31**. **Fora:** dims multi · ledger · rename interno.  
 **Implementação F113 (2026-08-12):** Auto-trigger Twin `CASH_CRISIS` na transição → Crit (`maybeAutoCashCrisis`) · cooldown `lastTwinScenario` · nav F113 · world permanece **v31**. **Fora:** flag persistida · Crisis Engine completo.  
-**Implementação F114 (2026-08-13):** `previewActions` + `governanceTwinPreviews` (5 acções) · UI mapa · nav F114 · world permanece **v31**. **Fora:** Quo no mapa · Health Index dims.
+**Implementação F114 (2026-08-13):** `previewActions` + `governanceTwinPreviews` (5 acções) · UI mapa · nav F114 · world permanece **v31**. **Fora:** Quo no mapa · Health Index dims.  
+**Implementação F115 (2026-08-13):** `CareerRecord.liquidity` write-through (= FH) · save/load · UI ` · Liq{n}` · world **v32** · nav F115. **Fora:** outras dims · HealthIndex object · ledger.
 
 **Implementação F66 (2026-08-06):** Shareholders breakdown 4 buckets (40/25/20/15) · `majorityInfluence=majority` · UI `Sh: a/b/c/d` · world era v20 (agora v21 via F68). **Fora:** Twin F67 ✅ / Sat F68–F70 ✅ / dims (= F71+).
 

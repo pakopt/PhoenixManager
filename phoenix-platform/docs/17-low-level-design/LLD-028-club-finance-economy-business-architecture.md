@@ -288,7 +288,8 @@ Influencia patrocinadores, investidores e direcção. Consome sinais de FFP/lice
 
 Alinha **Financial Health Score** (ADR-0120).
 
-**Implementação F112 (2026-08-12 · Living HoF):** UI alias ` · HI{n}{band}` sobre stub `financialHealth` (= cash/100k · bands Crit/Weak/Ok/Strong · F89–F97). **Não** é o índice multi-dim completo · **sem** Accounting Ledger double-entry neste slice · world **v31**.
+**Implementação F112 (2026-08-12 · Living HoF):** UI alias ` · HI{n}{band}` sobre stub `financialHealth` (= cash/100k · bands Crit/Weak/Ok/Strong · F89–F97). **Não** é o índice multi-dim completo · **sem** Accounting Ledger double-entry neste slice · world **v31**.  
+**Implementação F115 (2026-08-13 · Living HoF):** 1ª dim `liquidity` persistida (= FH write-through) · UI ` · Liq{n}` · world **v32**. **Fora:** solvabilidade/estabilidade/… · ledger.
 
 ---
 
